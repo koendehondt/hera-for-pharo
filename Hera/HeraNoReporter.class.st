@@ -1,0 +1,109 @@
+Class {
+	#name : 'HeraNoReporter',
+	#superclass : 'HeraAbstractReporter',
+	#category : 'Hera-Reporting',
+	#package : 'Hera',
+	#tag : 'Reporting'
+}
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportBackground: aBackground [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportEndOfBackgroundStep: aStep [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportEndOfFeature: aFeature [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportEndOfFeatures [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportEndOfScenario: aScenario [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportEndOfStep: aStep [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportErrorStep: aStep [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportErrorStep: aStep withError: anError [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportFailedStep: aStep [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportFailedStep: aStep withFailure: aFailure [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportPassedStep: aStep [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportResult: result [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportStartOfBackgroundStep: aStep [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportStartOfFeature: aFeature [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportStartOfFeatures: features withFilter: filter [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportStartOfScenario: aScenario [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportStartOfStep: aStep [
+
+	"Do nothing."
+]
