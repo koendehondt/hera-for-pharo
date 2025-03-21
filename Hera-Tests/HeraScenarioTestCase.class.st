@@ -12,16 +12,18 @@ HeraScenarioTestCase >> describedClass [
 	^ HeraScenario
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testAnd [
 
 	| expectedStep |
 	subject and: 'I see the new messages'.
-	expectedStep := HeraAndStep new description: 'I see the new messages'.
+	expectedStep := HeraAndStep new
+		description: 'I see the new messages';
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testAndWithDataTable [
 
 	| expectedStep argument expectedArgument |
@@ -30,20 +32,23 @@ HeraScenarioTestCase >> testAndWithDataTable [
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraAndStep new
 		description: 'these points are connected';
-		argument: expectedArgument.
+		argument: expectedArgument;
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testBut [
 
 	| expectedStep |
 	subject but: 'I see no old messages'.
-	expectedStep := HeraButStep new description: 'I see no old messages'.
+	expectedStep := HeraButStep new
+		description: 'I see no old messages';
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testButWithDataTable [
 
 	| expectedStep argument expectedArgument |
@@ -52,20 +57,23 @@ HeraScenarioTestCase >> testButWithDataTable [
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraButStep new
 		description: 'these points are not connected';
-		argument: expectedArgument.
+		argument: expectedArgument;
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testGiven [
 
 	| expectedStep |
 	subject given: 'I have credentials to sign in'.
-	expectedStep := HeraGivenStep new description: 'I have credentials to sign in'.
+	expectedStep := HeraGivenStep new
+		description: 'I have credentials to sign in';
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testGivenWithDataTable [
 
 	| expectedStep argument expectedArgument |
@@ -74,7 +82,8 @@ HeraScenarioTestCase >> testGivenWithDataTable [
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } }).
 	expectedStep := HeraGivenStep new
 		description: 'the following coordinates';
-		argument: expectedArgument.
+		argument: expectedArgument;
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
@@ -85,16 +94,18 @@ HeraScenarioTestCase >> testPrintString [
 	self assert: subject printString equals: 'Scenario: Successful sign-in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testThen [
 
 	| expectedStep |
 	subject then: 'I see the home page'.
-	expectedStep := HeraThenStep new description: 'I see the home page'.
+	expectedStep := HeraThenStep new
+		description: 'I see the home page';
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testThenWithDataTable [
 
 	| expectedStep argument expectedArgument |
@@ -103,20 +114,23 @@ HeraScenarioTestCase >> testThenWithDataTable [
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraThenStep new
 		description: 'these points are connected';
-		argument: expectedArgument.
+		argument: expectedArgument;
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testWhen [
 
 	| expectedStep |
 	subject when: 'I enter my credentials'.
-	expectedStep := HeraWhenStep new description: 'I enter my credentials'.
+	expectedStep := HeraWhenStep new
+		description: 'I enter my credentials';
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testWhenWithDataTable [
 
 	| expectedStep argument expectedArgument |
@@ -125,6 +139,7 @@ HeraScenarioTestCase >> testWhenWithDataTable [
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraWhenStep new
 		description: 'drawing a figure with these points';
-		argument: expectedArgument.
+		argument: expectedArgument;
+		scenario: subject.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]

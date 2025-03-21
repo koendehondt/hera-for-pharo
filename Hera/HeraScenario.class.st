@@ -23,7 +23,9 @@ HeraScenario >> accept: visitor [
 HeraScenario >> and: aString [
 
 	| step |
-	step := HeraAndStep new description: aString.
+	step := HeraAndStep new
+		description: aString;
+		scenario: self.
 	steps add: step
 ]
 
@@ -33,7 +35,8 @@ HeraScenario >> and: aString with: aStepArgument [
 	| step |
 	step := HeraAndStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStepArgument;
+		scenario: self.
 	steps add: step
 ]
 
@@ -41,7 +44,9 @@ HeraScenario >> and: aString with: aStepArgument [
 HeraScenario >> but: aString [
 
 	| step |
-	step := HeraButStep new description: aString.
+	step := step := HeraButStep new
+		description: aString;
+		scenario: self.
 	steps add: step
 ]
 
@@ -51,7 +56,8 @@ HeraScenario >> but: aString with: aStepArgument [
 	| step |
 	step := HeraButStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStepArgument;
+		scenario: self.
 	steps add: step
 ]
 
@@ -83,7 +89,9 @@ HeraScenario >> feature: aFeature [
 HeraScenario >> given: aString [
 
 	| step |
-	step := HeraGivenStep new description: aString.
+	step := HeraGivenStep new
+		description: aString;
+		scenario: self.
 	steps add: step
 ]
 
@@ -93,7 +101,8 @@ HeraScenario >> given: aString with: aStepArgument [
 	| step |
 	step := HeraGivenStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStepArgument;
+		scenario: self.
 	steps add: step
 ]
 
@@ -136,7 +145,9 @@ HeraScenario >> tags: anArrayOfSymbols [
 HeraScenario >> then: aString [
 
 	| step |
-	step := HeraThenStep new description: aString.
+	step := HeraThenStep new
+		description: aString;
+		scenario: self.
 	steps add: step
 ]
 
@@ -146,7 +157,8 @@ HeraScenario >> then: aString with: aStepArgument [
 	| step |
 	step := HeraThenStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStepArgument;
+		scenario: self.
 	steps add: step
 ]
 
@@ -166,7 +178,9 @@ HeraScenario >> title: aString [
 HeraScenario >> when: aString [
 
 	| step |
-	step := HeraWhenStep new description: aString.
+	step := HeraWhenStep new
+		description: aString;
+		scenario: self.
 	steps add: step
 ]
 
@@ -176,6 +190,7 @@ HeraScenario >> when: aString with: aStepArgument [
 	| step |
 	step := HeraWhenStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStepArgument;
+		scenario: self.
 	steps add: step
 ]

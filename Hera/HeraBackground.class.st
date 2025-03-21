@@ -20,7 +20,19 @@ HeraBackground >> given: aString [
 
 	| step |
 	step := HeraGivenStep new
-		description: aString.
+		description: aString;
+		scenario: self.
+	steps add: step
+]
+
+{ #category : 'dsl' }
+HeraBackground >> given: aString with: aStepArgument [
+
+	| step |
+	step := HeraGivenStep new
+		description: aString;
+		argument: aStepArgument;
+		scenario: self.
 	steps add: step
 ]
 
