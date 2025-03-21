@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraCodeGenerationAstVisitor',
+	#name : 'HeraFeatureMethodGenerator',
 	#superclass : 'HeraAstVisitor',
 	#instVars : [
 		'stream',
@@ -12,32 +12,32 @@ Class {
 }
 
 { #category : 'private' }
-HeraCodeGenerationAstVisitor >> currentIndentation [
+HeraFeatureMethodGenerator >> currentIndentation [
 
 	^ indentations last
 	
 ]
 
 { #category : 'accessing' }
-HeraCodeGenerationAstVisitor >> generatedCode [
+HeraFeatureMethodGenerator >> generatedCode [
 
 	^ stream contents
 ]
 
 { #category : 'accessing' }
-HeraCodeGenerationAstVisitor >> generatedSelector [
+HeraFeatureMethodGenerator >> generatedSelector [
 
 	^ generatedSelector
 ]
 
 { #category : 'accessing' }
-HeraCodeGenerationAstVisitor >> generatedSelector: aSymbol [
+HeraFeatureMethodGenerator >> generatedSelector: aSymbol [
 
 	generatedSelector := aSymbol
 ]
 
 { #category : 'private' }
-HeraCodeGenerationAstVisitor >> indent: anInteger while: aBlock [
+HeraFeatureMethodGenerator >> indent: anInteger while: aBlock [
 
 	indentations add: anInteger.
 	aBlock value.
@@ -46,7 +46,7 @@ HeraCodeGenerationAstVisitor >> indent: anInteger while: aBlock [
 ]
 
 { #category : 'initialization' }
-HeraCodeGenerationAstVisitor >> initialize [
+HeraFeatureMethodGenerator >> initialize [
 
 	super initialize.
 	indentations := OrderedCollection with: 1.
@@ -55,13 +55,13 @@ HeraCodeGenerationAstVisitor >> initialize [
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitAndAstNode: aGivenAstNode [
+HeraFeatureMethodGenerator >> visitAndAstNode: aGivenAstNode [
 
 	self visitStepAstNode: aGivenAstNode named: 'and'
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitBackgroundAstNode: aBackgroundAstNode [
+HeraFeatureMethodGenerator >> visitBackgroundAstNode: aBackgroundAstNode [
 
 	aBackgroundAstNode steps ifEmpty: [ ^ self ].
 	stream crtab: 3.
@@ -71,13 +71,13 @@ HeraCodeGenerationAstVisitor >> visitBackgroundAstNode: aBackgroundAstNode [
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitButAstNode: aGivenAstNode [
+HeraFeatureMethodGenerator >> visitButAstNode: aGivenAstNode [
 
 	self visitStepAstNode: aGivenAstNode named: 'but'
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitDataTableStepArgumentAstNode: aDataTableStepArgumentAstNode [
+HeraFeatureMethodGenerator >> visitDataTableStepArgumentAstNode: aDataTableStepArgumentAstNode [
 
 	stream nextPutAll: ' with: (self dataTable: {'.
 	aDataTableStepArgumentAstNode dataTable rows
@@ -103,7 +103,7 @@ HeraCodeGenerationAstVisitor >> visitDataTableStepArgumentAstNode: aDataTableSte
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitDescriptionAstNode: aDescriptionAstNode [
+HeraFeatureMethodGenerator >> visitDescriptionAstNode: aDescriptionAstNode [
 
 	stream
 		crtab: self currentIndentation;
@@ -118,7 +118,7 @@ HeraCodeGenerationAstVisitor >> visitDescriptionAstNode: aDescriptionAstNode [
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitDocStringStepArgumentAstNode: aDocStringStepArgumentAstNode [
+HeraFeatureMethodGenerator >> visitDocStringStepArgumentAstNode: aDocStringStepArgumentAstNode [
 
 	stream nextPutAll: ' with: (self docString: {'.
 	aDocStringStepArgumentAstNode docString lines
@@ -133,7 +133,7 @@ HeraCodeGenerationAstVisitor >> visitDocStringStepArgumentAstNode: aDocStringSte
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitFeatureAstNode: aFeatureAstNode [
+HeraFeatureMethodGenerator >> visitFeatureAstNode: aFeatureAstNode [
 
 	stream
 		nextPutAll: self generatedSelector;
@@ -183,13 +183,13 @@ HeraCodeGenerationAstVisitor >> visitFeatureAstNode: aFeatureAstNode [
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitGivenAstNode: aGivenAstNode [
+HeraFeatureMethodGenerator >> visitGivenAstNode: aGivenAstNode [
 
 	self visitStepAstNode: aGivenAstNode named: 'given'
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitScenarioAstNode: aScenarioAstNode [
+HeraFeatureMethodGenerator >> visitScenarioAstNode: aScenarioAstNode [
 
 	stream crtab: 3.
 	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $( ].
@@ -218,7 +218,7 @@ HeraCodeGenerationAstVisitor >> visitScenarioAstNode: aScenarioAstNode [
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitStepAstNode: aStepAstNode named: aString [
+HeraFeatureMethodGenerator >> visitStepAstNode: aStepAstNode named: aString [
 
 	stream
 		crtab: 4;
@@ -232,19 +232,19 @@ HeraCodeGenerationAstVisitor >> visitStepAstNode: aStepAstNode named: aString [
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitTagAstNode: aTagAstNode [
+HeraFeatureMethodGenerator >> visitTagAstNode: aTagAstNode [
 
 	stream nextPut: $#; nextPutAll: aTagAstNode name
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitThenAstNode: aGivenAstNode [
+HeraFeatureMethodGenerator >> visitThenAstNode: aGivenAstNode [
 
 	self visitStepAstNode: aGivenAstNode named: 'then'
 ]
 
 { #category : 'visiting' }
-HeraCodeGenerationAstVisitor >> visitWhenAstNode: aGivenAstNode [
+HeraFeatureMethodGenerator >> visitWhenAstNode: aGivenAstNode [
 
 	self visitStepAstNode: aGivenAstNode named: 'when'
 ]

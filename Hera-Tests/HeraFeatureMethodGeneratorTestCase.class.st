@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraCodeGenerationAstVisitorTestCase',
+	#name : 'HeraFeatureMethodGeneratorTestCase',
 	#superclass : 'HeraTestCase',
 	#category : 'Hera-Tests-AST',
 	#package : 'Hera-Tests',
@@ -7,20 +7,20 @@ Class {
 }
 
 { #category : 'running' }
-HeraCodeGenerationAstVisitorTestCase >> describedClass [
+HeraFeatureMethodGeneratorTestCase >> describedClass [
 
-	^ HeraCodeGenerationAstVisitor
+	^ HeraFeatureMethodGenerator
 ]
 
 { #category : 'running' }
-HeraCodeGenerationAstVisitorTestCase >> initializeSubject [
+HeraFeatureMethodGeneratorTestCase >> initializeSubject [
 
 	super initializeSubject.
 	subject generatedSelector: #feature99
 ]
 
 { #category : 'private' }
-HeraCodeGenerationAstVisitorTestCase >> parse: description [
+HeraFeatureMethodGeneratorTestCase >> parse: description [
 
 	| parser |
 	parser := HeraGherkinParser new.
@@ -29,7 +29,7 @@ HeraCodeGenerationAstVisitorTestCase >> parse: description [
 ]
 
 { #category : 'tests' }
-HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationExcludesEmptyAspects [
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationExcludesEmptyAspects [
 
 	| document ast |
 	document := '
@@ -47,7 +47,7 @@ HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationExcludesEmptyAspects [
 ]
 
 { #category : 'tests' }
-HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfBackground [
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfBackground [
 
 	| document ast |
 	document := '
@@ -88,7 +88,7 @@ HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfBackground [
 ]
 
 { #category : 'tests' }
-HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfDataTable [
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDataTable [
 
 	| document ast |
 	document := '
@@ -149,7 +149,7 @@ HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfDataTable [
 ]
 
 { #category : 'tests' }
-HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfDocString [
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDocString [
 
 	| document ast |
 	document := '
@@ -218,7 +218,7 @@ HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfDocString [
 ]
 
 { #category : 'tests' }
-HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfEmptyFeature [
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfEmptyFeature [
 
 	| document ast |
 	document := 'Feature: Signing in'.
@@ -232,7 +232,7 @@ HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfEmptyFeature [
 ]
 
 { #category : 'tests' }
-HeraCodeGenerationAstVisitorTestCase >> testCodeGenerationOfFullFeature [
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFullFeature [
 
 	| document ast |
 	document := '

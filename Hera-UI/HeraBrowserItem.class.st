@@ -10,7 +10,7 @@ Class {
 HeraBrowserItem >> addFeatureNamed: aString [
 
 	| codeGenerator featureMethodSource targetClass targetSelector generatedMethod protocol |
-	codeGenerator := HeraCodeGenerationAstVisitor new.
+	codeGenerator := HeraFeatureMethodGenerator new.
 	featureMethodSource := codeGenerator
 		visit: (self astForScript: ('Feature: {1}' format: { aString }));
 		generatedCode.

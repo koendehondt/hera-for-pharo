@@ -89,7 +89,7 @@ HeraFeatureMethodItem >> saveSource: aString [
 	ast ifNil: [
 		self flag: 'TODO: show parsing errors'.
 		^ self ].
-	featureMethodSource := HeraCodeGenerationAstVisitor new
+	featureMethodSource := HeraFeatureMethodGenerator new
 		generatedSelector: featureMethod selector;
 		visit: ast;
 		generatedCode.
