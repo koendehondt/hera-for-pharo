@@ -3,7 +3,6 @@ Class {
 	#superclass : 'HeraScriptElement',
 	#instVars : [
 		'scenarios',
-		'details',
 		'description',
 		'tags',
 		'name',
@@ -42,12 +41,6 @@ HeraFeature >> description [
 HeraFeature >> description: anArrayOfStrings [
 
 	description := anArrayOfStrings
-]
-
-{ #category : 'accessing' }
-HeraFeature >> details: aString [
-
-	details := aString
 ]
 
 { #category : 'initialization' }

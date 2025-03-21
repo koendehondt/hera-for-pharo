@@ -10,25 +10,25 @@ Trait {
 	#tag : 'Support'
 }
 
-{ #category : 'test api' }
+{ #category : 'as yet unclassified' }
 HeraWidgetHelperTraitForTesting >> givenButtonLabelArgument [
 
 	^ givenButtonLabelArgument
 ]
 
-{ #category : 'test api' }
+{ #category : 'as yet unclassified' }
 HeraWidgetHelperTraitForTesting >> givenFieldLabelArgument [
 
 	^ givenFieldLabelArgument
 ]
 
-{ #category : 'test api' }
+{ #category : 'as yet unclassified' }
 HeraWidgetHelperTraitForTesting >> seenTheHomePage [
 
 	^ seenTheHomePage
 ]
 
-{ #category : 'steps' }
+{ #category : 'as yet unclassified' }
 HeraWidgetHelperTraitForTesting >> stepIFillInTheFieldLabeled: fieldLabel [
 
 	<heraStepDefinition: #(When match 'I fill in the field labeled {string}')>
@@ -36,7 +36,7 @@ HeraWidgetHelperTraitForTesting >> stepIFillInTheFieldLabeled: fieldLabel [
 	givenFieldLabelArgument := fieldLabel
 ]
 
-{ #category : 'steps' }
+{ #category : 'as yet unclassified' }
 HeraWidgetHelperTraitForTesting >> stepIPressTheButtonLabeled: buttonLabel [
 
 	<heraStepDefinition: #(When regex 'I press the button labeled "([^"]+)"')>
@@ -44,7 +44,7 @@ HeraWidgetHelperTraitForTesting >> stepIPressTheButtonLabeled: buttonLabel [
 	givenButtonLabelArgument := buttonLabel
 ]
 
-{ #category : 'steps' }
+{ #category : 'as yet unclassified' }
 HeraWidgetHelperTraitForTesting >> stepISeeTheHomePage [
 
 	<heraStepDefinition: #(Then 'I see the home page')>

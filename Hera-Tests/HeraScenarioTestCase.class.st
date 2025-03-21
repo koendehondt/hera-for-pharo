@@ -22,11 +22,37 @@ HeraScenarioTestCase >> testAnd [
 ]
 
 { #category : 'tests' }
+HeraScenarioTestCase >> testAndWithDataTable [
+
+	| expectedStep argument expectedArgument |
+	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	subject and: 'these points are connected' with: argument.
+	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	expectedStep := HeraAndStep new
+		description: 'these points are connected';
+		argument: expectedArgument.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests' }
 HeraScenarioTestCase >> testBut [
 
 	| expectedStep |
 	subject but: 'I see no old messages'.
 	expectedStep := HeraButStep new description: 'I see no old messages'.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests' }
+HeraScenarioTestCase >> testButWithDataTable [
+
+	| expectedStep argument expectedArgument |
+	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	subject but: 'these points are not connected' with: argument.
+	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	expectedStep := HeraButStep new
+		description: 'these points are not connected';
+		argument: expectedArgument.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
@@ -43,11 +69,11 @@ HeraScenarioTestCase >> testGiven [
 HeraScenarioTestCase >> testGivenWithDataTable [
 
 	| expectedStep argument expectedArgument |
-	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { 10 . 20 } }).
-	subject given: 'the following users exist' with: argument.
-	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { 10 . 20 } }).
+	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } }).
+	subject given: 'the following coordinates' with: argument.
+	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } }).
 	expectedStep := HeraGivenStep new
-		description: 'the following users exist';
+		description: 'the following coordinates';
 		argument: expectedArgument.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
@@ -69,10 +95,36 @@ HeraScenarioTestCase >> testThen [
 ]
 
 { #category : 'tests' }
+HeraScenarioTestCase >> testThenWithDataTable [
+
+	| expectedStep argument expectedArgument |
+	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	subject then: 'these points are connected' with: argument.
+	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	expectedStep := HeraThenStep new
+		description: 'these points are connected';
+		argument: expectedArgument.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests' }
 HeraScenarioTestCase >> testWhen [
 
 	| expectedStep |
 	subject when: 'I enter my credentials'.
 	expectedStep := HeraWhenStep new description: 'I enter my credentials'.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests' }
+HeraScenarioTestCase >> testWhenWithDataTable [
+
+	| expectedStep argument expectedArgument |
+	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	subject when: 'drawing a figure with these points' with: argument.
+	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	expectedStep := HeraWhenStep new
+		description: 'drawing a figure with these points';
+		argument: expectedArgument.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]

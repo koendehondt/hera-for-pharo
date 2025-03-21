@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraRunnableScriptTestCase',
 	#superclass : 'HeraTestCase',
-	#category : 'Hera-Tests-Running',
+	#category : 'Hera-Tests-Instructions',
 	#package : 'Hera-Tests',
-	#tag : 'Running'
+	#tag : 'Instructions'
 }
 
 { #category : 'running' }

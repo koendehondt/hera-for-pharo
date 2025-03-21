@@ -12,112 +12,66 @@ HeraAcceptanceTestTestCase >> describedClass [
 	^ HeraAcceptanceTest
 ]
 
-{ #category : 'running' }
-HeraAcceptanceTestTestCase >> initializeSubject [
+{ #category : 'tests - dsl' }
+HeraAcceptanceTestTestCase >> testDslBackground [
 
-	subject := HeraAcceptanceTestWithStepArgumentsForTesting selector: #featureSigningInWithEmailAndPassword
+	| background |
+	background := subject background.
+	self assert: (background isMemberOf: HeraBackground).
+	self assert: background steps equals: OrderedCollection new
 ]
 
-{ #category : 'tests' }
-HeraAcceptanceTestTestCase >> testDsl [
+{ #category : 'tests - dsl' }
+HeraAcceptanceTestTestCase >> testDslDataTable [
+
+	| dataTableArgument |
+	dataTableArgument := subject dataTable: { { 'x' . 'y' } . { '10' . '20' } }.
+	self assert: (dataTableArgument isMemberOf: HeraDataTableArgument).
+	self assert: dataTableArgument argumentValue equals: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } })
+]
+
+{ #category : 'tests - dsl' }
+HeraAcceptanceTestTestCase >> testDslDocString [
+
+	| dataTableArgument |
+	dataTableArgument := subject docString: { 'Line 1' . 'Line 2' }.
+	self assert: (dataTableArgument isMemberOf: HeraDocStringArgument).
+	self assert: dataTableArgument argumentValue equals: (HeraDocString new lines: { 'Line 1' . 'Line 2' })
+]
+
+{ #category : 'tests - dsl' }
+HeraAcceptanceTestTestCase >> testDslFeature [
 
 	| feature |
-	feature := subject feature.
+	feature := subject feature: 'Employee management'.
 	self assert: (feature isMemberOf: HeraFeature).
-	self assert: feature scenarios size equals: 1
+	self assert: feature name equals: 'Employee management'.
+	self assert: feature tags equals: #().
+	self assert: feature description equals: #().
+	self assert: feature background isNil.
+	self assert: feature scenarios equals: #()
+]
+
+{ #category : 'tests - dsl' }
+HeraAcceptanceTestTestCase >> testDslScenario [
+
+	| scenario |
+	scenario := subject scenario: 'Increasing salaries'.
+	self assert: (scenario isMemberOf: HeraScenario).
+	self assert: scenario title equals: 'Increasing salaries'.
+	self assert: scenario tags equals: #().
+	self assert: scenario description equals: #().
+	self assert: scenario steps equals: OrderedCollection new
 ]
 
 { #category : 'tests' }
-HeraAcceptanceTestTestCase >> testInstanceCreation [
-
-	self assert: subject featureSelector equals: #featureSigningInWithEmailAndPassword
-]
-
-{ #category : 'tests' }
-HeraAcceptanceTestTestCase >> testMethodForStepDescription [
-
-	self
-		assert: (subject methodForStepDescription: 'I am on the sign-in page')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage.
-	self
-		assert: (subject methodForStepDescription: 'I fill in the field labeled "Email:"')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIFillInTheFieldLabeled:.
-	self
-		assert: (subject methodForStepDescription: 'I fill in the field labeled "Password:"')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIFillInTheFieldLabeled:.
-	self
-		assert: (subject methodForStepDescription: 'I press the button labeled "Sign in"')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIPressTheButtonLabeled:.
-	self
-		assert: (subject methodForStepDescription: 'I see the home page')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepISeeTheHomePage
-]
-
-{ #category : 'tests' }
-HeraAcceptanceTestTestCase >> testRunExactStepDefinition [
-
-	subject runStep: (HeraThenStep new description: 'I see the home page').
-	self assert: subject seenTheHomePage
-]
-
-{ #category : 'tests' }
-HeraAcceptanceTestTestCase >> testRunMatchStepDefinition [
-
-	subject runStep: (HeraThenStep new description: 'I fill in the field labeled "First name:"').
-	self assert: subject givenFieldLabelArgument equals: 'First name:'.
-	subject runStep: (HeraThenStep new description: 'I fill in the field labeled "Last name:"').
-	self assert: subject givenFieldLabelArgument equals: 'Last name:'
-]
-
-{ #category : 'tests' }
-HeraAcceptanceTestTestCase >> testRunRegexStepDefinition [
+HeraAcceptanceTestTestCase >> testFeatureMethods [
 	
-	subject runStep: (HeraThenStep new description: 'I press the button labeled "Save"').
-	self assert: subject givenButtonLabelArgument equals: 'Save'.
-	subject runStep: (HeraThenStep new description: 'I press the button labeled "Cancel"').
-	self assert: subject givenButtonLabelArgument equals: 'Cancel'
+	self assert: subject featureMethods equals: #()
 ]
 
 { #category : 'tests' }
-HeraAcceptanceTestTestCase >> testRunningUnknowStepRaisesException [
-
-	self
-		should: [ subject runStep: (HeraThenStep new description: 'I see the landing page') ]
-		raise: HeraStepDefinitionNotFoundError
-]
-
-{ #category : 'tests' }
-HeraAcceptanceTestTestCase >> testStepMethodsForAcceptanceTestWithTrait [
-
-	| classWithTrait sortedStepMethods |
-	classWithTrait := HeraAcceptanceTestWithTraitForTesting.
-	self deny: (classWithTrait >> #stepIAmOnTheSignInPage) isFromTrait.
-	self assert: (classWithTrait >> #stepIFillInTheFieldLabeled:) isFromTrait.
-	self assert: (classWithTrait >> #stepIPressTheButtonLabeled:) isFromTrait.
-	self assert: (classWithTrait >> #stepISeeTheHomePage) isFromTrait.
-	sortedStepMethods := classWithTrait stepMethods
-		sorted: [ :some :other | some selector <= other selector ].
-	self
-		assert: sortedStepMethods
-		equals: {
-			classWithTrait >> #stepIAmOnTheSignInPage .
-			classWithTrait >> #stepIFillInTheFieldLabeled: .
-			classWithTrait >> #stepIPressTheButtonLabeled: .
-			classWithTrait >> #stepISeeTheHomePage }
-]
-
-{ #category : 'tests' }
-HeraAcceptanceTestTestCase >> testStepMethodsForAcceptanceTestWithoutTraits [
-
-	| classWithoutTraits sortedStepMethods |
-	classWithoutTraits := HeraAcceptanceTestWithStepArgumentsForTesting.
-	sortedStepMethods := classWithoutTraits stepMethods
-		sorted: [ :some :other | some selector <= other selector ].
-	self
-		assert: sortedStepMethods
-		equals: {
-			classWithoutTraits >> #stepIAmOnTheSignInPage .
-			classWithoutTraits >> #stepIFillInTheFieldLabeled: .
-			classWithoutTraits >> #stepIPressTheButtonLabeled: .
-			classWithoutTraits >> #stepISeeTheHomePage }
+HeraAcceptanceTestTestCase >> testStepMethods [
+	
+	self assert: self describedClass stepMethods equals: { HeraAcceptanceTest >> #stepDebug }
 ]
