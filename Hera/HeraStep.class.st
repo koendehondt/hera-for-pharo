@@ -16,8 +16,7 @@ HeraStep >> = other [
 
 	^ self class = other class
 		and: [ self description = other description
-		and: [ self argument = other argument
-		and: [ self scenario = other scenario ] ] ]
+		and: [ self argument = other argument ] ]
 ]
 
 { #category : 'accessing' }
