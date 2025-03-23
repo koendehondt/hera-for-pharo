@@ -108,7 +108,7 @@ HeraFeatureBrowser >> connectPresenters [
 				text: (selection selectedItem ifNil: [ '' ] ifNotNil: [ :item | item richScript]);
 				selectionInterval: (0 to: 0) ].
 	self installClassesAndFeaturesContextMenu.
-	scriptEditor whenSubmitDo: [ :source | self updateSelectedFeature: source ].
+	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
 	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
 ]
 
@@ -226,6 +226,14 @@ HeraFeatureBrowser >> initializePresenters [
 	stepEditor := self instantiate: HeraStepEditor
 ]
 
+{ #category : 'initialization' }
+HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
+
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter whenOpenedDo: [
+		scriptEditor setupAfterOpening ]
+]
+
 { #category : 'private - menus' }
 HeraFeatureBrowser >> installClassesAndFeaturesContextMenu [
 
@@ -334,9 +342,9 @@ HeraFeatureBrowser >> updateClassesAndFeaturesAfterAddingFeatureMethod: featureM
 ]
 
 { #category : 'private' }
-HeraFeatureBrowser >> updateSelectedFeature: aString [
+HeraFeatureBrowser >> updateSelectedFeature: aFeatureAstNode [
 
-	self selectedMethodItem saveSource: aString
+	self selectedMethodItem saveSource: aFeatureAstNode
 ]
 
 { #category : 'private' }

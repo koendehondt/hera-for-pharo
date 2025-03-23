@@ -19,8 +19,9 @@ HeraGherkinParser >> dataValuesFrom: aDataTableToken [
 
 	| concatenatedValues |
 	concatenatedValues := aDataTableToken text.
-	concatenatedValues last = $| ifFalse: [ self parseError: 'Data table row not closed with |.' ].
-	^ ($| split: concatenatedValues allButLast) collect: [ :each | each trimBoth ] as: Array
+	concatenatedValues last = $| ifTrue: [
+		^ ($| split: concatenatedValues allButLast) collect: [ :each | each trimBoth ] as: Array ].
+	self parseError: 'Data table row not closed with |' from: aDataTableToken end to: aDataTableToken end
 ]
 
 { #category : 'initialization' }
@@ -28,7 +29,7 @@ HeraGherkinParser >> initializeParserWith: aTextOrString [
 
 	source := aTextOrString asString.
 	scanner := HeraGherkinScanner on: (ReadStream on: source).
-	currentToken := HeraEndOfLineToken new
+	currentToken := HeraEndOfLineToken new start: 1
 ]
 
 { #category : 'parsing' }
@@ -47,10 +48,12 @@ HeraGherkinParser >> parseBackground [
 	start := currentToken start.
 	end := currentToken end.
 	self nextToken.
-	currentToken isEndOfLineToken ifFalse: [ self parseError: 'Text after Background: is not allowed.' ].
+	currentToken isEndOfLineToken ifFalse: [
+		self parseError: 'Text after background keyword is not allowed' from: start to: end ].
 	self nextToken.
 	steps := self parseStepsRestricted: [ :stepToken |
-		stepToken isAllowedInBackground ifFalse: [ self parseError: 'This step is not allowed in Background:.' ] ].
+		stepToken isAllowedInBackground ifFalse: [
+			self parseError: 'This step is not allowed in a background' from: stepToken start to: stepToken end ] ].
 	^ HeraBackgroundAstNode new
 		steps: steps;
 		start: start;
@@ -74,8 +77,10 @@ HeraGherkinParser >> parseDataTableStepArgument [
 		self nextToken. "Read end of line"
 		skippedEmptyLines := skippedEmptyLines or: [ self skipEmptyLines ] ].
 	rows ifEmpty: [ ^ nil ].
-	skippedEmptyLines ifTrue: [ self parseError: 'Empty lines in data tables are not allowed.' ].
-	rowSizes size > 1 ifTrue: [ self parseError: 'Data table has missing cells.' ].
+	skippedEmptyLines ifTrue: [
+		self parseError: 'Empty lines in data tables are not allowed' from: start to: end ].
+	rowSizes size > 1 ifTrue: [
+		self parseError: 'Data table has missing cells' from: start to: end ].
 	^ HeraDataTableStepArgumentAstNode new
 		dataTable: (HeraDataTable new data: rows asArray);
 		start: start;
@@ -113,7 +118,7 @@ HeraGherkinParser >> parseDocStringStepArgument [
 
 	| unindentedLines docStringToken |
 	docStringToken := currentToken.
-	unindentedLines := self removeIndentation: docStringToken indentation from: docStringToken lines.
+	unindentedLines := self removeIndentation: docStringToken.
 	self skipEmptyLines.
 	^ HeraDocStringStepArgumentAstNode new
 		docString: (HeraDocString new lines: unindentedLines asArray);
@@ -121,30 +126,34 @@ HeraGherkinParser >> parseDocStringStepArgument [
 		end: docStringToken end
 ]
 
-{ #category : 'parsing' }
+{ #category : 'accessing' }
 HeraGherkinParser >> parseError [
 
 	^ parseError
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseError: aString [
+HeraGherkinParser >> parseError: aString from: sourceStartIndex to: sourceEndIndex [
 
-	parseError := aString.
-	HeraGherkinParsingError signal: aString
+	parseError := HeraGherkinParsingError new
+		start: sourceStartIndex;
+		end: sourceEndIndex.
+	parseError signal: aString
 ]
 
 { #category : 'parsing' }
 HeraGherkinParser >> parseFeature [
 
-	| name featureNode tags start description scenarios nameToken background |
+	| name featureNode tags description scenarios nameToken background featureToken |
 	[
 		self skipEmptyLines.
 		tags := self parseTags.
-		currentToken isFeatureToken ifFalse: [ self parseError: '"Feature:" expected.' ].
-		start := currentToken start.
+		currentToken isFeatureToken ifFalse: [
+			self parseError: 'Feature keyword expected' from: currentToken start to: currentToken end ].
+		featureToken := currentToken.
 		nameToken := self nextToken.
-		nameToken isTextToken ifFalse: [ self parseError: 'Feature name expected.' ].
+		nameToken isTextToken ifFalse: [
+			self parseError: 'Feature name expected after feature keyword' from: featureToken start to: featureToken end ].
 		name := nameToken text.
 		self nextToken.
 		description := nil.
@@ -152,7 +161,8 @@ HeraGherkinParser >> parseFeature [
 		currentToken isEndOfFileToken ifFalse: [ description := self parseDescription ].
 		currentToken isEndOfFileToken ifFalse: [ background := self parseBackground ].
 		currentToken isEndOfFileToken ifFalse: [ scenarios := self parseScenarios ].
-		currentToken isEndOfFileToken ifFalse: [ self parseError: '"Scenario:" expected.' ].
+		currentToken isEndOfFileToken ifFalse: [
+			self parseError: 'Scenario keyword expected' from: currentToken start to: currentToken end ].
 		featureNode := HeraFeatureAstNode new.
 		featureNode
 			name: name;
@@ -160,7 +170,7 @@ HeraGherkinParser >> parseFeature [
 			description: description;
 			background: background;
 			scenarios: scenarios;
-			start: start;
+			start: featureToken start;
 			end: scanner position.
 	] on: HeraGherkinParsingError do: [ ^ nil ].
 	^ featureNode
@@ -169,12 +179,13 @@ HeraGherkinParser >> parseFeature [
 { #category : 'parsing' }
 HeraGherkinParser >> parseScenario [
 
-	| scenarioNode tags description steps titleToken start |
+	| scenarioNode tags description steps titleToken scenarioToken |
 	"scenarioToken or tagToken has already been read."
 	tags := self parseTags.
-	start := currentToken start.
+	scenarioToken := currentToken.
 	titleToken := self nextToken.
-	titleToken isTextToken ifFalse: [ self parseError: 'Scenario title expected.' ].
+	titleToken isTextToken ifFalse: [
+		self parseError: 'Scenario title expected after scenario keyword' from: scenarioToken start to: scenarioToken end ].
 	self skipEndOfLineToken.
 	description := nil.
 	steps := OrderedCollection new.
@@ -187,7 +198,7 @@ HeraGherkinParser >> parseScenario [
 		title: titleToken text;
 		description: description;
 		steps: steps;
-		start: start;
+		start: scenarioToken start;
 		end: scanner position.
 	^ scenarioNode
 ]
@@ -206,17 +217,17 @@ HeraGherkinParser >> parseScenarios [
 HeraGherkinParser >> parseStep [
 
 	"The step token has already been read."
-	| stepNode token start description end |
+	| stepNode description stepToken |
 	stepNode := currentToken stepAstNodeClass new.
-	start := currentToken start.
-	token := self nextToken.
-	token isTextToken ifFalse: [ self parseError: 'Step description expected.' ].
-	description := token text.
-	end := token end.
+	stepToken := currentToken.
+	self nextToken.
+	currentToken isTextToken ifFalse: [
+		self parseError: 'Step description expected after step keyword' from: stepToken start to: stepToken end ].
+	description := currentToken text.
 	stepNode
 		description: description;
-		start: start;
-		end: end.
+		start: stepToken start;
+		end: currentToken end.
 	self skipEndOfLineToken.
 	scanner skipWhiteSpace.
 	self nextToken.
@@ -247,7 +258,7 @@ HeraGherkinParser >> parseStepsRestricted: aBlock [
 		stepNodes add: stepNode.
 		currentToken isEndOfLineToken ifTrue: [ self skipEmptyLines ] ].
 	(currentToken isEndOfFileToken or: [ currentToken isScenarioToken ])
-		ifFalse: [ self parseError: 'Step, step argument, or scenario expected.' ].
+		ifFalse: [ self parseError: 'Step, step argument, or scenario expected' from: currentToken start to: currentToken end ].
 	^ stepNodes
 ]
 
@@ -267,18 +278,23 @@ HeraGherkinParser >> parseTags [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> removeIndentation: indentation from: lines [
+HeraGherkinParser >> removeIndentation: docStringToken [
 
-	| tabs unindentedLines |
+	| tabs unindentedLines indentation lines |
+	indentation := docStringToken indentation.
+	lines := docStringToken lines.
 	tabs := String new: indentation withAll: Character tab.
 	unindentedLines := OrderedCollection new.
-	lines first ifNotEmpty: [ self parseError: 'Text after """ is not allowed.' ].
-	(scanner lineDoesNotStartWithThreeDoubleQuotes: lines last) ifTrue: [ self parseError: 'Doc string is not closed with """.' ].
+	lines first ifNotEmpty: [
+		self parseError: 'Text after """ is not allowed' from: docStringToken start + 3 to: docStringToken start + 2 + lines first size ].
+	(scanner lineDoesNotStartWithThreeDoubleQuotes: lines last) ifTrue: [
+		self parseError: 'Doc string is not closed with """' from: docStringToken start to: docStringToken end ].
 	lines allButFirstDo: [ :eachLine |
-		(eachLine copyFrom: 1 to: indentation) = tabs
-			ifFalse: [ self parseError: 'Inconsistent indentation of doc string.' ].
+		(eachLine copyFrom: 1 to: indentation) = tabs ifFalse: [
+			self parseError: 'Inconsistent indentation of doc string' from: docStringToken start to: docStringToken end ].
 		unindentedLines add: (eachLine copyFrom: indentation + 1 to: eachLine size) ].
-	unindentedLines last size > 3 ifTrue: [ self parseError: 'Text after """ is not allowed.' ].
+	unindentedLines last size > 3 ifTrue: [
+			self parseError: 'Text after """ is not allowed' from: docStringToken end - unindentedLines last size + 4 to: docStringToken end ].
 	unindentedLines removeLast.
 	^ unindentedLines
 ]
@@ -303,5 +319,5 @@ HeraGherkinParser >> skipEndOfLineToken [
 	currentToken isEndOfFileToken ifTrue: [ ^ self ].
 	currentToken isEndOfLineToken ifTrue: [ ^ self ].
 	self flag: 'This is an internal errror. It should not bubble up to the user of the receiver.'.
-	self parseError: 'End of line expected.'
+	self parseError: 'End of line expected' from: currentToken start to: currentToken end
 ]

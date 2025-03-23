@@ -82,13 +82,9 @@ HeraFeatureMethodItem >> richScript [
 ]
 
 { #category : 'actions' }
-HeraFeatureMethodItem >> saveSource: aString [
+HeraFeatureMethodItem >> saveSource: ast [
 
-	| featureMethodSource ast |
-	ast := self astForScript: aString.
-	ast ifNil: [
-		self flag: 'TODO: show parsing errors'.
-		^ self ].
+	| featureMethodSource  |
 	featureMethodSource := HeraFeatureMethodGenerator new
 		generatedSelector: featureMethod selector;
 		visit: ast;

@@ -1,6 +1,9 @@
 Class {
 	#name : 'HeraToken',
 	#superclass : 'Object',
+	#instVars : [
+		'start'
+	],
 	#category : 'Hera-Gherkin parser',
 	#package : 'Hera',
 	#tag : 'Gherkin parser'
@@ -10,6 +13,12 @@ Class {
 HeraToken >> = anotherToken [
 
 	^ anotherToken isMemberOf: self class
+]
+
+{ #category : 'accessing' }
+HeraToken >> end [
+
+	self subclassResponsibility
 ]
 
 { #category : 'testing' }
@@ -76,4 +85,16 @@ HeraToken >> isTagToken [
 HeraToken >> isTextToken [
 
 	^ false
+]
+
+{ #category : 'accessing' }
+HeraToken >> start [
+
+	^ start
+]
+
+{ #category : 'accessing' }
+HeraToken >> start: anObject [
+
+	start := anObject
 ]

@@ -60,12 +60,15 @@ HeraGherkinScanner >> scanToken [
 	alreadyReadToken ifNotNil: [
 		alreadyReadToken isEndOfLineToken ifTrue: [ self startLine ].
 		^ alreadyReadToken ].
-	stream atEnd ifTrue: [ ^ HeraEndOfFileToken new ].
+	stream atEnd ifTrue: [
+		^ HeraEndOfFileToken new start: stream position ].
 	self skipWhiteSpace.
 	start := stream position + 1.
 	(self tryScanToken: '@') ifTrue: [ | line tagText |
 		line := stream nextLine.
-		line ifNil: [ tagText := '' ] ifNotNil: [ nextToken := HeraEndOfLineToken new ].
+		line
+			ifNil: [ tagText := '' ]
+			ifNotNil: [ nextToken := HeraEndOfLineToken new start: stream position ].
 		tagText := line ifNil: [ '' ] ifNotNil: [ line trimRight ].
 		^ HeraTagToken new text: tagText trimRight; start: start; end: start + tagText size ].
 	self tryScanToken: HeraFeatureToken ifFound: [ :token | ^ token ].
@@ -77,18 +80,18 @@ HeraGherkinScanner >> scanToken [
 	self tryScanToken: HeraAndToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraButToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraDataTableToken ifFound: [ :token |
-		start := stream position + 1.
+		start := stream position.
 		^ stream nextLine
 			ifNil: [ token ]
 			ifNotNil: [ :line | | trimmedLine |
 				trimmedLine := line trimRight.
 				trimmedLine isEmpty ifTrue: [
 					self startLine.
-					^ HeraEndOfLineToken new ].
+					^ HeraEndOfLineToken new start: stream position ].
 				nextToken := stream atEnd
-					ifTrue: [ HeraEndOfFileToken new ]
-					ifFalse: [ HeraEndOfLineToken new ].
-				token text: trimmedLine; start: start; end: start + trimmedLine size - 1 ] ].
+					ifTrue: [ HeraEndOfFileToken new start: stream position + 1 ]
+					ifFalse: [ HeraEndOfLineToken new start: stream position ].
+				token text: trimmedLine; start: start; end: start + trimmedLine size ] ].
 	self tryScanToken: HeraDocStringToken ifFound: [ :token |
 		token indentation: token start - indexOfCurrentLine.
 		self scanDocStringLinesFor: token.
@@ -99,12 +102,12 @@ HeraGherkinScanner >> scanToken [
 		trimmedLine := line trimRight.
 		trimmedLine isEmpty ifTrue: [
 			self startLine.
-			^ HeraEndOfLineToken new ].
+			^ HeraEndOfLineToken new start: stream position ].
 		nextToken := stream atEnd
-			ifTrue: [ HeraEndOfFileToken new ]
-			ifFalse: [ HeraEndOfLineToken new ].
+			ifTrue: [ HeraEndOfFileToken new start: stream position + 1 ]
+			ifFalse: [ HeraEndOfLineToken new start: stream position ].
 		^ HeraTextToken new text: trimmedLine; start: start; end: start + trimmedLine size - 1 ].
-	^ HeraEndOfFileToken new
+	^ HeraEndOfFileToken new start: stream position + 1
 ]
 
 { #category : 'scanning' }

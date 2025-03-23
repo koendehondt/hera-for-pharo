@@ -6,6 +6,17 @@ Class {
 	#tag : 'Gherkin parser'
 }
 
+{ #category : 'tests - parsing errors' }
+HeraGherkinParserTestCase >> assertError: aString start: startInteger end: endInteger whenParsing: script [
+
+	| error |
+	self assert: (self parseFeature: script) isNil.
+	error := subject parseError.
+	self assert: error messageText equals: aString.
+	self assert: error start equals: startInteger.
+	self assert: error end equals: endInteger
+]
+
 { #category : 'running' }
 HeraGherkinParserTestCase >> describedClass [
 
@@ -48,33 +59,51 @@ HeraGherkinParserTestCase >> testAstContainsTextPositions [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseBackgroundWithNonGivenStep [
+HeraGherkinParserTestCase >> testParseBackgroundWithText [
 
-	| script |
-	script := '
-	Feature: Signing in
+	self
+		assertError: 'Text after background keyword is not allowed'
+		start: 30
+		end: 40
+		whenParsing: '
+			Feature: Signing in
 
-		Background:
-			When I have credentials to sign in
+				Background: credentials
+					Given I have credentials to sign in
 
-		Scenario: Successful sign-in'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'This step is not allowed in Background:.'
+				Scenario: Successful sign-in'
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseBackgroundWithText [
+HeraGherkinParserTestCase >> testParseBackgroundWithThenStep [
 
-	| script |
-	script := '
-	Feature: Signing in
+	self
+		assertError: 'This step is not allowed in a background'
+		start: 47
+		end: 50
+		whenParsing: '
+			Feature: Signing in
 
-		Background: credentials
-			Given I have credentials to sign in
+				Background:
+					Then I have credentials to sign in
 
-		Scenario: Successful sign-in'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Text after Background: is not allowed.'
+				Scenario: Successful sign-in'
+]
+
+{ #category : 'tests - parsing errors' }
+HeraGherkinParserTestCase >> testParseBackgroundWithWhenStep [
+
+	self
+		assertError: 'This step is not allowed in a background'
+		start: 47
+		end: 50
+		whenParsing: '
+			Feature: Signing in
+
+				Background:
+					When I have credentials to sign in
+
+				Scenario: Successful sign-in'
 ]
 
 { #category : 'tests' }
@@ -171,52 +200,55 @@ HeraGherkinParserTestCase >> testParseDataTable [
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDataTableWithEmptyLine [
 
-	| script |
-	script := '
-	Feature: User management
+	self
+		assertError: 'Empty lines in data tables are not allowed'
+		start: 103
+		end: 164
+		whenParsing: '
+			Feature: User management
 
-		Scenario: Listing users
-			Given the following users exist:
-				| Name | Email            |
+				Scenario: Listing users
+					Given the following users exist:
+						| Name | Email            |
 
-				| Jane | jane@testing.org |
-			Then I see them in the list of users'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Empty lines in data tables are not allowed.'
+						| Jane | jane@testing.org |
+					Then I see them in the list of users'
 ]
 
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDataTableWithMissingCell [
 
-	| script |
-	script := '
-	Feature: User management
+	self
+		assertError: 'Data table has missing cells'
+		start: 103
+		end: 178
+		whenParsing: '
+			Feature: User management
 
-		Scenario: Listing users
-			Given the following users exist:
-				| Name | Email            |
-				| John |
-				| Jane | jane@testing.org |
-			Then I see them in the list of users'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Data table has missing cells.'
+				Scenario: Listing users
+					Given the following users exist:
+						| Name | Email            |
+						| John |
+						| Jane | jane@testing.org |
+					Then I see them in the list of users'
 ]
 
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDataTableWithMissingTerminatingBar [
 
-	| script |
-	script := '
-	Feature: User management
+	self
+		assertError: 'Data table row not closed with |'
+		start: 116
+		end: 116
+		whenParsing: '
+			Feature: User management
 
-		Scenario: Listing users
-			Given the following users exist:
-				| Name | Email
-				| John | john@testing.org |
-				| Jane | jane@testing.org |
-			Then I see them in the list of users'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Data table row not closed with |.'
+				Scenario: Listing users
+					Given the following users exist:
+						| Name | Email
+						| John | john@testing.org |
+						| Jane | jane@testing.org |
+					Then I see them in the list of users'
 ]
 
 { #category : 'tests' }
@@ -360,37 +392,39 @@ HeraGherkinParserTestCase >> testParseDocString [
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDocStringWithLessIndentationIsNotAllowed [
 
-	| script |
-	script := '
-	Feature: REST API for users
+	self
+		assertError: 'Inconsistent indentation of doc string'
+		start: 164
+		end: 204
+		whenParsing: '
+			Feature: REST API for users
 
-		Scenario: GET users
-			When the API receives a GET request https://testing.org/users
-			Then the API responds with:
-				"""
-			<users>
-				</users>
-				"""'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Inconsistent indentation of doc string.'
+				Scenario: GET users
+					When the API receives a GET request https://testing.org/users
+					Then the API responds with:
+						"""
+					<users>
+						</users>
+						"""'
 ]
 
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDocStringWithMissingClosingTripleQuotes [
 
-	| script |
-	script := '
-	Feature: REST API for users
+	self
+		assertError: 'Doc string is not closed with """'
+		start: 164
+		end: 202
+		whenParsing: '
+			Feature: REST API for users
 
-		Scenario: GET users
-			When the API receives a GET request https://testing.org/users
-			Then the API responds with:
-				"""
-				<users>
-				</users>
-				'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Doc string is not closed with """.'
+				Scenario: GET users
+					When the API receives a GET request https://testing.org/users
+					Then the API responds with:
+						"""
+						<users>
+						</users>
+						'
 ]
 
 { #category : 'tests' }
@@ -425,52 +459,55 @@ HeraGherkinParserTestCase >> testParseDocStringWithMoreIndentationIsAllowed [
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDocStringWithTextAfterClosingTripleQuotes [
 
-	| script |
-	script := '
-	Feature: REST API for users
+	self
+		assertError: 'Text after """ is not allowed'
+		start: 206
+		end: 215
+		whenParsing: '
+			Feature: REST API for users
 
-		Scenario: GET users
-			When the API receives a GET request https://testing.org/users
-			Then the API responds with:
-				"""
-				<users>
-				</users>
-				""" something'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Text after """ is not allowed.'
+				Scenario: GET users
+					When the API receives a GET request https://testing.org/users
+					Then the API responds with:
+						"""
+						<users>
+						</users>
+						""" something'
 ]
 
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDocStringWithTextAfterOpeningTripleQuotes [
 
-	| script |
-	script := '
-	Feature: REST API for users
+	self
+		assertError: 'Text after """ is not allowed'
+		start: 167
+		end: 173
+		whenParsing: '
+			Feature: REST API for users
 
-		Scenario: GET users
-			When the API receives a GET request https://testing.org/users
-			Then the API responds with:
-				"""<users>
-				</users>
-				"""'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Text after """ is not allowed.'
+				Scenario: GET users
+					When the API receives a GET request https://testing.org/users
+					Then the API responds with:
+						"""<users>
+						</users>
+						"""'
 ]
 
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseDocStringWithTextBeforeOpeningTripleQuotes [
 
-	| script |
-	script := '
-	Feature: REST API for users
+	self
+		assertError: 'Step, step argument, or scenario expected'
+		start: 164
+		end: 176
+		whenParsing: '
+			Feature: REST API for users
 
-		Scenario: GET users
-			When the API receives a GET request https://testing.org/users
-			Then the API responds with:
-				something """
-				"""'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Step, step argument, or scenario expected.'
+				Scenario: GET users
+					When the API receives a GET request https://testing.org/users
+					Then the API responds with:
+						something """
+						"""'
 ]
 
 { #category : 'tests' }
@@ -527,16 +564,17 @@ HeraGherkinParserTestCase >> testParseFeatureWithEmptyScenario [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseFeatureWithStepButNoScenario [
 
-	| script |
-	script := '
-	Feature: Signing in
+	self
+		assertError: 'Scenario keyword expected'
+		start: 30
+		end: 34
+		whenParsing: '
+			Feature: Signing in
 
-		Given I have credentials to sign in'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: '"Scenario:" expected.'
+				Given I have credentials to sign in'
 ]
 
 { #category : 'tests' }
@@ -592,22 +630,24 @@ HeraGherkinParserTestCase >> testParseFeatureWithTwoEmptyScenarios [
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseFeatureWithoutFeatureKeyword [
 
-	| script |
-	script := 'Scenario: Successful sign-in'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: '"Feature:" expected.'
+	self
+		assertError: 'Feature keyword expected'
+		start: 1
+		end: 9
+		whenParsing: 'Scenario: Successful sign-in'
 ]
 
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseFeatureWithoutName [
 
-	| script |
-	script := '
-	Feature:
+	self
+		assertError: 'Feature name expected after feature keyword'
+		start: 5
+		end: 12
+		whenParsing: '
+			Feature:
 
-		Scenario: Successful sign-in'.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Feature name expected.'
+				Scenario: Successful sign-in'
 ]
 
 { #category : 'tests' }
@@ -743,11 +783,12 @@ HeraGherkinParserTestCase >> testParseScenarioWithoutTags [
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseScenarioWithoutTitle [
 
-	| script |
-	script := '
-	Feature: Signing in
+	self
+		assertError: 'Scenario title expected after scenario keyword'
+		start: 30
+		end: 38
+		whenParsing: '
+			Feature: Signing in
 
-		Scenario: '.
-	self assert: (self parseFeature: script) isNil.
-	self assert: subject parseError equals: 'Scenario title expected.'
+				Scenario:  '
 ]

@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraEndOfLineToken',
-	#superclass : 'HeraToken',
+	#superclass : 'HeraEndToken',
 	#category : 'Hera-Gherkin parser',
 	#package : 'Hera',
 	#tag : 'Gherkin parser'

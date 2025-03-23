@@ -51,7 +51,7 @@ HeraGherkinScannerTestCase >> testScanDataTableToken [
 HeraGherkinScannerTestCase >> testScanEndOfFileToken [
 
 	subject on: '' readStream.
-	self assert: subject scanToken equals: HeraEndOfFileToken new
+	self assert: subject scanToken equals: (HeraEndOfFileToken new start: 0)
 ]
 
 { #category : 'tests - scanning lines' }
@@ -87,52 +87,52 @@ HeraGherkinScannerTestCase >> testScanFullFeature [
 			And I press the button to sign in
 			Then I see the home page'.
 	subject on: description readStream.
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 1).
 
 	token := subject scanToken.
 	self assert: token equals: (HeraTagToken new start: 3; end: 23).
 	self assert: token text equals: 'accessing_the_system'.
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 24).
 	self assert: subject scanToken equals: (HeraFeatureToken new start: 26; end: 33).
 	token := subject scanToken.
 	self assert: token equals: (HeraTextToken new start: 35; end: 44).
 	self assert: token text equals: 'Signing in'.
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 45).
 
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 46).
 
 	self assert: subject scanToken equals: (HeraScenarioToken new start: 49; end: 57).
 	token := subject scanToken.
 	self assert: token equals: (HeraTextToken new start: 59; end: 76).
 	self assert: token text equals: 'Successful sign-in'.
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 77).
 
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 81).
 
 	self assert: subject scanToken equals: (HeraGivenToken new start: 85; end: 89).
 	token := subject scanToken.
 	self assert: token equals: (HeraTextToken new start: 91; end: 119).
 	self assert: token text equals: 'I have credentials to sign in'.
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 120).
 
 	self assert: subject scanToken equals: (HeraWhenToken new start: 124; end: 127).
 	token := subject scanToken.
 	self assert: token equals: (HeraTextToken new start: 129; end: 150).
 	self assert: token text equals: 'I enter my credentials'.
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 151).
 
 	self assert: subject scanToken equals: (HeraAndToken new start: 155; end: 157).
 	token := subject scanToken.
 	self assert: token equals: (HeraTextToken new start: 159; end: 187).
 	self assert: token text equals: 'I press the button to sign in'.
-	self assert: subject scanToken equals: HeraEndOfLineToken new.
+	self assert: subject scanToken equals: (HeraEndOfLineToken new start: 188).
 
 	self assert: subject scanToken equals: (HeraThenToken new start: 192; end: 195).
 	token := subject scanToken.
 	self assert: token equals: (HeraTextToken new start: 197; end: 215).
 	self assert: token text equals: 'I see the home page'.
 
-	self assert: subject scanToken equals: HeraEndOfFileToken new
+	self assert: subject scanToken equals: (HeraEndOfFileToken new start: 216)
 ]
 
 { #category : 'tests - scanning tokens' }

@@ -5,7 +5,8 @@ Class {
 		'script',
 		'submitBlock',
 		'ast',
-		'openStepBlock'
+		'openStepBlock',
+		'parser'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -26,9 +27,9 @@ HeraScriptEditor >> altKeyClick: event [
 ]
 
 { #category : 'private' }
-HeraScriptEditor >> astForSource: aString [
+HeraScriptEditor >> astForScript: aString [
 
-	^ HeraGherkinParser new
+	^ self parser
 		initializeParserWith: aString;
 		parseFeature
 ]
@@ -36,7 +37,7 @@ HeraScriptEditor >> astForSource: aString [
 { #category : 'private' }
 HeraScriptEditor >> buildAst: source [
 
-	ast := self astForSource: source
+	ast := self astForScript: source
 ]
 
 { #category : 'initialization' }
@@ -60,7 +61,15 @@ HeraScriptEditor >> initializePresenters [
 
 	script := self newText
 		addStyle: 'featureText';
-		yourself
+		yourself.
+	script withAdapterDo: [ :textAdapter |
+		textAdapter widget withLineNumbers ]
+]
+
+{ #category : 'private' }
+HeraScriptEditor >> parser [
+
+	^ parser ifNil: [ parser := HeraGherkinParser new ]
 ]
 
 { #category : 'api' }
@@ -69,11 +78,38 @@ HeraScriptEditor >> selectionInterval: anInterval [
 	script selectionInterval: anInterval
 ]
 
+{ #category : 'initialization' }
+HeraScriptEditor >> setupAfterOpening [
+
+	script withAdapterDo: [ :textAdapter |
+		textAdapter widget
+			withTextSegmentIcons;
+			withLineNumbers ]
+]
+
+{ #category : 'private' }
+HeraScriptEditor >> showParseError [
+
+	| decorator error |
+	error := parser parseError.
+	decorator := SpTextPresenterDecorator new.
+	"decorator highlightColor: Color red."
+	decorator underlineColor: Color red.
+	decorator title: error messageText.
+	decorator icon: (self iconNamed: #halt).
+	decorator iconBlock: [ :seg| seg].
+	decorator interval: (error start to: error end + 1).
+	script
+		removeAllTextSegmentDecorations;
+		addTextSegmentDecoration: decorator
+]
+
 { #category : 'private' }
 HeraScriptEditor >> submit: source [
 
-	submitBlock value: source.
-	self buildAst: source
+	(self astForScript: source)
+		ifNil: [ self showParseError ]
+		ifNotNil: [ :featureAstNode | submitBlock value: featureAstNode ]
 ]
 
 { #category : 'api' }
