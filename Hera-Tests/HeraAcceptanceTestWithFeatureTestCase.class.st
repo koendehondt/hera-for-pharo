@@ -95,11 +95,14 @@ HeraAcceptanceTestWithFeatureTestCase >> testRunningUnknowStepRaisesException [
 { #category : 'tests' }
 HeraAcceptanceTestWithFeatureTestCase >> testStepMethods [
 	
-	self assert: subject class stepMethods equals: {
+	| sortedStepMethods |
+	sortedStepMethods := subject class stepMethods
+		sorted: [ :some :other | some selector <= other selector ].
+	self assert: sortedStepMethods equals: {
 		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage .
 		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIFillInTheFieldLabeled: .
-		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepISeeTheHomePage .
-		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIPressTheButtonLabeled: }
+		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIPressTheButtonLabeled: .
+		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepISeeTheHomePage }
 ]
 
 { #category : 'tests' }
