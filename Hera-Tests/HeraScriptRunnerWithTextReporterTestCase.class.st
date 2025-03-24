@@ -133,49 +133,6 @@ Total: 2. Passed: 0. Failed: 0. Error: 2.
 ]
 
 { #category : 'expected output' }
-HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithTagsAndDescriptionsForResultBrowser [
-
-	| text |
-	text := Text fromString: '@accessing_the_system
-@signing_in
-Feature: Signing in
-
-	Signing in is required to have access to the application.
-
-	Signing in requires credentials: an email address and a password.
-
-	@sign_in
-	Scenario: Successful sign-in
-
-		Access is allowed when the credentials are recognized.
-
-		Given I have credentials to sign in
-		When I enter my credentials
-		And I press the button to sign in
-			ERROR Button not found
-
-	Scenario: Unsuccessful sign-in
-		Given I have credentials to sign in
-		When I enter the wrong credentials
-		And I press the button to sign in
-			ERROR Button not found
-
-Total: 2. Passed: 0. Failed: 0. Error: 2.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 390 to: 394;
-		addAttribute: TextAction new from: 390 to: 394;
-		addAttribute: (TextColor new color: Color red) from: 390 to: 394;
-		addAttribute: TextEmphasis bold from: 415 to: 423;
-		addAttribute: TextEmphasis bold from: 560 to: 564;
-		addAttribute: TextAction new from: 560 to: 564;
-		addAttribute: (TextColor new color: Color red) from: 560 to: 564.
-	^ text
-]
-
-{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedFailedDebugReportWithTagsAndDescriptions [
 
 	| text |
@@ -245,47 +202,6 @@ Total: 2. Passed: 1. Failed: 1. Error: 0.
 		addAttribute: TextEmphasis bold from: 195 to: 203;
 		addAttribute: TextEmphasis bold from: 416 to: 424;
 		addAttribute: TextEmphasis bold from: 599 to: 604;
-		addAttribute: (TextColor new color: Color orange) from: 599 to: 604.
-	^ text
-]
-
-{ #category : 'expected output' }
-HeraScriptRunnerWithTextReporterTestCase >> expectedFailedRunReportWithTagsAndDescriptionsForResultBrowser [
-
-	| text |
-	text := Text fromString: '@accessing_the_system
-@signing_in
-Feature: Signing in
-
-	Signing in is required to have access to the application.
-
-	Signing in requires credentials: an email address and a password.
-
-	@sign_in
-	Scenario: Successful sign-in
-
-		Access is allowed when the credentials are recognized.
-
-		Given I have credentials to sign in
-		When I enter my credentials
-		And I press the button to sign in
-		Then I see the home page
-
-	Scenario: Unsuccessful sign-in
-		Given I have credentials to sign in
-		When I enter the wrong credentials
-		And I press the button to sign in
-		Then I am still on the sign-in page
-			FAILED The current page is not the sign-in page.
-
-Total: 2. Passed: 1. Failed: 1. Error: 0.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 416 to: 424;
-		addAttribute: TextEmphasis bold from: 599 to: 604;
-		addAttribute: TextAction new from: 599 to: 604;
 		addAttribute: (TextColor new color: Color orange) from: 599 to: 604.
 	^ text
 ]
