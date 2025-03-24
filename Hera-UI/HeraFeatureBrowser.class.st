@@ -112,6 +112,17 @@ HeraFeatureBrowser >> connectPresenters [
 	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
 ]
 
+{ #category : 'private' }
+HeraFeatureBrowser >> createNewStepMethodFor: aStepAstNode [
+
+	| methodSelector message |
+	message := 'The step "{1}" has no definition yet. If you want to create it, please enter a method selector.' format: { aStepAstNode description }.
+	methodSelector := [ self request: message initialAnswer: (self suggestedStepMethodSelectorFor: aStepAstNode) title: 'No step definition' ]
+		on: SpCancelledInteractionError
+		do: [ ^ self ].
+	self inform: 'Not implemented yet'
+]
+
 { #category : 'actions' }
 HeraFeatureBrowser >> debug [
 
@@ -318,6 +329,15 @@ HeraFeatureBrowser >> stepByStep [
 ]
 
 { #category : 'private' }
+HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
+
+	| colonOrNothing |
+	self flag: 'Take step arguments into account'.
+	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
+	^ 'step{1}{2}' format: { aStepAstNode description asCamelCase . colonOrNothing }
+]
+
+{ #category : 'private' }
 HeraFeatureBrowser >> updateClassesAndFeatures [
 
 	classesAndFeatures
@@ -350,7 +370,10 @@ HeraFeatureBrowser >> updateSelectedFeature: aFeatureAstNode [
 { #category : 'private' }
 HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 
-	stepEditor methodItem: (HeraStepMethodItem new stepMethod: (self methodFor: aStepAstNode))
+	(self methodFor: aStepAstNode)
+		ifNil: [ self createNewStepMethodFor: aStepAstNode ]
+		ifNotNil: [ :stepMethod |
+			stepEditor methodItem: (HeraStepMethodItem new stepMethod: stepMethod) ]
 ]
 
 { #category : 'accessing' }

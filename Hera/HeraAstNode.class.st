@@ -34,6 +34,12 @@ HeraAstNode >> isLocatedAtTextPosition: anInteger [
 	^ anInteger between: start and: end
 ]
 
+{ #category : 'testing' }
+HeraAstNode >> isStepNode [
+
+	^ false
+]
+
 { #category : 'accessing' }
 HeraAstNode >> start [
 

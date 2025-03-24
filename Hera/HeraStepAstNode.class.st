@@ -33,3 +33,9 @@ HeraStepAstNode >> description: aString [
 
 	description := aString
 ]
+
+{ #category : 'testing' }
+HeraStepAstNode >> isStepNode [
+
+	^ true
+]

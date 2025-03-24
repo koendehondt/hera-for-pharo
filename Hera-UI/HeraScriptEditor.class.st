@@ -22,7 +22,7 @@ HeraScriptEditor >> altKeyClick: event [
 	astNode := HeraAstTextBasedSearchVisitor new
 		textPosition: caretPosition;
 		visit: ast.
-	astNode ifNil: [ ^ self ].
+	(astNode isNil or: [ astNode isStepNode not ]) ifTrue: [ ^ self ].
 	openStepBlock value: astNode
 ]
 
