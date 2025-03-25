@@ -40,7 +40,7 @@ HeraAcceptanceTestWithHelperForTesting >> givenFieldLabelArgument [
 { #category : 'initialization' }
 HeraAcceptanceTestWithHelperForTesting >> registerHelpers [
 
-	fieldHelper := HeraHelperWithPassForTesting new.
+	fieldHelper := HeraHelperForTesting new.
 	self registerHelper: fieldHelper
 ]
 
