@@ -57,6 +57,12 @@ HeraFeatureMethodItem >> hash [
 	^ featureMethod hash
 ]
 
+{ #category : 'testing' }
+HeraFeatureMethodItem >> isRunnable [
+
+	^ true
+]
+
 { #category : 'accessing' }
 HeraFeatureMethodItem >> nameInBrowser [
 

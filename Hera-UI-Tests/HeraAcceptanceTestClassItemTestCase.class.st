@@ -42,3 +42,9 @@ HeraAcceptanceTestClassItemTestCase >> testIsNotEqualToInstanceOfOtherClass [
 
 	self deny: subject equals: Object new
 ]
+
+{ #category : 'tests' }
+HeraAcceptanceTestClassItemTestCase >> testIsRunnable [
+
+	self deny: subject isRunnable
+]

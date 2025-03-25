@@ -37,6 +37,12 @@ HeraBrowserItem >> browse [
 	self subclassResponsibility
 ]
 
+{ #category : 'testing' }
+HeraBrowserItem >> isRunnable [
+
+	^ false
+]
+
 { #category : 'accessing' }
 HeraBrowserItem >> nameInBrowser [
 

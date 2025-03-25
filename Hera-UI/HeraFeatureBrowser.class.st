@@ -103,10 +103,7 @@ HeraFeatureBrowser >> connectPresenters [
 		children: [ :item | item subitems ];
 		display: [ :item | item nameInBrowser ];
 		expandAll;
-		whenSelectionChangedDo: [ :selection |
-			scriptEditor
-				text: (selection selectedItem ifNil: [ '' ] ifNotNil: [ :item | item richScript]);
-				selectionInterval: (0 to: 0) ].
+		whenSelectionChangedDo: [ :selection | self featureSelectionChanged ].
 	self installClassesAndFeaturesContextMenu.
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
 	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
@@ -139,11 +136,11 @@ HeraFeatureBrowser >> defaultLayout [
 
 	| featureEditorAndButton buttonBar leftPanes |
 	buttonBar := SpBoxLayout newLeftToRight
-		hAlignEnd;
+		hAlignCenter;
 		spacing: 10;
+		add: runButton expand: false;
 		add: stepByStepButton expand: false;
 		add: debugButton expand: false;
-		add: runButton expand: false;
 		yourself.
 	featureEditorAndButton := SpBoxLayout newTopToBottom
 		spacing: 5;
@@ -168,6 +165,15 @@ HeraFeatureBrowser >> displayedTreeItems [
 	items := classesAndFeatures roots collect: [ :each |
 		each nameInBrowser -> ((classesAndFeatures childrenFor: each) collect: #nameInBrowser) ].
 	^ items asArray
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> featureSelectionChanged [
+
+	scriptEditor
+		text: (classesAndFeatures selectedItem ifNil: [ '' ] ifNotNil: [ :item | item richScript]);
+		selectionInterval: (0 to: 0).
+	self updateButtons
 ]
 
 { #category : 'test api' }
@@ -242,7 +248,8 @@ HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter whenOpenedDo: [
-		scriptEditor setupAfterOpening ]
+		scriptEditor setupAfterOpening.
+		self updateButtons ]
 ]
 
 { #category : 'private - menus' }
@@ -336,6 +343,16 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
 	suggestion := aStepAstNode description asCamelCase select: [ :char | char isLetter or: [ char isDigit or: [ char = $_ ] ] ].
 	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> updateButtons [
+
+	| enabled |
+	enabled := classesAndFeatures selectedItem ifNil: [ false ] ifNotNil: [ :browserItem | browserItem isRunnable ].
+	runButton enabled: enabled.
+	stepByStepButton enabled: enabled.
+	debugButton enabled: enabled
 ]
 
 { #category : 'private' }

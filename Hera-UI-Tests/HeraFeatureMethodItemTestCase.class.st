@@ -44,3 +44,9 @@ HeraFeatureMethodItemTestCase >> testIsNotEqualToMethodItemWithAnotherCompiledMe
 	anotherMethodItem := self describedClass new featureMethod: HeraAcceptanceTestWithFailureForTesting>>#signingInFeature.
 	self deny: subject equals: anotherMethodItem
 ]
+
+{ #category : 'tests' }
+HeraFeatureMethodItemTestCase >> testIsRunnable [
+
+	self assert: subject isRunnable
+]
