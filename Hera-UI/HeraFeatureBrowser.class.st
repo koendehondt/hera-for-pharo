@@ -173,7 +173,7 @@ HeraFeatureBrowser >> featureSelectionChanged [
 	scriptEditor
 		text: (classesAndFeatures selectedItem ifNil: [ '' ] ifNotNil: [ :item | item richScript]);
 		selectionInterval: (0 to: 0).
-	self updateButtons
+	self updateAfterSelectionChange
 ]
 
 { #category : 'test api' }
@@ -249,7 +249,7 @@ HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter whenOpenedDo: [
 		scriptEditor setupAfterOpening.
-		self updateButtons ]
+		self updateAfterSelectionChange ]
 ]
 
 { #category : 'private - menus' }
@@ -346,13 +346,14 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 ]
 
 { #category : 'private' }
-HeraFeatureBrowser >> updateButtons [
+HeraFeatureBrowser >> updateAfterSelectionChange [
 
 	| enabled |
 	enabled := classesAndFeatures selectedItem ifNil: [ false ] ifNotNil: [ :browserItem | browserItem isRunnable ].
 	runButton enabled: enabled.
 	stepByStepButton enabled: enabled.
-	debugButton enabled: enabled
+	debugButton enabled: enabled.
+	scriptEditor enabled: enabled
 ]
 
 { #category : 'private' }
