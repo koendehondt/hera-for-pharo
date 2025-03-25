@@ -37,7 +37,7 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyFeatureErrorRunReport [
 	text := Text fromString: 'Feature: Empty for testing
 	ERROR There are no scenarios.
 
-Total: 1. Passed: 0. Failed: 0. Error: 1.
+Total: 0. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;

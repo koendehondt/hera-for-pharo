@@ -86,7 +86,8 @@ HeraRunnerReporter >> reportPassedStep: aStep [
 { #category : 'reporting' }
 HeraRunnerReporter >> reportResult: result [
 
-	self report: [ super reportResult: result ]
+	self report: [ super reportResult: result ].
+	runner finish
 ]
 
 { #category : 'reporting' }

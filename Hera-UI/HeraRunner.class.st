@@ -82,6 +82,12 @@ HeraRunner >> defaultLayout [
 		yourself
 ]
 
+{ #category : 'actions' }
+HeraRunner >> finish [
+
+	self updateButtons
+]
+
 { #category : 'testing' }
 HeraRunner >> hasRunAllScenarios [
 
@@ -134,12 +140,6 @@ HeraRunner >> report: aText [
 	output
 		text: newText;
 		selectionInterval: (afterText to: afterText)
-]
-
-{ #category : 'reporting' }
-HeraRunner >> reportStartOfFeatures: features withFilter: filter [
-
-	"Do nothing."
 ]
 
 { #category : 'running' }
