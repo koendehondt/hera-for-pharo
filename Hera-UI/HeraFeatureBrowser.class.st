@@ -331,10 +331,11 @@ HeraFeatureBrowser >> stepByStep [
 { #category : 'private' }
 HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 
-	| colonOrNothing |
+	| colonOrNothing suggestion |
 	self flag: 'Take step arguments into account'.
 	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
-	^ 'step{1}{2}' format: { aStepAstNode description asCamelCase . colonOrNothing }
+	suggestion := aStepAstNode description asCamelCase select: [ :char | char isLetter or: [ char isDigit or: [ char = $_ ] ] ].
+	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
 ]
 
 { #category : 'private' }
