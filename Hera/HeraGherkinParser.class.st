@@ -2,10 +2,8 @@ Class {
 	#name : 'HeraGherkinParser',
 	#superclass : 'Object',
 	#instVars : [
-		'source',
 		'scanner',
 		'currentToken',
-		'nextToken',
 		'previousToken',
 		'parseError'
 	],
@@ -27,8 +25,7 @@ HeraGherkinParser >> dataValuesFrom: aDataTableToken [
 { #category : 'initialization' }
 HeraGherkinParser >> initializeParserWith: aTextOrString [
 
-	source := aTextOrString asString.
-	scanner := HeraGherkinScanner on: (ReadStream on: source).
+	scanner := HeraGherkinScanner on: (ReadStream on: aTextOrString asString).
 	currentToken := HeraEndOfLineToken new start: 1
 ]
 
