@@ -6,9 +6,9 @@ Class {
 		'nextToken',
 		'indexOfCurrentLine'
 	],
-	#category : 'Hera-Gherkin parser',
+	#category : 'Hera-Parser',
 	#package : 'Hera',
-	#tag : 'Gherkin parser'
+	#tag : 'Parser'
 }
 
 { #category : 'instance creation' }

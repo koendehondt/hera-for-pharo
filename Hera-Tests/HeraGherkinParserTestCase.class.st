@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraGherkinParserTestCase',
 	#superclass : 'HeraTestCase',
-	#category : 'Hera-Tests-Gherkin parser',
+	#category : 'Hera-Tests-Parser',
 	#package : 'Hera-Tests',
-	#tag : 'Gherkin parser'
+	#tag : 'Parser'
 }
 
 { #category : 'tests - parsing errors' }
