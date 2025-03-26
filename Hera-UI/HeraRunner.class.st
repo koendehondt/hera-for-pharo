@@ -8,7 +8,8 @@ Class {
 		'continueButton',
 		'stepOverButton',
 		'resultSummary',
-		'stepOverScenarioButton'
+		'stepOverScenarioButton',
+		'restartButton'
 	],
 	#category : 'Hera-UI-Runner',
 	#package : 'Hera-UI',
@@ -74,6 +75,7 @@ HeraRunner >> defaultLayout [
 		add: stepOverButton width: 40;
 		add: self newLabel width: 40;
 		add: resultSummary;
+		add: restartButton expand: false;
 		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;
@@ -118,9 +120,15 @@ HeraRunner >> initializePresenters [
 		action: [ self stepOver ];
 		help: 'Step';
 		yourself.
+	restartButton := self newButton
+		label: 'Restart';
+		action: [ self restart ];
+		help: 'Restart from the beginning';
+		yourself.
 	resultSummary := HeraRunnerResultSummary on: HeraResult new.
 	output := self newText
 		text: Text new;
+		editable: false;
 		addStyle: 'featureText';
 		yourself
 ]
@@ -132,14 +140,24 @@ HeraRunner >> isRunningScenario [
 ]
 
 { #category : 'accessing' }
-HeraRunner >> report: aText [
+HeraRunner >> report: arg1 [
 
-	| newText afterText |
-	newText := output text append: aText.
-	afterText := newText size + 1.
-	output
-		text: newText;
-		selectionInterval: (afterText to: afterText)
+	output text: (output text append: arg1).
+	self scrollToEndOfOutput
+]
+
+{ #category : 'actions' }
+HeraRunner >> restart [
+
+	self clear.
+	self restartAcceptanceTest: lastRunAcceptanceTest
+]
+
+{ #category : 'running' }
+HeraRunner >> restartAcceptanceTest: anAcceptanceTest [
+
+	self stepAcceptanceTest: anAcceptanceTest.
+	scriptRunner beForDebugging
 ]
 
 { #category : 'running' }
@@ -171,6 +189,14 @@ HeraRunner >> scriptRunnerFor: anAcceptanceTest [
 		prepareForRunning
 ]
 
+{ #category : 'private' }
+HeraRunner >> scrollToEndOfOutput [
+
+	| atEnd |
+	atEnd := output text size + 1.
+	output selectionInterval: (atEnd to: atEnd)
+]
+
 { #category : 'running' }
 HeraRunner >> stepAcceptanceTest: anAcceptanceTest [
 
@@ -197,10 +223,10 @@ HeraRunner >> stepOverScenario [
 { #category : 'private' }
 HeraRunner >> updateButtons [
 
-	| isNotFinished |
-	isNotFinished := self hasRunAllScenarios not.
-	continueButton enabled: isNotFinished.
-	stepOverButton enabled: isNotFinished.
+	| isFinished |
+	isFinished := self hasRunAllScenarios.
+	continueButton enabled: isFinished not.
+	stepOverButton enabled: isFinished not.
 	stepOverScenarioButton enabled: self isRunningScenario
 ]
 

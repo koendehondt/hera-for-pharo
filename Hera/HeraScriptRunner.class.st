@@ -39,6 +39,12 @@ HeraScriptRunner >> basicRunStep: aStep [
 	reporter reportPassedStep: aStep
 ]
 
+{ #category : 'accessing' }
+HeraScriptRunner >> beForDebugging [
+
+	isDebugging := true
+]
+
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> beforeScenarioHook [
 
@@ -56,7 +62,7 @@ HeraScriptRunner >> continue [
 { #category : 'running' }
 HeraScriptRunner >> debug [
 
-	isDebugging := true.
+	self beForDebugging.
 	^ self run
 ]
 

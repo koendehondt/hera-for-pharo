@@ -79,7 +79,8 @@ HeraRunnerResultSummary >> model: aDomainObject [
 
 	self model removeDependent: self.
 	super model: aDomainObject.
-	self model addDependent: self
+	self model addDependent: self.
+	self modelChanged
 ]
 
 { #category : 'initialization' }
