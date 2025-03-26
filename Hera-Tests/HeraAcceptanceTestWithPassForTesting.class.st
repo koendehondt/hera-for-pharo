@@ -1,36 +1,15 @@
 Class {
 	#name : 'HeraAcceptanceTestWithPassForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
-	#classInstVars : [
-		'showInBrowser'
-	],
 	#category : 'Hera-Tests-Support',
 	#package : 'Hera-Tests',
 	#tag : 'Support'
 }
 
-{ #category : 'class initialization' }
-HeraAcceptanceTestWithPassForTesting class >> initialize [
-
-	self showInBrowser: false
-]
-
 { #category : 'accessing' }
 HeraAcceptanceTestWithPassForTesting class >> nameInBrowser [
 
 	^ 'Example with pass and unimplemented step'
-]
-
-{ #category : 'testing' }
-HeraAcceptanceTestWithPassForTesting class >> showInBrowser [
-
-	^ showInBrowser
-]
-
-{ #category : 'accessing' }
-HeraAcceptanceTestWithPassForTesting class >> showInBrowser: aBoolean [
-
-	showInBrowser := aBoolean
 ]
 
 { #category : 'features' }

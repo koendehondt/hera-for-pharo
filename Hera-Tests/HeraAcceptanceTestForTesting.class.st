@@ -5,9 +5,3 @@ Class {
 	#package : 'Hera-Tests',
 	#tag : 'Support'
 }
-
-{ #category : 'testing' }
-HeraAcceptanceTestForTesting class >> showInBrowser [
-
-	^ true
-]

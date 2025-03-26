@@ -7,7 +7,8 @@ Class {
 		'scriptEditor',
 		'stepEditor',
 		'debugButton',
-		'stepByStepButton'
+		'stepByStepButton',
+		'analytics'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -24,7 +25,7 @@ HeraFeatureBrowser class >> defaultPreferredExtent [
 HeraFeatureBrowser >> acceptanceTestClassItems [
 
 	| items |
-	items :=  HeraAnalytics new allForBrowsing collect: [ :each |
+	items := self analytics allForBrowsing collect: [ :each |
 		HeraAcceptanceTestClassItem new acceptanceTestClass: each ].
 	items sort: [ :some :other | some nameInBrowser < other nameInBrowser ].
 	^ items
@@ -67,6 +68,18 @@ HeraFeatureBrowser >> addFeature [
 	self updateClassesAndFeaturesAfterAddingFeatureMethod: featureMethod
 ]
 
+{ #category : 'initialization' }
+HeraFeatureBrowser >> analytics [
+
+	^ analytics ifNil: [ analytics := HeraAnalytics default ]
+]
+
+{ #category : 'initialization' }
+HeraFeatureBrowser >> analytics: anAnalytics [
+
+	analytics := anAnalytics
+]
+
 { #category : 'actions' }
 HeraFeatureBrowser >> browseSelectionInClassesAndFeatures [
 
@@ -99,10 +112,8 @@ HeraFeatureBrowser >> configureRemoveAction: action withHelp: helpString [
 HeraFeatureBrowser >> connectPresenters [
 
 	classesAndFeatures
-		roots: self acceptanceTestClassItems;
 		children: [ :item | item subitems ];
 		display: [ :item | item nameInBrowser ];
-		expandAll;
 		whenSelectionChangedDo: [ :selection | self featureSelectionChanged ].
 	self installClassesAndFeaturesContextMenu.
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
@@ -248,6 +259,9 @@ HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter whenOpenedDo: [
+		classesAndFeatures
+			roots: self acceptanceTestClassItems;
+			expandAll.
 		scriptEditor setupAfterOpening.
 		self updateAfterSelectionChange ]
 ]

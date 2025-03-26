@@ -32,14 +32,6 @@ HeraAcceptanceTest class >> selector: aFeatureSelectorSymbol [
 	^ self new featureSelector: aFeatureSelectorSymbol
 ]
 
-{ #category : 'testing' }
-HeraAcceptanceTest class >> showInBrowser [
-	"Override in subclasses if those subclasses should not be considered
-	 when collecting features and steps in browsers."
-
-	^ true
-]
-
 { #category : 'accessing' }
 HeraAcceptanceTest class >> stepMethods [
 	"Answer all compiled methods that represent step definitions,

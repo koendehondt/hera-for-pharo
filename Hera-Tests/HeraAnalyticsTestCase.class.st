@@ -13,6 +13,31 @@ HeraAnalyticsTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
+HeraAnalyticsTestCase >> testAllForBrowsingDefaultsToEmptyArray [
+
+	subject := self describedClass default.
+	self assert: subject allForBrowsing equals: #()
+]
+
+{ #category : 'tests' }
+HeraAnalyticsTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
+
+	subject := self describedClass default.
+	subject includeHierarchy: HeraAcceptanceTestForTesting.
+	self assert: subject allForBrowsing equals: {
+		HeraAcceptanceTestExamplesForTesting .
+		HeraAcceptanceTestWithErrorForTesting .
+		HeraAcceptanceTestWithFailureForTesting .
+		HeraAcceptanceTestWithHelperForTesting .
+		HeraAcceptanceTestWithHooksForTesting .
+		HeraAcceptanceTestWithPassForTesting .
+		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
+		HeraAcceptanceTestWithStepArgumentsForTesting .
+		HeraAcceptanceTestWithTraitForTesting
+	 }
+]
+
+{ #category : 'tests' }
 HeraAnalyticsTestCase >> testHighestFeatureNumber [
 
 	"Based on the existing acceptance test classes in the Hera distribution."

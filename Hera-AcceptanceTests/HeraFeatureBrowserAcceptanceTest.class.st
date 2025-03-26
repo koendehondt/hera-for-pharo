@@ -1,23 +1,13 @@
 Class {
 	#name : 'HeraFeatureBrowserAcceptanceTest',
-	#superclass : 'HeraAcceptanceTest',
+	#superclass : 'HeraSelfAcceptanceTest',
 	#instVars : [
 		'featureBrowser',
-		'oldShowThisClassInBrowser',
-		'oldShowAcceptanceTestClassInBrowser'
-	],
-	#classInstVars : [
-		'showInBrowser'
+		'analytics'
 	],
 	#category : 'Hera-AcceptanceTests',
 	#package : 'Hera-AcceptanceTests'
 }
-
-{ #category : 'testing' }
-HeraFeatureBrowserAcceptanceTest class >> initialize [
-
-	self showInBrowser: false
-]
 
 { #category : 'accessing' }
 HeraFeatureBrowserAcceptanceTest class >> nameInBrowser [
@@ -25,32 +15,10 @@ HeraFeatureBrowserAcceptanceTest class >> nameInBrowser [
 	^ 'Hera Feature Browser'
 ]
 
-{ #category : 'testing' }
-HeraFeatureBrowserAcceptanceTest class >> showInBrowser [
-
-	^ showInBrowser
-]
-
-{ #category : 'accessing' }
-HeraFeatureBrowserAcceptanceTest class >> showInBrowser: aBoolean [
-
-	showInBrowser := aBoolean
-]
-
-{ #category : 'running' }
+{ #category : 'hooks' }
 HeraFeatureBrowserAcceptanceTest >> afterScenario [
 
-	featureBrowser ifNotNil: [ featureBrowser window close ].
-	self class showInBrowser: oldShowThisClassInBrowser.
-	HeraAcceptanceTestWithPassForTesting showInBrowser: oldShowAcceptanceTestClassInBrowser
-]
-
-{ #category : 'running' }
-HeraFeatureBrowserAcceptanceTest >> beforeScenario [
-
-	oldShowThisClassInBrowser := self class showInBrowser.
-	self class showInBrowser: false.
-	oldShowAcceptanceTestClassInBrowser := HeraAcceptanceTestWithPassForTesting showInBrowser
+	featureBrowser ifNotNil: [ featureBrowser window close ]
 ]
 
 { #category : 'features' }
@@ -84,6 +52,7 @@ HeraFeatureBrowserAcceptanceTest >> stepIOpenTheFeatureBrowser [
 	<heraStepDefinition: #(When 'I open the Feature Browser')>
 
 	featureBrowser := HeraFeatureBrowser new.
+	featureBrowser analytics: analytics.
 	featureBrowser open
 ]
 
@@ -178,7 +147,7 @@ HeraFeatureBrowserAcceptanceTest >> stepNoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'no features exist')>
 
-	"Do nothing."
+	analytics := HeraAnalytics default
 ]
 
 { #category : 'steps' }
@@ -186,5 +155,6 @@ HeraFeatureBrowserAcceptanceTest >> stepTwoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'two features exist')>
 
-	HeraAcceptanceTestWithPassForTesting showInBrowser: true
+	analytics := HeraAnalytics default
+		includeClass: HeraAcceptanceTestWithPassForTesting
 ]

@@ -1,36 +1,15 @@
 Class {
 	#name : 'HeraAcceptanceTestWithFailureForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
-	#classInstVars : [
-		'showInBrowser'
-	],
 	#category : 'Hera-Tests-Support',
 	#package : 'Hera-Tests',
 	#tag : 'Support'
 }
 
-{ #category : 'class initialization' }
-HeraAcceptanceTestWithFailureForTesting class >> initialize [
-
-	self showInBrowser: false
-]
-
 { #category : 'accessing' }
 HeraAcceptanceTestWithFailureForTesting class >> nameInBrowser [
 
 	^ 'Example with failure'
-]
-
-{ #category : 'testing' }
-HeraAcceptanceTestWithFailureForTesting class >> showInBrowser [
-
-	^ showInBrowser
-]
-
-{ #category : 'accessing' }
-HeraAcceptanceTestWithFailureForTesting class >> showInBrowser: aBoolean [
-
-	showInBrowser := aBoolean
 ]
 
 { #category : 'features' }
