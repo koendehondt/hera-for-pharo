@@ -62,7 +62,7 @@ HeraScriptRunner >> continue [
 { #category : 'running' }
 HeraScriptRunner >> debug [
 
-	self beForDebugging.
+	self isDebugging: true.
 	^ self run
 ]
 
@@ -135,6 +135,18 @@ HeraScriptRunner >> initialize [
 	scenarioCount := 0.
 	self filter: HeraNoFilter new.
 	self reporter: HeraNoReporter new
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> isDebugging [
+
+	^ isDebugging
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> isDebugging: aBoolean [
+
+	isDebugging := aBoolean
 ]
 
 { #category : 'testing' }

@@ -156,8 +156,10 @@ HeraRunner >> restart [
 { #category : 'running' }
 HeraRunner >> restartAcceptanceTest: anAcceptanceTest [
 
+	| wasDebugging |
+	wasDebugging := scriptRunner isDebugging.
 	self stepAcceptanceTest: anAcceptanceTest.
-	scriptRunner beForDebugging
+	scriptRunner isDebugging: wasDebugging
 ]
 
 { #category : 'running' }
