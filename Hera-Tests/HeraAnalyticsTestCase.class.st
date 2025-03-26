@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraAnalyticsTestCase',
 	#superclass : 'HeraTestCase',
-	#category : 'Hera-Tests-Analytics',
+	#category : 'Hera-Tests-Core',
 	#package : 'Hera-Tests',
-	#tag : 'Analytics'
+	#tag : 'Core'
 }
 
 { #category : 'running' }

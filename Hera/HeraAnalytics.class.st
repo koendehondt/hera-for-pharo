@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraAnalytics',
 	#superclass : 'Object',
-	#category : 'Hera-Analytics',
+	#category : 'Hera-Core',
 	#package : 'Hera',
-	#tag : 'Analytics'
+	#tag : 'Core'
 }
 
 { #category : 'accessing' }
