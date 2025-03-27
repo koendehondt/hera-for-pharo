@@ -90,12 +90,13 @@ HeraFeatureMethodItem >> richScript [
 { #category : 'actions' }
 HeraFeatureMethodItem >> saveSource: ast [
 
-	| featureMethodSource  |
+	| featureMethodSource  selector |
 	featureMethodSource := HeraFeatureMethodGenerator new
 		generatedSelector: featureMethod selector;
 		visit: ast;
 		generatedCode.
-	featureMethod methodClass compile: featureMethodSource
+	selector := featureMethod methodClass compile: featureMethodSource.
+	featureMethod := featureMethod methodClass compiledMethodAt: selector
 ]
 
 { #category : 'accessing' }
