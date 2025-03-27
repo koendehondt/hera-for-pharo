@@ -4,14 +4,14 @@ I define expectation methods. Use me if you prefer expectation syntax over asser
 The trait user has to implement #signalFailure:.
 "
 Trait {
-	#name : 'THeraExpectationTrait',
+	#name : 'HeraExpectationTrait',
 	#category : 'Hera-Core',
 	#package : 'Hera',
 	#tag : 'Core'
 }
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expect: aBoolean [
+HeraExpectationTrait >> expect: aBoolean [
 
 	<debuggerCompleteToSender>
 
@@ -19,7 +19,7 @@ THeraExpectationTrait >> expect: aBoolean [
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expect: aBoolean description: aStringOrBlock [
+HeraExpectationTrait >> expect: aBoolean description: aStringOrBlock [
 
 	<debuggerCompleteToSender>
 
@@ -28,7 +28,7 @@ THeraExpectationTrait >> expect: aBoolean description: aStringOrBlock [
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expect: actualObject toBe: expectedObject [
+HeraExpectationTrait >> expect: actualObject toBe: expectedObject [
 
 	<debuggerCompleteToSender>
 
@@ -38,7 +38,7 @@ THeraExpectationTrait >> expect: actualObject toBe: expectedObject [
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expect: actualObject toEqual: expectedObject [
+HeraExpectationTrait >> expect: actualObject toEqual: expectedObject [
 
 	<debuggerCompleteToSender>
 
@@ -48,7 +48,7 @@ THeraExpectationTrait >> expect: actualObject toEqual: expectedObject [
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expectCollection: actualCollection toEqual: expectedCollection [
+HeraExpectationTrait >> expectCollection: actualCollection toEqual: expectedCollection [
 
 	<debuggerCompleteToSender>
 
@@ -58,7 +58,7 @@ THeraExpectationTrait >> expectCollection: actualCollection toEqual: expectedCol
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expectCollection: actualCollection toHaveSameElementsAs: expectedCollection [
+HeraExpectationTrait >> expectCollection: actualCollection toHaveSameElementsAs: expectedCollection [
 
 	<debuggerCompleteToSender>
 	
@@ -74,7 +74,7 @@ THeraExpectationTrait >> expectCollection: actualCollection toHaveSameElementsAs
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expectCollection: actualCollection toIncludeAll: subcollection [
+HeraExpectationTrait >> expectCollection: actualCollection toIncludeAll: subcollection [
 
 	<debuggerCompleteToSender>
 
@@ -84,7 +84,7 @@ THeraExpectationTrait >> expectCollection: actualCollection toIncludeAll: subcol
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expectCollection: actualCollection toIncludeAny: subcollection [
+HeraExpectationTrait >> expectCollection: actualCollection toIncludeAny: subcollection [
 
 	<debuggerCompleteToSender>
 
@@ -94,7 +94,7 @@ THeraExpectationTrait >> expectCollection: actualCollection toIncludeAny: subcol
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expectToBeEmpty: aCollection [
+HeraExpectationTrait >> expectToBeEmpty: aCollection [
 
 	<debuggerCompleteToSender>
 
@@ -104,7 +104,7 @@ THeraExpectationTrait >> expectToBeEmpty: aCollection [
 ]
 
 { #category : 'expecting' }
-THeraExpectationTrait >> expectToBeNil: actualObject [
+HeraExpectationTrait >> expectToBeNil: actualObject [
 
 	<debuggerCompleteToSender>
 

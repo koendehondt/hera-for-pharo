@@ -1,8 +1,8 @@
 Class {
 	#name : 'HeraAcceptanceTest',
 	#superclass : 'Object',
-	#traits : 'HeraAssertionTrait + THeraExpectationTrait',
-	#classTraits : 'HeraAssertionTrait classTrait + THeraExpectationTrait classTrait',
+	#traits : 'HeraAssertionTrait + HeraExpectationTrait',
+	#classTraits : 'HeraAssertionTrait classTrait + HeraExpectationTrait classTrait',
 	#instVars : [
 		'featureSelector',
 		'exactStepDefinitions',
