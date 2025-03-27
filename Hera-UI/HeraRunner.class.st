@@ -187,8 +187,7 @@ HeraRunner >> scriptRunnerFor: anAcceptanceTest [
 
 	^ HeraScriptRunner new
 		acceptanceTest: anAcceptanceTest;
-		reporter: (HeraRunnerReporter for: self);
-		prepareForRunning
+		reporter: (HeraRunnerReporter for: self)
 ]
 
 { #category : 'private' }

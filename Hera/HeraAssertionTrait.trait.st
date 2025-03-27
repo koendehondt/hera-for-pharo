@@ -102,3 +102,13 @@ HeraAssertionTrait >> assertEmpty: aCollection [
 		assert: aCollection isEmpty
 		description: [ aCollection asString , ' is not empty' ]
 ]
+
+{ #category : 'asserting' }
+HeraAssertionTrait >> assertNil: actualObject [
+
+	<debuggerCompleteToSender>
+
+	self
+		assert: actualObject isNil
+		description: [ actualObject asString , ' is not nil' ]
+]

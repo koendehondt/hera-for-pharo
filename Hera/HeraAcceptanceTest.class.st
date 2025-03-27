@@ -76,6 +76,12 @@ HeraAcceptanceTest >> beforeScenario [
 	"Default is to do nothing."
 ]
 
+{ #category : 'copying' }
+HeraAcceptanceTest >> copyForRunning [
+
+	^ self class selector: featureSelector
+]
+
 { #category : 'dsl' }
 HeraAcceptanceTest >> dataTable: anArrayOfArrays [
 

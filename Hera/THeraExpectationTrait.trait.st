@@ -102,3 +102,13 @@ THeraExpectationTrait >> expectToBeEmpty: aCollection [
 		expect: aCollection isEmpty
 		description: [ aCollection asString , ' is not empty' ]
 ]
+
+{ #category : 'expecting' }
+THeraExpectationTrait >> expectToBeNil: actualObject [
+
+	<debuggerCompleteToSender>
+
+	self
+		expect: actualObject isNil
+		description: [ actualObject asString , ' is not nil' ]
+]

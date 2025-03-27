@@ -13,7 +13,8 @@ Class {
 		'hasRunSteps',
 		'runnableScript',
 		'paused',
-		'scenarioCount'
+		'scenarioCount',
+		'currentAcceptanceTest'
 	],
 	#category : 'Hera-Running',
 	#package : 'Hera',
@@ -23,32 +24,28 @@ Class {
 { #category : 'accessing' }
 HeraScriptRunner >> acceptanceTest: anAcceptanceTest [
 
-	acceptanceTest := anAcceptanceTest
+	acceptanceTest := anAcceptanceTest.
+	runnableScript := HeraRunnableScript for: acceptanceTest feature.
+	result := HeraResult new
 ]
 
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> afterScenarioHook [
 
-	acceptanceTest afterScenario
+	currentAcceptanceTest afterScenario
 ]
 
 { #category : 'private - running' }
 HeraScriptRunner >> basicRunStep: aStep [
 
-	aStep runIn: acceptanceTest.
+	aStep runIn: currentAcceptanceTest.
 	reporter reportPassedStep: aStep
-]
-
-{ #category : 'accessing' }
-HeraScriptRunner >> beForDebugging [
-
-	isDebugging := true
 ]
 
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> beforeScenarioHook [
 
-	acceptanceTest beforeScenario
+	currentAcceptanceTest beforeScenario
 ]
 
 { #category : 'running' }
@@ -57,6 +54,12 @@ HeraScriptRunner >> continue [
 	paused := false.
 	[ runnableScript hasMoreInstructions and: [ paused not ] ] whileTrue: [
 		runnableScript performNextFor: self ]
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> currentAcceptanceTest [
+
+	^ currentAcceptanceTest
 ]
 
 { #category : 'running' }
@@ -155,12 +158,6 @@ HeraScriptRunner >> isRunningScenario [
 	^ currentScenario isNotNil
 ]
 
-{ #category : 'private - running' }
-HeraScriptRunner >> newResult [
-
-	^ HeraResult new
-]
-
 { #category : 'running' }
 HeraScriptRunner >> pause: aStep [
 
@@ -174,14 +171,6 @@ HeraScriptRunner >> performUnsteppableInstructions [
 
 	[ runnableScript hasMoreInstructions and: [ runnableScript nextInstructionCannotBeStepped ] ]
 		whileTrue: [ runnableScript performNextFor: self ]
-]
-
-{ #category : 'initialization' }
-HeraScriptRunner >> prepareForRunning [
-
-	runnableScript := HeraRunnableScript for: acceptanceTest feature.
-	result := self newResult.
-	paused := false
 ]
 
 { #category : 'private - running' }
@@ -306,5 +295,7 @@ HeraScriptRunner >> startScenario: aScenario [
 	currentScenario := aScenario.
 	currentScenarioPassed := true.
 	hasRunSteps := false.
+	currentAcceptanceTest := acceptanceTest copyForRunning.
+	paused := false.
 	reporter reportStartOfScenario: aScenario
 ]

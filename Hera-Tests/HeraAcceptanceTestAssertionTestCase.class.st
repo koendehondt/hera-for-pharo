@@ -105,3 +105,13 @@ HeraAcceptanceTestAssertionTestCase >> testAssertIdenticalTo [
 		raise: HeraFailure
 		withExceptionDo: [ :failure | self assert: failure messageText equals: '''abc'' is not identical to #abc.' ]
 ]
+
+{ #category : 'tests' }
+HeraAcceptanceTestAssertionTestCase >> testAssertNil [
+
+	subject assertNil: nil.
+	self
+		should: [ subject assertNil: 1 ]
+		raise: HeraFailure
+		withExceptionDo: [ :failure | self assert: failure messageText equals: '1 is not nil' ]
+]

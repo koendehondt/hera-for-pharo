@@ -12,6 +12,17 @@ HeraAcceptanceTestTestCase >> describedClass [
 	^ HeraAcceptanceTest
 ]
 
+{ #category : 'tests' }
+HeraAcceptanceTestTestCase >> testCopyForRunning [
+
+	| copy |
+	subject := HeraAcceptanceTestExamplesForTesting selector: #featureRunningScenariosInIsolation.
+	subject instanceVariable: 1234.
+	copy := subject copyForRunning.
+	self assert: copy class equals: subject class.
+	self assert: copy instanceVariable isNil
+]
+
 { #category : 'tests - dsl' }
 HeraAcceptanceTestTestCase >> testDslBackground [
 

@@ -97,6 +97,16 @@ HeraAcceptanceTestExpectationTestCase >> testExpectToBeEmpty [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestExpectationTestCase >> testExpectToBeNil [
+
+	subject expectToBeNil: nil.
+	self
+		should: [ subject expectToBeNil: 1 ]
+		raise: HeraFailure
+		withExceptionDo: [ :failure | self assert: failure messageText equals: '1 is not nil' ]
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestExpectationTestCase >> testExpectToEqual [
 
 	subject expect: 'abc' toEqual: 'abc'.
