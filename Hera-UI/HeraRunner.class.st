@@ -75,7 +75,7 @@ HeraRunner >> defaultLayout [
 		add: stepOverButton width: 40;
 		add: self newLabel width: 40;
 		add: resultSummary;
-		add: restartButton expand: false;
+		add: restartButton width: 40;
 		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;
@@ -121,7 +121,7 @@ HeraRunner >> initializePresenters [
 		help: 'Step';
 		yourself.
 	restartButton := self newButton
-		label: 'Restart';
+		iconName: #glamorousRestart;
 		action: [ self restart ];
 		help: 'Restart from the beginning';
 		yourself.
