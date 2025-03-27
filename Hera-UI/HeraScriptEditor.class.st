@@ -61,9 +61,7 @@ HeraScriptEditor >> initializePresenters [
 
 	script := self newText
 		addStyle: 'featureText';
-		yourself.
-	script withAdapterDo: [ :textAdapter |
-		textAdapter widget withLineNumbers ]
+		yourself
 ]
 
 { #category : 'private' }
