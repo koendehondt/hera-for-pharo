@@ -514,7 +514,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testPausedRun [
 HeraScriptRunnerWithTextReporterTestCase >> testRunScenariosInIsolation [
 
 	| result |
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureRunningScenariosInIsolation).
+	subject acceptanceTest: (HeraRunnerAcceptanceTest selector: #featureRunningScenariosInIsolation).
 	subject reporter: reporter.
 	subject run.
 	result := subject result.

@@ -2,8 +2,7 @@ Class {
 	#name : 'HeraAcceptanceTestExamplesForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
 	#instVars : [
-		'users',
-		'instanceVariable'
+		'users'
 	],
 	#category : 'Hera-Tests-Support',
 	#package : 'Hera-Tests',
@@ -16,21 +15,6 @@ HeraAcceptanceTestExamplesForTesting >> emptyFeature [
 	<heraFeature: 'Empty for testing'>
 
 	^ self feature: 'Empty for testing'
-]
-
-{ #category : 'features' }
-HeraAcceptanceTestExamplesForTesting >> featureRunningScenariosInIsolation [
-
-	<heraFeature: 'Running scenarios in isolation'>
-
-	^ (self feature: 'Running scenarios in isolation')
-		scenarios: {
-			(self scenario: 'Storing a value in an instance variable')
-				when: 'the first scenario stores a value in an instance variable';
-				then: 'the instance variable holds the value' .
-			(self scenario: 'No impact of other scenario')
-				when: 'the second scenario runs';
-				then: 'the instance variable does not hold the value stored by the first scenario' }
 ]
 
 { #category : 'features' }
@@ -176,18 +160,6 @@ HeraAcceptanceTestExamplesForTesting >> featureWithTwoScenarios [
 				but: 'I see a message that the credentials are wrong' }
 ]
 
-{ #category : 'test api' }
-HeraAcceptanceTestExamplesForTesting >> instanceVariable [
-
-	^ instanceVariable
-]
-
-{ #category : 'test api' }
-HeraAcceptanceTestExamplesForTesting >> instanceVariable: anObject [
-
-	instanceVariable := anObject
-]
-
 { #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIAmStillOnTheSignInPage [
 	
@@ -257,41 +229,9 @@ HeraAcceptanceTestExamplesForTesting >> stepTheAPIRespondsWith: expectedResponse
 ]
 
 { #category : 'steps' }
-HeraAcceptanceTestExamplesForTesting >> stepTheFirstScenarioStoresAValueInAnInstanceVariable [
-
-	<heraStepDefinition: #(When 'the first scenario stores a value in an instance variable')>
-
-	self instanceVariable: 123
-]
-
-{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepTheFollowingUsersExist: dataTable [
 
 	<heraStepDefinition: #(Given 'the following users exist:')>
 
 	users := dataTable asDictionaries
-]
-
-{ #category : 'steps' }
-HeraAcceptanceTestExamplesForTesting >> stepTheInstanceVariableDoesNotHoldTheValueStoredByTheFirstScenario [
-
-	<heraStepDefinition: #(When 'the instance variable does not hold the value stored by the first scenario')>
-
-	self assertNil: self instanceVariable
-]
-
-{ #category : 'steps' }
-HeraAcceptanceTestExamplesForTesting >> stepTheInstanceVariableHoldsTheValue [
-
-	<heraStepDefinition: #(When 'the instance variable holds the value')>
-
-	self assert: self instanceVariable equals: 123
-]
-
-{ #category : 'steps' }
-HeraAcceptanceTestExamplesForTesting >> stepTheSecondScenarioRuns [
-
-	<heraStepDefinition: #(When 'the second scenario runs')>
-
-	"Nothing to do."
 ]

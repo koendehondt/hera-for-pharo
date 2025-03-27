@@ -1,6 +1,9 @@
 Class {
 	#name : 'HeraRunnerAcceptanceTest',
 	#superclass : 'HeraSelfAcceptanceTest',
+	#instVars : [
+		'instanceVariable'
+	],
 	#category : 'Hera-AcceptanceTests',
 	#package : 'Hera-AcceptanceTests'
 }
@@ -45,4 +48,63 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				when: 'I press the "Continue" button';
 				then: 'I see the full output of the test run';
 				and: 'the run buttons are disabled' }
+]
+
+{ #category : 'features' }
+HeraRunnerAcceptanceTest >> featureRunningScenariosInIsolation [
+
+	<heraFeature: 'Running scenarios in isolation'>
+
+	^ (self feature: 'Running scenarios in isolation')
+		scenarios: {
+			(self scenario: 'Storing a value in an instance variable')
+				when: 'the first scenario stores a value in an instance variable';
+				then: 'the instance variable holds the value' .
+			(self scenario: 'No impact of other scenario')
+				when: 'the second scenario runs';
+				then: 'the instance variable does not hold the value stored by the first scenario' }
+]
+
+{ #category : 'test api' }
+HeraRunnerAcceptanceTest >> instanceVariable [
+
+	^ instanceVariable
+]
+
+{ #category : 'test api' }
+HeraRunnerAcceptanceTest >> instanceVariable: anObject [
+
+	instanceVariable := anObject
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepTheFirstScenarioStoresAValueInAnInstanceVariable [
+
+	<heraStepDefinition: #(When 'the first scenario stores a value in an instance variable')>
+
+	instanceVariable := 123
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepTheInstanceVariableDoesNotHoldTheValueStoredByTheFirstScenario [
+
+	<heraStepDefinition: #(When 'the instance variable does not hold the value stored by the first scenario')>
+
+	self assertNil: instanceVariable
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepTheInstanceVariableHoldsTheValue [
+
+	<heraStepDefinition: #(When 'the instance variable holds the value')>
+
+	self assert: instanceVariable equals: 123
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepTheSecondScenarioRuns [
+
+	<heraStepDefinition: #(When 'the second scenario runs')>
+
+	"Nothing to do."
 ]
