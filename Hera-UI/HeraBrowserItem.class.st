@@ -23,6 +23,19 @@ HeraBrowserItem >> addFeatureNamed: aString [
 	^ generatedMethod
 ]
 
+{ #category : 'actions' }
+HeraBrowserItem >> addStepDefinitionMethodFor: aStepAstNode as: targetSelector [
+
+	| stepMethodSource targetClass generatedMethod protocol |
+	stepMethodSource := '{1}{2}{2}{3}{4}'.
+	targetClass := self targetClassForNewFeature.
+	targetClass compile: stepMethodSource.
+	generatedMethod := targetClass >> targetSelector.
+	protocol := targetClass ensureProtocol: 'steps'.
+	targetClass classify: targetSelector under: protocol.
+	^ generatedMethod
+]
+
 { #category : 'private' }
 HeraBrowserItem >> astForScript: aString [
 

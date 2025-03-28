@@ -68,6 +68,33 @@ HeraFeatureBrowser >> addFeature [
 	self updateClassesAndFeaturesAfterAddingFeatureMethod: featureMethod
 ]
 
+{ #category : 'private' }
+HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
+
+	| methodSelector message invalidMessage |
+	methodSelector := self suggestedStepMethodSelectorFor: aStepAstNode.
+	invalidMessage := ''.
+	[ message := 'The step "{1}" has no definition yet. If you want to create it, please enter a method selector.{2}' format: { aStepAstNode description . invalidMessage }.
+		[ methodSelector := self request: message initialAnswer: methodSelector title: 'Missing step definition' ]
+		on: SpCancelledInteractionError
+		do: [ ^ self ].
+		invalidMessage := ' That is not a valid method selector. Only letters, digits, and underscores are allowed.'.
+		self allowedMethodSelector: methodSelector ] whileFalse.
+	classesAndFeatures selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> allowedMethodSelector: methodSelector [
+
+	^ methodSelector allSatisfy: [ :char | self allowedMethodSelectorCharacter: char ]
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
+
+	^ aCharacter isLetter or: [ aCharacter isDigit or: [ aCharacter = $_ ] ]
+]
+
 { #category : 'initialization' }
 HeraFeatureBrowser >> analytics [
 
@@ -118,17 +145,6 @@ HeraFeatureBrowser >> connectPresenters [
 	self installClassesAndFeaturesContextMenu.
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
 	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> createNewStepMethodFor: aStepAstNode [
-
-	| methodSelector message |
-	message := 'The step "{1}" has no definition yet. If you want to create it, please enter a method selector.' format: { aStepAstNode description }.
-	methodSelector := [ self request: message initialAnswer: (self suggestedStepMethodSelectorFor: aStepAstNode) title: 'No step definition' ]
-		on: SpCancelledInteractionError
-		do: [ ^ self ].
-	self inform: 'Not implemented yet'
 ]
 
 { #category : 'actions' }
@@ -355,7 +371,7 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 	| colonOrNothing suggestion |
 	self flag: 'Take step arguments into account'.
 	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
-	suggestion := aStepAstNode description asCamelCase select: [ :char | char isLetter or: [ char isDigit or: [ char = $_ ] ] ].
+	suggestion := aStepAstNode description asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
 	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
 ]
 
@@ -404,7 +420,7 @@ HeraFeatureBrowser >> updateSelectedFeature: aFeatureAstNode [
 HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 
 	(self methodFor: aStepAstNode)
-		ifNil: [ self createNewStepMethodFor: aStepAstNode ]
+		ifNil: [ self addStepDefinitionMethodFor: aStepAstNode ]
 		ifNotNil: [ :stepMethod |
 			stepEditor methodItem: (HeraStepMethodItem new stepMethod: stepMethod) ]
 ]
