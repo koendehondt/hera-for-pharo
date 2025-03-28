@@ -44,7 +44,7 @@ HeraScriptEditor >> buildAst: source [
 HeraScriptEditor >> connectPresenters [
 
 	script whenSubmitDo: [ :source | self submit: source ].
-	script eventHandler whenMouseDownDo: [ :event |
+	script eventHandler whenMouseUpDo: [ :event |
 		event altKeyPressed ifTrue: [ self altKeyClick: event ] ]
 ]
 
