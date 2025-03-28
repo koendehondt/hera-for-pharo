@@ -10,3 +10,20 @@ Metacello new
    repository: 'github://koendehondt/hera-for-pharo:main';
    load
 ```
+
+**Beware:** Hera is under continuous development, so it changes a lot.
+
+Open a Feature Browser with all features in the image:
+```smalltalk
+(HeraFeatureBrowser new analytics: HeraAnalytics all) open
+```
+
+Open a Feature Browser without all the features used for testing Hera:
+```smalltalk
+HeraFeatureBrowser new open
+```
+
+Open a Step Browser to see all the steps in the image:
+```smalltalk
+HeraStepBrowser new open
+```
