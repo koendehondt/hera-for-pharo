@@ -30,6 +30,7 @@ HeraAnalyticsTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 		HeraAcceptanceTestWithFailureForTesting .
 		HeraAcceptanceTestWithHelperForTesting .
 		HeraAcceptanceTestWithHooksForTesting .
+		HeraAcceptanceTestWithLintIssuesForTesting .
 		HeraAcceptanceTestWithPassForTesting .
 		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
 		HeraAcceptanceTestWithStepArgumentsForTesting .

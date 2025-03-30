@@ -65,6 +65,14 @@ HeraScriptEditor >> initializePresenters [
 ]
 
 { #category : 'private' }
+HeraScriptEditor >> lintWarnings [
+
+	^ HeraGherkinLinter new
+		lint: ast;
+		warnings
+]
+
+{ #category : 'private' }
 HeraScriptEditor >> parser [
 
 	^ parser ifNil: [ parser := HeraGherkinParser new ]
@@ -95,7 +103,7 @@ HeraScriptEditor >> showParseError [
 	decorator underlineColor: Color red.
 	decorator title: error messageText.
 	decorator icon: (self iconNamed: #halt).
-	decorator iconBlock: [ :seg| seg].
+	decorator iconBlock: [ :seg| seg ].
 	decorator interval: (error start to: error end + 1).
 	script
 		removeAllTextSegmentDecorations;
@@ -103,11 +111,31 @@ HeraScriptEditor >> showParseError [
 ]
 
 { #category : 'private' }
+HeraScriptEditor >> showWarnings [
+
+	| decorator warnings |
+	warnings := self lintWarnings.
+	warnings ifEmpty: [ ^ self ].
+	script removeAllTextSegmentDecorations.
+	decorator := SpTextPresenterDecorator new.
+	decorator underlineColor: Color orange.
+	warnings do: [ :warning |
+		decorator title: warning message.
+		decorator icon: (self iconNamed: #warning).
+		decorator iconBlock: [ :seg| seg ].
+		decorator interval: (warning start to: warning end + 1).
+		script addTextSegmentDecoration: decorator ]
+]
+
+{ #category : 'private' }
 HeraScriptEditor >> submit: source [
 
 	(self astForScript: source)
 		ifNil: [ self showParseError ]
-		ifNotNil: [ :featureAstNode | submitBlock value: featureAstNode ]
+		ifNotNil: [ :featureAstNode |
+			submitBlock value: featureAstNode.
+			ast := featureAstNode.
+			self showWarnings ]
 ]
 
 { #category : 'api' }
@@ -119,8 +147,11 @@ HeraScriptEditor >> text [
 { #category : 'api' }
 HeraScriptEditor >> text: aText [
 
+	script removeAllTextSegmentDecorations.
 	script text: aText.
-	self buildAst: aText string
+	aText ifEmpty: [ ^ self ].
+	self buildAst: aText string.
+	self showWarnings
 ]
 
 { #category : 'api' }

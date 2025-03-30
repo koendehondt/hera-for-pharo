@@ -6,7 +6,7 @@ Class {
 	#tag : 'Parser'
 }
 
-{ #category : 'tests - parsing errors' }
+{ #category : 'helpers' }
 HeraGherkinParserTestCase >> assertError: aString start: startInteger end: endInteger whenParsing: script [
 
 	| error |
