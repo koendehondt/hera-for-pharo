@@ -11,3 +11,15 @@ HeraGivenAstNode >> accept: anAstVisitor [
 
 	^ anAstVisitor visitGivenAstNode: self
 ]
+
+{ #category : 'testing' }
+HeraGivenAstNode >> isGivenStepNode [
+
+	^ true
+]
+
+{ #category : 'accessing' }
+HeraGivenAstNode >> stepType [
+
+	^ #Given
+]

@@ -35,7 +35,19 @@ HeraStepAstNode >> description: aString [
 ]
 
 { #category : 'testing' }
+HeraStepAstNode >> isGivenStepNode [
+
+	^ false
+]
+
+{ #category : 'testing' }
 HeraStepAstNode >> isStepNode [
 
 	^ true
+]
+
+{ #category : 'accessing' }
+HeraStepAstNode >> stepType [
+
+	self subclassResponsibility
 ]

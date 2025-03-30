@@ -11,3 +11,9 @@ HeraWhenAstNode >> accept: anAstVisitor [
 
 	^ anAstVisitor visitWhenAstNode: self
 ]
+
+{ #category : 'accessing' }
+HeraWhenAstNode >> stepType [
+
+	^ #When
+]

@@ -71,7 +71,7 @@ HeraFeatureBrowser >> addFeature [
 { #category : 'private' }
 HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
 
-	| methodSelector message invalidMessage |
+	| methodSelector message invalidMessage targetSelectorWithFormalArguments |
 	methodSelector := self suggestedStepMethodSelectorFor: aStepAstNode.
 	invalidMessage := ''.
 	[ message := 'The step "{1}" has no definition yet. If you want to create it, please enter a method selector.{2}' format: { aStepAstNode description . invalidMessage }.
@@ -80,13 +80,14 @@ HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
 		do: [ ^ self ].
 		invalidMessage := ' That is not a valid method selector. Only letters, digits, and underscores are allowed.'.
 		self allowedMethodSelector: methodSelector ] whileFalse.
-	classesAndFeatures selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector
+	targetSelectorWithFormalArguments := self targetSelectorWithFormalArgumentsFor: methodSelector asSymbol.
+	classesAndFeatures selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector asSymbol withSignature: targetSelectorWithFormalArguments
 ]
 
 { #category : 'private' }
 HeraFeatureBrowser >> allowedMethodSelector: methodSelector [
 
-	^ methodSelector allSatisfy: [ :char | self allowedMethodSelectorCharacter: char ]
+	^ methodSelector numArgs positive 
 ]
 
 { #category : 'private' }
@@ -373,6 +374,21 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
 	suggestion := aStepAstNode description asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
 	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> targetSelectorWithFormalArgumentsFor: selector [
+
+	| keywords |
+	keywords := selector keywordsStrict.
+	keywords ifEmpty: [ ^ selector ].
+	^ String streamContents: [ :stream |
+		keywords withIndexDo: [ :each :index |
+			stream
+				nextPutAll: each;
+				space;
+				nextPutAll: 'argument';
+				print: index ] ]
 ]
 
 { #category : 'private' }

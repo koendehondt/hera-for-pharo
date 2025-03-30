@@ -24,10 +24,16 @@ HeraBrowserItem >> addFeatureNamed: aString [
 ]
 
 { #category : 'actions' }
-HeraBrowserItem >> addStepDefinitionMethodFor: aStepAstNode as: targetSelector [
+HeraBrowserItem >> addStepDefinitionMethodFor: aStepAstNode as: targetSelector withSignature: targetSelectorWithFormalArguments [
 
-	| stepMethodSource targetClass generatedMethod protocol |
-	stepMethodSource := '{1}{2}{2}{3}{4}'.
+	| stepMethodSource targetClass generatedMethod protocol pragma defaultBody |
+	pragma := '<heraStepDefinition: #({1} ''{2}'')>' format: { aStepAstNode stepType . aStepAstNode description }.
+	defaultBody := 'self stepNotImplemented'.
+	stepMethodSource := '{1}{2}{3}{2}{4}' format: {
+		targetSelectorWithFormalArguments .
+		String with: Character cr with: Character cr with: Character tab .
+		pragma .
+		defaultBody }. self halt: 'This is not implemented correctly yet'.
 	targetClass := self targetClassForNewFeature.
 	targetClass compile: stepMethodSource.
 	generatedMethod := targetClass >> targetSelector.
