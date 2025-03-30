@@ -254,3 +254,12 @@ HeraAcceptanceTest >> stepDebug [
 
 	self halt: 'Debug step'
 ]
+
+{ #category : 'steps' }
+HeraAcceptanceTest >> stepNotImplemented [
+
+	<debuggerCompleteToSender>
+
+	HeraStepNotImplemented signal: 'Step not implemented.'
+	
+]

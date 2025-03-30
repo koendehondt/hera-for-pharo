@@ -130,6 +130,17 @@ HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithSingleStep [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithUndefinedStep [
+
+	<heraFeature: 'With undefined step for testing'>
+
+	^ (self feature: 'With undefined step for testing')
+		scenarios: {
+			(self scenario: 'Successful sign-in')
+				given: 'this step has no definition' }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithUnimplementedStep [
 
 	<heraFeature: 'With unimplemented step for testing'>
@@ -234,4 +245,12 @@ HeraAcceptanceTestExamplesForTesting >> stepTheFollowingUsersExist: dataTable [
 	<heraStepDefinition: #(Given 'the following users exist:')>
 
 	users := dataTable asDictionaries
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepThisStepIsNotImplemented [
+	
+	<heraStepDefinition: #(Given 'this step is not implemeted')>
+
+	self stepNotImplemented
 ]

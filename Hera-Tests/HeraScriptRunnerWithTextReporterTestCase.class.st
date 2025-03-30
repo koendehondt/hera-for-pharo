@@ -375,6 +375,26 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedUndefinedStepErrorRunReport [
+
+	| text |
+	text := Text fromString: 'Feature: With undefined step for testing
+
+	Scenario: Successful sign-in
+		Given this step has no definition
+			ERROR Step definition not found.
+
+Total: 1. Passed: 0. Failed: 0. Error: 1.
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 44 to: 52;
+		addAttribute: TextEmphasis bold from: 112 to: 116;
+		addAttribute: (TextColor new color: Color red) from: 112 to: 116.
+	^ text
+]
+
+{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedUnimplementedStepErrorRunReport [
 
 	| text |
@@ -382,7 +402,7 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedUnimplementedStepErrorRunRep
 
 	Scenario: Successful sign-in
 		Given this step is not implemeted
-			ERROR Step definition not found.
+			ERROR Step not implemented.
 
 Total: 1. Passed: 0. Failed: 0. Error: 1.
 '.
@@ -573,6 +593,15 @@ HeraScriptRunnerWithTextReporterTestCase >> testStepping [
 	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 647). "Step 5"
 	subject runNext.
 	self assertText: reporter text equals: allOutput "Result summary"
+]
+
+{ #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testUndefineddStepErrorRun [
+
+	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithScenarioWithUndefinedStep).
+	subject reporter: reporter.
+	subject run.
+	self assertText: reporter text equals: self expectedUndefinedStepErrorRunReport
 ]
 
 { #category : 'tests' }
