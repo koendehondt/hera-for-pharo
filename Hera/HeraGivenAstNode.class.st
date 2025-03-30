@@ -11,3 +11,9 @@ HeraGivenAstNode >> accept: anAstVisitor [
 
 	^ anAstVisitor visitGivenAstNode: self
 ]
+
+{ #category : 'testing' }
+HeraGivenAstNode >> isGivenStepNode [
+
+	^ true
+]
