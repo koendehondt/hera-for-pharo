@@ -564,6 +564,26 @@ HeraGherkinParserTestCase >> testParseFeatureWithEmptyScenario [
 	self assert: scenarioNode steps isEmpty
 ]
 
+{ #category : 'tests' }
+HeraGherkinParserTestCase >> testParseFeatureWithKeywordAsFirstWordInName [
+
+	| script ast scenarioNode |
+	script := '
+	Feature: But is allowed at the beginning of a feature name
+
+		Scenario: Signing in'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast name equals: 'But is allowed at the beginning of a feature name'.
+	self assert: ast scenarios size equals: 1.
+	scenarioNode := ast scenarios first.
+	self assert: scenarioNode class equals: HeraScenarioAstNode.
+	self assert: scenarioNode tags isEmpty.
+	self assert: scenarioNode title equals: 'Signing in'.
+	self assert: scenarioNode steps isEmpty
+]
+
 { #category : 'tests - parsing errors' }
 HeraGherkinParserTestCase >> testParseFeatureWithStepButNoScenario [
 
@@ -732,6 +752,26 @@ HeraGherkinParserTestCase >> testParseScenarioWithDescription [
 	self assert: scenarioNode description class equals: HeraDescriptionAstNode.
 	self assert: scenarioNode description lines equals: (
 		OrderedCollection with: 'Access is allowed when the credentials are recognized.')
+]
+
+{ #category : 'tests' }
+HeraGherkinParserTestCase >> testParseScenarioWithKeywordAsFirstWordInTitle [
+
+	| script ast scenarioNode |
+	script := '
+	Feature: Signing in
+
+		Scenario: And is allowed at the beginning of a scenarion title'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast name equals: 'Signing in'.
+	self assert: ast scenarios size equals: 1.
+	scenarioNode := ast scenarios first.
+	self assert: scenarioNode class equals: HeraScenarioAstNode.
+	self assert: scenarioNode tags isEmpty.
+	self assert: scenarioNode title equals: 'And is allowed at the beginning of a scenarion title'.
+	self assert: scenarioNode steps isEmpty
 ]
 
 { #category : 'tests' }

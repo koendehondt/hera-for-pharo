@@ -96,18 +96,7 @@ HeraGherkinScanner >> scanToken [
 		token indentation: token start - indexOfCurrentLine.
 		self scanDocStringLinesFor: token.
 		^ token ].
-
-	start := stream position + 1.
-	stream nextLine ifNotNil: [ :line | | trimmedLine |
-		trimmedLine := line trimRight.
-		trimmedLine isEmpty ifTrue: [
-			self startLine.
-			^ HeraEndOfLineToken new start: stream position ].
-		nextToken := stream atEnd
-			ifTrue: [ HeraEndOfFileToken new start: stream position + 1 ]
-			ifFalse: [ HeraEndOfLineToken new start: stream position ].
-		^ HeraTextToken new text: trimmedLine; start: start; end: start + trimmedLine size - 1 ].
-	^ HeraEndOfFileToken new start: stream position + 1
+	^ self tryScanTextToken
 ]
 
 { #category : 'scanning' }
@@ -120,6 +109,24 @@ HeraGherkinScanner >> skipWhiteSpace [
 HeraGherkinScanner >> startLine [
 
 	indexOfCurrentLine := stream position + 1
+]
+
+{ #category : 'scanning' }
+HeraGherkinScanner >> tryScanTextToken [
+
+	| start |
+	self skipWhiteSpace.
+	start := stream position + 1.
+	stream nextLine ifNotNil: [ :line | | trimmedLine |
+		trimmedLine := line trimRight.
+		trimmedLine isEmpty ifTrue: [
+			self startLine.
+			^ HeraEndOfLineToken new start: stream position ].
+		nextToken := stream atEnd
+			ifTrue: [ HeraEndOfFileToken new start: stream position + 1 ]
+			ifFalse: [ HeraEndOfLineToken new start: stream position ].
+		^ HeraTextToken new text: trimmedLine; start: start; end: start + trimmedLine size - 1 ].
+	^ HeraEndOfFileToken new start: stream position + 1
 ]
 
 { #category : 'scanning' }

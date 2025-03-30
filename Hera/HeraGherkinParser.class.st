@@ -148,7 +148,7 @@ HeraGherkinParser >> parseFeature [
 		currentToken isFeatureToken ifFalse: [
 			self parseError: 'Feature keyword expected' from: currentToken start to: currentToken end ].
 		featureToken := currentToken.
-		nameToken := self nextToken.
+		nameToken := self tryScanTextToken.
 		nameToken isTextToken ifFalse: [
 			self parseError: 'Feature name expected after feature keyword' from: featureToken start to: featureToken end ].
 		name := nameToken text.
@@ -180,7 +180,7 @@ HeraGherkinParser >> parseScenario [
 	"scenarioToken or tagToken has already been read."
 	tags := self parseTags.
 	scenarioToken := currentToken.
-	titleToken := self nextToken.
+	titleToken := self tryScanTextToken.
 	titleToken isTextToken ifFalse: [
 		self parseError: 'Scenario title expected after scenario keyword' from: scenarioToken start to: scenarioToken end ].
 	self skipEndOfLineToken.
@@ -317,4 +317,12 @@ HeraGherkinParser >> skipEndOfLineToken [
 	currentToken isEndOfLineToken ifTrue: [ ^ self ].
 	self flag: 'This is an internal errror. It should not bubble up to the user of the receiver.'.
 	self parseError: 'End of line expected' from: currentToken start to: currentToken end
+]
+
+{ #category : 'parsing' }
+HeraGherkinParser >> tryScanTextToken [
+
+	previousToken := currentToken.
+	currentToken := scanner tryScanTextToken.
+	^ currentToken
 ]
