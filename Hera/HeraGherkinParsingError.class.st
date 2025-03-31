@@ -2,8 +2,8 @@ Class {
 	#name : 'HeraGherkinParsingError',
 	#superclass : 'Error',
 	#instVars : [
-		'fromIndex',
-		'toIndex'
+		'start',
+		'end'
 	],
 	#category : 'Hera-Parser',
 	#package : 'Hera',
@@ -13,23 +13,23 @@ Class {
 { #category : 'accessing' }
 HeraGherkinParsingError >> end [
 
-	^ toIndex
+	^ end
 ]
 
 { #category : 'accessing' }
 HeraGherkinParsingError >> end: sourceEndIndex [
 
-	toIndex := sourceEndIndex
+	end := sourceEndIndex
 ]
 
 { #category : 'accessing' }
 HeraGherkinParsingError >> start [
 
-	^ fromIndex
+	^ start
 ]
 
 { #category : 'accessing' }
 HeraGherkinParsingError >> start: sourceStartIndex [
 
-	fromIndex := sourceStartIndex
+	start := sourceStartIndex
 ]
