@@ -27,6 +27,13 @@ HeraGherkinScannerTestCase >> testScanAndToken [
 ]
 
 { #category : 'tests - scanning tokens' }
+HeraGherkinScannerTestCase >> testScanAndWithTrailingSpecialCharacterYieldsAndToken [
+
+	subject on: 'And: I see the home page' readStream.
+	self assert: subject scanToken equals: (HeraAndToken new start: 1; end: 3)
+]
+
+{ #category : 'tests - scanning tokens' }
 HeraGherkinScannerTestCase >> testScanAndWithoutTrailingSpaceYieldsTextToken [
 
 	subject on: 'AndI see the home page' readStream.
@@ -44,6 +51,13 @@ HeraGherkinScannerTestCase >> testScanBackgroundToken [
 HeraGherkinScannerTestCase >> testScanButToken [
 
 	subject on: 'But' readStream.
+	self assert: subject scanToken equals: (HeraButToken new start: 1; end: 3)
+]
+
+{ #category : 'tests - scanning tokens' }
+HeraGherkinScannerTestCase >> testScanButWithTrailingSpecialCharacterYieldsButToken [
+
+	subject on: 'But, I do not see the home page' readStream.
 	self assert: subject scanToken equals: (HeraButToken new start: 1; end: 3)
 ]
 
@@ -157,6 +171,13 @@ HeraGherkinScannerTestCase >> testScanGivenToken [
 ]
 
 { #category : 'tests - scanning tokens' }
+HeraGherkinScannerTestCase >> testScanGivenWithTrailingSpecialCharacterYieldsGivenToken [
+
+	subject on: 'Given= I see the home page' readStream.
+	self assert: subject scanToken equals: (HeraGivenToken new start: 1; end: 5)
+]
+
+{ #category : 'tests - scanning tokens' }
 HeraGherkinScannerTestCase >> testScanGivenWithoutTrailingSpaceYieldsTextToken [
 
 	subject on: 'GivenI have credentials' readStream.
@@ -205,6 +226,13 @@ HeraGherkinScannerTestCase >> testScanThenWithoutTrailingSpaceYieldsTextToken [
 ]
 
 { #category : 'tests - scanning tokens' }
+HeraGherkinScannerTestCase >> testScanThenWithoutTrailingSpaceYieldsThenToken [
+
+	subject on: 'Then. I have credentials' readStream.
+	self assert: subject scanToken equals: (HeraThenToken new start: 1; end: 4)
+]
+
+{ #category : 'tests - scanning tokens' }
 HeraGherkinScannerTestCase >> testScanWhenToken [
 
 	subject on: 'When' readStream.
@@ -216,6 +244,13 @@ HeraGherkinScannerTestCase >> testScanWhenWithoutTrailingSpaceYieldsTextToken [
 
 	subject on: 'WhenI press the button' readStream.
 	self assert: subject scanToken equals: (HeraTextToken new start: 1; end: 22)
+]
+
+{ #category : 'tests - scanning tokens' }
+HeraGherkinScannerTestCase >> testScanWhenWithoutTrailingSpaceYieldsWhenToken [
+
+	subject on: 'When; I have credentials' readStream.
+	self assert: subject scanToken equals: (HeraWhenToken new start: 1; end: 4)
 ]
 
 { #category : 'tests - scanning tokens' }

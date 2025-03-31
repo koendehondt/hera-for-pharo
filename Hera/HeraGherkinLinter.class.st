@@ -11,6 +11,13 @@ Class {
 	#tag : 'Linter'
 }
 
+{ #category : 'private' }
+HeraGherkinLinter >> checkColonAfterKeyword: aStepAstNode [
+
+	aStepAstNode description first = $: ifTrue: [
+		self warn: 'A colon after a step keyword is not necessary' from: aStepAstNode start to: aStepAstNode end ]
+]
+
 { #category : 'linting' }
 HeraGherkinLinter >> lint: anAstNode [
 
@@ -31,30 +38,33 @@ HeraGherkinLinter >> previousStepsAreAllGivenSteps [
 { #category : 'visiting' }
 HeraGherkinLinter >> visitAndAstNode: anAndAstNode [
 
-	currentStepIndex = 1
-		ifTrue: [ self warn: 'An And step should not be the first step in a scenario' from: anAndAstNode start to: anAndAstNode end ]
+	self checkColonAfterKeyword: anAndAstNode.
+	currentStepIndex = 1 ifTrue: [
+		self warn: 'An And step should not be the first step in a scenario' from: anAndAstNode start to: anAndAstNode end ]
 ]
 
 { #category : 'visiting' }
 HeraGherkinLinter >> visitButAstNode: aButAstNode [
 
-	currentStepIndex = 1
-		ifTrue: [ self warn: 'A But step should not be the first step in a scenario' from: aButAstNode start to: aButAstNode end ]
+	self checkColonAfterKeyword: aButAstNode.
+	currentStepIndex = 1 ifTrue: [
+		self warn: 'A But step should not be the first step in a scenario' from: aButAstNode start to: aButAstNode end ]
 ]
 
 { #category : 'visiting' }
 HeraGherkinLinter >> visitFeatureAstNode: aFeatureAstNode [
 
-	aFeatureAstNode name first isUppercase
-		ifFalse: [ self warn: 'A feature name should start with an uppercase letter' from: aFeatureAstNode start to: aFeatureAstNode start + 'Feature: ' size + aFeatureAstNode name size - 1 ].
+	aFeatureAstNode name first isUppercase ifFalse: [
+			self warn: 'A feature name should start with an uppercase letter' from: aFeatureAstNode start to: aFeatureAstNode start + 'Feature: ' size + aFeatureAstNode name size - 1 ].
 	aFeatureAstNode scenarios do: [ :each | self visit: each ]
 ]
 
 { #category : 'visiting' }
 HeraGherkinLinter >> visitGivenAstNode: aGivenAstNode [
 
-	self previousStepsAreAllGivenSteps
-		ifFalse: [ self warn: 'A Given step should come before any other step' from: aGivenAstNode start to: aGivenAstNode end ]
+	self checkColonAfterKeyword: aGivenAstNode.
+	self previousStepsAreAllGivenSteps ifFalse: [
+		self warn: 'A Given step should come before any other step' from: aGivenAstNode start to: aGivenAstNode end ]
 ]
 
 { #category : 'visiting' }
@@ -69,10 +79,17 @@ HeraGherkinLinter >> visitScenarioAstNode: aScenarioAstNode [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitThenAstNode: aButAstNode [
+HeraGherkinLinter >> visitThenAstNode: aThenAstNode [
 
-	currentStepIndex = 1
-		ifTrue: [ self warn: 'A Then step should not be the first step in a scenario' from: aButAstNode start to: aButAstNode end ]
+	self checkColonAfterKeyword: aThenAstNode.
+	currentStepIndex = 1 ifTrue: [
+		self warn: 'A Then step should not be the first step in a scenario' from: aThenAstNode start to: aThenAstNode end ]
+]
+
+{ #category : 'visiting' }
+HeraGherkinLinter >> visitWhenAstNode: aWhenAstNode [
+
+	self checkColonAfterKeyword: aWhenAstNode
 ]
 
 { #category : 'private' }

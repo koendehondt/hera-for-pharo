@@ -100,6 +100,80 @@ HeraGherkinLinterTestCase >> testGivenComesBeforeAnyOtherStep [
 ]
 
 { #category : 'tests' }
+HeraGherkinLinterTestCase >> testNoColonAfterAndStepKeyword [
+
+	self
+		assertWarning: 'A colon after a step keyword is not necessary'
+		start: 100
+		end: 122
+		whenLinting: '
+			Feature: Signing in
+
+				Scenario: Successful sign-in
+					Given I am on the sign-in page
+					And: I have credentials'
+]
+
+{ #category : 'tests' }
+HeraGherkinLinterTestCase >> testNoColonAfterButStepKeyword [
+
+	self
+		assertWarning: 'A colon after a step keyword is not necessary'
+		start: 100
+		end: 129
+		whenLinting: '
+			Feature: Signing in
+
+				Scenario: Successful sign-in
+					Given I am on the sign-in page
+					But: I do not have credentials'
+]
+
+{ #category : 'tests' }
+HeraGherkinLinterTestCase >> testNoColonAfterGivenStepKeyword [
+
+	self
+		assertWarning: 'A colon after a step keyword is not necessary'
+		start: 64
+		end: 99
+		whenLinting: '
+			Feature: Signing in
+
+				Scenario: Successful sign-in
+					Given: I have credentials to sign in'
+]
+
+{ #category : 'tests' }
+HeraGherkinLinterTestCase >> testNoColonAfterThenStepKeyword [
+
+	self
+		assertWarning: 'A colon after a step keyword is not necessary'
+		start: 90
+		end: 114
+		whenLinting: '
+			Feature: Signing in
+
+				Scenario: Successful sign-in
+					Given I am signed in
+					Then: I see the home page'
+]
+
+{ #category : 'tests' }
+HeraGherkinLinterTestCase >> testNoColonAfterWhenStepKeyword [
+
+	self
+		assertWarning: 'A colon after a step keyword is not necessary'
+		start: 100
+		end: 114
+		whenLinting: '
+			Feature: Signing in
+
+				Scenario: Successful sign-in
+					Given I am on the sign-in page
+					When: I sign in'
+]
+
+{ #category : 'tests' }
 HeraGherkinLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
 
 	self

@@ -118,10 +118,10 @@ HeraGherkinScanner >> tryScanStepToken: aTokenClass ifFound: aBlock [
 	tokenString := aTokenClass keyword.
 	start := stream position + 1.
 	(tokenString allSatisfy: [ :each | stream peekFor: each ]) ifTrue: [
-		| char |
+		| nextChar |
 		end := start + tokenString size - 1.
-		char := stream peek.
-		(char isNil or: [ char isSeparator ]) ifTrue: [
+		nextChar := stream peek.
+		(nextChar isNil or: [ nextChar isLetter not and: [ nextChar isDigit not ] ]) ifTrue: [
 			aBlock value: (aTokenClass new start: start; end: end).
 			^ self ] ].
 	stream position: start - 1
