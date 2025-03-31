@@ -6,12 +6,6 @@ Class {
 	#tag : 'Parser'
 }
 
-{ #category : 'comparing' }
-HeraEndToken >> = anotherToken [
-
-	^ super = anotherToken and: [ anotherToken start = self start and: [anotherToken end = self end ] ]
-]
-
 { #category : 'accessing' }
 HeraEndToken >> end [
 

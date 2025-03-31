@@ -12,7 +12,9 @@ Class {
 { #category : 'comparing' }
 HeraToken >> = anotherToken [
 
-	^ anotherToken isMemberOf: self class
+	^ (anotherToken isMemberOf: self class)
+		and: [ anotherToken start = self start
+		and: [anotherToken end = self end ] ]
 ]
 
 { #category : 'accessing' }
