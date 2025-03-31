@@ -6,12 +6,18 @@ Class {
 	#tag : 'Support'
 }
 
+{ #category : 'accessing' }
+HeraAcceptanceTestWithLintIssuesForTesting class >> nameInBrowser [
+
+	^ 'Example with lint issues'
+]
+
 { #category : 'features' }
-HeraAcceptanceTestWithLintIssuesForTesting >> featureWithWrongStepStructure [
+HeraAcceptanceTestWithLintIssuesForTesting >> featureWithLintIssues [
 
-	<heraFeature: 'with wrong step structure'>
+	<heraFeature: 'show lint issues'>
 
-	^ (self feature: 'with wrong step structure')
+	^ (self feature: 'show lint issues')
 		scenarios: {
 			(self scenario: 'A Given step should come before any other step')
 				when: 'I open the sign-in page';
@@ -26,5 +32,7 @@ HeraAcceptanceTestWithLintIssuesForTesting >> featureWithWrongStepStructure [
 			(self scenario: 'A Then step should not be the first step')
 				then: 'I can see the home page' .
 			(self scenario: 'a title should start with an uppercase letter')
-				given: 'I have credentials to sign in' }
+				given: 'I have credentials to sign in' .
+			(self scenario: 'A colon after a step keyword is not necessary')
+				given: ': I have credentials to sign in' }
 ]

@@ -9,6 +9,12 @@ Class {
 	#tag : 'Support'
 }
 
+{ #category : 'accessing' }
+HeraAcceptanceTestExamplesForTesting class >> nameInBrowser [
+
+	^ 'Examples for testing'
+]
+
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> emptyFeature [
 
