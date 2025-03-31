@@ -724,6 +724,30 @@ HeraGherkinParserTestCase >> testParseFullFeature [
 ]
 
 { #category : 'tests' }
+HeraGherkinParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
+
+	| script ast |
+	script := '
+	Feature: Signing in
+
+		Scenario: And is allowed at the beginning of a scenario title'.
+	ast := self parseFeature: script.
+	self assert: ast scenarios first title equals: 'And is allowed at the beginning of a scenario title'
+]
+
+{ #category : 'tests' }
+HeraGherkinParserTestCase >> testParseScenarioWithButKeywordAsFirstWordInTitle [
+
+	| script ast |
+	script := '
+	Feature: Signing in
+
+		Scenario: But is allowed at the beginning of a scenario title'.
+	ast := self parseFeature: script.
+	self assert: ast scenarios first title equals: 'But is allowed at the beginning of a scenario title'
+]
+
+{ #category : 'tests' }
 HeraGherkinParserTestCase >> testParseScenarioWithDescription [
 
 	| script ast scenarioNode |
@@ -755,23 +779,15 @@ HeraGherkinParserTestCase >> testParseScenarioWithDescription [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithKeywordAsFirstWordInTitle [
+HeraGherkinParserTestCase >> testParseScenarioWithGivenKeywordAsFirstWordInTitle [
 
-	| script ast scenarioNode |
+	| script ast |
 	script := '
 	Feature: Signing in
 
-		Scenario: And is allowed at the beginning of a scenarion title'.
+		Scenario: Given is allowed at the beginning of a scenario title'.
 	ast := self parseFeature: script.
-	self assert: ast class equals: HeraFeatureAstNode.
-	self assert: ast tags isEmpty.
-	self assert: ast name equals: 'Signing in'.
-	self assert: ast scenarios size equals: 1.
-	scenarioNode := ast scenarios first.
-	self assert: scenarioNode class equals: HeraScenarioAstNode.
-	self assert: scenarioNode tags isEmpty.
-	self assert: scenarioNode title equals: 'And is allowed at the beginning of a scenarion title'.
-	self assert: scenarioNode steps isEmpty
+	self assert: ast scenarios first title equals: 'Given is allowed at the beginning of a scenario title'
 ]
 
 { #category : 'tests' }
@@ -798,6 +814,30 @@ HeraGherkinParserTestCase >> testParseScenarioWithTags [
 	self assert: scenarioNode tags second name equals: 'signing_in'.
 	self assert: scenarioNode title equals: 'Successful sign-in'.
 	self assert: scenarioNode steps isEmpty
+]
+
+{ #category : 'tests' }
+HeraGherkinParserTestCase >> testParseScenarioWithThenKeywordAsFirstWordInTitle [
+
+	| script ast |
+	script := '
+	Feature: Signing in
+
+		Scenario: Then is allowed at the beginning of a scenario title'.
+	ast := self parseFeature: script.
+	self assert: ast scenarios first title equals: 'Then is allowed at the beginning of a scenario title'
+]
+
+{ #category : 'tests' }
+HeraGherkinParserTestCase >> testParseScenarioWithWhenKeywordAsFirstWordInTitle [
+
+	| script ast |
+	script := '
+	Feature: Signing in
+
+		Scenario: When is allowed at the beginning of a scenario title'.
+	ast := self parseFeature: script.
+	self assert: ast scenarios first title equals: 'When is allowed at the beginning of a scenario title'
 ]
 
 { #category : 'tests' }

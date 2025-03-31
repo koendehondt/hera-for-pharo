@@ -74,11 +74,11 @@ HeraGherkinScanner >> scanToken [
 	self tryScanToken: HeraFeatureToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraBackgroundToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraScenarioToken ifFound: [ :token | ^ token ].
-	self tryScanToken: HeraGivenToken ifFound: [ :token | ^ token ].
-	self tryScanToken: HeraWhenToken ifFound: [ :token | ^ token ].
-	self tryScanToken: HeraThenToken ifFound: [ :token | ^ token ].
-	self tryScanToken: HeraAndToken ifFound: [ :token | ^ token ].
-	self tryScanToken: HeraButToken ifFound: [ :token | ^ token ].
+	self tryScanStepToken: HeraGivenToken ifFound: [ :token | ^ token ].
+	self tryScanStepToken: HeraWhenToken ifFound: [ :token | ^ token ].
+	self tryScanStepToken: HeraThenToken ifFound: [ :token | ^ token ].
+	self tryScanStepToken: HeraAndToken ifFound: [ :token | ^ token ].
+	self tryScanStepToken: HeraButToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraDataTableToken ifFound: [ :token |
 		start := stream position.
 		^ stream nextLine
@@ -109,6 +109,22 @@ HeraGherkinScanner >> skipWhiteSpace [
 HeraGherkinScanner >> startLine [
 
 	indexOfCurrentLine := stream position + 1
+]
+
+{ #category : 'scanning' }
+HeraGherkinScanner >> tryScanStepToken: aTokenClass ifFound: aBlock [
+
+	| start tokenString end |
+	tokenString := aTokenClass keyword.
+	start := stream position + 1.
+	(tokenString allSatisfy: [ :each | stream peekFor: each ]) ifTrue: [
+		| char |
+		end := start + tokenString size - 1.
+		char := stream peek.
+		(char isNil or: [ char isSeparator ]) ifTrue: [
+			aBlock value: (aTokenClass new start: start; end: end).
+			^ self ] ].
+	stream position: start - 1
 ]
 
 { #category : 'scanning' }
