@@ -8,7 +8,7 @@ Class {
 		'stepEditor',
 		'debugButton',
 		'stepByStepButton',
-		'analytics'
+		'scope'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -25,7 +25,7 @@ HeraFeatureBrowser class >> defaultPreferredExtent [
 HeraFeatureBrowser >> acceptanceTestClassItems [
 
 	| items |
-	items := self analytics allForBrowsing collect: [ :each |
+	items := self scope allForBrowsing collect: [ :each |
 		HeraAcceptanceTestClassItem new acceptanceTestClass: each ].
 	items sort: [ :some :other | some nameInBrowser < other nameInBrowser ].
 	^ items
@@ -93,18 +93,6 @@ HeraFeatureBrowser >> allowedMethodSelector: methodSelector [
 HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 
 	^ aCharacter isLetter or: [ aCharacter isDigit or: [ aCharacter = $_ ] ]
-]
-
-{ #category : 'initialization' }
-HeraFeatureBrowser >> analytics [
-
-	^ analytics ifNil: [ analytics := HeraAnalytics default ]
-]
-
-{ #category : 'initialization' }
-HeraFeatureBrowser >> analytics: anAnalytics [
-
-	analytics := anAnalytics
 ]
 
 { #category : 'actions' }
@@ -334,6 +322,18 @@ HeraFeatureBrowser >> run [
 	runner := self instantiate: HeraRunner.
 	runner open.
 	runner runAcceptanceTest: acceptanceTest
+]
+
+{ #category : 'initialization' }
+HeraFeatureBrowser >> scope [
+
+	^ scope ifNil: [ scope := HeraBrowsingScope default ]
+]
+
+{ #category : 'initialization' }
+HeraFeatureBrowser >> scope: aScope [
+
+	scope := aScope
 ]
 
 { #category : 'test api' }

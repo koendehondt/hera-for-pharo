@@ -3,7 +3,7 @@ Class {
 	#superclass : 'HeraSelfAcceptanceTest',
 	#instVars : [
 		'featureBrowser',
-		'analytics'
+		'browsingScope'
 	],
 	#category : 'Hera-AcceptanceTests',
 	#package : 'Hera-AcceptanceTests'
@@ -52,7 +52,7 @@ HeraFeatureBrowserAcceptanceTest >> stepIOpenTheFeatureBrowser [
 	<heraStepDefinition: #(When 'I open the Feature Browser')>
 
 	featureBrowser := HeraFeatureBrowser new.
-	featureBrowser analytics: analytics.
+	featureBrowser scope: browsingScope.
 	featureBrowser open
 ]
 
@@ -147,7 +147,7 @@ HeraFeatureBrowserAcceptanceTest >> stepNoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'no features exist')>
 
-	analytics := HeraAnalytics default
+	browsingScope := HeraBrowsingScope default
 ]
 
 { #category : 'steps' }
@@ -155,6 +155,6 @@ HeraFeatureBrowserAcceptanceTest >> stepTwoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'two features exist')>
 
-	analytics := HeraAnalytics default
+	browsingScope := HeraBrowsingScope default
 		includeClass: HeraAcceptanceTestWithPassForTesting
 ]

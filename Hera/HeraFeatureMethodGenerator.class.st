@@ -51,7 +51,7 @@ HeraFeatureMethodGenerator >> initialize [
 	super initialize.
 	indentations := OrderedCollection with: 1.
 	stream := (String new: 1000) writeStream.
-	generatedSelector := ('feature{1}' format: { HeraAnalytics new nextAvailableFeatureNumber }) asSymbol
+	generatedSelector := ('feature{1}' format: { HeraBrowsingScope new nextAvailableFeatureNumber }) asSymbol
 ]
 
 { #category : 'visiting' }
