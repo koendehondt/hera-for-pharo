@@ -33,7 +33,7 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 			(self scenario: 'Debugging a feature from the Feature Browser')
 				when: 'I open the Runner from the Feature Browser to debug a feature';
 				then: 'I see the output of the test run upto the failing step';
-				and: 'a debugger is open on the defintion of the failing step';
+				and: 'a debugger is open on the definition of the failing step';
 				and: 'the run buttons are disabled' .
 			(self scenario: 'Stepping a feature from the Feature Browser')
 				given: 'a feature with one scenario';
