@@ -149,13 +149,12 @@ HeraFeatureBrowser >> debug [
 { #category : 'layout' }
 HeraFeatureBrowser >> defaultLayout [
 
-	| featureEditorAndButton buttonBar leftPanes |
+	| featureEditorAndButton buttonBar leftPanes panes |
 	buttonBar := SpBoxLayout newLeftToRight
-		hAlignCenter;
 		spacing: 10;
-		add: runButton expand: false;
-		add: stepByStepButton expand: false;
-		add: debugButton expand: false;
+		add: runButton width: 40;
+		add: stepByStepButton width: 40;
+		add: debugButton width: 40;
 		yourself.
 	featureEditorAndButton := SpBoxLayout newTopToBottom
 		spacing: 5;
@@ -164,12 +163,17 @@ HeraFeatureBrowser >> defaultLayout [
 		yourself.
 	leftPanes := SpPanedLayout newLeftToRight
 		add: classesAndFeatures;
-		add: featureEditorAndButton;
+		add: scriptEditor;
 		yourself.
-	^ SpPanedLayout newLeftToRight
+	panes := SpPanedLayout newLeftToRight
 		positionOfSlider: 66 percent;
 		add: leftPanes;
 		add: stepEditor;
+		yourself.
+	^ SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: buttonBar expand: false;
+		add: panes;
 		yourself
 ]
 
@@ -243,17 +247,20 @@ HeraFeatureBrowser >> initializePresenters [
 
 	classesAndFeatures := self newTree.
 	scriptEditor := self instantiate: HeraScriptEditor.
+	runButton := self newButton
+		help: 'Run';
+		iconName: #glamorousGo;
+		action: [ self run ];
+		yourself.
 	stepByStepButton := self newButton
-		label: 'Step';
+		help: 'Step';
+		iconName: #glamorousInto;
 		action: [ self stepByStep ];
 		yourself.
 	debugButton := self newButton
-		label: 'Debug';
+		help: 'Debug';
+		iconName: #bug;
 		action: [ self debug ];
-		yourself.
-	runButton := self newButton
-		label: 'Run';
-		action: [ self run ];
 		yourself.
 	stepEditor := self instantiate: HeraStepEditor
 ]
