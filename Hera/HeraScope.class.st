@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraBrowsingScope',
+	#name : 'HeraScope',
 	#superclass : 'Object',
 	#instVars : [
 		'acceptanceTestClasses'
@@ -10,13 +10,13 @@ Class {
 }
 
 { #category : 'instance creation' }
-HeraBrowsingScope class >> all [
+HeraScope class >> all [
 
 	^ self new
 ]
 
 { #category : 'instance creation' }
-HeraBrowsingScope class >> default [
+HeraScope class >> default [
 
 	^ self new
 		excludeHierarchy: HeraAcceptanceTestForTesting;
@@ -24,25 +24,25 @@ HeraBrowsingScope class >> default [
 ]
 
 { #category : 'accessing' }
-HeraBrowsingScope >> allForBrowsing [
+HeraScope >> allForBrowsing [
 
 	^ acceptanceTestClasses sorted: [ :some :other | some name <= other name ]
 ]
 
 { #category : 'accessing' }
-HeraBrowsingScope >> allStepMethods [
+HeraScope >> allStepMethods [
 
 	^ self allForBrowsing flatCollect: [ :each | each stepMethods ]
 ]
 
 { #category : 'accessing' }
-HeraBrowsingScope >> excludeHierarchy: aClass [
+HeraScope >> excludeHierarchy: aClass [
 
 	acceptanceTestClasses removeAll: aClass withAllSubclasses
 ]
 
 { #category : 'accessing' }
-HeraBrowsingScope >> highestFeatureNumber [
+HeraScope >> highestFeatureNumber [
 
 	| max |
 	max := 0.
@@ -57,26 +57,26 @@ HeraBrowsingScope >> highestFeatureNumber [
 ]
 
 { #category : 'accessing' }
-HeraBrowsingScope >> includeClass: aClass [
+HeraScope >> includeClass: aClass [
 
 	acceptanceTestClasses add: aClass
 ]
 
 { #category : 'accessing' }
-HeraBrowsingScope >> includeHierarchy: aClass [
+HeraScope >> includeHierarchy: aClass [
 
 	acceptanceTestClasses addAll: aClass allSubclasses
 ]
 
 { #category : 'initialization' }
-HeraBrowsingScope >> initialize [
+HeraScope >> initialize [
 
 	super initialize.
 	acceptanceTestClasses := HeraAcceptanceTest allSubclasses asSet.
 ]
 
 { #category : 'accessing' }
-HeraBrowsingScope >> nextAvailableFeatureNumber [
+HeraScope >> nextAvailableFeatureNumber [
 
 	^ self highestFeatureNumber + 1
 ]

@@ -9,7 +9,7 @@ Class {
 { #category : 'running' }
 HeraAnalyticsTestCase >> describedClass [
 
-	^ HeraBrowsingScope
+	^ HeraScope
 ]
 
 { #category : 'tests' }

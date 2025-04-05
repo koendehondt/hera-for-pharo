@@ -147,7 +147,7 @@ HeraFeatureBrowserAcceptanceTest >> stepNoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'no features exist')>
 
-	browsingScope := HeraBrowsingScope default
+	browsingScope := HeraScope default
 ]
 
 { #category : 'steps' }
@@ -155,6 +155,6 @@ HeraFeatureBrowserAcceptanceTest >> stepTwoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'two features exist')>
 
-	browsingScope := HeraBrowsingScope default
+	browsingScope := HeraScope default
 		includeClass: HeraAcceptanceTestWithPassForTesting
 ]

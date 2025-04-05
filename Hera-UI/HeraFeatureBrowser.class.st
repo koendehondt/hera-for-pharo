@@ -327,7 +327,7 @@ HeraFeatureBrowser >> run [
 { #category : 'initialization' }
 HeraFeatureBrowser >> scope [
 
-	^ scope ifNil: [ scope := HeraBrowsingScope default ]
+	^ scope ifNil: [ scope := HeraScope default ]
 ]
 
 { #category : 'initialization' }

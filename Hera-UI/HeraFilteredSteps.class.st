@@ -60,5 +60,5 @@ HeraFilteredSteps >> stepMethodItems [
 { #category : 'private' }
 HeraFilteredSteps >> stepMethods [
 
-	^ HeraBrowsingScope new allStepMethods
+	^ HeraScope new allStepMethods
 ]
