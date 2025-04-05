@@ -106,22 +106,22 @@ HeraRunner >> hasRunSteps [
 HeraRunner >> initializePresenters [
 
 	continueButton := self newButton
-		iconName: #glamorousGo;
+		iconName: #go;
 		action: [ self continue ];
 		help: 'Continue';
 		yourself.
 	stepOverScenarioButton := self newButton
-		iconName: #glamorousOver;
+		iconName: #over;
 		action: [ self stepOverScenario ];
 		help: 'Step until end of scenario';
 		yourself.
 	stepOverButton := self newButton
-		iconName: #glamorousInto;
+		iconName: #into;
 		action: [ self stepOver ];
 		help: 'Step';
 		yourself.
 	restartButton := self newButton
-		iconName: #glamorousRestart;
+		iconName: #restart;
 		action: [ self restart ];
 		help: 'Restart from the beginning';
 		yourself.

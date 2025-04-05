@@ -8,7 +8,9 @@ Class {
 		'stepEditor',
 		'debugButton',
 		'stepByStepButton',
-		'scope'
+		'scope',
+		'addAcceptanceTestClassButton',
+		'addFeatureButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -149,18 +151,7 @@ HeraFeatureBrowser >> debug [
 { #category : 'layout' }
 HeraFeatureBrowser >> defaultLayout [
 
-	| featureEditorAndButton buttonBar leftPanes panes |
-	buttonBar := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: runButton width: 40;
-		add: stepByStepButton width: 40;
-		add: debugButton width: 40;
-		yourself.
-	featureEditorAndButton := SpBoxLayout newTopToBottom
-		spacing: 5;
-		add: scriptEditor;
-		add: buttonBar expand: false;
-		yourself.
+	| leftPanes panes |
 	leftPanes := SpPanedLayout newLeftToRight
 		add: classesAndFeatures;
 		add: scriptEditor;
@@ -172,7 +163,7 @@ HeraFeatureBrowser >> defaultLayout [
 		yourself.
 	^ SpBoxLayout newTopToBottom
 		spacing: 5;
-		add: buttonBar expand: false;
+		add: self toolbar expand: false;
 		add: panes;
 		yourself
 ]
@@ -245,24 +236,40 @@ HeraFeatureBrowser >> initialize [
 { #category : 'initialization' }
 HeraFeatureBrowser >> initializePresenters [
 
+	self initializeToolbarButtons.
 	classesAndFeatures := self newTree.
 	scriptEditor := self instantiate: HeraScriptEditor.
+	stepEditor := self instantiate: HeraStepEditor
+]
+
+{ #category : 'initialization' }
+HeraFeatureBrowser >> initializeToolbarButtons [
+
+	addAcceptanceTestClassButton := self newButton
+		help: 'Add acceptance test class';
+		iconName: #add;
+		action: [ self addAcceptanceTestClass ];
+		yourself.
+	addFeatureButton := self newButton
+		help: 'Add feature';
+		iconName: #scriptManager;
+		action: [ self addFeature ];
+		yourself.
 	runButton := self newButton
 		help: 'Run';
-		iconName: #glamorousGo;
+		iconName: #go;
 		action: [ self run ];
 		yourself.
 	stepByStepButton := self newButton
 		help: 'Step';
-		iconName: #glamorousInto;
+		iconName: #into;
 		action: [ self stepByStep ];
 		yourself.
 	debugButton := self newButton
 		help: 'Debug';
 		iconName: #bug;
 		action: [ self debug ];
-		yourself.
-	stepEditor := self instantiate: HeraStepEditor
+		yourself
 ]
 
 { #category : 'initialization' }
@@ -287,11 +294,13 @@ HeraFeatureBrowser >> installClassesAndFeaturesContextMenu [
 					action
 						name: 'New acceptance test class…';
 						description: 'Add a new class to hold features.';
+						shortcutKey: $n meta;
 						action: [ self addAcceptanceTestClass ] ];
 				addActionWith: [ :action |
 					action
 						name: 'New feature…';
 						description: 'Add a new feature.';
+						shortcutKey: $n meta shift;
 						action: [ self addFeature ];
 						actionEnabled: [ self hasSelectedClassOrFeature ] ];
 				addGroupWith: [ :group |
@@ -380,6 +389,27 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
 	suggestion := aStepAstNode description asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
 	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
+]
+
+{ #category : 'layout' }
+HeraFeatureBrowser >> toolbar [
+
+	| manageGroup runGroup |
+	manageGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: addAcceptanceTestClassButton width: 40;
+		add: addFeatureButton width: 40;
+		yourself.
+	runGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: runButton width: 40;
+		add: stepByStepButton width: 40;
+		add: debugButton width: 40;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		add: manageGroup width: 120;
+		add: runGroup;
+		yourself
 ]
 
 { #category : 'private' }
