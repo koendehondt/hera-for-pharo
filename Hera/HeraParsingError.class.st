@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraGherkinParsingError',
+	#name : 'HeraParsingError',
 	#superclass : 'Error',
 	#instVars : [
 		'start',
@@ -11,25 +11,25 @@ Class {
 }
 
 { #category : 'accessing' }
-HeraGherkinParsingError >> end [
+HeraParsingError >> end [
 
 	^ end
 ]
 
 { #category : 'accessing' }
-HeraGherkinParsingError >> end: sourceEndIndex [
+HeraParsingError >> end: sourceEndIndex [
 
 	end := sourceEndIndex
 ]
 
 { #category : 'accessing' }
-HeraGherkinParsingError >> start [
+HeraParsingError >> start [
 
 	^ start
 ]
 
 { #category : 'accessing' }
-HeraGherkinParsingError >> start: sourceStartIndex [
+HeraParsingError >> start: sourceStartIndex [
 
 	start := sourceStartIndex
 ]

@@ -23,7 +23,7 @@ HeraFeatureMethodGeneratorTestCase >> initializeSubject [
 HeraFeatureMethodGeneratorTestCase >> parse: description [
 
 	| parser |
-	parser := HeraGherkinParser new.
+	parser := HeraParser new.
 	parser initializeParserWith: description.
 	^ parser parseFeature
 ]

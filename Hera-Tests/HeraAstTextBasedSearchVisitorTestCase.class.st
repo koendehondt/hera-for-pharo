@@ -9,7 +9,7 @@ Class {
 { #category : 'private' }
 HeraAstTextBasedSearchVisitorTestCase >> ast [
 
-	^ HeraGherkinParser new
+	^ HeraParser new
 		initializeParserWith: self script;
 		parseFeature
 ]

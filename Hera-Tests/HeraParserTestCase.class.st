@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraGherkinParserTestCase',
+	#name : 'HeraParserTestCase',
 	#superclass : 'HeraTestCase',
 	#category : 'Hera-Tests-Parser',
 	#package : 'Hera-Tests',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'helpers' }
-HeraGherkinParserTestCase >> assertError: aString start: startInteger end: endInteger whenParsing: script [
+HeraParserTestCase >> assertError: aString start: startInteger end: endInteger whenParsing: script [
 
 	| error |
 	self assert: (self parseFeature: script) isNil.
@@ -18,20 +18,20 @@ HeraGherkinParserTestCase >> assertError: aString start: startInteger end: endIn
 ]
 
 { #category : 'running' }
-HeraGherkinParserTestCase >> describedClass [
+HeraParserTestCase >> describedClass [
 
-	^ HeraGherkinParser
+	^ HeraParser
 ]
 
 { #category : 'helpers' }
-HeraGherkinParserTestCase >> parseFeature: aScript [
+HeraParserTestCase >> parseFeature: aScript [
 
 	subject initializeParserWith: aScript.
 	^ subject parseFeature
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testAstContainsTextPositions [
+HeraParserTestCase >> testAstContainsTextPositions [
 
 	| script ast tags |
 	script := '
@@ -59,7 +59,7 @@ HeraGherkinParserTestCase >> testAstContainsTextPositions [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseBackgroundWithText [
+HeraParserTestCase >> testParseBackgroundWithText [
 
 	self
 		assertError: 'Text after background keyword is not allowed'
@@ -75,7 +75,7 @@ HeraGherkinParserTestCase >> testParseBackgroundWithText [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseBackgroundWithThenStep [
+HeraParserTestCase >> testParseBackgroundWithThenStep [
 
 	self
 		assertError: 'This step is not allowed in a background'
@@ -91,7 +91,7 @@ HeraGherkinParserTestCase >> testParseBackgroundWithThenStep [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseBackgroundWithWhenStep [
+HeraParserTestCase >> testParseBackgroundWithWhenStep [
 
 	self
 		assertError: 'This step is not allowed in a background'
@@ -107,7 +107,7 @@ HeraGherkinParserTestCase >> testParseBackgroundWithWhenStep [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseDataTable [
+HeraParserTestCase >> testParseDataTable [
 
 	| script ast scenarioNode stepNodes givenStepNode whenStepNode andStepNode thenStepNode butStepNode |
 	script := '
@@ -198,7 +198,7 @@ HeraGherkinParserTestCase >> testParseDataTable [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDataTableWithEmptyLine [
+HeraParserTestCase >> testParseDataTableWithEmptyLine [
 
 	self
 		assertError: 'Empty lines in data tables are not allowed'
@@ -216,7 +216,7 @@ HeraGherkinParserTestCase >> testParseDataTableWithEmptyLine [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDataTableWithMissingCell [
+HeraParserTestCase >> testParseDataTableWithMissingCell [
 
 	self
 		assertError: 'Data table has missing cells'
@@ -234,7 +234,7 @@ HeraGherkinParserTestCase >> testParseDataTableWithMissingCell [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDataTableWithMissingTerminatingBar [
+HeraParserTestCase >> testParseDataTableWithMissingTerminatingBar [
 
 	self
 		assertError: 'Data table row not closed with |'
@@ -252,7 +252,7 @@ HeraGherkinParserTestCase >> testParseDataTableWithMissingTerminatingBar [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseDataTableWithoutFormatting [
+HeraParserTestCase >> testParseDataTableWithoutFormatting [
 
 	| script ast scenarioNode firstStepNode secondStepNode |
 	"The extra white space in the table is there on purpose, as the parser removes the white space.
@@ -292,7 +292,7 @@ HeraGherkinParserTestCase >> testParseDataTableWithoutFormatting [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseDocString [
+HeraParserTestCase >> testParseDocString [
 
 	| script ast scenarioNode stepNodes thenStepNode givenStepNode whenStepNode andStepNode butStepNode |
 	script := '
@@ -390,7 +390,7 @@ HeraGherkinParserTestCase >> testParseDocString [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDocStringWithLessIndentationIsNotAllowed [
+HeraParserTestCase >> testParseDocStringWithLessIndentationIsNotAllowed [
 
 	self
 		assertError: 'Inconsistent indentation of doc string'
@@ -409,7 +409,7 @@ HeraGherkinParserTestCase >> testParseDocStringWithLessIndentationIsNotAllowed [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDocStringWithMissingClosingTripleQuotes [
+HeraParserTestCase >> testParseDocStringWithMissingClosingTripleQuotes [
 
 	self
 		assertError: 'Doc string is not closed with """'
@@ -428,7 +428,7 @@ HeraGherkinParserTestCase >> testParseDocStringWithMissingClosingTripleQuotes [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseDocStringWithMoreIndentationIsAllowed [
+HeraParserTestCase >> testParseDocStringWithMoreIndentationIsAllowed [
 
 	| script |
 	script := '
@@ -457,7 +457,7 @@ HeraGherkinParserTestCase >> testParseDocStringWithMoreIndentationIsAllowed [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDocStringWithTextAfterClosingTripleQuotes [
+HeraParserTestCase >> testParseDocStringWithTextAfterClosingTripleQuotes [
 
 	self
 		assertError: 'Text after """ is not allowed'
@@ -476,7 +476,7 @@ HeraGherkinParserTestCase >> testParseDocStringWithTextAfterClosingTripleQuotes 
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDocStringWithTextAfterOpeningTripleQuotes [
+HeraParserTestCase >> testParseDocStringWithTextAfterOpeningTripleQuotes [
 
 	self
 		assertError: 'Text after """ is not allowed'
@@ -494,7 +494,7 @@ HeraGherkinParserTestCase >> testParseDocStringWithTextAfterOpeningTripleQuotes 
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseDocStringWithTextBeforeOpeningTripleQuotes [
+HeraParserTestCase >> testParseDocStringWithTextBeforeOpeningTripleQuotes [
 
 	self
 		assertError: 'Step, step argument, or scenario expected'
@@ -511,7 +511,7 @@ HeraGherkinParserTestCase >> testParseDocStringWithTextBeforeOpeningTripleQuotes
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseEmptyFeature [
+HeraParserTestCase >> testParseEmptyFeature [
 
 	| script ast |
 	script := 'Feature: Signing in'.
@@ -522,7 +522,7 @@ HeraGherkinParserTestCase >> testParseEmptyFeature [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseFeatureWithDescription [
+HeraParserTestCase >> testParseFeatureWithDescription [
 
 	| script ast scenarioNode |
 	script := '
@@ -546,7 +546,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithDescription [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseFeatureWithEmptyScenario [
+HeraParserTestCase >> testParseFeatureWithEmptyScenario [
 
 	| script ast scenarioNode |
 	script := '
@@ -565,7 +565,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithEmptyScenario [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseFeatureWithKeywordAsFirstWordInName [
+HeraParserTestCase >> testParseFeatureWithKeywordAsFirstWordInName [
 
 	| script ast scenarioNode |
 	script := '
@@ -585,7 +585,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithKeywordAsFirstWordInName [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseFeatureWithStepButNoScenario [
+HeraParserTestCase >> testParseFeatureWithStepButNoScenario [
 
 	self
 		assertError: 'Scenario keyword expected'
@@ -598,7 +598,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithStepButNoScenario [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseFeatureWithTags [
+HeraParserTestCase >> testParseFeatureWithTags [
 
 	| script ast scenarioNode |
 	script := '
@@ -623,7 +623,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithTags [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseFeatureWithTwoEmptyScenarios [
+HeraParserTestCase >> testParseFeatureWithTwoEmptyScenarios [
 
 	| script ast scenarioNode |
 	script := '
@@ -648,7 +648,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithTwoEmptyScenarios [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseFeatureWithoutFeatureKeyword [
+HeraParserTestCase >> testParseFeatureWithoutFeatureKeyword [
 
 	self
 		assertError: 'Feature keyword expected'
@@ -658,7 +658,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithoutFeatureKeyword [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseFeatureWithoutName [
+HeraParserTestCase >> testParseFeatureWithoutName [
 
 	self
 		assertError: 'Feature name expected after feature keyword'
@@ -671,7 +671,7 @@ HeraGherkinParserTestCase >> testParseFeatureWithoutName [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseFullFeature [
+HeraParserTestCase >> testParseFullFeature [
 
 	| script ast scenarioNode stepNode backgroundNode givenNode |
 	script := '
@@ -724,7 +724,7 @@ HeraGherkinParserTestCase >> testParseFullFeature [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
+HeraParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
 
 	| script ast |
 	script := '
@@ -736,7 +736,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithButKeywordAsFirstWordInTitle [
+HeraParserTestCase >> testParseScenarioWithButKeywordAsFirstWordInTitle [
 
 	| script ast |
 	script := '
@@ -748,7 +748,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithButKeywordAsFirstWordInTitle [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithDescription [
+HeraParserTestCase >> testParseScenarioWithDescription [
 
 	| script ast scenarioNode |
 	script := '
@@ -779,7 +779,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithDescription [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithGivenKeywordAsFirstWordInTitle [
+HeraParserTestCase >> testParseScenarioWithGivenKeywordAsFirstWordInTitle [
 
 	| script ast |
 	script := '
@@ -791,7 +791,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithGivenKeywordAsFirstWordInTitle
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithTags [
+HeraParserTestCase >> testParseScenarioWithTags [
 
 	| script ast scenarioNode |
 	script := '
@@ -817,7 +817,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithTags [
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithThenKeywordAsFirstWordInTitle [
+HeraParserTestCase >> testParseScenarioWithThenKeywordAsFirstWordInTitle [
 
 	| script ast |
 	script := '
@@ -829,7 +829,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithThenKeywordAsFirstWordInTitle 
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithWhenKeywordAsFirstWordInTitle [
+HeraParserTestCase >> testParseScenarioWithWhenKeywordAsFirstWordInTitle [
 
 	| script ast |
 	script := '
@@ -841,7 +841,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithWhenKeywordAsFirstWordInTitle 
 ]
 
 { #category : 'tests' }
-HeraGherkinParserTestCase >> testParseScenarioWithoutTags [
+HeraParserTestCase >> testParseScenarioWithoutTags [
 
 	| script ast scenarioNode |
 	script := '
@@ -861,7 +861,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithoutTags [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseScenarioWithoutTitle [
+HeraParserTestCase >> testParseScenarioWithoutTitle [
 
 	self
 		assertError: 'Scenario title expected after scenario keyword'
@@ -874,7 +874,7 @@ HeraGherkinParserTestCase >> testParseScenarioWithoutTitle [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseWrongFeatureKeywordAfterTag [
+HeraParserTestCase >> testParseWrongFeatureKeywordAfterTag [
 
 	self
 		assertError: 'Feature keyword expected'
@@ -886,7 +886,7 @@ HeraGherkinParserTestCase >> testParseWrongFeatureKeywordAfterTag [
 ]
 
 { #category : 'tests - parsing errors' }
-HeraGherkinParserTestCase >> testParseWrongScenarioKeywordAfterTag [
+HeraParserTestCase >> testParseWrongScenarioKeywordAfterTag [
 
 	self
 		assertError: 'Scenario keyword expected'

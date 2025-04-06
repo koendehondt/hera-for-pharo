@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraGherkinScanner',
+	#name : 'HeraScanner',
 	#superclass : 'Object',
 	#instVars : [
 		'stream',
@@ -12,32 +12,32 @@ Class {
 }
 
 { #category : 'instance creation' }
-HeraGherkinScanner class >> on: aStream [
+HeraScanner class >> on: aStream [
 
 	^ self new on: aStream
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> lineDoesNotStartWithThreeDoubleQuotes: aLineString [
+HeraScanner >> lineDoesNotStartWithThreeDoubleQuotes: aLineString [
 
 	^ (aLineString trimLeft copy indexOfSubCollection: '"""' startingAt: 1 ifAbsent: [ 0 ]) = 0
 ]
 
 { #category : 'initialization' }
-HeraGherkinScanner >> on: aStream [
+HeraScanner >> on: aStream [
 
 	stream := aStream.
 	indexOfCurrentLine := 1
 ]
 
 { #category : 'accessing' }
-HeraGherkinScanner >> position [
+HeraScanner >> position [
 
 	^ stream position
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> scanDocStringLinesFor: aDocStringToken [
+HeraScanner >> scanDocStringLinesFor: aDocStringToken [
 	"Scan the whole doc string after the opening triple quotes upto the last character on the line with the closing triple quotes, and store the string as separate lines in the given token."
 
 	| lines line end |
@@ -52,7 +52,7 @@ HeraGherkinScanner >> scanDocStringLinesFor: aDocStringToken [
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> scanToken [
+HeraScanner >> scanToken [
 
 	| alreadyReadToken start |
 	alreadyReadToken := nextToken.
@@ -100,19 +100,19 @@ HeraGherkinScanner >> scanToken [
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> skipWhiteSpace [
+HeraScanner >> skipWhiteSpace [
 
 	[ (stream peekFor: Character space) or: [ stream peekFor: Character tab ] ] whileTrue
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> startLine [
+HeraScanner >> startLine [
 
 	indexOfCurrentLine := stream position + 1
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> tryScanStepToken: aTokenClass ifFound: aBlock [
+HeraScanner >> tryScanStepToken: aTokenClass ifFound: aBlock [
 
 	| start tokenString end |
 	tokenString := aTokenClass keyword.
@@ -128,7 +128,7 @@ HeraGherkinScanner >> tryScanStepToken: aTokenClass ifFound: aBlock [
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> tryScanTextToken [
+HeraScanner >> tryScanTextToken [
 
 	| start |
 	self skipWhiteSpace.
@@ -146,7 +146,7 @@ HeraGherkinScanner >> tryScanTextToken [
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> tryScanToken: aString [
+HeraScanner >> tryScanToken: aString [
 
 	| oldPosition |
 	oldPosition := stream position.
@@ -156,7 +156,7 @@ HeraGherkinScanner >> tryScanToken: aString [
 ]
 
 { #category : 'scanning' }
-HeraGherkinScanner >> tryScanToken: aTokenClass ifFound: aBlock [
+HeraScanner >> tryScanToken: aTokenClass ifFound: aBlock [
 
 	| start tokenString end |
 	tokenString := aTokenClass keyword.

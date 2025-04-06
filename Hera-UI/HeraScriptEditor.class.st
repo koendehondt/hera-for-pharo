@@ -75,7 +75,7 @@ HeraScriptEditor >> lintWarnings [
 { #category : 'private' }
 HeraScriptEditor >> parser [
 
-	^ parser ifNil: [ parser := HeraGherkinParser new ]
+	^ parser ifNil: [ parser := HeraParser new ]
 ]
 
 { #category : 'api' }

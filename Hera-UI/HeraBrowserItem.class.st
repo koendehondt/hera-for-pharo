@@ -39,7 +39,7 @@ HeraBrowserItem >> addStepDefinitionMethodFor: aStepAstNode as: targetSelector [
 { #category : 'private' }
 HeraBrowserItem >> astForScript: aString [
 
-	^ HeraGherkinParser new
+	^ HeraParser new
 		initializeParserWith: aString;
 		parseFeature
 ]

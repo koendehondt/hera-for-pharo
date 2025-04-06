@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraGherkinParser',
+	#name : 'HeraParser',
 	#superclass : 'Object',
 	#instVars : [
 		'scanner',
@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : 'parsing' }
-HeraGherkinParser >> dataValuesFrom: aDataTableToken [
+HeraParser >> dataValuesFrom: aDataTableToken [
 
 	| concatenatedValues |
 	concatenatedValues := aDataTableToken text.
@@ -23,14 +23,14 @@ HeraGherkinParser >> dataValuesFrom: aDataTableToken [
 ]
 
 { #category : 'initialization' }
-HeraGherkinParser >> initializeParserWith: aTextOrString [
+HeraParser >> initializeParserWith: aTextOrString [
 
-	scanner := HeraGherkinScanner on: (ReadStream on: aTextOrString asString).
+	scanner := HeraScanner on: (ReadStream on: aTextOrString asString).
 	currentToken := HeraEndOfLineToken new start: 1
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> nextToken [
+HeraParser >> nextToken [
 
 	previousToken := currentToken.
 	currentToken := scanner scanToken.
@@ -38,7 +38,7 @@ HeraGherkinParser >> nextToken [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseBackground [
+HeraParser >> parseBackground [
 
 	| start end steps |
 	currentToken isBackgroundToken ifFalse: [ ^ nil ].
@@ -58,7 +58,7 @@ HeraGherkinParser >> parseBackground [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseDataTableStepArgument [
+HeraParser >> parseDataTableStepArgument [
 
 	"DataTableToken has already been read."
 	| rows rowSizes end skippedEmptyLines start |
@@ -85,7 +85,7 @@ HeraGherkinParser >> parseDataTableStepArgument [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseDescription [
+HeraParser >> parseDescription [
 
 	| lines start end |
 	lines := OrderedCollection new.
@@ -111,7 +111,7 @@ HeraGherkinParser >> parseDescription [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseDocStringStepArgument [
+HeraParser >> parseDocStringStepArgument [
 
 	| unindentedLines docStringToken |
 	docStringToken := currentToken.
@@ -124,22 +124,22 @@ HeraGherkinParser >> parseDocStringStepArgument [
 ]
 
 { #category : 'accessing' }
-HeraGherkinParser >> parseError [
+HeraParser >> parseError [
 
 	^ parseError
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseError: aString from: sourceStartIndex to: sourceEndIndex [
+HeraParser >> parseError: aString from: sourceStartIndex to: sourceEndIndex [
 
-	parseError := HeraGherkinParsingError new
+	parseError := HeraParsingError new
 		start: sourceStartIndex;
 		end: sourceEndIndex.
 	parseError signal: aString
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseFeature [
+HeraParser >> parseFeature [
 
 	| name featureNode tags description scenarios nameToken background featureToken |
 	[
@@ -169,12 +169,12 @@ HeraGherkinParser >> parseFeature [
 			scenarios: scenarios;
 			start: featureToken start;
 			end: scanner position.
-	] on: HeraGherkinParsingError do: [ ^ nil ].
+	] on: HeraParsingError do: [ ^ nil ].
 	^ featureNode
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseScenario [
+HeraParser >> parseScenario [
 
 	| scenarioNode tags description steps titleToken scenarioToken |
 	"scenarioToken or tagToken has already been read."
@@ -203,7 +203,7 @@ HeraGherkinParser >> parseScenario [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseScenarios [
+HeraParser >> parseScenarios [
 
 	| scenarioNodes |
 	scenarioNodes := OrderedCollection new.
@@ -213,7 +213,7 @@ HeraGherkinParser >> parseScenarios [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseStep [
+HeraParser >> parseStep [
 
 	"The step token has already been read."
 	| stepNode description stepToken |
@@ -238,7 +238,7 @@ HeraGherkinParser >> parseStep [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseStepArgument [
+HeraParser >> parseStepArgument [
 
 	"The first token has already been read."
 	currentToken isDataTableToken ifTrue: [ ^ self parseDataTableStepArgument ].
@@ -247,7 +247,7 @@ HeraGherkinParser >> parseStepArgument [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseStepsRestricted: aBlock [
+HeraParser >> parseStepsRestricted: aBlock [
 
 	| stepNodes |
 	stepNodes := OrderedCollection new.
@@ -262,7 +262,7 @@ HeraGherkinParser >> parseStepsRestricted: aBlock [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> parseTags [
+HeraParser >> parseTags [
 
 	| tags start |
 	tags := OrderedCollection new.
@@ -277,7 +277,7 @@ HeraGherkinParser >> parseTags [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> removeIndentation: docStringToken [
+HeraParser >> removeIndentation: docStringToken [
 
 	| tabs unindentedLines indentation lines |
 	indentation := docStringToken indentation.
@@ -299,7 +299,7 @@ HeraGherkinParser >> removeIndentation: docStringToken [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> skipEmptyLines [
+HeraParser >> skipEmptyLines [
 
 	| skippedEmptyLines |
 	skippedEmptyLines := false.
@@ -312,7 +312,7 @@ HeraGherkinParser >> skipEmptyLines [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> skipEndOfLineToken [
+HeraParser >> skipEndOfLineToken [
 
 	self nextToken.
 	currentToken isEndOfFileToken ifTrue: [ ^ self ].
@@ -322,7 +322,7 @@ HeraGherkinParser >> skipEndOfLineToken [
 ]
 
 { #category : 'parsing' }
-HeraGherkinParser >> tryScanTextToken [
+HeraParser >> tryScanTextToken [
 
 	previousToken := currentToken.
 	currentToken := scanner tryScanTextToken.

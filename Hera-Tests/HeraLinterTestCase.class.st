@@ -37,7 +37,7 @@ HeraLinterTestCase >> lintFeature: aScript [
 HeraLinterTestCase >> parseFeature: aScript [
 
 	| parser |
-	parser := HeraGherkinParser new initializeParserWith: aScript.
+	parser := HeraParser new initializeParserWith: aScript.
 	^ parser parseFeature
 ]
 
