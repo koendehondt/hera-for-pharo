@@ -227,9 +227,11 @@ HeraFeatureBrowser >> displayedTreeItems [
 { #category : 'private' }
 HeraFeatureBrowser >> featureSelectionChanged [
 
+	| text |
+	text := classesAndFeatures selectedItem ifNil: [ '' ] ifNotNil: [ :item | item richScript].
 	scriptEditor
-		text: (classesAndFeatures selectedItem ifNil: [ '' ] ifNotNil: [ :item | item richScript]);
-		selectionInterval: (0 to: 0).
+		text: text;
+		selectionInterval: (text size + 1 to: text size + 1).
 	self updateAfterSelectionChange
 ]
 
@@ -478,7 +480,8 @@ HeraFeatureBrowser >> updateClassesAndFeaturesAfterAddingFeatureMethod: featureM
 { #category : 'private' }
 HeraFeatureBrowser >> updateSelectedFeature: aFeatureAstNode [
 
-	self selectedMethodItem saveSource: aFeatureAstNode
+	self selectedMethodItem saveSource: aFeatureAstNode.
+	self featureSelectionChanged
 ]
 
 { #category : 'private' }
