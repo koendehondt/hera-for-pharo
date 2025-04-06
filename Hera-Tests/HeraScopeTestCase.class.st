@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraAnalyticsTestCase',
+	#name : 'HeraScopeTestCase',
 	#superclass : 'HeraTestCase',
 	#category : 'Hera-Tests-Core',
 	#package : 'Hera-Tests',
@@ -7,20 +7,20 @@ Class {
 }
 
 { #category : 'running' }
-HeraAnalyticsTestCase >> describedClass [
+HeraScopeTestCase >> describedClass [
 
 	^ HeraScope
 ]
 
 { #category : 'tests' }
-HeraAnalyticsTestCase >> testAllForBrowsingDefaultsToEmptyArray [
+HeraScopeTestCase >> testAllForBrowsingDefaultsToEmptyArray [
 
 	subject := self describedClass default.
 	self assert: subject allForBrowsing equals: #()
 ]
 
 { #category : 'tests' }
-HeraAnalyticsTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
+HeraScopeTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 
 	subject := self describedClass default.
 	subject includeHierarchy: HeraAcceptanceTestForTesting.
@@ -39,14 +39,14 @@ HeraAnalyticsTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 ]
 
 { #category : 'tests' }
-HeraAnalyticsTestCase >> testHighestFeatureNumber [
+HeraScopeTestCase >> testHighestFeatureNumber [
 
 	"Based on the existing acceptance test classes in the Hera distribution."
 	self assert: subject highestFeatureNumber equals: 0
 ]
 
 { #category : 'tests' }
-HeraAnalyticsTestCase >> testNextAvailableFeatureNumber [
+HeraScopeTestCase >> testNextAvailableFeatureNumber [
 
 	"Based on the existing acceptance test classes in the Hera distribution."
 	self assert: subject nextAvailableFeatureNumber equals: 1
