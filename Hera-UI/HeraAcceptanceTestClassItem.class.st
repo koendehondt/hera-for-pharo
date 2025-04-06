@@ -1,42 +1,15 @@
 Class {
 	#name : 'HeraAcceptanceTestClassItem',
 	#superclass : 'HeraBrowserItem',
-	#instVars : [
-		'acceptanceTestClass'
-	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
 	#tag : 'Feature Browser'
 }
 
-{ #category : 'comparing' }
-HeraAcceptanceTestClassItem >> = other [
-
-	^ (other isMemberOf: self class) and: [ acceptanceTestClass = other acceptanceTestClass ]
-]
-
-{ #category : 'accessing' }
-HeraAcceptanceTestClassItem >> acceptanceTestClass [
-
-	^ acceptanceTestClass
-]
-
-{ #category : 'accessing' }
-HeraAcceptanceTestClassItem >> acceptanceTestClass: aClass [
-
-	acceptanceTestClass := aClass
-]
-
 { #category : 'actions' }
 HeraAcceptanceTestClassItem >> browse [
 
 	acceptanceTestClass browse
-]
-
-{ #category : 'comparing' }
-HeraAcceptanceTestClassItem >> hash [
-
-	^ acceptanceTestClass hash
 ]
 
 { #category : 'accessing' }
@@ -68,7 +41,7 @@ HeraAcceptanceTestClassItem >> subitems [
 
 	| items |
 	items := acceptanceTestClass featureMethods collect: [ :each |
-		HeraFeatureMethodItem new featureMethod: each ].
+		HeraFeatureMethodItem new acceptanceTestClass: each methodClass; featureMethodSelector: each selector ].
 	^ items sorted
 ]
 

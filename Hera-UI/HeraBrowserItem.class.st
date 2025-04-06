@@ -1,10 +1,31 @@
 Class {
 	#name : 'HeraBrowserItem',
 	#superclass : 'Object',
+	#instVars : [
+		'acceptanceTestClass'
+	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
 	#tag : 'Feature Browser'
 }
+
+{ #category : 'comparing' }
+HeraBrowserItem >> = other [
+
+	^ (other isMemberOf: self class) and: [ acceptanceTestClass = other acceptanceTestClass ]
+]
+
+{ #category : 'accessing' }
+HeraBrowserItem >> acceptanceTestClass [
+
+	^ acceptanceTestClass
+]
+
+{ #category : 'accessing' }
+HeraBrowserItem >> acceptanceTestClass: aClass [
+
+	acceptanceTestClass := aClass
+]
 
 { #category : 'actions' }
 HeraBrowserItem >> addFeatureNamed: aString [
@@ -48,6 +69,12 @@ HeraBrowserItem >> astForScript: aString [
 HeraBrowserItem >> browse [
 
 	self subclassResponsibility
+]
+
+{ #category : 'comparing' }
+HeraBrowserItem >> hash [
+
+	^ acceptanceTestClass hash
 ]
 
 { #category : 'testing' }

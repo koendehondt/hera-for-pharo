@@ -13,20 +13,24 @@ HeraFeatureMethodItemTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
-HeraFeatureMethodItemTestCase >> testHashIsHashOfCompiledMethod [
+HeraFeatureMethodItemTestCase >> testHashIsHashOfSelector [
 
-	| compiledMethod |
-	compiledMethod := HeraAcceptanceTestWithPassForTesting>>#signingInFeature.
-	subject featureMethod: compiledMethod.
-	self assert: subject hash equals: compiledMethod hash
+	subject
+		acceptanceTestClass: HeraAcceptanceTestWithPassForTesting;
+		featureMethodSelector: #signingInFeature.
+	self assert: subject hash equals: #signingInFeature hash
 ]
 
 { #category : 'tests' }
-HeraFeatureMethodItemTestCase >> testIsEqualToMethodItemWithTheSameCompiledMethod [
+HeraFeatureMethodItemTestCase >> testIsEqualToMethodItemWithTheSameAcceptanceTestClassAndFeatureMethodSelector [
 
 	| anotherMethodItem |
-	subject featureMethod: HeraAcceptanceTestWithPassForTesting>>#signingInFeature.
-	anotherMethodItem := self describedClass new featureMethod: HeraAcceptanceTestWithPassForTesting>>#signingInFeature.
+	subject
+		acceptanceTestClass: HeraAcceptanceTestWithPassForTesting;
+		featureMethodSelector: #signingInFeature.
+	anotherMethodItem := self describedClass new
+		acceptanceTestClass: HeraAcceptanceTestWithPassForTesting;
+		featureMethodSelector: #signingInFeature.
 	self assert: subject equals: anotherMethodItem
 ]
 
@@ -37,11 +41,19 @@ HeraFeatureMethodItemTestCase >> testIsNotEqualToInstanceOfOtherClass [
 ]
 
 { #category : 'tests' }
-HeraFeatureMethodItemTestCase >> testIsNotEqualToMethodItemWithAnotherCompiledMethod [
+HeraFeatureMethodItemTestCase >> testIsNotEqualToMethodItemWithAnotherAcceptanceTestClassOrFeatureMethodSelector [
 
 	| anotherMethodItem |
-	subject featureMethod: HeraAcceptanceTestWithPassForTesting>>#signingInFeature.
-	anotherMethodItem := self describedClass new featureMethod: HeraAcceptanceTestWithFailureForTesting>>#signingInFeature.
+	subject
+		acceptanceTestClass: HeraAcceptanceTestWithPassForTesting;
+		featureMethodSelector: #signingInFeature.
+	anotherMethodItem := self describedClass new
+		acceptanceTestClass: HeraAcceptanceTestWithFailureForTesting;
+		featureMethodSelector: #signingInFeature.
+	self deny: subject equals: anotherMethodItem.
+	anotherMethodItem := self describedClass new
+		acceptanceTestClass: HeraAcceptanceTestWithPassForTesting;
+		featureMethodSelector: #signingOutFeature.
 	self deny: subject equals: anotherMethodItem
 ]
 

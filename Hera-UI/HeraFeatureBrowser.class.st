@@ -494,7 +494,7 @@ HeraFeatureBrowser >> updateClassesAndFeaturesAfterAddingFeatureMethod: featureM
 
 	self flag: 'Brute force update for now. Better: insert featureMethod.'.
 	self updateClassesAndFeatures.
-	classesAndFeatures selection selectItem: (HeraFeatureMethodItem new featureMethod: featureMethod)
+	classesAndFeatures selection selectItem: (HeraFeatureMethodItem new acceptanceTestClass: featureMethod methodClass; featureMethodSelector: featureMethod selector)
 ]
 
 { #category : 'private' }

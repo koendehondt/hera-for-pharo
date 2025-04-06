@@ -2,7 +2,7 @@ Class {
 	#name : 'HeraFeatureMethodItem',
 	#superclass : 'HeraBrowserItem',
 	#instVars : [
-		'featureMethod'
+		'featureMethodSelector'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -18,43 +18,49 @@ HeraFeatureMethodItem >> <= other [
 { #category : 'comparing' }
 HeraFeatureMethodItem >> = other [
 
-	^ (other isMemberOf: self class) and: [ featureMethod = other featureMethod ]
+	^ super = other and: [ featureMethodSelector = other featureMethodSelector ]
 ]
 
 { #category : 'accessing' }
 HeraFeatureMethodItem >> acceptanceTest [
 
-	^ featureMethod methodClass selector: featureMethod selector
+	^ acceptanceTestClass selector: featureMethodSelector
 ]
 
 { #category : 'actions' }
 HeraFeatureMethodItem >> browse [
 
-	featureMethod browse
+	self featureMethod browse
 ]
 
 { #category : 'private' }
 HeraFeatureMethodItem >> feature [
 
-	^ featureMethod methodClass new perform: featureMethod selector
+	^ acceptanceTestClass new perform: featureMethodSelector
 ]
 
 { #category : 'accessing' }
 HeraFeatureMethodItem >> featureMethod [
 
-	^ featureMethod
+	^ acceptanceTestClass >> featureMethodSelector
 ]
 
 { #category : 'accessing' }
-HeraFeatureMethodItem >> featureMethod: aCompiledMethod [
+HeraFeatureMethodItem >> featureMethodSelector [
 
-	featureMethod := aCompiledMethod
+	^ featureMethodSelector
+]
+
+{ #category : 'accessing' }
+HeraFeatureMethodItem >> featureMethodSelector: aMethodSelector [
+
+	featureMethodSelector := aMethodSelector
 ]
 
 { #category : 'comparing' }
 HeraFeatureMethodItem >> hash [
 
-	^ featureMethod hash
+	^ featureMethodSelector hash
 ]
 
 { #category : 'testing' }
@@ -66,7 +72,7 @@ HeraFeatureMethodItem >> isRunnable [
 { #category : 'accessing' }
 HeraFeatureMethodItem >> nameInBrowser [
 
-	^ (featureMethod pragmaAt: #heraFeature:) argumentAt: 1
+	^ (self featureMethod pragmaAt: #heraFeature:) argumentAt: 1
 ]
 
 { #category : 'accessing' }
@@ -78,7 +84,7 @@ HeraFeatureMethodItem >> removalConfirmationQuestion [
 { #category : 'actions' }
 HeraFeatureMethodItem >> remove [
 
-	featureMethod removeFromSystem
+	self featureMethod removeFromSystem
 ]
 
 { #category : 'accessing' }
@@ -90,13 +96,12 @@ HeraFeatureMethodItem >> richScript [
 { #category : 'actions' }
 HeraFeatureMethodItem >> saveSource: ast [
 
-	| featureMethodSource  selector |
+	| featureMethodSource |
 	featureMethodSource := HeraFeatureMethodGenerator new
-		generatedSelector: featureMethod selector;
+		generatedSelector: featureMethodSelector;
 		visit: ast;
 		generatedCode.
-	selector := featureMethod methodClass compile: featureMethodSource.
-	featureMethod := featureMethod methodClass compiledMethodAt: selector
+	featureMethodSelector := acceptanceTestClass compile: featureMethodSource
 ]
 
 { #category : 'accessing' }
@@ -108,5 +113,5 @@ HeraFeatureMethodItem >> subitems [
 { #category : 'private' }
 HeraFeatureMethodItem >> targetClassForNewFeature [
 
-	^ featureMethod methodClass
+	^ acceptanceTestClass
 ]
