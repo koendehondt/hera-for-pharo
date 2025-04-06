@@ -67,7 +67,7 @@ HeraScriptEditor >> initializePresenters [
 { #category : 'private' }
 HeraScriptEditor >> lintWarnings [
 
-	^ HeraGherkinLinter new
+	^ HeraLinter new
 		lint: ast;
 		warnings
 ]

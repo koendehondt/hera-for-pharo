@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraGherkinLinterTestCase',
+	#name : 'HeraLinterTestCase',
 	#superclass : 'HeraTestCase',
 	#category : 'Hera-Tests-Linter',
 	#package : 'Hera-Tests',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'helpers' }
-HeraGherkinLinterTestCase >> assertWarning: aString start: startInteger end: endInteger whenLinting: script [
+HeraLinterTestCase >> assertWarning: aString start: startInteger end: endInteger whenLinting: script [
 
 	| warnings warning |
 	self deny: (self lintFeature: script).
@@ -20,13 +20,13 @@ HeraGherkinLinterTestCase >> assertWarning: aString start: startInteger end: end
 ]
 
 { #category : 'running' }
-HeraGherkinLinterTestCase >> describedClass [
+HeraLinterTestCase >> describedClass [
 
-	^ HeraGherkinLinter
+	^ HeraLinter
 ]
 
 { #category : 'helpers' }
-HeraGherkinLinterTestCase >> lintFeature: aScript [
+HeraLinterTestCase >> lintFeature: aScript [
 
 	| ast |
 	ast := self parseFeature: aScript.
@@ -34,7 +34,7 @@ HeraGherkinLinterTestCase >> lintFeature: aScript [
 ]
 
 { #category : 'helpers' }
-HeraGherkinLinterTestCase >> parseFeature: aScript [
+HeraLinterTestCase >> parseFeature: aScript [
 
 	| parser |
 	parser := HeraGherkinParser new initializeParserWith: aScript.
@@ -42,7 +42,7 @@ HeraGherkinLinterTestCase >> parseFeature: aScript [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testAndCannotBeTheFirstStep [
+HeraLinterTestCase >> testAndCannotBeTheFirstStep [
 
 	self
 		assertWarning: 'An And step should not be the first step in a scenario'
@@ -56,7 +56,7 @@ HeraGherkinLinterTestCase >> testAndCannotBeTheFirstStep [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testButCannotBeTheFirstStep [
+HeraLinterTestCase >> testButCannotBeTheFirstStep [
 
 	self
 		assertWarning: 'A But step should not be the first step in a scenario'
@@ -70,7 +70,7 @@ HeraGherkinLinterTestCase >> testButCannotBeTheFirstStep [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testFeatureNameStartsWithUppercaseLetter [
+HeraLinterTestCase >> testFeatureNameStartsWithUppercaseLetter [
 
 	self
 		assertWarning: 'A feature name should start with an uppercase letter'
@@ -84,7 +84,7 @@ HeraGherkinLinterTestCase >> testFeatureNameStartsWithUppercaseLetter [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testGivenComesBeforeAnyOtherStep [
+HeraLinterTestCase >> testGivenComesBeforeAnyOtherStep [
 
 	self
 		assertWarning: 'A Given step should come before any other step'
@@ -100,7 +100,7 @@ HeraGherkinLinterTestCase >> testGivenComesBeforeAnyOtherStep [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testNoColonAfterAndStepKeyword [
+HeraLinterTestCase >> testNoColonAfterAndStepKeyword [
 
 	self
 		assertWarning: 'A colon after a step keyword is not necessary'
@@ -115,7 +115,7 @@ HeraGherkinLinterTestCase >> testNoColonAfterAndStepKeyword [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testNoColonAfterButStepKeyword [
+HeraLinterTestCase >> testNoColonAfterButStepKeyword [
 
 	self
 		assertWarning: 'A colon after a step keyword is not necessary'
@@ -130,7 +130,7 @@ HeraGherkinLinterTestCase >> testNoColonAfterButStepKeyword [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testNoColonAfterGivenStepKeyword [
+HeraLinterTestCase >> testNoColonAfterGivenStepKeyword [
 
 	self
 		assertWarning: 'A colon after a step keyword is not necessary'
@@ -144,7 +144,7 @@ HeraGherkinLinterTestCase >> testNoColonAfterGivenStepKeyword [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testNoColonAfterThenStepKeyword [
+HeraLinterTestCase >> testNoColonAfterThenStepKeyword [
 
 	self
 		assertWarning: 'A colon after a step keyword is not necessary'
@@ -159,7 +159,7 @@ HeraGherkinLinterTestCase >> testNoColonAfterThenStepKeyword [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testNoColonAfterWhenStepKeyword [
+HeraLinterTestCase >> testNoColonAfterWhenStepKeyword [
 
 	self
 		assertWarning: 'A colon after a step keyword is not necessary'
@@ -174,7 +174,7 @@ HeraGherkinLinterTestCase >> testNoColonAfterWhenStepKeyword [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
+HeraLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
 
 	self
 		assertWarning: 'A scenario title should start with an uppercase letter'
@@ -188,7 +188,7 @@ HeraGherkinLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
 ]
 
 { #category : 'tests' }
-HeraGherkinLinterTestCase >> testThenCannotBeTheFirstStep [
+HeraLinterTestCase >> testThenCannotBeTheFirstStep [
 
 	self
 		assertWarning: 'A Then step should not be the first step in a scenario'

@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraGherkinLinter',
+	#name : 'HeraLinter',
 	#superclass : 'HeraAstVisitor',
 	#instVars : [
 		'warnings',
@@ -12,14 +12,14 @@ Class {
 }
 
 { #category : 'private' }
-HeraGherkinLinter >> checkColonAfterKeyword: aStepAstNode [
+HeraLinter >> checkColonAfterKeyword: aStepAstNode [
 
 	aStepAstNode description first = $: ifTrue: [
 		self warn: 'A colon after a step keyword is not necessary' from: aStepAstNode start to: aStepAstNode end ]
 ]
 
 { #category : 'linting' }
-HeraGherkinLinter >> lint: anAstNode [
+HeraLinter >> lint: anAstNode [
 
 	warnings := OrderedCollection new.
 	self visit: anAstNode.
@@ -27,7 +27,7 @@ HeraGherkinLinter >> lint: anAstNode [
 ]
 
 { #category : 'private' }
-HeraGherkinLinter >> previousStepsAreAllGivenSteps [
+HeraLinter >> previousStepsAreAllGivenSteps [
 
 	| steps |
 	steps := currentScenarioAstNode steps.
@@ -36,7 +36,7 @@ HeraGherkinLinter >> previousStepsAreAllGivenSteps [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitAndAstNode: anAndAstNode [
+HeraLinter >> visitAndAstNode: anAndAstNode [
 
 	self checkColonAfterKeyword: anAndAstNode.
 	currentStepIndex = 1 ifTrue: [
@@ -44,7 +44,7 @@ HeraGherkinLinter >> visitAndAstNode: anAndAstNode [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitButAstNode: aButAstNode [
+HeraLinter >> visitButAstNode: aButAstNode [
 
 	self checkColonAfterKeyword: aButAstNode.
 	currentStepIndex = 1 ifTrue: [
@@ -52,7 +52,7 @@ HeraGherkinLinter >> visitButAstNode: aButAstNode [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitFeatureAstNode: aFeatureAstNode [
+HeraLinter >> visitFeatureAstNode: aFeatureAstNode [
 
 	aFeatureAstNode name first isUppercase ifFalse: [
 			self warn: 'A feature name should start with an uppercase letter' from: aFeatureAstNode start to: aFeatureAstNode start + 'Feature: ' size + aFeatureAstNode name size - 1 ].
@@ -60,7 +60,7 @@ HeraGherkinLinter >> visitFeatureAstNode: aFeatureAstNode [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitGivenAstNode: aGivenAstNode [
+HeraLinter >> visitGivenAstNode: aGivenAstNode [
 
 	self checkColonAfterKeyword: aGivenAstNode.
 	self previousStepsAreAllGivenSteps ifFalse: [
@@ -68,7 +68,7 @@ HeraGherkinLinter >> visitGivenAstNode: aGivenAstNode [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitScenarioAstNode: aScenarioAstNode [
+HeraLinter >> visitScenarioAstNode: aScenarioAstNode [
 
 	currentScenarioAstNode := aScenarioAstNode.
 	aScenarioAstNode title first isUppercase
@@ -79,7 +79,7 @@ HeraGherkinLinter >> visitScenarioAstNode: aScenarioAstNode [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitThenAstNode: aThenAstNode [
+HeraLinter >> visitThenAstNode: aThenAstNode [
 
 	self checkColonAfterKeyword: aThenAstNode.
 	currentStepIndex = 1 ifTrue: [
@@ -87,13 +87,13 @@ HeraGherkinLinter >> visitThenAstNode: aThenAstNode [
 ]
 
 { #category : 'visiting' }
-HeraGherkinLinter >> visitWhenAstNode: aWhenAstNode [
+HeraLinter >> visitWhenAstNode: aWhenAstNode [
 
 	self checkColonAfterKeyword: aWhenAstNode
 ]
 
 { #category : 'private' }
-HeraGherkinLinter >> warn: aString from: sourceStartIndex to: sourceEndIndex [
+HeraLinter >> warn: aString from: sourceStartIndex to: sourceEndIndex [
 
 	| warning |
 	warning := HeraLintWarning new
@@ -104,7 +104,7 @@ HeraGherkinLinter >> warn: aString from: sourceStartIndex to: sourceEndIndex [
 ]
 
 { #category : 'accessing' }
-HeraGherkinLinter >> warnings [
+HeraLinter >> warnings [
 
 	^ warnings
 ]
