@@ -2,7 +2,8 @@ Class {
 	#name : 'HeraStepBrowser',
 	#superclass : 'SpPresenter',
 	#instVars : [
-		'notebook'
+		'notebook',
+		'scope'
 	],
 	#category : 'Hera-UI-Step Browser',
 	#package : 'Hera-UI',
@@ -21,14 +22,26 @@ HeraStepBrowser >> defaultLayout [
 HeraStepBrowser >> initializePresenters [
 
 	notebook := self newNotebook
-		addPageTitle: 'All' provider: [ HeraFilteredSteps new filter: HeraAllStepsFilter new ];
-		addPageTitle: 'Given' provider: [ HeraFilteredSteps new filter: (HeraTypeBasedStepFilter new stepType: #Given) ];
-		addPageTitle: 'When' provider: [ HeraFilteredSteps new filter: (HeraTypeBasedStepFilter new stepType: #When) ];
-		addPageTitle: 'Then' provider: [ HeraFilteredSteps new filter: (HeraTypeBasedStepFilter new stepType: #Then) ];
+		addPageTitle: 'All' provider: [ HeraFilteredSteps new scope: self scope; filter: HeraAllStepsFilter new ];
+		addPageTitle: 'Given' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #Given) ];
+		addPageTitle: 'When' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #When) ];
+		addPageTitle: 'Then' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #Then) ];
 		addPageTitle: 'Duplicates' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
 		addPageTitle: 'Empty' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
 		addPageTitle: 'Unused' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
 		yourself
+]
+
+{ #category : 'accessing' }
+HeraStepBrowser >> scope [
+
+	^ scope ifNil: [ scope := HeraScope default ]
+]
+
+{ #category : 'accessing' }
+HeraStepBrowser >> scope: aScope [
+
+	scope := aScope
 ]
 
 { #category : 'accessing' }

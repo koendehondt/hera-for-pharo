@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'table',
 		'editor',
-		'filter'
+		'filter',
+		'scope'
 	],
 	#category : 'Hera-UI-Step Browser',
 	#package : 'Hera-UI',
@@ -49,6 +50,12 @@ HeraFilteredSteps >> initializePresenters [
 	editor := self instantiate: HeraStepEditor
 ]
 
+{ #category : 'accessing' }
+HeraFilteredSteps >> scope: aScope [
+
+	scope := aScope
+]
+
 { #category : 'private' }
 HeraFilteredSteps >> stepMethodItems [
 
@@ -60,5 +67,5 @@ HeraFilteredSteps >> stepMethodItems [
 { #category : 'private' }
 HeraFilteredSteps >> stepMethods [
 
-	^ HeraScope new allStepMethods
+	^ scope allStepMethods
 ]

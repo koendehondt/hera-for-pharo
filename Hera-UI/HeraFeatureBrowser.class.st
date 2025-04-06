@@ -10,7 +10,8 @@ Class {
 		'stepByStepButton',
 		'scope',
 		'addAcceptanceTestClassButton',
-		'addFeatureButton'
+		'addFeatureButton',
+		'browseStepsButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -172,6 +173,14 @@ HeraFeatureBrowser >> browseSelectionInClassesAndFeatures [
 	classesAndFeatures selectedItem browse
 ]
 
+{ #category : 'actions' }
+HeraFeatureBrowser >> browseSteps [
+
+	HeraStepBrowser new
+		scope: self scope;
+		open
+]
+
 { #category : 'initialization' }
 HeraFeatureBrowser >> connectPresenters [
 
@@ -318,6 +327,11 @@ HeraFeatureBrowser >> initializeToolbarButtons [
 		help: 'Debug';
 		iconName: #bug;
 		action: [ self debug ];
+		yourself.
+	browseStepsButton := self newButton
+		help: 'Browse steps';
+		iconName: #bookmark;
+		action: [ self browseSteps ];
 		yourself
 ]
 
@@ -370,13 +384,13 @@ HeraFeatureBrowser >> run [
 	runner runAcceptanceTest: acceptanceTest
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 HeraFeatureBrowser >> scope [
 
 	^ scope ifNil: [ scope := HeraScope default ]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 HeraFeatureBrowser >> scope: aScope [
 
 	scope := aScope
@@ -424,7 +438,7 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 { #category : 'layout' }
 HeraFeatureBrowser >> toolbar [
 
-	| manageGroup runGroup |
+	| manageGroup runGroup browseGroup |
 	manageGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		add: addAcceptanceTestClassButton width: 40;
@@ -436,9 +450,15 @@ HeraFeatureBrowser >> toolbar [
 		add: stepByStepButton width: 40;
 		add: debugButton width: 40;
 		yourself.
+	browseGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		hAlignEnd;
+		add: browseStepsButton width: 40;
+		yourself.
 	^ SpBoxLayout newLeftToRight
 		add: manageGroup width: 120;
 		add: runGroup;
+		add: browseGroup;
 		yourself
 ]
 
