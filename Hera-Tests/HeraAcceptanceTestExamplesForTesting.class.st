@@ -18,17 +18,17 @@ HeraAcceptanceTestExamplesForTesting class >> nameInBrowser [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> emptyFeature [
 
-	<heraFeature: 'Empty for testing'>
+	<heraFeature: 'Empty'>
 
-	^ self feature: 'Empty for testing'
+	^ self feature: 'Empty'
 ]
 
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithBackground [
 
-	<heraFeature: 'With background for testing'>
+	<heraFeature: 'With background'>
 
-	^ (self feature: 'With background for testing')
+	^ (self feature: 'With background')
 		background: (self background
 			given: 'I have credentials to sign in');
 		scenarios: {
@@ -46,9 +46,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithBackground [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithDataTable [
 
-	<heraFeature: 'With data table for testing'>
+	<heraFeature: 'With data table'>
 
-	^ (self feature: 'With data table for testing')
+	^ (self feature: 'With data table')
 		scenarios: {
 			(self scenario: 'Listing users')
 				given: 'the following users exist:' with: (self dataTable: {
@@ -61,9 +61,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDataTable [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithDebugStep [
 
-	<heraFeature: 'With debug step for testing'>
+	<heraFeature: 'With debug step'>
 
-	^ (self feature: 'With debug step for testing')
+	^ (self feature: 'With debug step')
 		scenarios: {
 			(self scenario: 'Successful sign-in')
 				given: 'I have credentials to sign in';
@@ -76,9 +76,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDebugStep [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithDocString [
 
-	<heraFeature: 'With doc string for testing'>
+	<heraFeature: 'With doc string'>
 
-	^ (self feature: 'With doc string for testing')
+	^ (self feature: 'With doc string')
 		scenarios: {
 			(self scenario: 'Listing users')
 				given: 'the following users exist:' with: (self dataTable: {
@@ -102,9 +102,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDocString [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithEmptyScenario [
 
-	<heraFeature: 'With empty scenario for testing'>
+	<heraFeature: 'With empty scenario'>
 
-	^ (self feature: 'With empty scenario for testing')
+	^ (self feature: 'With empty scenario')
 		scenarios: {
 			self scenario: 'Successful sign-in' }
 ]
@@ -112,9 +112,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithEmptyScenario [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithPauseStep [
 
-	<heraFeature: 'With pause step for testing'>
+	<heraFeature: 'With pause step'>
 
-	^ (self feature: 'With pause step for testing')
+	^ (self feature: 'With pause step')
 		scenarios: {
 			(self scenario: 'Successful sign-in')
 				given: 'I have credentials to sign in';
@@ -127,9 +127,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithPauseStep [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithSingleStep [
 
-	<heraFeature: 'With single step scenario for testing'>
+	<heraFeature: 'With single step scenario'>
 
-	^ (self feature: 'With single step scenario for testing')
+	^ (self feature: 'With single step scenario')
 		scenarios: {
 			(self scenario: 'Successful sign-in')
 				given: 'I have credentials to sign in' }
@@ -138,9 +138,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithSingleStep [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithUndefinedStep [
 
-	<heraFeature: 'With undefined step for testing'>
+	<heraFeature: 'With undefined step'>
 
-	^ (self feature: 'With undefined step for testing')
+	^ (self feature: 'With undefined step')
 		scenarios: {
 			(self scenario: 'Successful sign-in')
 				given: 'this step has no definition' }
@@ -149,9 +149,9 @@ HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithUndefinedStep [
 { #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithUnimplementedStep [
 
-	<heraFeature: 'With unimplemented step for testing'>
+	<heraFeature: 'With unimplemented step'>
 
-	^ (self feature: 'With unimplemented step for testing')
+	^ (self feature: 'With unimplemented step')
 		scenarios: {
 			(self scenario: 'Successful sign-in')
 				given: 'this step is not implemeted' }

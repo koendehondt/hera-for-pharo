@@ -65,7 +65,7 @@ HeraFeatureTestCase >> testScriptOfEmptyFeature [
 
 	| feature |
 	feature := HeraAcceptanceTestExamplesForTesting new emptyFeature.
-	self assert: feature script equals: 'Feature: Empty for testing'
+	self assert: feature script equals: 'Feature: Empty'
 	
 ]
 
@@ -74,7 +74,7 @@ HeraFeatureTestCase >> testScriptWithEmptyScenario [
 
 	| feature |
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithEmptyScenario.
-	self assert: feature script equals: 'Feature: With empty scenario for testing
+	self assert: feature script equals: 'Feature: With empty scenario
 
 	Scenario: Successful sign-in'
 	
@@ -93,7 +93,7 @@ HeraFeatureTestCase >> testScriptWithSingleStep [
 
 	| feature |
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithScenarioWithSingleStep.
-	self assert: feature script equals: 'Feature: With single step scenario for testing
+	self assert: feature script equals: 'Feature: With single step scenario
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in'

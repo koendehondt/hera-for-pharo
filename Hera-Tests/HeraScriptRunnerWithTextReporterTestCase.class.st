@@ -19,14 +19,14 @@ HeraScriptRunnerWithTextReporterTestCase >> describedClass [
 HeraScriptRunnerWithTextReporterTestCase >> expectedDebugRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With debug step for testing
+	text := Text fromString: 'Feature: With debug step
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
 		When I debug'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 40 to: 48.
+		addAttribute: TextEmphasis bold from: 28 to: 36.
 	^ text
 ]
 
@@ -34,15 +34,15 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedDebugRunReport [
 HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyFeatureErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: Empty for testing
+	text := Text fromString: 'Feature: Empty
 	ERROR There are no scenarios.
 
 Total: 0. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 29 to: 33;
-		addAttribute: (TextColor new color: Color red) from: 29 to: 33.
+		addAttribute: TextEmphasis bold from: 17 to: 21;
+		addAttribute: (TextColor new color: Color red) from: 17 to: 21.
 	^ text
 ]
 
@@ -50,7 +50,7 @@ Total: 0. Passed: 0. Failed: 0. Error: 1.
 HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyScenarioErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With empty scenario for testing
+	text := Text fromString: 'Feature: With empty scenario
 
 	Scenario: Successful sign-in
 		ERROR There are no steps.
@@ -59,9 +59,9 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 44 to: 52;
-		addAttribute: TextEmphasis bold from: 75 to: 79;
-		addAttribute: (TextColor new color: Color red) from: 75 to: 79.
+		addAttribute: TextEmphasis bold from: 32 to: 40;
+		addAttribute: TextEmphasis bold from: 63 to: 67;
+		addAttribute: (TextColor new color: Color red) from: 63 to: 67.
 	^ text
 ]
 
@@ -304,7 +304,7 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunReportWithTagsAndDescriptions [
 
 	| text |
-	text := Text fromString: 'Feature: With pause step for testing
+	text := Text fromString: 'Feature: With pause step
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
@@ -317,7 +317,7 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 40 to: 48.
+		addAttribute: TextEmphasis bold from: 28 to: 36.
 	^ text
 ]
 
@@ -325,7 +325,7 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithBackground [
 
 	| text |
-	text := Text fromString: 'Feature: With background for testing
+	text := Text fromString: 'Feature: With background
 
 	Background:
 		Given I have credentials to sign in
@@ -347,9 +347,9 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 40 to: 50;
-		addAttribute: TextEmphasis bold from: 92 to: 100;
-		addAttribute: TextEmphasis bold from: 267 to: 275.
+		addAttribute: TextEmphasis bold from: 28 to: 38;
+		addAttribute: TextEmphasis bold from: 80 to: 88;
+		addAttribute: TextEmphasis bold from: 255 to: 263.
 	^ text
 ]
 
@@ -357,7 +357,7 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDataTable [
 
 	| text |
-	text := Text fromString: 'Feature: With data table for testing
+	text := Text fromString: 'Feature: With data table
 
 	Scenario: Listing users
 		Given the following users exist:
@@ -370,7 +370,7 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 40 to: 48.
+		addAttribute: TextEmphasis bold from: 28 to: 36.
 	^ text
 ]
 
@@ -378,7 +378,7 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedUndefinedStepErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With undefined step for testing
+	text := Text fromString: 'Feature: With undefined step
 
 	Scenario: Successful sign-in
 		Given this step has no definition
@@ -388,9 +388,9 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 44 to: 52;
-		addAttribute: TextEmphasis bold from: 112 to: 116;
-		addAttribute: (TextColor new color: Color red) from: 112 to: 116.
+		addAttribute: TextEmphasis bold from: 32 to: 40;
+		addAttribute: TextEmphasis bold from: 100 to: 104;
+		addAttribute: (TextColor new color: Color red) from: 100 to: 104.
 	^ text
 ]
 
@@ -398,7 +398,7 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 HeraScriptRunnerWithTextReporterTestCase >> expectedUnimplementedStepErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With unimplemented step for testing
+	text := Text fromString: 'Feature: With unimplemented step
 
 	Scenario: Successful sign-in
 		Given this step is not implemeted
@@ -408,9 +408,9 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 48 to: 56;
-		addAttribute: TextEmphasis bold from: 116 to: 120;
-		addAttribute: (TextColor new color: Color red) from: 116 to: 120.
+		addAttribute: TextEmphasis bold from: 36 to: 44;
+		addAttribute: TextEmphasis bold from: 104 to: 108;
+		addAttribute: (TextColor new color: Color red) from: 104 to: 108.
 	^ text
 ]
 
@@ -523,9 +523,9 @@ HeraScriptRunnerWithTextReporterTestCase >> testPausedRun [
 	subject reporter: reporter.
 	allOutput := self expectedPausedRunReportWithTagsAndDescriptions.
 	subject run.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 120). "When I pause"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 108). "When I pause"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 150). "When I enter my credentials"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 138). "When I enter my credentials"
 	subject continue.
 	self assertText: reporter text equals: allOutput "Result summary"
 ]

@@ -49,7 +49,7 @@ Feature: Signing in
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 
 	| text |
-	text := Text fromString:	'Feature: With background for testing
+	text := Text fromString:	'Feature: With background
 
 	Background:
 		Given I have credentials to sign in
@@ -66,9 +66,9 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 		But I see a message that the credentials are wrong'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 40 to: 50;
-		addAttribute: TextEmphasis bold from: 92 to: 100;
-		addAttribute: TextEmphasis bold from: 216 to: 224.
+		addAttribute: TextEmphasis bold from: 28 to: 38;
+		addAttribute: TextEmphasis bold from: 80 to: 88;
+		addAttribute: TextEmphasis bold from: 204 to: 212.
 	^ text
 ]
 
@@ -76,7 +76,7 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 
 	| text |
-	text := Text fromString:	'Feature: With data table for testing
+	text := Text fromString:	'Feature: With data table
 
 	Scenario: Listing users
 		Given the following users exist:
@@ -86,7 +86,7 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 		Then I see them in the list of users'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 40 to: 48.
+		addAttribute: TextEmphasis bold from: 28 to: 36.
 	^ text
 ]
 
@@ -94,7 +94,7 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 
 	| text |
-	text := Text fromString:	'Feature: With doc string for testing
+	text := Text fromString:	'Feature: With doc string
 
 	Scenario: Listing users
 		Given the following users exist:
@@ -117,7 +117,7 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 			"""'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 40 to: 48.
+		addAttribute: TextEmphasis bold from: 28 to: 36.
 	^ text
 ]
 
