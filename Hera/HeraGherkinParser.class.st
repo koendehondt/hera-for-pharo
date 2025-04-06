@@ -179,6 +179,8 @@ HeraGherkinParser >> parseScenario [
 	| scenarioNode tags description steps titleToken scenarioToken |
 	"scenarioToken or tagToken has already been read."
 	tags := self parseTags.
+	currentToken isScenarioToken 
+		ifFalse: [ self parseError: 'Scenario keyword expected' from: currentToken start to: currentToken end ].
 	scenarioToken := currentToken.
 	titleToken := self tryScanTextToken.
 	titleToken isTextToken ifFalse: [

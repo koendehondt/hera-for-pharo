@@ -872,3 +872,29 @@ HeraGherkinParserTestCase >> testParseScenarioWithoutTitle [
 
 				Scenario:  '
 ]
+
+{ #category : 'tests - parsing errors' }
+HeraGherkinParserTestCase >> testParseWrongFeatureKeywordAfterTag [
+
+	self
+		assertError: 'Feature keyword expected'
+		start: 20
+		end: 43
+		whenParsing: '
+			@signing_in
+			FeatureBogus: Signing in'
+]
+
+{ #category : 'tests - parsing errors' }
+HeraGherkinParserTestCase >> testParseWrongScenarioKeywordAfterTag [
+
+	self
+		assertError: 'Scenario keyword expected'
+		start: 43
+		end: 75
+		whenParsing: '
+			Feature: Signing in
+
+				@sign_in
+				ScenarioBogus: Successful sing-in'
+]
