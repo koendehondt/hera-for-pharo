@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraScriptEditor',
-	#superclass : 'SpPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#instVars : [
 		'script',
 		'submitBlock',
@@ -70,6 +70,19 @@ HeraScriptEditor >> lintWarnings [
 	^ HeraLinter new
 		lint: ast;
 		warnings
+]
+
+{ #category : 'initialization' }
+HeraScriptEditor >> modelChanged [
+
+	| text |
+	self model ifNil: [
+		self text: ''.
+		^ self ].
+	text := self model richScript.
+	self
+		text: text;
+		selectionInterval: (text size + 1 to: text size + 1)
 ]
 
 { #category : 'private' }

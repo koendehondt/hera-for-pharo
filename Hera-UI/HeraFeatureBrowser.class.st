@@ -236,11 +236,7 @@ HeraFeatureBrowser >> displayedTreeItems [
 { #category : 'private' }
 HeraFeatureBrowser >> featureSelectionChanged [
 
-	| text |
-	text := classesAndFeatures selectedItem ifNil: [ '' ] ifNotNil: [ :item | item richScript].
-	scriptEditor
-		text: text;
-		selectionInterval: (text size + 1 to: text size + 1).
+	scriptEditor model: classesAndFeatures selectedItem.
 	self updateAfterSelectionChange
 ]
 
