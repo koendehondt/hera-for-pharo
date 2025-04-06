@@ -57,6 +57,21 @@ HeraFeatureBrowser >> addAcceptanceTestClass [
 	self updateClassesAndFeaturesAfterAddingClass: acceptanceTestClass
 ]
 
+{ #category : 'private - menus' }
+HeraFeatureBrowser >> addBrowseGroupTo: parentGroup [
+	
+		parentGroup addGroupWith: [ :group |
+			group
+				beDisplayedAsGroup;
+				addActionWith: [ :action |
+					action	
+						name: 'Browse';
+						description: 'Browse the selected class or feature.';
+						shortcutKey: $b meta;
+						actionEnabled: [ self hasSelectedClassOrFeature ];
+						action: [ self browseSelectionInClassesAndFeatures ] ] ]
+]
+
 { #category : 'actions' }
 HeraFeatureBrowser >> addFeature [
 
@@ -68,6 +83,60 @@ HeraFeatureBrowser >> addFeature [
 		on: SpCancelledInteractionError do: [ ^ self ].
 	featureMethod := classesAndFeatures selectedItem addFeatureNamed: name.
 	self updateClassesAndFeaturesAfterAddingFeatureMethod: featureMethod
+]
+
+{ #category : 'private - menus' }
+HeraFeatureBrowser >> addManagementMenuGroupTo: parentGroup [
+
+	parentGroup
+		addActionWith: [ :action |
+			action
+				name: 'New acceptance test class…';
+				description: 'Add a new class to hold features.';
+				shortcutKey: $n meta;
+				action: [ self addAcceptanceTestClass ] ];
+		addActionWith: [ :action |
+			action
+				name: 'New feature…';
+				description: 'Add a new feature.';
+				shortcutKey: $n meta shift;
+				action: [ self addFeature ];
+				actionEnabled: [ self hasSelectedClassOrFeature ] ];
+		addActionWith: [ :action |
+			action		
+				name: 'Remove';
+				description: 'Remove the selected class or feature.';
+				actionEnabled: [ self hasSelectedClassOrFeature ];
+				action: [ self removeSelectionInClassesAndFeatures ] ]
+]
+
+{ #category : 'private - menus' }
+HeraFeatureBrowser >> addRunMenuGroupTo: parentGroup [
+
+		parentGroup addGroupWith: [ :group |
+			group
+				beDisplayedAsGroup;
+				addActionWith: [ :action |
+					action		
+						name: 'Run';
+						description: 'Run the selected feature';
+						shortcutKey: $r meta;
+						actionEnabled: [ self hasSelectedFeature ];
+						action: [ self run ] ];
+				addActionWith: [ :action |
+					action		
+						name: 'Step';
+						description: 'Run the selected feature step by step';
+						shortcutKey: $r meta shift;
+						actionEnabled: [ self hasSelectedFeature ];
+						action: [ self stepByStep ] ];
+				addActionWith: [ :action |
+					action		
+						name: 'Debug';
+						description: 'Run the selected feature in debug mode';
+						shortcutKey: $d meta;
+						actionEnabled: [ self hasSelectedFeature ];
+						action: [ self debug ] ] ]
 ]
 
 { #category : 'private' }
@@ -101,28 +170,6 @@ HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 HeraFeatureBrowser >> browseSelectionInClassesAndFeatures [
 
 	classesAndFeatures selectedItem browse
-]
-
-{ #category : 'private - menus' }
-HeraFeatureBrowser >> configureBrowseAction: action withHelp: helpString [
-
-	action		
-		name: 'Browse';
-		description: helpString;
-		shortcutKey: $b meta;
-		actionEnabled: [ self hasSelectedClassOrFeature ];
-		action: [ self browseSelectionInClassesAndFeatures ]
-]
-
-{ #category : 'private - menus' }
-HeraFeatureBrowser >> configureRemoveAction: action withHelp: helpString [
-
-	action		
-		name: 'Remove';
-		description: helpString;
-		shortcutKey: $d meta;
-		actionEnabled: [ self hasSelectedClassOrFeature ];
-		action: [ self removeSelectionInClassesAndFeatures ]
 ]
 
 { #category : 'initialization' }
@@ -289,28 +336,9 @@ HeraFeatureBrowser >> installClassesAndFeaturesContextMenu [
 
 	classesAndFeatures
 		actionsWith: [ :rootGroup |
-			rootGroup
-				addActionWith: [ :action |
-					action
-						name: 'New acceptance test class…';
-						description: 'Add a new class to hold features.';
-						shortcutKey: $n meta;
-						action: [ self addAcceptanceTestClass ] ];
-				addActionWith: [ :action |
-					action
-						name: 'New feature…';
-						description: 'Add a new feature.';
-						shortcutKey: $n meta shift;
-						action: [ self addFeature ];
-						actionEnabled: [ self hasSelectedClassOrFeature ] ];
-				addGroupWith: [ :group |
-					group
-						beDisplayedAsGroup;
-						addActionWith: [ :action | self configureRemoveAction: action withHelp: 'Remove the selected class or feature.' ] ];
-				addGroupWith: [ :group |
-					group
-						beDisplayedAsGroup;
-						addActionWith: [ :action | self configureBrowseAction: action withHelp: 'Browse the selected class or feature.' ] ] ]
+			self addManagementMenuGroupTo: rootGroup.
+			self addRunMenuGroupTo: rootGroup.
+			self addBrowseGroupTo: rootGroup ]
 ]
 
 { #category : 'private' }
