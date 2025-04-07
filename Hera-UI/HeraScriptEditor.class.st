@@ -13,6 +13,12 @@ Class {
 	#tag : 'Feature Browser'
 }
 
+{ #category : 'accessing' }
+HeraScriptEditor >> acceptanceTest [
+
+	^ self model acceptanceTest
+]
+
 { #category : 'private' }
 HeraScriptEditor >> altKeyClick: event [
 
@@ -68,6 +74,7 @@ HeraScriptEditor >> initializePresenters [
 HeraScriptEditor >> lintWarnings [
 
 	^ HeraLinter new
+		acceptanceTest: self acceptanceTest;
 		lint: ast;
 		warnings
 ]
@@ -130,11 +137,11 @@ HeraScriptEditor >> showWarnings [
 	warnings := self lintWarnings.
 	warnings ifEmpty: [ ^ self ].
 	script removeAllTextSegmentDecorations.
-	decorator := SpTextPresenterDecorator new.
-	decorator underlineColor: Color orange.
 	warnings do: [ :warning |
+		decorator := SpTextPresenterDecorator new.
+		decorator underlineColor: warning color.
 		decorator title: warning message.
-		decorator icon: (self iconNamed: #warning).
+		decorator icon: (self iconNamed: warning iconName).
 		decorator iconBlock: [ :seg| seg ].
 		decorator interval: (warning start to: warning end + 1).
 		script addTextSegmentDecoration: decorator ]

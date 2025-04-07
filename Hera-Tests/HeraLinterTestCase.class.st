@@ -7,6 +7,15 @@ Class {
 }
 
 { #category : 'helpers' }
+HeraLinterTestCase >> assertWarning: aString start: startInteger end: endInteger [
+
+	| warning |
+	warning := subject warnings
+		detect: [ :each | each message = aString and: [ each start = startInteger and: [ each end = endInteger ] ]]
+		ifNone: [ self fail: ('Warning not found: {1} [{2} - {3}]' format: { aString . startInteger . endInteger }) ]
+]
+
+{ #category : 'helpers' }
 HeraLinterTestCase >> assertWarning: aString start: startInteger end: endInteger whenLinting: script [
 
 	| warnings warning |
@@ -23,6 +32,13 @@ HeraLinterTestCase >> assertWarning: aString start: startInteger end: endInteger
 HeraLinterTestCase >> describedClass [
 
 	^ HeraLinter
+]
+
+{ #category : 'running' }
+HeraLinterTestCase >> initializeSubject [
+
+	super initializeSubject.
+	subject acceptanceTest: HeraAcceptanceTest new
 ]
 
 { #category : 'helpers' }
@@ -44,29 +60,31 @@ HeraLinterTestCase >> parseFeature: aScript [
 { #category : 'tests' }
 HeraLinterTestCase >> testAndCannotBeTheFirstStep [
 
-	self
-		assertWarning: 'An And step should not be the first step in a scenario'
-		start: 96
-		end: 128
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: An And step cannot be the first step in a scenario
-					And I have credentials to sign in'
+			Scenario: An And step cannot be the first step in a scenario
+				And I have credentials to sign in'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'An And step should not be the first step in a scenario' start: 93 end: 125.
+	self assertWarning: 'This step has no definition' start: 93 end: 125
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testButCannotBeTheFirstStep [
 
-	self
-		assertWarning: 'A But step should not be the first step in a scenario'
-		start: 95
-		end: 134
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: A But step cannot be the first step in a scenario
-					But I do not have credentials to sign in'
+			Scenario: A But step cannot be the first step in a scenario
+				But I do not have credentials to sign in'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'A But step should not be the first step in a scenario' start: 92 end: 131.
+	self assertWarning: 'This step has no definition' start: 92 end: 131
 ]
 
 { #category : 'tests' }
@@ -74,103 +92,111 @@ HeraLinterTestCase >> testFeatureNameStartsWithUppercaseLetter [
 
 	self
 		assertWarning: 'A feature name should start with an uppercase letter'
-		start: 5
-		end: 23
-		whenLinting: '
-			Feature: signing in
-
-				Scenario: Successful sign-in
-					Given I have credentials to sign in'
+		start: 1
+		end: 19
+		whenLinting: 'Feature: signing in'
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testGivenComesBeforeAnyOtherStep [
 
-	self
-		assertWarning: 'A Given step should come before any other step'
-		start: 135
-		end: 169
-		whenLinting: '
-			Feature: With wrong step structure
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: With wrong step structure
 
-				Scenario: A Given step comes before any other step
-					When I open the sign-in page
-					Given I have credentials to sign in
-					Then I can sign in'
+			Scenario: A Given step comes before any other step
+				When I open the sign-in page
+				Given I have credentials to sign in
+				Then I can sign in'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 4.
+	self assertWarning: 'A Given step should come before any other step' start: 131 end: 165.
+	self assertWarning: 'This step has no definition' start: 98 end: 125.
+	self assertWarning: 'This step has no definition' start: 131 end: 165.
+	self assertWarning: 'This step has no definition' start: 171 end: 188
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testNoColonAfterAndStepKeyword [
 
-	self
-		assertWarning: 'A colon after a step keyword is not necessary'
-		start: 100
-		end: 122
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: Successful sign-in
-					Given I am on the sign-in page
-					And: I have credentials'
+			Scenario: Successful sign-in
+				Given I am on the sign-in page
+				And: I have credentials'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 3.
+	self assertWarning: 'A colon after a step keyword is not necessary' start: 96 end: 118.
+	self assertWarning: 'This step has no definition' start: 61 end: 90.
+	self assertWarning: 'This step has no definition' start: 96 end: 118
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testNoColonAfterButStepKeyword [
 
-	self
-		assertWarning: 'A colon after a step keyword is not necessary'
-		start: 100
-		end: 129
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: Successful sign-in
-					Given I am on the sign-in page
-					But: I do not have credentials'
+			Scenario: Successful sign-in
+				Given I am on the sign-in page
+				But: I do not have credentials'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 3.
+	self assertWarning: 'A colon after a step keyword is not necessary' start: 96 end: 125.
+	self assertWarning: 'This step has no definition' start: 61 end: 90.
+	self assertWarning: 'This step has no definition' start: 96 end: 125
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testNoColonAfterGivenStepKeyword [
 
-	self
-		assertWarning: 'A colon after a step keyword is not necessary'
-		start: 64
-		end: 99
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: Successful sign-in
-					Given: I have credentials to sign in'
+			Scenario: Successful sign-in
+				Given: I have credentials to sign in'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'A colon after a step keyword is not necessary' start: 61 end: 96.
+	self assertWarning: 'This step has no definition' start: 61 end: 96
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testNoColonAfterThenStepKeyword [
 
-	self
-		assertWarning: 'A colon after a step keyword is not necessary'
-		start: 90
-		end: 114
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: Successful sign-in
-					Given I am signed in
-					Then: I see the home page'
+			Scenario: Successful sign-in
+				Given I am signed in
+				Then: I see the home page'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 3.
+	self assertWarning: 'A colon after a step keyword is not necessary' start: 86 end: 110.
+	self assertWarning: 'This step has no definition' start: 86 end: 110.
+	self assertWarning: 'This step has no definition' start: 61 end: 80
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testNoColonAfterWhenStepKeyword [
 
-	self
-		assertWarning: 'A colon after a step keyword is not necessary'
-		start: 100
-		end: 114
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: Successful sign-in
-					Given I am on the sign-in page
-					When: I sign in'
+			Scenario: Successful sign-in
+				Given I am on the sign-in page
+				When: I sign in'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 3.
+	self assertWarning: 'A colon after a step keyword is not necessary' start: 96 end: 110.
+	self assertWarning: 'This step has no definition' start: 96 end: 110.
+	self assertWarning: 'This step has no definition' start: 61 end: 90
 ]
 
 { #category : 'tests' }
@@ -183,20 +209,20 @@ HeraLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
 		whenLinting: '
 			Feature: Signing in
 
-				Scenario: successful sign-in
-					Given I have credentials to sign in'
+				Scenario: successful sign-in'
 ]
 
 { #category : 'tests' }
 HeraLinterTestCase >> testThenCannotBeTheFirstStep [
 
-	self
-		assertWarning: 'A Then step should not be the first step in a scenario'
-		start: 86
-		end: 113
-		whenLinting: '
-			Feature: Signing in
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
 
-				Scenario: A Then step should not be the first step
-					Then I can see the home page'
+			Scenario: A Then step should not be the first step
+				Then I can see the home page'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'A Then step should not be the first step in a scenario' start: 83 end: 110.
+	self assertWarning: 'This step has no definition' start: 83 end: 110
 ]

@@ -1,48 +1,24 @@
+"
+My instances represent a lint warning.
+
+A lint warning does not have to be fixed to run a feature.
+"
 Class {
 	#name : 'HeraLintWarning',
-	#superclass : 'Object',
-	#instVars : [
-		'message',
-		'start',
-		'end'
-	],
+	#superclass : 'HeraLintIssue',
 	#category : 'Hera-Linter',
 	#package : 'Hera',
 	#tag : 'Linter'
 }
 
 { #category : 'accessing' }
-HeraLintWarning >> end [
+HeraLintWarning >> color [
 
-	^ end
+	^ Color orange
 ]
 
 { #category : 'accessing' }
-HeraLintWarning >> end: anObject [
+HeraLintWarning >> iconName [
 
-	end := anObject
-]
-
-{ #category : 'accessing' }
-HeraLintWarning >> message [
-
-	^ message
-]
-
-{ #category : 'accessing' }
-HeraLintWarning >> message: anObject [
-
-	message := anObject
-]
-
-{ #category : 'accessing' }
-HeraLintWarning >> start [
-
-	^ start
-]
-
-{ #category : 'accessing' }
-HeraLintWarning >> start: anObject [
-
-	start := anObject
+	^ #warning
 ]
