@@ -98,6 +98,16 @@ HeraScriptEditor >> parser [
 	^ parser ifNil: [ parser := HeraParser new ]
 ]
 
+{ #category : 'private' }
+HeraScriptEditor >> removeAllTextSegmentDecorations [
+
+	self flag: 'This method is required until https://github.com/pharo-spec/Spec/issues/1753 is fixed.'.
+
+	script withAdapterDo: [ :anAdapter | 
+		anAdapter widgetDo: [ :widget | 
+			widget segments copy do: [ :each | widget textArea removeSegment: each; removeMorph: each ] ] ]
+]
+
 { #category : 'api' }
 HeraScriptEditor >> selectionInterval: anInterval [
 
@@ -125,9 +135,8 @@ HeraScriptEditor >> showParseError [
 	decorator icon: (self iconNamed: #halt).
 	decorator iconBlock: [ :seg| seg ].
 	decorator interval: (error start to: error end + 1).
-	script
-		removeAllTextSegmentDecorations;
-		addTextSegmentDecoration: decorator
+	self removeAllTextSegmentDecorations.
+	script addTextSegmentDecoration: decorator
 ]
 
 { #category : 'private' }
@@ -136,7 +145,7 @@ HeraScriptEditor >> showWarnings [
 	| decorator warnings |
 	warnings := self lintWarnings.
 	warnings ifEmpty: [ ^ self ].
-	script removeAllTextSegmentDecorations.
+	self removeAllTextSegmentDecorations.
 	warnings do: [ :warning |
 		decorator := SpTextPresenterDecorator new.
 		decorator underlineColor: warning color.
@@ -167,7 +176,7 @@ HeraScriptEditor >> text [
 { #category : 'api' }
 HeraScriptEditor >> text: aText [
 
-	script removeAllTextSegmentDecorations.
+	self removeAllTextSegmentDecorations.
 	script text: aText.
 	aText ifEmpty: [ ^ self ].
 	self buildAst: aText string.
