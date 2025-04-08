@@ -92,7 +92,7 @@ HeraLinterTestCase >> testFeatureNameStartsWithUppercaseLetter [
 
 	self
 		assertWarning: 'A feature name should start with an uppercase letter'
-		start: 1
+		start: 10
 		end: 19
 		whenLinting: 'Feature: signing in'
 ]
@@ -204,7 +204,7 @@ HeraLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
 
 	self
 		assertWarning: 'A scenario title should start with an uppercase letter'
-		start: 30
+		start: 40
 		end: 57
 		whenLinting: '
 			Feature: Signing in

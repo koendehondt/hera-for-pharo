@@ -140,7 +140,7 @@ HeraFeatureMethodGenerator >> visitFeatureAstNode: aFeatureAstNode [
 		cr;
 		crtab;
 		nextPutAll: '<heraFeature: ';
-		print: aFeatureAstNode name;
+		print: aFeatureAstNode title text;
 		nextPut: $>;
 		cr.
 	stream
@@ -150,7 +150,7 @@ HeraFeatureMethodGenerator >> visitFeatureAstNode: aFeatureAstNode [
 	stream
 		nextPutAll: 'self feature: ';
 		nextPut: $';
-		nextPutAll: aFeatureAstNode name;
+		nextPutAll: aFeatureAstNode title text;
 		nextPut: $'.
 	aFeatureAstNode isEmpty ifFalse: [ stream nextPut: $) ].
 	aFeatureAstNode tags ifNotEmpty: [
@@ -196,7 +196,7 @@ HeraFeatureMethodGenerator >> visitScenarioAstNode: aScenarioAstNode [
 	stream
 		nextPutAll: 'self scenario: ';
 		nextPut: $';
-		nextPutAll: aScenarioAstNode title;
+		nextPutAll: aScenarioAstNode title text;
 		nextPut: $'.
 	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $) ].
 	aScenarioAstNode tags ifNotEmpty: [

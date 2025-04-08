@@ -5,8 +5,8 @@ Class {
 		'scenarios',
 		'description',
 		'tags',
-		'name',
-		'background'
+		'background',
+		'title'
 	],
 	#category : 'Hera-AST',
 	#package : 'Hera',
@@ -57,18 +57,6 @@ HeraFeatureAstNode >> isEmpty [
 ]
 
 { #category : 'accessing' }
-HeraFeatureAstNode >> name [
-
-	^ name
-]
-
-{ #category : 'accessing' }
-HeraFeatureAstNode >> name: anObject [
-
-	name := anObject
-]
-
-{ #category : 'accessing' }
 HeraFeatureAstNode >> scenarios [
 
 	^ scenarios
@@ -90,4 +78,16 @@ HeraFeatureAstNode >> tags [
 HeraFeatureAstNode >> tags: anArray [
 
 	tags := anArray
+]
+
+{ #category : 'accessing' }
+HeraFeatureAstNode >> title [
+
+	^ title
+]
+
+{ #category : 'accessing' }
+HeraFeatureAstNode >> title: aTitle [
+
+	title := aTitle
 ]

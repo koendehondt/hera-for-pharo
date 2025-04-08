@@ -194,7 +194,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioFromStartPosition [
 		textPosition: (self startPositionOf: 'Scenario: Successful sign-in');
 		visit: self ast.
 	self assert: astNode class equals: HeraScenarioAstNode.
-	self assert: astNode title equals: 'Successful sign-in'
+	self assert: astNode title text equals: 'Successful sign-in'
 ]
 
 { #category : 'tests' }

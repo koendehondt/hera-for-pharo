@@ -141,7 +141,7 @@ HeraParser >> parseError: aString from: sourceStartIndex to: sourceEndIndex [
 { #category : 'parsing' }
 HeraParser >> parseFeature [
 
-	| name featureNode tags description scenarios nameToken background featureToken |
+	| title featureNode tags description scenarios nameToken background featureToken |
 	[
 		self skipEmptyLines.
 		tags := self parseTags.
@@ -151,7 +151,10 @@ HeraParser >> parseFeature [
 		nameToken := self tryScanTextToken.
 		nameToken isTextToken ifFalse: [
 			self parseError: 'Feature name expected after feature keyword' from: featureToken start to: featureToken end ].
-		name := nameToken text.
+		title := HeraTitleAstNode new
+			text: nameToken text;
+			start: nameToken start;
+			end: nameToken end.
 		self nextToken.
 		description := nil.
 		scenarios := OrderedCollection new.
@@ -162,7 +165,7 @@ HeraParser >> parseFeature [
 			self parseError: 'Scenario keyword expected' from: currentToken start to: currentToken end ].
 		featureNode := HeraFeatureAstNode new.
 		featureNode
-			name: name;
+			title: title;
 			tags: tags;
 			description: description;
 			background: background;
@@ -176,7 +179,7 @@ HeraParser >> parseFeature [
 { #category : 'parsing' }
 HeraParser >> parseScenario [
 
-	| scenarioNode tags description steps titleToken scenarioToken |
+	| scenarioNode tags description steps titleToken scenarioToken title |
 	"scenarioToken or tagToken has already been read."
 	tags := self parseTags.
 	currentToken isScenarioToken 
@@ -185,6 +188,10 @@ HeraParser >> parseScenario [
 	titleToken := self tryScanTextToken.
 	titleToken isTextToken ifFalse: [
 		self parseError: 'Scenario title expected after scenario keyword' from: scenarioToken start to: scenarioToken end ].
+	title := HeraTitleAstNode new
+		text: titleToken text;
+		start: titleToken start;
+		end: titleToken end.
 	self skipEndOfLineToken.
 	description := nil.
 	steps := OrderedCollection new.
@@ -194,7 +201,7 @@ HeraParser >> parseScenario [
 	scenarioNode := HeraScenarioAstNode new.
 	scenarioNode
 		tags: tags;
-		title: titleToken text;
+		title: title;
 		description: description;
 		steps: steps;
 		start: scenarioToken start;

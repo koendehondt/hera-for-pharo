@@ -269,12 +269,13 @@ HeraParserTestCase >> testParseDataTableWithoutFormatting [
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
 	self assert: ast tags isEmpty.
-	self assert: ast name equals: 'User management'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'User management'.
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
 	self assert: scenarioNode tags isEmpty.
-	self assert: scenarioNode title equals: 'Listing users'.
+	self assert: scenarioNode title text equals: 'Listing users'.
 	self assert: scenarioNode steps size equals: 2.
 	firstStepNode := scenarioNode steps first.
 	self assert: firstStepNode class equals: HeraGivenAstNode.
@@ -517,7 +518,10 @@ HeraParserTestCase >> testParseEmptyFeature [
 	script := 'Feature: Signing in'.
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
+	self assert: ast title start equals: 10.
+	self assert: ast title end equals: 19.
 	self assert: ast description isNil
 ]
 
@@ -535,13 +539,15 @@ HeraParserTestCase >> testParseFeatureWithDescription [
 		Scenario: Successful sign-in'.
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
 	self assert: ast description class equals: HeraDescriptionAstNode.
 	self assert: ast description lines equals: (OrderedCollection with: 'Signing in is required to have access to the application.' with: '' with: 'Signing in requires credentials: an email address and a password.').
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
 	self assert: scenarioNode steps isEmpty
 ]
 
@@ -555,12 +561,14 @@ HeraParserTestCase >> testParseFeatureWithEmptyScenario [
 		Scenario: Successful sign-in'.
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
 	self assert: ast description isNil.
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
 	self assert: scenarioNode steps isEmpty
 ]
 
@@ -575,12 +583,14 @@ HeraParserTestCase >> testParseFeatureWithKeywordAsFirstWordInName [
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
 	self assert: ast tags isEmpty.
-	self assert: ast name equals: 'But is allowed at the beginning of a feature name'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'But is allowed at the beginning of a feature name'.
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
 	self assert: scenarioNode tags isEmpty.
-	self assert: scenarioNode title equals: 'Signing in'.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Signing in'.
 	self assert: scenarioNode steps isEmpty
 ]
 
@@ -614,11 +624,12 @@ HeraParserTestCase >> testParseFeatureWithTags [
 	self assert: ast tags first name equals: 'accessing_the_system'.
 	self assert: ast tags second class equals: HeraTagAstNode.
 	self assert: ast tags second name equals: 'signing_in'.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
 	self assert: scenarioNode steps isEmpty
 ]
 
@@ -634,16 +645,19 @@ HeraParserTestCase >> testParseFeatureWithTwoEmptyScenarios [
 		Scenario: Unsuccessful sign-in'.
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
 	self assert: ast description isNil.
 	self assert: ast scenarios size equals: 2.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
 	self assert: scenarioNode steps isEmpty.
 	scenarioNode := ast scenarios second.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
-	self assert: scenarioNode title equals: 'Unsuccessful sign-in'.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Unsuccessful sign-in'.
 	self assert: scenarioNode steps isEmpty
 ]
 
@@ -710,7 +724,7 @@ HeraParserTestCase >> testParseFullFeature [
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
 	self assert: scenarioNode steps size equals: 3.
 	stepNode := scenarioNode steps first.
 	self assert: stepNode class equals: HeraWhenAstNode.
@@ -732,7 +746,7 @@ HeraParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
 
 		Scenario: And is allowed at the beginning of a scenario title'.
 	ast := self parseFeature: script.
-	self assert: ast scenarios first title equals: 'And is allowed at the beginning of a scenario title'
+	self assert: ast scenarios first title text equals: 'And is allowed at the beginning of a scenario title'
 ]
 
 { #category : 'tests' }
@@ -744,7 +758,7 @@ HeraParserTestCase >> testParseScenarioWithButKeywordAsFirstWordInTitle [
 
 		Scenario: But is allowed at the beginning of a scenario title'.
 	ast := self parseFeature: script.
-	self assert: ast scenarios first title equals: 'But is allowed at the beginning of a scenario title'
+	self assert: ast scenarios first title text equals: 'But is allowed at the beginning of a scenario title'
 ]
 
 { #category : 'tests' }
@@ -762,7 +776,8 @@ HeraParserTestCase >> testParseScenarioWithDescription [
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
 	self assert: ast tags isEmpty.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
@@ -771,7 +786,8 @@ HeraParserTestCase >> testParseScenarioWithDescription [
 	self assert: scenarioNode tags first name equals: 'accessing_the_system'.
 	self assert: scenarioNode tags second class equals: HeraTagAstNode.
 	self assert: scenarioNode tags second name equals: 'signing_in'.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
 	self assert: scenarioNode steps isEmpty.
 	self assert: scenarioNode description class equals: HeraDescriptionAstNode.
 	self assert: scenarioNode description lines equals: (
@@ -781,19 +797,21 @@ HeraParserTestCase >> testParseScenarioWithDescription [
 { #category : 'tests' }
 HeraParserTestCase >> testParseScenarioWithGivenKeywordAsFirstWordInTitle [
 
-	| script ast |
+	| script ast title |
 	script := '
 	Feature: Signing in
 
 		Scenario: Given is allowed at the beginning of a scenario title'.
 	ast := self parseFeature: script.
-	self assert: ast scenarios first title equals: 'Given is allowed at the beginning of a scenario title'
+	title := ast scenarios first title.
+	self assert: title class equals: HeraTitleAstNode.
+	self assert: title text equals: 'Given is allowed at the beginning of a scenario title'
 ]
 
 { #category : 'tests' }
 HeraParserTestCase >> testParseScenarioWithTags [
 
-	| script ast scenarioNode |
+	| script ast scenarioNode title |
 	script := '
 	Feature: Signing in
 
@@ -803,7 +821,8 @@ HeraParserTestCase >> testParseScenarioWithTags [
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
 	self assert: ast tags isEmpty.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
@@ -812,38 +831,44 @@ HeraParserTestCase >> testParseScenarioWithTags [
 	self assert: scenarioNode tags first name equals: 'accessing_the_system'.
 	self assert: scenarioNode tags second class equals: HeraTagAstNode.
 	self assert: scenarioNode tags second name equals: 'signing_in'.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	title := ast scenarios first title.
+	self assert: title class equals: HeraTitleAstNode.
+	self assert: title text equals: 'Successful sign-in'.
 	self assert: scenarioNode steps isEmpty
 ]
 
 { #category : 'tests' }
 HeraParserTestCase >> testParseScenarioWithThenKeywordAsFirstWordInTitle [
 
-	| script ast |
+	| script ast title |
 	script := '
 	Feature: Signing in
 
 		Scenario: Then is allowed at the beginning of a scenario title'.
 	ast := self parseFeature: script.
-	self assert: ast scenarios first title equals: 'Then is allowed at the beginning of a scenario title'
+	title := ast scenarios first title.
+	self assert: title class equals: HeraTitleAstNode.
+	self assert: title text equals: 'Then is allowed at the beginning of a scenario title'.
 ]
 
 { #category : 'tests' }
 HeraParserTestCase >> testParseScenarioWithWhenKeywordAsFirstWordInTitle [
 
-	| script ast |
+	| script ast title |
 	script := '
 	Feature: Signing in
 
 		Scenario: When is allowed at the beginning of a scenario title'.
 	ast := self parseFeature: script.
-	self assert: ast scenarios first title equals: 'When is allowed at the beginning of a scenario title'
+	title := ast scenarios first title.
+	self assert: title class equals: HeraTitleAstNode.
+	self assert: title text equals: 'When is allowed at the beginning of a scenario title'
 ]
 
 { #category : 'tests' }
 HeraParserTestCase >> testParseScenarioWithoutTags [
 
-	| script ast scenarioNode |
+	| script ast scenarioNode  |
 	script := '
 	Feature: Signing in
 
@@ -851,12 +876,18 @@ HeraParserTestCase >> testParseScenarioWithoutTags [
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
 	self assert: ast tags isEmpty.
-	self assert: ast name equals: 'Signing in'.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
+	self assert: ast title start equals: 12.
+	self assert: ast title end equals: 21.
 	self assert: ast scenarios size equals: 1.
 	scenarioNode := ast scenarios first.
 	self assert: scenarioNode class equals: HeraScenarioAstNode.
 	self assert: scenarioNode tags isEmpty.
-	self assert: scenarioNode title equals: 'Successful sign-in'.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
+	self assert: scenarioNode title start equals: 36.
+	self assert: scenarioNode title end equals: 53.
 	self assert: scenarioNode steps isEmpty
 ]
 

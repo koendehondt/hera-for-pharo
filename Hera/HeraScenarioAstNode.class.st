@@ -75,7 +75,7 @@ HeraScenarioAstNode >> title [
 ]
 
 { #category : 'accessing' }
-HeraScenarioAstNode >> title: aString [
+HeraScenarioAstNode >> title: aTitle [
 
-	title := aString
+	title := aTitle
 ]

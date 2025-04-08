@@ -86,6 +86,12 @@ HeraAstVisitor >> visitThenAstNode: aThenAstNode [
 ]
 
 { #category : 'visiting' }
+HeraAstVisitor >> visitTitleAstNode: aTitleAstNode [
+
+	^ self default: aTitleAstNode
+]
+
+{ #category : 'visiting' }
 HeraAstVisitor >> visitWhenAstNode: aWhenAstNode [
 
 	^ self default: aWhenAstNode
