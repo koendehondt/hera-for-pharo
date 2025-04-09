@@ -35,6 +35,13 @@ HeraLinter >> checkStepDefinitionFor: aStepAstNode [
 	self warnMissingStepDefinitionFrom: aStepAstNode start to: aStepAstNode end
 ]
 
+{ #category : 'visiting' }
+HeraLinter >> default: anAstNode [
+
+	(self rulesFor: anAstNode) do: [ :rule |
+		rule broken ifTrue: [ warnings add: rule warning ] ]
+]
+
 { #category : 'linting' }
 HeraLinter >> lint: anAstNode [
 
@@ -50,6 +57,20 @@ HeraLinter >> previousStepsAreAllGivenSteps [
 	steps := currentScenarioAstNode steps.
 	^ (1 to: currentStepIndex - 1) allSatisfy: [ :index |
 		(steps at: index) isGivenStepNode ]
+]
+
+{ #category : 'private' }
+HeraLinter >> rulesFor: anAstNode [
+
+	| rulesPerAstNode |
+	rulesPerAstNode := Dictionary new
+		at: HeraGivenAstNode put: { HeraNoColonAtBeginningOfStepDescriptionLintRule . HeraNoStepDefinitionLintRule };
+		at: HeraWhenAstNode put: { HeraNoColonAtBeginningOfStepDescriptionLintRule . HeraNoStepDefinitionLintRule };
+		at: HeraThenAstNode put: { HeraNoColonAtBeginningOfStepDescriptionLintRule . HeraNoStepDefinitionLintRule };
+		at: HeraAndAstNode put: { HeraNoColonAtBeginningOfStepDescriptionLintRule . HeraNoStepDefinitionLintRule };
+		at: HeraButAstNode put: { HeraNoColonAtBeginningOfStepDescriptionLintRule . HeraNoStepDefinitionLintRule };
+		yourself.
+	^ (rulesPerAstNode at: anAstNode) collect: [ :ruleClass | ruleClass new astNode: anAstNode ]
 ]
 
 { #category : 'private' }
@@ -82,7 +103,7 @@ HeraLinter >> visitFeatureAstNode: aFeatureAstNode [
 	| titleNode |
 	aFeatureAstNode title text first isUppercase ifFalse: [
 		titleNode := aFeatureAstNode title.
-		self warn: 'A feature name should start with an uppercase letter' from: titleNode start to: titleNode end ].
+		self warn: 'A feature title should start with an uppercase letter' from: titleNode start to: titleNode end ].
 	aFeatureAstNode scenarios do: [ :each | self visit: each ]
 ]
 
