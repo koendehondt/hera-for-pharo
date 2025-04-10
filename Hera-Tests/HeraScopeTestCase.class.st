@@ -37,17 +37,3 @@ HeraScopeTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 		HeraAcceptanceTestWithTraitForTesting
 	 }
 ]
-
-{ #category : 'tests' }
-HeraScopeTestCase >> testHighestFeatureNumber [
-
-	"Based on the existing acceptance test classes in the Hera distribution."
-	self assert: subject highestFeatureNumber equals: 0
-]
-
-{ #category : 'tests' }
-HeraScopeTestCase >> testNextAvailableFeatureNumber [
-
-	"Based on the existing acceptance test classes in the Hera distribution."
-	self assert: subject nextAvailableFeatureNumber equals: 1
-]

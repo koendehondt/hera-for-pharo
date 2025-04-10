@@ -42,21 +42,6 @@ HeraScope >> excludeHierarchy: aClass [
 ]
 
 { #category : 'accessing' }
-HeraScope >> highestFeatureNumber [
-
-	| max |
-	max := 0.
-	HeraAcceptanceTest allSubclasses do: [ :eachClass |
-		eachClass featureMethods do: [ :eachMethod | | matcher |
-			matcher := RxMatcher forString: 'feature(\d+)'.
-			(matcher matches: eachMethod selector)
-				ifTrue: [ | index |
-					index := (matcher subexpressions: 2) first asInteger.
-					max := index max: max ] ] ].
-	^ max
-]
-
-{ #category : 'accessing' }
 HeraScope >> includeClass: aClass [
 
 	acceptanceTestClasses add: aClass
@@ -73,10 +58,4 @@ HeraScope >> initialize [
 
 	super initialize.
 	acceptanceTestClasses := HeraAcceptanceTest allSubclasses asSet.
-]
-
-{ #category : 'accessing' }
-HeraScope >> nextAvailableFeatureNumber [
-
-	^ self highestFeatureNumber + 1
 ]

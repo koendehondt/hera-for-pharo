@@ -12,6 +12,12 @@ Class {
 }
 
 { #category : 'private' }
+HeraFeatureMethodGenerator >> allowedMethodSelectorCharacter: aCharacter [
+
+	^ aCharacter isLetter or: [ aCharacter isDigit or: [ aCharacter = $_ ] ]
+]
+
+{ #category : 'private' }
 HeraFeatureMethodGenerator >> currentIndentation [
 
 	^ indentations last
@@ -50,8 +56,21 @@ HeraFeatureMethodGenerator >> initialize [
 
 	super initialize.
 	indentations := OrderedCollection with: 1.
-	stream := (String new: 1000) writeStream.
-	generatedSelector := ('feature{1}' format: { HeraScope new nextAvailableFeatureNumber }) asSymbol
+	stream := (String new: 1000) writeStream
+]
+
+{ #category : 'accessing' }
+HeraFeatureMethodGenerator >> suggestedFeatureMethodSelectorFor: featureTitleString [
+
+	| camelCaseTitle |
+	camelCaseTitle := featureTitleString asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
+	^ ('feature{1}' format: { camelCaseTitle }) asSymbol
+]
+
+{ #category : 'initialization' }
+HeraFeatureMethodGenerator >> useSuggestedFeatureMethodSelectorFor: featureTitleString [
+
+	self generatedSelector: (self suggestedFeatureMethodSelectorFor: featureTitleString)
 ]
 
 { #category : 'visiting' }
@@ -149,9 +168,7 @@ HeraFeatureMethodGenerator >> visitFeatureAstNode: aFeatureAstNode [
 	aFeatureAstNode isEmpty ifFalse: [ stream nextPut: $( ].
 	stream
 		nextPutAll: 'self feature: ';
-		nextPut: $';
-		nextPutAll: aFeatureAstNode title text;
-		nextPut: $'.
+		print: aFeatureAstNode title text.
 	aFeatureAstNode isEmpty ifFalse: [ stream nextPut: $) ].
 	aFeatureAstNode tags ifNotEmpty: [
 			stream

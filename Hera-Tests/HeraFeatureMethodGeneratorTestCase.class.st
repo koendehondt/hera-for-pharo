@@ -232,6 +232,22 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfEmptyFeature [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFeatureWithSingleQuoteInTitle [
+
+	| document ast |
+	document := '
+	Feature: Managing a user''s account'.
+	ast := self parse: document.
+	subject useSuggestedFeatureMethodSelectorFor: 'Managing a user''s account'.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'featureManagingAUsersAccount
+
+	<heraFeature: ''Managing a user''''s account''>
+
+	^ self feature: ''Managing a user''''s account'''
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFullFeature [
 
 	| document ast |
@@ -291,4 +307,16 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFullFeature [
 				and: ''I press the button to sign in'';
 				then: ''I am still on the sign-in page'';
 				but: ''I see a message that the credentials are wrong'' }'
+]
+
+{ #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testSuggestedFeatureMethodSelectorFor [
+
+	self assert: (subject suggestedFeatureMethodSelectorFor: 'Managing users') equals: #featureManagingUsers
+]
+
+{ #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testSuggestedFeatureMethodSelectorForWithDisallowedCharacter [
+
+	self assert: (subject suggestedFeatureMethodSelectorFor: 'Managing a user''s account') equals: #featureManagingAUsersAccount
 ]
