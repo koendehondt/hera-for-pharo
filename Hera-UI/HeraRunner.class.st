@@ -48,7 +48,7 @@ HeraRunner >> debugAcceptanceTest: anAcceptanceTest [
 HeraRunner >> debugAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
 
 	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
+	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
 	scriptRunner filter: aFilter.
 	resultSummary model: scriptRunner result.
 	scriptRunner debug
@@ -162,6 +162,12 @@ HeraRunner >> restartAcceptanceTest: anAcceptanceTest [
 	scriptRunner isDebugging: wasDebugging
 ]
 
+{ #category : 'test api' }
+HeraRunner >> result [
+
+	^ scriptRunner result
+]
+
 { #category : 'running' }
 HeraRunner >> runAcceptanceTest: anAcceptanceTest [
 
@@ -187,6 +193,15 @@ HeraRunner >> scriptRunnerFor: anAcceptanceTest [
 
 	^ HeraScriptRunner new
 		acceptanceTest: anAcceptanceTest;
+		reporter: (HeraRunnerReporter for: self)
+]
+
+{ #category : 'private' }
+HeraRunner >> scriptRunnerFor: anAcceptanceTest filteredBy: aFilter [
+
+	^ HeraScriptRunner new
+		acceptanceTest: anAcceptanceTest;
+		filter: aFilter;
 		reporter: (HeraRunnerReporter for: self)
 ]
 

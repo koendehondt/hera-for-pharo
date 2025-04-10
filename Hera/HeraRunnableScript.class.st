@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'feature',
 		'instructions',
-		'instructionPointer'
+		'instructionPointer',
+		'filter'
 	],
 	#category : 'Hera-Instructions',
 	#package : 'Hera',
@@ -30,6 +31,12 @@ HeraRunnableScript >> feature: aFeature [
 	instructionPointer := 0
 ]
 
+{ #category : 'initialization' }
+HeraRunnableScript >> filter: aFilter [
+
+	filter := aFilter
+]
+
 { #category : 'testing' }
 HeraRunnableScript >> hasMoreInstructions [
 
@@ -37,13 +44,22 @@ HeraRunnableScript >> hasMoreInstructions [
 ]
 
 { #category : 'initialization' }
+HeraRunnableScript >> initialize [
+
+	super initialize.
+	filter := HeraNoFilter new
+]
+
+{ #category : 'initialization' }
 HeraRunnableScript >> initializeInstructions [
 
+	| filteredScenarios |
 	instructions := OrderedCollection new.
 	instructions add: (HeraStartFeatureInstruction for: feature).
 	feature background ifNotNil: [ :background |
 		instructions add: (HeraBackgroundInstruction new background: background) ].
-	feature scenarios do: [ :eachScenario |
+	filteredScenarios := feature scenarios select: [ :each | filter selects: each ].
+	filteredScenarios do: [ :eachScenario |
 		instructions add: (HeraStartScenarioInstruction for: eachScenario).
 		instructions add: HeraBeforeScenarioHookInstruction new.
 		feature background ifNotNil: [ :background |

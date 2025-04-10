@@ -108,3 +108,30 @@ HeraRunnableScriptTestCase >> testInstructionsWithDataTable [
 		HeraEndFeatureInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]
+
+{ #category : 'tests' }
+HeraRunnableScriptTestCase >> testInstructionsWithFilter [
+
+	| acceptanceTest scenarios secondScenario feature secondScenarioSteps |
+	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithTwoScenarios.
+	feature := acceptanceTest feature.
+	scenarios := feature scenarios.
+	self assert: scenarios size equals: 2.
+	subject feature: feature.
+	subject filter: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+	secondScenario := scenarios second.
+	secondScenarioSteps := secondScenario steps.
+	self assert: subject instructions equals: {
+		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartScenarioInstruction for: secondScenario) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: secondScenarioSteps first) .
+		(HeraRunStepInstruction for: secondScenarioSteps second) .
+		(HeraRunStepInstruction for: secondScenarioSteps third) .
+		(HeraRunStepInstruction for: secondScenarioSteps fourth) .
+		(HeraRunStepInstruction for: secondScenarioSteps fifth) .
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		HeraEndFeatureInstruction new .
+		HeraResultSummaryInstruction new } asOrderedCollection
+]

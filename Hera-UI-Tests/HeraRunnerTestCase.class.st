@@ -20,6 +20,19 @@ HeraRunnerTestCase >> testDebugAcceptanceTest [
 ]
 
 { #category : 'tests' }
+HeraRunnerTestCase >> testDebugAcceptanceTestFilteredBy [
+
+	| acceptanceTest |
+	acceptanceTest := HeraAcceptanceTestWithPassForTesting selector: #signingInFeature.
+	self assert: acceptanceTest feature scenarios size equals: 2.
+	subject
+		debugAcceptanceTest: acceptanceTest
+		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+	self assert: subject hasRunAllScenarios.
+	self assert: subject result totalCount equals: 1.
+]
+
+{ #category : 'tests' }
 HeraRunnerTestCase >> testRunAcceptanceTest [
 
 	subject runAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).

@@ -3,7 +3,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'reporter',
-		'filter',
 		'result',
 		'acceptanceTest',
 		'isDebugging',
@@ -108,7 +107,7 @@ HeraScriptRunner >> failureClass [
 { #category : 'accessing' }
 HeraScriptRunner >> filter: aFilter [
 
-	filter := aFilter
+	runnableScript filter: aFilter
 ]
 
 { #category : 'testing' }
@@ -136,7 +135,6 @@ HeraScriptRunner >> initialize [
 	isDebugging := false.
 	hasRunSteps := false.
 	scenarioCount := 0.
-	self filter: HeraNoFilter new.
 	self reporter: HeraNoReporter new
 ]
 
