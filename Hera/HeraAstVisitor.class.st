@@ -68,6 +68,12 @@ HeraAstVisitor >> visitGivenAstNode: aGivenAstNode [
 ]
 
 { #category : 'visiting' }
+HeraAstVisitor >> visitRuleAstNode: aRuleAstNode [
+
+	^ self default: aRuleAstNode
+]
+
+{ #category : 'visiting' }
 HeraAstVisitor >> visitScenarioAstNode: aScenarioAstNode [
 
 	^ self default: aScenarioAstNode

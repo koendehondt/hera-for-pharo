@@ -72,6 +72,7 @@ HeraScanner >> scanToken [
 		tagText := line ifNil: [ '' ] ifNotNil: [ line trimRight ].
 		^ HeraTagToken new text: tagText trimRight; start: start; end: start + tagText size ].
 	self tryScanToken: HeraFeatureToken ifFound: [ :token | ^ token ].
+	self tryScanToken: HeraRuleToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraBackgroundToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraScenarioToken ifFound: [ :token | ^ token ].
 	self tryScanStepToken: HeraGivenToken ifFound: [ :token | ^ token ].

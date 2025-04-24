@@ -2,12 +2,19 @@ Class {
 	#name : 'HeraScriptGenerator',
 	#superclass : 'HeraScriptElementVisitor',
 	#instVars : [
-		'stream'
+		'stream',
+		'indentation'
 	],
 	#category : 'Hera-Script generation',
 	#package : 'Hera',
 	#tag : 'Script generation'
 }
+
+{ #category : 'private' }
+HeraScriptGenerator >> decreaseIndentation [
+
+	indentation := indentation - 1
+]
 
 { #category : 'accessing' }
 HeraScriptGenerator >> generatedScript [
@@ -15,11 +22,18 @@ HeraScriptGenerator >> generatedScript [
 	^ stream contents
 ]
 
+{ #category : 'private' }
+HeraScriptGenerator >> increaseIndentation [
+
+	indentation := indentation + 1
+]
+
 { #category : 'initialization' }
 HeraScriptGenerator >> initialize [
 
 	super initialize.
 	stream := TextStream on: (Text new: 1000).
+	indentation := 0
 ]
 
 { #category : 'private' }
@@ -34,7 +48,7 @@ HeraScriptGenerator >> nextPutKeyword: aString [
 HeraScriptGenerator >> visitAndStep: anAndStep [
 
 	stream
-		crtab: 2;
+		crtab: indentation;
 		nextPutAll: 'And ';
 		nextPutAll: anAndStep description
 ]
@@ -42,16 +56,18 @@ HeraScriptGenerator >> visitAndStep: anAndStep [
 { #category : 'visiting' }
 HeraScriptGenerator >> visitBackground: aBackground [
 
-	stream crtab.
+	stream crtab: indentation.
 	self nextPutKeyword: 'Background:'.
-	aBackground steps do: [ :each | self visit: each ]
+	self increaseIndentation.
+	aBackground steps do: [ :each | self visit: each ].
+	self decreaseIndentation
 ]
 
 { #category : 'visiting' }
 HeraScriptGenerator >> visitButStep: anButStep [
 
 	stream
-		crtab: 2;
+		crtab: indentation;
 		nextPutAll: 'But ';
 		nextPutAll: anButStep description
 ]
@@ -59,13 +75,13 @@ HeraScriptGenerator >> visitButStep: anButStep [
 { #category : 'visiting' }
 HeraScriptGenerator >> visitDataTableArgument: aDataTableArgument [
 
-	aDataTableArgument printFormattedOn: stream indentation: 3
+	aDataTableArgument printFormattedOn: stream indentation: indentation + 1
 ]
 
 { #category : 'visiting' }
 HeraScriptGenerator >> visitDocStringArgument: aDocStringArgument [
 
-	aDocStringArgument printFormattedOn: stream indentation: 3
+	aDocStringArgument printFormattedOn: stream indentation: indentation + 1
 ]
 
 { #category : 'visiting' }
@@ -80,9 +96,10 @@ HeraScriptGenerator >> visitFeature: aFeature [
 	stream
 		space;
 		nextPutAll: aFeature name.
+	self increaseIndentation.
 	aFeature description do: [ :each |
 		stream
-			crtab;
+			crtab: indentation;
 			nextPutAll: each].
 	aFeature description
 		ifEmpty: [ (aFeature background isNotNil or: [ aFeature scenarios isNotEmpty]) ifTrue: [ stream cr ] ];
@@ -90,14 +107,17 @@ HeraScriptGenerator >> visitFeature: aFeature [
 	aFeature background ifNotNil: [ :background |
 		self visit: background.
 		aFeature scenarios ifNotEmpty: [ stream cr ] ].
-	aFeature scenarios do: [ :each | self visit: each ] separatedBy: [ stream cr ]
+	aFeature scenarios do: [ :each | self visit: each ] separatedBy: [ stream cr ].
+	aFeature rules ifNotEmpty: [ stream cr ].
+	aFeature rules do: [ :each | self visitRule: each ] separatedBy: [ stream cr ].
+	self decreaseIndentation
 ]
 
 { #category : 'visiting' }
 HeraScriptGenerator >> visitGivenStep: aGivenStep [
 
 	stream
-		crtab: 2;
+		crtab: indentation;
 		nextPutAll: 'Given ';
 		nextPutAll: aGivenStep description.
 	aGivenStep argument ifNotNil: [ :stepArgument |
@@ -106,31 +126,57 @@ HeraScriptGenerator >> visitGivenStep: aGivenStep [
 ]
 
 { #category : 'visiting' }
+HeraScriptGenerator >> visitRule: aRule [
+
+	stream crtab: indentation.
+	self nextPutKeyword: 'Rule:'.
+	stream
+		space;
+		nextPutAll: aRule title.
+	self increaseIndentation.
+	aRule description do: [ :each |
+		stream
+			crtab: indentation;
+			nextPutAll: each].
+	aRule description
+		ifEmpty: [ (aRule background isNotNil or: [ aRule scenarios isNotEmpty]) ifTrue: [ stream cr ] ];
+		ifNotEmpty: [ stream cr ].
+	aRule background ifNotNil: [ :background |
+		self visit: background.
+		aRule scenarios ifNotEmpty: [ stream cr ] ].
+	aRule scenarios do: [ :each | self visit: each ] separatedBy: [ stream cr ].
+	self decreaseIndentation
+
+]
+
+{ #category : 'visiting' }
 HeraScriptGenerator >> visitScenario: aScenario [
 
 	aScenario tags do: [ :each |
 		stream
-			crtab;
+			crtab: indentation;
 			nextPut: $@;
 			nextPutAll: each].
-	stream crtab.
+	stream crtab: indentation.
 	self nextPutKeyword: 'Scenario:'.
 	stream
 		space;
 		nextPutAll: aScenario title.
+	self increaseIndentation.
 	aScenario description do: [ :each |
 		stream
 			crtab: 2;
 			nextPutAll: each].
 	aScenario description ifNotEmpty: [ stream cr ].
-	aScenario steps do: [ :each | self visit: each ]
+	aScenario steps do: [ :each | self visit: each ].
+	self decreaseIndentation
 ]
 
 { #category : 'visiting' }
 HeraScriptGenerator >> visitThenStep: aThenStep [
 
 	stream
-		crtab: 2;
+		crtab: indentation;
 		nextPutAll: 'Then ';
 		nextPutAll: aThenStep description.
 	aThenStep argument ifNotNil: [ :stepArgument |
@@ -142,7 +188,7 @@ HeraScriptGenerator >> visitThenStep: aThenStep [
 HeraScriptGenerator >> visitWhenStep: aWhenStep [
 
 	stream
-		crtab: 2;
+		crtab: indentation;
 		nextPutAll: 'When ';
 		nextPutAll: aWhenStep description.
 	aWhenStep argument ifNotNil: [ :stepArgument |

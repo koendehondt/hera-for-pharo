@@ -70,7 +70,26 @@ HeraRunnableScript >> initializeInstructions [
 		eachScenario steps do: [ :eachStep |
 			instructions add: (self instructionForStep: eachStep) ].
 		instructions add: HeraAfterScenarioHookInstruction new.
-		instructions add: HeraEndScenarioInstruction new. ].
+		instructions add: HeraEndScenarioInstruction new ].
+	feature rules do: [ :eachRule |
+		filteredScenarios := eachRule scenarios select: [ :each | filter selects: each ].
+		filteredScenarios ifNotEmpty: [
+			instructions add: (HeraStartRuleInstruction for: eachRule).
+			eachRule background ifNotNil: [ :background |
+				instructions add: (HeraBackgroundInstruction new background: background) ] ].
+		filteredScenarios do: [ :eachScenario |
+			instructions add: (HeraStartScenarioInstruction for: eachScenario).
+			instructions add: HeraBeforeScenarioHookInstruction new.
+			eachRule background ifNotNil: [ :background |
+				background steps do: [ :eachStep | | stepInstruction backgroundStepInstruction |
+					stepInstruction := self instructionForStep: eachStep.
+					backgroundStepInstruction := HeraBackgroundStepInstruction new stepInstruction: stepInstruction. self flag: 'This uses the feature background'.
+					instructions add: backgroundStepInstruction ] ].
+			eachScenario steps do: [ :eachStep |
+				instructions add: (self instructionForStep: eachStep) ].
+			instructions add: HeraAfterScenarioHookInstruction new.
+			instructions add: HeraEndScenarioInstruction new ].
+		filteredScenarios ifNotEmpty: [ instructions add: HeraEndRuleInstruction new ] ].
 	instructions add: HeraEndFeatureInstruction new.
 	instructions add: HeraResultSummaryInstruction new.
 	^ instructions

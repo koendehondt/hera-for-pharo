@@ -9,6 +9,12 @@ Class {
 	#tag : 'Instructions'
 }
 
+{ #category : 'comparing' }
+HeraBackgroundStepInstruction >> = other [
+
+	^ super = other and: [ self stepInstruction = other stepInstruction ]
+]
+
 { #category : 'performing' }
 HeraBackgroundStepInstruction >> performFor: aScriptRunner [
 

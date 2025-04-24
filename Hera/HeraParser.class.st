@@ -141,26 +141,28 @@ HeraParser >> parseError: aString from: sourceStartIndex to: sourceEndIndex [
 { #category : 'parsing' }
 HeraParser >> parseFeature [
 
-	| title featureNode tags description scenarios nameToken background featureToken |
+	| title featureNode tags description scenarios titleToken background featureToken rules |
 	[
 		self skipEmptyLines.
 		tags := self parseTags.
 		currentToken isFeatureToken ifFalse: [
 			self parseError: 'Feature keyword expected' from: currentToken start to: currentToken end ].
 		featureToken := currentToken.
-		nameToken := self tryScanTextToken.
-		nameToken isTextToken ifFalse: [
+		titleToken := self tryScanTextToken.
+		titleToken isTextToken ifFalse: [
 			self parseError: 'Feature name expected after feature keyword' from: featureToken start to: featureToken end ].
 		title := HeraTitleAstNode new
-			text: nameToken text;
-			start: nameToken start;
-			end: nameToken end.
+			text: titleToken text;
+			start: titleToken start;
+			end: titleToken end.
 		self nextToken.
 		description := nil.
+		rules := OrderedCollection new.
 		scenarios := OrderedCollection new.
 		currentToken isEndOfFileToken ifFalse: [ description := self parseDescription ].
 		currentToken isEndOfFileToken ifFalse: [ background := self parseBackground ].
 		currentToken isEndOfFileToken ifFalse: [ scenarios := self parseScenarios ].
+		currentToken isEndOfFileToken ifFalse: [ rules := self parseRules ].
 		currentToken isEndOfFileToken ifFalse: [
 			self parseError: 'Scenario keyword expected' from: currentToken start to: currentToken end ].
 		featureNode := HeraFeatureAstNode new.
@@ -170,10 +172,50 @@ HeraParser >> parseFeature [
 			description: description;
 			background: background;
 			scenarios: scenarios;
+			rules: rules;
 			start: featureToken start;
 			end: scanner position.
 	] on: HeraParsingError do: [ ^ nil ].
 	^ featureNode
+]
+
+{ #category : 'parsing' }
+HeraParser >> parseRule [
+
+	| ruleNode description scenarios titleToken ruleToken title background |
+	"ruleToken has already been read."
+	ruleToken := currentToken.
+	titleToken := self tryScanTextToken.
+	titleToken isTextToken ifFalse: [
+		self parseError: 'Rule title expected after rule keyword' from: ruleToken start to: ruleToken end ].
+	title := HeraTitleAstNode new
+		text: titleToken text;
+		start: titleToken start;
+		end: titleToken end.
+	self skipEndOfLineToken.
+	description := nil.
+	scenarios := OrderedCollection new.
+	currentToken isEndOfFileToken ifFalse: [ description := self parseDescription ].
+	currentToken isEndOfFileToken ifFalse: [ background := self parseBackground ].
+	currentToken isEndOfFileToken ifFalse: [ scenarios := self parseScenarios ].
+	ruleNode := HeraRuleAstNode new.
+	ruleNode
+		title: title;
+		description: description;
+		background: background;
+		scenarios: scenarios;
+		start: ruleToken start;
+		end: scanner position.
+	^ ruleNode
+]
+
+{ #category : 'parsing' }
+HeraParser >> parseRules [
+
+	| ruleNodes |
+	ruleNodes := OrderedCollection new.
+	[ currentToken isRuleToken ] whileTrue: [ ruleNodes add: self parseRule ].
+	^ ruleNodes
 ]
 
 { #category : 'parsing' }
@@ -263,7 +305,7 @@ HeraParser >> parseStepsRestricted: aBlock [
 		stepNode := self parseStep.
 		stepNodes add: stepNode.
 		currentToken isEndOfLineToken ifTrue: [ self skipEmptyLines ] ].
-	(currentToken isEndOfFileToken or: [ currentToken isScenarioToken ])
+	(currentToken isEndOfFileToken or: [ currentToken isRuleToken or: [ currentToken isScenarioToken ] ])
 		ifFalse: [ self parseError: 'Step, step argument, or scenario expected' from: currentToken start to: currentToken end ].
 	^ stepNodes
 ]

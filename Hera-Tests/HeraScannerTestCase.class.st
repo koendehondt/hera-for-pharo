@@ -184,6 +184,17 @@ HeraScannerTestCase >> testScanGivenWithoutTrailingSpaceYieldsTextToken [
 	self assert: subject scanToken equals: (HeraTextToken new start: 1; end: 23)
 ]
 
+{ #category : 'tests - scanning lines' }
+HeraScannerTestCase >> testScanRuleLine [
+
+	| token |
+	subject on: 'Rule: Only administrators can manage users' readStream.
+	self assert: subject scanToken equals: (HeraRuleToken new start: 1; end: 5).
+	token := subject scanToken.
+	self assert: token equals: (HeraTextToken new start: 7; end: 42).
+	self assert: token text equals: 'Only administrators can manage users'
+]
+
 { #category : 'tests - scanning tokens' }
 HeraScannerTestCase >> testScanScenarioToken [
 

@@ -66,6 +66,12 @@ HeraToken >> isFeatureToken [
 ]
 
 { #category : 'testing' }
+HeraToken >> isRuleToken [
+
+	^ false
+]
+
+{ #category : 'testing' }
 HeraToken >> isScenarioToken [
 
 	^ false

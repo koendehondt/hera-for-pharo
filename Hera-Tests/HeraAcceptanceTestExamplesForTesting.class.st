@@ -125,6 +125,42 @@ HeraAcceptanceTestExamplesForTesting >> featureWithPauseStep [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithRules [
+
+	<heraFeature: 'With rules'>
+
+	^ (self feature: 'With rules')
+		description: {
+			'Managing users is essential to permit and revoke access to the system.' };
+		background: (self background
+			given: 'an administrator user and a non-administrator user exist');
+		scenarios: {
+			(self scenario: 'Scenarios before the first rule are not related to a rule')
+				given: 'I am an administrator';
+				then: 'I can sign in' };
+		rules: {
+			(self rule: 'Only administrators are allowed to manage users')
+				description: {
+					'Users are managed by administrators, who can assign permissions to users.' };
+				background: (self background
+					given: 'I am an administrator');
+				scenarios: {
+					(self scenario: 'Adding a user')
+						when: 'I open the user management page';
+						and: 'I add a new user';
+						then: 'the new user can sign in' .
+					(self scenario: 'Removing a user')
+						when: 'I open the user management page';
+						and: 'I remove a user';
+						then: 'the removed user cannot sign in anymore' } .
+			(self rule: 'Non-administrators have no access to user management')
+				scenarios: {
+					(self scenario: 'No access to user management')
+						given: 'I am not an administrator';
+						then: 'I cannot open the user management page' } }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithSingleStep [
 
 	<heraFeature: 'With single step scenario'>
@@ -178,9 +214,45 @@ HeraAcceptanceTestExamplesForTesting >> featureWithTwoScenarios [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepAnAdministratorUserAndANonAdministratorUserExist [
+
+	<heraStepDefinition: #(Given 'an administrator user and a non-administrator user exist')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIAddANewUser [
+	
+	<heraStepDefinition: #(When 'I add a new user')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIAmAnAdministrator [
+	
+	<heraStepDefinition: #(Given 'I am an administrator')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIAmNotAnAdministrator [
+	
+	<heraStepDefinition: #(Given 'I am not an administrator')>
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIAmStillOnTheSignInPage [
 	
 	<heraStepDefinition: #(Then 'I am still on the sign-in page')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepICanSignIn [
+	
+	<heraStepDefinition: #(Then 'I can sign in')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepICannotOpenTheUserManagementPage [
+	
+	<heraStepDefinition: #(Then 'I cannot open the user management page')>
 ]
 
 { #category : 'steps' }
@@ -202,9 +274,21 @@ HeraAcceptanceTestExamplesForTesting >> stepIHaveCredentialsToSignIn [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIOpenTheUserManagemenntPage [
+	
+	<heraStepDefinition: #(When 'I open the user management page')>
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIPressTheButtonToSignIn [
 	
 	<heraStepDefinition: #(When 'I press the button to sign in')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIRemoveAUser [
+	
+	<heraStepDefinition: #(When 'I remove a user')>
 ]
 
 { #category : 'steps' }
@@ -251,6 +335,18 @@ HeraAcceptanceTestExamplesForTesting >> stepTheFollowingUsersExist: dataTable [
 	<heraStepDefinition: #(Given 'the following users exist:')>
 
 	users := dataTable asDictionaries
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepTheNewUserCanSignIn [
+	
+	<heraStepDefinition: #(Then 'the new user can sign in')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepTheRemovedUserCannotSignInAnymore [
+	
+	<heraStepDefinition: #(Then 'the removed user cannot sign in anymore')>
 ]
 
 { #category : 'steps' }

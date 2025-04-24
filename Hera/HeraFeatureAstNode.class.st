@@ -6,7 +6,8 @@ Class {
 		'description',
 		'tags',
 		'background',
-		'title'
+		'title',
+		'rules'
 	],
 	#category : 'Hera-AST',
 	#package : 'Hera',
@@ -47,6 +48,7 @@ HeraFeatureAstNode >> description: aDescriptionAstNode [
 HeraFeatureAstNode >> initialize [
 
 	super initialize.
+	rules := OrderedCollection new.
 	scenarios := OrderedCollection new
 ]
 
@@ -54,6 +56,18 @@ HeraFeatureAstNode >> initialize [
 HeraFeatureAstNode >> isEmpty [
 
 	^ self tags isEmpty and: [ self description isNil and: [ self scenarios isEmpty ] ]
+]
+
+{ #category : 'accessing' }
+HeraFeatureAstNode >> rules [
+
+	^ rules
+]
+
+{ #category : 'accessing' }
+HeraFeatureAstNode >> rules: anOrderedCollection [
+
+	rules := anOrderedCollection
 ]
 
 { #category : 'accessing' }

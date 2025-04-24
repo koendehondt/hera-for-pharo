@@ -13,6 +13,12 @@ HeraAbstractReporter >> reportBackground: aBackground [
 ]
 
 { #category : 'reporting' }
+HeraAbstractReporter >> reportEndOfBackground: aBackground [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
 HeraAbstractReporter >> reportEndOfBackgroundStep: aStep [
 
 	self subclassResponsibility
@@ -26,6 +32,12 @@ HeraAbstractReporter >> reportEndOfFeature: aFeature [
 
 { #category : 'reporting' }
 HeraAbstractReporter >> reportEndOfFeatures [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
+HeraAbstractReporter >> reportEndOfRule: aRule [
 
 	self subclassResponsibility
 ]
@@ -67,6 +79,12 @@ HeraAbstractReporter >> reportResult: result [
 ]
 
 { #category : 'reporting' }
+HeraAbstractReporter >> reportStartOfBackground: aBackground [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
 HeraAbstractReporter >> reportStartOfBackgroundStep: aStep [
 
 	self subclassResponsibility
@@ -80,6 +98,12 @@ HeraAbstractReporter >> reportStartOfFeature: aFeature [
 
 { #category : 'reporting' }
 HeraAbstractReporter >> reportStartOfFeatures: features withFilter: filter [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
+HeraAbstractReporter >> reportStartOfRule: aRule [
 
 	self subclassResponsibility
 ]

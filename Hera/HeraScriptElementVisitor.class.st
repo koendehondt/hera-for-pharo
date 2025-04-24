@@ -43,6 +43,12 @@ HeraScriptElementVisitor >> visitGivenStep: aGivenStep [
 ]
 
 { #category : 'visiting' }
+HeraScriptElementVisitor >> visitRule: aRule [
+
+	self subclassResponsibility
+]
+
+{ #category : 'visiting' }
 HeraScriptElementVisitor >> visitScenario: aScenario [
 
 	self subclassResponsibility

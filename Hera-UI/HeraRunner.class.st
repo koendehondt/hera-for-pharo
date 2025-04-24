@@ -140,9 +140,9 @@ HeraRunner >> isRunningScenario [
 ]
 
 { #category : 'accessing' }
-HeraRunner >> report: arg1 [
+HeraRunner >> report: aText [
 
-	output text: (output text append: arg1).
+	output text: (output text append: aText).
 	self scrollToEndOfOutput
 ]
 

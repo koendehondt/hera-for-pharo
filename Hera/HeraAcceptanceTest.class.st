@@ -224,6 +224,12 @@ HeraAcceptanceTest >> registerHelpers [
 	 Override and send #registerHelper:."
 ]
 
+{ #category : 'dsl' }
+HeraAcceptanceTest >> rule: aString [
+
+	^ HeraRule new title: aString
+]
+
 { #category : 'running' }
 HeraAcceptanceTest >> runStep: aStep [
 

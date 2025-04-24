@@ -6,7 +6,8 @@ Class {
 		'description',
 		'tags',
 		'name',
-		'background'
+		'background',
+		'rules'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -49,7 +50,8 @@ HeraFeature >> initialize [
 	super initialize.
 	tags := #().
 	description := #().
-	scenarios := #()
+	scenarios := #().
+	rules := #()
 ]
 
 { #category : 'accessing' }
@@ -76,6 +78,18 @@ HeraFeature >> printOn: aStream [
 HeraFeature >> richScript [
 
 	^ (HeraScriptGenerator new visit: self) generatedScript
+]
+
+{ #category : 'accessing' }
+HeraFeature >> rules [
+
+	^ rules
+]
+
+{ #category : 'accessing' }
+HeraFeature >> rules: anArray [
+
+	rules := anArray
 ]
 
 { #category : 'accessing' }

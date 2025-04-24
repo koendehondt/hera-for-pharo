@@ -6,9 +6,9 @@ Class {
 	#superclass : 'HeraAstVisitor',
 	#instVars : [
 		'warnings',
-		'currentScenarioAstNode',
 		'currentStepIndex',
-		'acceptanceTest'
+		'acceptanceTest',
+		'currentAstNodeWithSteps'
 	],
 	#category : 'Hera-Linter',
 	#package : 'Hera',
@@ -47,7 +47,7 @@ HeraLinter >> lint: anAstNode [
 HeraLinter >> previousStepsAreAllGivenSteps [
 
 	| steps |
-	steps := currentScenarioAstNode steps.
+	steps := currentAstNodeWithSteps steps.
 	^ (1 to: currentStepIndex - 1) allSatisfy: [ :index |
 		(steps at: index) isGivenStepNode ]
 ]
@@ -68,6 +68,15 @@ HeraLinter >> visitAndAstNode: anAndAstNode [
 ]
 
 { #category : 'visiting' }
+HeraLinter >> visitBackgroundAstNode: aBackgroundAstNode [
+
+	currentAstNodeWithSteps := aBackgroundAstNode.
+	aBackgroundAstNode steps withIndexDo: [ :stepNode :stepIndex |
+		currentStepIndex := stepIndex.
+		self visit: stepNode ]
+]
+
+{ #category : 'visiting' }
 HeraLinter >> visitButAstNode: aButAstNode [
 
 	self checkColonAfterKeyword: aButAstNode.
@@ -82,8 +91,10 @@ HeraLinter >> visitFeatureAstNode: aFeatureAstNode [
 	| titleNode |
 	aFeatureAstNode title text first isUppercase ifFalse: [
 		titleNode := aFeatureAstNode title.
-		self warn: 'A feature name should start with an uppercase letter' from: titleNode start to: titleNode end ].
-	aFeatureAstNode scenarios do: [ :each | self visit: each ]
+		self warn: 'A feature title should start with an uppercase letter' from: titleNode start to: titleNode end ].
+	aFeatureAstNode background ifNotNil: [ :background | self visit: background ].
+	aFeatureAstNode scenarios do: [ :each | self visit: each ].
+	aFeatureAstNode rules do: [ :each | self visit: each ]
 ]
 
 { #category : 'visiting' }
@@ -96,10 +107,21 @@ HeraLinter >> visitGivenAstNode: aGivenAstNode [
 ]
 
 { #category : 'visiting' }
+HeraLinter >> visitRuleAstNode: aRuleAstNode [
+
+	| titleNode |
+	aRuleAstNode title text first isUppercase ifFalse: [
+		titleNode := aRuleAstNode title.
+		self warn: 'A rule title should start with an uppercase letter' from: titleNode start to: titleNode end ].
+	aRuleAstNode background ifNotNil: [ :background | self visit: background ].
+	aRuleAstNode scenarios do: [ :each | self visit: each ]
+]
+
+{ #category : 'visiting' }
 HeraLinter >> visitScenarioAstNode: aScenarioAstNode [
 
 	| titleNode |
-	currentScenarioAstNode := aScenarioAstNode.
+	currentAstNodeWithSteps := aScenarioAstNode.
 	aScenarioAstNode title text first isUppercase ifFalse: [
 		titleNode := aScenarioAstNode title.
 		self warn: 'A scenario title should start with an uppercase letter' from: titleNode start to: titleNode end ].

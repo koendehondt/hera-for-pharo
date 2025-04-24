@@ -73,8 +73,8 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfBackground [
 	<heraFeature: ''Signing in''>
 
 	^ (self feature: ''Signing in'')
-			background: (self background
-				given: ''I have credentials to sign in'');
+		background: (self background
+			given: ''I have credentials to sign in'');
 		scenarios: {
 			(self scenario: ''Successful sign-in'')
 				when: ''I enter my credentials'';
@@ -229,6 +229,74 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfEmptyFeature [
 	<heraFeature: ''Signing in''>
 
 	^ self feature: ''Signing in'''
+]
+
+{ #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFeatureWithRules [
+
+	| document ast |
+	document := '
+Feature: User management
+	Managing users is essential to permit and revoke access to the system.
+
+	Scenario: Scenarios before the first rule are not related to a rule
+		Given I am an administrator
+		Then I can sign in
+
+	Rule: Only administrators are allowed to manage users
+		Users are managed by administrators, who can assign permissions to users.
+
+		Background:
+			Given I am an administrator
+
+		Scenario: Adding a user
+			When I open the user management page
+			And I add a new user
+			Then the new user can sign in
+
+		Scenario: Removing a user
+			When I open the user management page
+			And I remove a user
+			Then the removed user cannot sign in anymore
+
+	Rule: Non-administrators have no access to user management
+
+		Scenario: No access to user management
+			Given I am not an administrator
+			Then I cannot open the user management page'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''User management''>
+
+	^ (self feature: ''User management'')
+		description: {
+			''Managing users is essential to permit and revoke access to the system.'' };
+		scenarios: {
+			(self scenario: ''Scenarios before the first rule are not related to a rule'')
+				given: ''I am an administrator'';
+				then: ''I can sign in'' };
+		rules: {
+			(self rule: ''Only administrators are allowed to manage users'')
+				description: {
+					''Users are managed by administrators, who can assign permissions to users.'' };
+				background: (self background
+					given: ''I am an administrator'');
+				scenarios: {
+					(self scenario: ''Adding a user'')
+						when: ''I open the user management page'';
+						and: ''I add a new user'';
+						then: ''the new user can sign in'' .
+					(self scenario: ''Removing a user'')
+						when: ''I open the user management page'';
+						and: ''I remove a user'';
+						then: ''the removed user cannot sign in anymore'' } .
+			(self rule: ''Non-administrators have no access to user management'')
+				scenarios: {
+					(self scenario: ''No access to user management'')
+						given: ''I am not an administrator'';
+						then: ''I cannot open the user management page'' } }'
 ]
 
 { #category : 'tests' }

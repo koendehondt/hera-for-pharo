@@ -88,10 +88,10 @@ HeraLinterTestCase >> testButCannotBeTheFirstStep [
 ]
 
 { #category : 'tests' }
-HeraLinterTestCase >> testFeatureNameStartsWithUppercaseLetter [
+HeraLinterTestCase >> testFeatureTitleStartsWithUppercaseLetter [
 
 	self
-		assertWarning: 'A feature name should start with an uppercase letter'
+		assertWarning: 'A feature title should start with an uppercase letter'
 		start: 10
 		end: 19
 		whenLinting: 'Feature: signing in'
@@ -197,6 +197,19 @@ HeraLinterTestCase >> testNoColonAfterWhenStepKeyword [
 	self assertWarning: 'A colon after a step keyword is not necessary' start: 96 end: 110.
 	self assertWarning: 'This step has no definition' start: 96 end: 110.
 	self assertWarning: 'This step has no definition' start: 61 end: 90
+]
+
+{ #category : 'tests' }
+HeraLinterTestCase >> testRuleTitleStartsWithUppercaseLetter [
+
+	self
+		assertWarning: 'A rule title should start with an uppercase letter'
+		start: 36
+		end: 82
+		whenLinting: '
+			Feature: Signing in
+
+				Rule: only administrators are allowed to manage users'
 ]
 
 { #category : 'tests' }

@@ -13,7 +13,8 @@ Class {
 		'runnableScript',
 		'paused',
 		'scenarioCount',
-		'currentAcceptanceTest'
+		'currentAcceptanceTest',
+		'currentRule'
 	],
 	#category : 'Hera-Running',
 	#package : 'Hera',
@@ -76,6 +77,12 @@ HeraScriptRunner >> endFeature [
 		result recordEmptyFeature: currentFeature.
 		reporter reportEmptyFeature: currentFeature ].
 	reporter reportEndOfFeature: currentFeature
+]
+
+{ #category : 'instruction double dispatch' }
+HeraScriptRunner >> endRule [
+
+	reporter reportEndOfRule: currentRule
 ]
 
 { #category : 'instruction double dispatch' }
@@ -212,10 +219,11 @@ HeraScriptRunner >> run [
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> runBackground: aBackground [
 
-	reporter reportBackground: aBackground.
+	reporter reportStartOfBackground: aBackground.
 	aBackground steps do: [ :each |
 		reporter reportStartOfStep: each.
-		reporter reportEndOfStep: each ]
+		reporter reportEndOfStep: each ].
+	reporter reportEndOfBackground: aBackground
 ]
 
 { #category : 'instruction double dispatch' }
@@ -285,6 +293,13 @@ HeraScriptRunner >> startFeature: aFeature [
 	currentFeature := aFeature.
 	result recordStartTime.
 	reporter reportStartOfFeature: aFeature
+]
+
+{ #category : 'instruction double dispatch' }
+HeraScriptRunner >> startRule: aRule [
+
+	currentRule := aRule.
+	reporter reportStartOfRule: aRule
 ]
 
 { #category : 'instruction double dispatch' }

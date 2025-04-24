@@ -375,6 +375,63 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithRules [
+
+	| text |
+	text := Text fromString: '
+Feature: With rules
+
+	Managing users is essential to permit and revoke access to the system.
+
+	Background:
+		Given an administrator user and a non-administrator user exist
+
+	Scenario: Scenarios before the first rule are not related to a rule
+		Given an administrator user and a non-administrator user exist [Background]
+		Given I am an administrator
+		Then I can sign in
+
+	Rule: Only administrators are allowed to manage users
+
+		Users are managed by administrators, who can assign permissions to users.
+
+		Background:
+			Given I am an administrator
+
+		Scenario: Adding a user
+			Given I am an administrator [Background]
+			When I open the user management page
+			And I add a new user
+			Then the new user can sign in
+
+		Scenario: Removing a user
+			Given I am an administrator [Background]
+			When I open the user management page
+			And I remove a user
+			Then the removed user cannot sign in anymore
+
+	Rule: Non-administrators have no access to user management
+
+		Scenario: No access to user management
+			Given I am not an administrator
+			Then I cannot open the user management page
+
+Total: 4. Passed: 4. Failed: 0. Error: 0.
+' allButFirst.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 96 to: 106;
+		addAttribute: TextEmphasis bold from: 175 to: 183;
+		addAttribute: TextEmphasis bold from: 374 to: 378;
+		addAttribute: TextEmphasis bold from: 508 to: 518;
+		addAttribute: TextEmphasis bold from: 554 to: 562;
+		addAttribute: TextEmphasis bold from: 722 to: 730;
+		addAttribute: TextEmphasis bold from: 905 to: 909;
+		addAttribute: TextEmphasis bold from: 967 to: 975.
+	^ text
+]
+
+{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedUndefinedStepErrorRunReport [
 
 	| text |
@@ -558,6 +615,15 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithDataTable [
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithDataTable
+]
+
+{ #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testRunWithRules [
+
+	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithRules).
+	subject reporter: reporter.
+	subject run.
+	self assertText: reporter text equals: self expectedRunReportWithRules
 ]
 
 { #category : 'tests' }

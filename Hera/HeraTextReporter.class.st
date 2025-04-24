@@ -4,12 +4,25 @@ Class {
 	#instVars : [
 		'stream',
 		'reportsTags',
-		'reportsDescriptions'
+		'reportsDescriptions',
+		'indentation'
 	],
 	#category : 'Hera-Reporting',
 	#package : 'Hera',
 	#tag : 'Reporting'
 }
+
+{ #category : 'private - reporting' }
+HeraTextReporter >> decreaseIndentation [
+
+	indentation := indentation - 1
+]
+
+{ #category : 'private - reporting' }
+HeraTextReporter >> increaseIndentation [
+
+	indentation := indentation + 1
+]
 
 { #category : 'initialization' }
 HeraTextReporter >> initialize [
@@ -17,20 +30,14 @@ HeraTextReporter >> initialize [
 	super initialize.
 	stream := TextStream on: (Text new: 1000).
 	reportsTags := false.
-	reportsDescriptions := false
-]
-
-{ #category : 'reporting' }
-HeraTextReporter >> reportBackground: aBackground [
-
-	stream cr; crtab.
-	self reportKeyword: 'Background:'
+	reportsDescriptions := false.
+	indentation := 0
 ]
 
 { #category : 'reporting' }
 HeraTextReporter >> reportEmptyFeature: aFeature [
 
-	stream crtab.
+	stream crtab: indentation.
 	stream
 		withAttributes: self textAttributesForError
 		do: [ stream nextPutAll: 'ERROR' ].
@@ -42,13 +49,19 @@ HeraTextReporter >> reportEmptyFeature: aFeature [
 { #category : 'reporting' }
 HeraTextReporter >> reportEmptyScenario: aScenario [
 
-	stream crtab: 2.
+	stream crtab: indentation.
 	stream
 		withAttributes: self textAttributesForError
 		do: [ stream nextPutAll: 'ERROR' ].
 	stream
 		space;
 		nextPutAll: 'There are no steps.'
+]
+
+{ #category : 'reporting' }
+HeraTextReporter >> reportEndOfBackground: aBackground [
+
+	self decreaseIndentation
 ]
 
 { #category : 'reporting' }
@@ -60,7 +73,8 @@ HeraTextReporter >> reportEndOfBackgroundStep: aStep [
 { #category : 'reporting' }
 HeraTextReporter >> reportEndOfFeature: aScenario [
 
-	stream cr
+	stream cr.
+	self decreaseIndentation
 ]
 
 { #category : 'reporting' }
@@ -70,9 +84,15 @@ HeraTextReporter >> reportEndOfFeatures [
 ]
 
 { #category : 'reporting' }
+HeraTextReporter >> reportEndOfRule: aRule [
+
+	self decreaseIndentation
+]
+
+{ #category : 'reporting' }
 HeraTextReporter >> reportEndOfScenario: aScenario [
 
-	"Do nothing."
+	self decreaseIndentation
 ]
 
 { #category : 'reporting' }
@@ -84,7 +104,7 @@ HeraTextReporter >> reportEndOfStep: aStep [
 { #category : 'reporting' }
 HeraTextReporter >> reportErrorStep: aStep withError: anError [
 
-	stream crtab: 3.
+	stream crtab: indentation + 1.
 	stream
 		withAttributes: (self textAttributesForErrorFor: aStep)
 		do: [ stream nextPutAll: 'ERROR' ].
@@ -96,7 +116,7 @@ HeraTextReporter >> reportErrorStep: aStep withError: anError [
 { #category : 'reporting' }
 HeraTextReporter >> reportFailedStep: aStep withFailure: aFailure [
 
-	stream crtab: 3.
+	stream crtab: indentation + 1.
 	stream
 		withAttributes: (self textAttributesForFailureFor: aStep)
 		do: [ stream nextPutAll: 'FAILED' ].
@@ -144,6 +164,15 @@ HeraTextReporter >> reportResult: result [
 ]
 
 { #category : 'private - reporting' }
+HeraTextReporter >> reportRule: aRule [
+
+	self reportKeyword: 'Rule:'.
+	stream
+		space;
+		nextPutAll: aRule title
+]
+
+{ #category : 'private - reporting' }
 HeraTextReporter >> reportScenario: aScenario [
 
 	self reportKeyword: 'Scenario:'.
@@ -153,17 +182,25 @@ HeraTextReporter >> reportScenario: aScenario [
 ]
 
 { #category : 'reporting' }
+HeraTextReporter >> reportStartOfBackground: aBackground [
+
+	stream cr; crtab: indentation.
+	self reportKeyword: 'Background:'.
+	self increaseIndentation
+]
+
+{ #category : 'reporting' }
 HeraTextReporter >> reportStartOfBackgroundStep: aStep [
 
 	stream
-		crtab: 2;
+		crtab: indentation;
 		nextPutAll: aStep keyword;
 		space;
 		nextPutAll: aStep description;
 		nextPutAll: ' [Background]'.
 	aStep argument ifNotNil: [ :stepArgument |
 		stream cr.
-		stepArgument printFormattedOn: stream indentation: 3 ]
+		stepArgument printFormattedOn: stream indentation: indentation ]
 ]
 
 { #category : 'reporting' }
@@ -172,12 +209,13 @@ HeraTextReporter >> reportStartOfFeature: aFeature [
 	reportsTags ifTrue: [
 		aFeature tags do: [ :each | stream nextPut: $@; nextPutAll: each; cr ] ].
 	self reportFeature: aFeature.
+	self increaseIndentation.
 	reportsDescriptions ifFalse: [ ^ self ].
 	aFeature description ifEmpty: [ ^ self ].
 	stream cr.
 	aFeature description do: [ :each |
 		stream cr.
-		each isEmpty ifFalse: [ stream tab ].
+		each isEmpty ifFalse: [ stream tab: indentation ].
 		stream nextPutAll: each ]
 ]
 
@@ -188,13 +226,29 @@ HeraTextReporter >> reportStartOfFeatures: features withFilter: filter [
 ]
 
 { #category : 'reporting' }
+HeraTextReporter >> reportStartOfRule: aRule [
+
+	stream cr; crtab: indentation.
+	self reportRule: aRule.
+	self increaseIndentation.
+	reportsDescriptions ifFalse: [ ^ self ].
+	aRule description ifEmpty: [ ^ self ].
+	stream cr.
+	aRule description do: [ :each |
+		stream cr.
+		each isEmpty ifFalse: [ stream tab: indentation ].
+		stream nextPutAll: each ]
+]
+
+{ #category : 'reporting' }
 HeraTextReporter >> reportStartOfScenario: aScenario [
 
 	stream cr.
 	reportsTags ifTrue: [
 		aScenario tags do: [ :each | stream crtab; nextPut: $@; nextPutAll: each ] ].
-	stream crtab.
+	stream crtab: indentation.
 	self reportScenario: aScenario.
+	self increaseIndentation.
 	reportsDescriptions ifFalse: [ ^ self ].
 	aScenario description ifEmpty: [ ^ self ].
 	stream cr.
@@ -208,7 +262,7 @@ HeraTextReporter >> reportStartOfScenario: aScenario [
 { #category : 'reporting' }
 HeraTextReporter >> reportStartOfStep: aStep [
 
-	stream crtab: 2.
+	stream crtab: indentation.
 	self reportStep: aStep
 ]
 
@@ -221,7 +275,7 @@ HeraTextReporter >> reportStep: aStep [
 		nextPutAll: aStep description.
 	aStep argument ifNotNil: [ :stepArgument |
 		stream cr.
-		stepArgument printFormattedOn: stream indentation: 3 ]
+		stepArgument printFormattedOn: stream indentation: indentation + 1 ]
 ]
 
 { #category : 'accessing' }

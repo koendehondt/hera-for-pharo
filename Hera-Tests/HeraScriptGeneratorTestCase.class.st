@@ -121,6 +121,55 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 	^ text
 ]
 
+{ #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithRules [
+
+	| text |
+	text := Text fromString:	'
+Feature: With rules
+	Managing users is essential to permit and revoke access to the system.
+
+	Background:
+		Given an administrator user and a non-administrator user exist
+
+	Scenario: Scenarios before the first rule are not related to a rule
+		Given I am an administrator
+		Then I can sign in
+
+	Rule: Only administrators are allowed to manage users
+		Users are managed by administrators, who can assign permissions to users.
+
+		Background:
+			Given I am an administrator
+
+		Scenario: Adding a user
+			When I open the user management page
+			And I add a new user
+			Then the new user can sign in
+
+		Scenario: Removing a user
+			When I open the user management page
+			And I remove a user
+			Then the removed user cannot sign in anymore
+
+	Rule: Non-administrators have no access to user management
+
+		Scenario: No access to user management
+			Given I am not an administrator
+			Then I cannot open the user management page' allButFirst.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 95 to: 105;
+		addAttribute: TextEmphasis bold from: 174 to: 182;
+		addAttribute: TextEmphasis bold from: 295 to: 299;
+		addAttribute: TextEmphasis bold from: 428 to: 438;
+		addAttribute: TextEmphasis bold from: 474 to: 482;
+		addAttribute: TextEmphasis bold from: 598 to: 606;
+		addAttribute: TextEmphasis bold from: 737 to: 741;
+		addAttribute: TextEmphasis bold from: 799 to: 807.
+	^ text
+]
+
 { #category : 'tests' }
 HeraScriptGeneratorTestCase >> testGeneratedScript [
 
@@ -155,4 +204,13 @@ HeraScriptGeneratorTestCase >> testGeneratedScriptWithDocString [
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithDocString.
 	subject visit: feature.
 	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithDocString
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithRules [
+
+	| feature |
+	feature := HeraAcceptanceTestExamplesForTesting new featureWithRules.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithRules
 ]

@@ -24,12 +24,6 @@ HeraRunnerReporter >> report: aBlock [
 ]
 
 { #category : 'reporting' }
-HeraRunnerReporter >> reportBackground: aBackground [
-
-	self report: [ super reportBackground: aBackground ]
-]
-
-{ #category : 'reporting' }
 HeraRunnerReporter >> reportEmptyFeature: aFeature [
 
 	self report: [ super reportEmptyFeature: aFeature ]
@@ -39,6 +33,12 @@ HeraRunnerReporter >> reportEmptyFeature: aFeature [
 HeraRunnerReporter >> reportEmptyScenario: aScenario [
 
 	self report: [ super reportEmptyScenario: aScenario ]
+]
+
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportEndOfBackground: aBackground [
+
+	self report: [ super reportEndOfBackground: aBackground ]
 ]
 
 { #category : 'reporting' }
@@ -57,6 +57,12 @@ HeraRunnerReporter >> reportEndOfFeature: aFeature [
 HeraRunnerReporter >> reportEndOfFeatures [
 
 	self report: [ super reportEndOfFeatures ]
+]
+
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportEndOfRule: aRule [
+
+	self report: [ super reportEndOfRule: aRule ]
 ]
 
 { #category : 'reporting' }
@@ -91,6 +97,12 @@ HeraRunnerReporter >> reportResult: result [
 ]
 
 { #category : 'reporting' }
+HeraRunnerReporter >> reportStartOfBackground: aBackground [
+
+	self report: [ super reportStartOfBackground: aBackground ]
+]
+
+{ #category : 'reporting' }
 HeraRunnerReporter >> reportStartOfBackgroundStep: aStep [
 
 	self report: [ super reportStartOfBackgroundStep: aStep ]
@@ -106,6 +118,12 @@ HeraRunnerReporter >> reportStartOfFeature: aFeature [
 HeraRunnerReporter >> reportStartOfFeatures: features withFilter: filter [
 
 	runner clear
+]
+
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportStartOfRule: aRule [
+
+	self report: [ super reportStartOfRule: aRule ]
 ]
 
 { #category : 'reporting' }
