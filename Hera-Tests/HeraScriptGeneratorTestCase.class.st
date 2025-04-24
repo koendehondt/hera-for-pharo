@@ -19,12 +19,14 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScript [
 	text := Text fromString:	'@accessing_the_system
 @signing_in
 Feature: Signing in
+
 	Signing in is required to have access to the application.
-	
+
 	Signing in requires credentials: an email address and a password.
 
 	@sign_in
 	Scenario: Successful sign-in
+
 		Access is allowed when the credentials are recognized.
 
 		Given I have credentials to sign in
@@ -41,7 +43,7 @@ Feature: Signing in
 	text
 		addAttribute: TextEmphasis bold from: 35 to: 42;
 		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 415 to: 423.
+		addAttribute: TextEmphasis bold from: 416 to: 424.
 	^ text
 ]
 
@@ -127,6 +129,7 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithRules [
 	| text |
 	text := Text fromString:	'
 Feature: With rules
+
 	Managing users is essential to permit and revoke access to the system.
 
 	Background:
@@ -137,6 +140,7 @@ Feature: With rules
 		Then I can sign in
 
 	Rule: Only administrators are allowed to manage users
+
 		Users are managed by administrators, who can assign permissions to users.
 
 		Background:
@@ -159,14 +163,14 @@ Feature: With rules
 			Then I cannot open the user management page' allButFirst.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 95 to: 105;
-		addAttribute: TextEmphasis bold from: 174 to: 182;
-		addAttribute: TextEmphasis bold from: 295 to: 299;
-		addAttribute: TextEmphasis bold from: 428 to: 438;
-		addAttribute: TextEmphasis bold from: 474 to: 482;
-		addAttribute: TextEmphasis bold from: 598 to: 606;
-		addAttribute: TextEmphasis bold from: 737 to: 741;
-		addAttribute: TextEmphasis bold from: 799 to: 807.
+		addAttribute: TextEmphasis bold from: 96 to: 106;
+		addAttribute: TextEmphasis bold from: 175 to: 183;
+		addAttribute: TextEmphasis bold from: 296 to: 300;
+		addAttribute: TextEmphasis bold from: 430 to: 440;
+		addAttribute: TextEmphasis bold from: 476 to: 484;
+		addAttribute: TextEmphasis bold from: 600 to: 608;
+		addAttribute: TextEmphasis bold from: 739 to: 743;
+		addAttribute: TextEmphasis bold from: 801 to: 809.
 	^ text
 ]
 

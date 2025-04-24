@@ -97,10 +97,11 @@ HeraScriptGenerator >> visitFeature: aFeature [
 		space;
 		nextPutAll: aFeature name.
 	self increaseIndentation.
+	aFeature description ifNotEmpty: [ stream cr ].
 	aFeature description do: [ :each |
-		stream
-			crtab: indentation;
-			nextPutAll: each].
+		stream cr.
+		each ifNotEmpty: [ stream tab: indentation ].
+		stream nextPutAll: each].
 	aFeature description
 		ifEmpty: [ (aFeature background isNotNil or: [ aFeature scenarios isNotEmpty]) ifTrue: [ stream cr ] ];
 		ifNotEmpty: [ stream cr ].
@@ -134,10 +135,11 @@ HeraScriptGenerator >> visitRule: aRule [
 		space;
 		nextPutAll: aRule title.
 	self increaseIndentation.
+	aRule description ifNotEmpty: [ stream cr ].
 	aRule description do: [ :each |
-		stream
-			crtab: indentation;
-			nextPutAll: each].
+		stream cr.
+		each ifNotEmpty: [ stream tab: indentation ].
+		stream nextPutAll: each].
 	aRule description
 		ifEmpty: [ (aRule background isNotNil or: [ aRule scenarios isNotEmpty]) ifTrue: [ stream cr ] ];
 		ifNotEmpty: [ stream cr ].
@@ -163,10 +165,11 @@ HeraScriptGenerator >> visitScenario: aScenario [
 		space;
 		nextPutAll: aScenario title.
 	self increaseIndentation.
+	aScenario description ifNotEmpty: [ stream cr ].
 	aScenario description do: [ :each |
-		stream
-			crtab: 2;
-			nextPutAll: each].
+		stream cr.
+		each ifNotEmpty: [ stream tab: indentation ].
+		stream nextPutAll: each ].
 	aScenario description ifNotEmpty: [ stream cr ].
 	aScenario steps do: [ :each | self visit: each ].
 	self decreaseIndentation

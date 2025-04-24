@@ -19,12 +19,14 @@ HeraFeatureTestCase >> expectedGeneratedRichScript [
 	text := Text fromString:	'@accessing_the_system
 @signing_in
 Feature: Signing in
+
 	Signing in is required to have access to the application.
-	
+
 	Signing in requires credentials: an email address and a password.
 
 	@sign_in
 	Scenario: Successful sign-in
+
 		Access is allowed when the credentials are recognized.
 
 		Given I have credentials to sign in
@@ -41,7 +43,7 @@ Feature: Signing in
 	text
 		addAttribute: TextEmphasis bold from: 35 to: 42;
 		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 415 to: 423.
+		addAttribute: TextEmphasis bold from: 416 to: 424.
 	^ text
 ]
 
