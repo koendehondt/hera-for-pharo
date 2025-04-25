@@ -35,6 +35,12 @@ HeraLinter >> checkStepDefinitionFor: aStepAstNode [
 	self warnMissingStepDefinitionFrom: aStepAstNode start to: aStepAstNode end
 ]
 
+{ #category : 'private' }
+HeraLinter >> isImplicitlyDefinedStep: stepDescription [
+
+	^ stepDescription = 'I pause'
+]
+
 { #category : 'linting' }
 HeraLinter >> lint: anAstNode [
 
@@ -55,6 +61,7 @@ HeraLinter >> previousStepsAreAllGivenSteps [
 { #category : 'private' }
 HeraLinter >> stepDefinitionExists: stepDescription [
 
+	(self isImplicitlyDefinedStep: stepDescription) ifTrue: [ ^ true ].
 	^ (acceptanceTest methodForStepDescription: stepDescription) notNil
 ]
 

@@ -117,6 +117,18 @@ HeraLinterTestCase >> testGivenComesBeforeAnyOtherStep [
 ]
 
 { #category : 'tests' }
+HeraLinterTestCase >> testIPauseIsDefined [
+
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Pausing
+
+			Scenario: The "I pause" step is not a lint issue
+				When I pause'.
+	self assert: noWarnings
+]
+
+{ #category : 'tests' }
 HeraLinterTestCase >> testNoColonAfterAndStepKeyword [
 
 	| noWarnings |
