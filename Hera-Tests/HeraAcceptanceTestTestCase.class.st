@@ -56,7 +56,7 @@ HeraAcceptanceTestTestCase >> testDslFeature [
 	| feature |
 	feature := subject feature: 'Employee management'.
 	self assert: (feature isMemberOf: HeraFeature).
-	self assert: feature name equals: 'Employee management'.
+	self assert: feature title equals: 'Employee management'.
 	self assert: feature tags equals: #().
 	self assert: feature description equals: #().
 	self assert: feature background isNil.

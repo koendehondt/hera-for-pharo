@@ -50,7 +50,7 @@ Feature: Signing in
 { #category : 'tests' }
 HeraFeatureTestCase >> testPrintString [
 
-	subject name: 'Signing in'.
+	subject title: 'Signing in'.
 	self assert: subject printString equals: 'Feature: Signing in'
 ]
 

@@ -116,7 +116,7 @@ HeraAcceptanceTest >> feature [
 { #category : 'dsl' }
 HeraAcceptanceTest >> feature: aString [
 
-	^ HeraFeature new name: aString
+	^ HeraFeature new title: aString
 ]
 
 { #category : 'accessing' }

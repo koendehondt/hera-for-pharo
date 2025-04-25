@@ -95,7 +95,7 @@ HeraScriptGenerator >> visitFeature: aFeature [
 	self nextPutKeyword: 'Feature:'.
 	stream
 		space;
-		nextPutAll: aFeature name.
+		nextPutAll: aFeature title.
 	self increaseIndentation.
 	aFeature description ifNotEmpty: [ stream cr ].
 	aFeature description do: [ :each |

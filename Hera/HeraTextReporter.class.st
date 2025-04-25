@@ -131,7 +131,7 @@ HeraTextReporter >> reportFeature: aFeature [
 	self reportKeyword: 'Feature:'.
 	stream
 		space;
-		nextPutAll: aFeature name
+		nextPutAll: aFeature title
 ]
 
 { #category : 'private - reporting' }

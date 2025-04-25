@@ -5,9 +5,9 @@ Class {
 		'scenarios',
 		'description',
 		'tags',
-		'name',
 		'background',
-		'rules'
+		'rules',
+		'title'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -54,24 +54,12 @@ HeraFeature >> initialize [
 	rules := #()
 ]
 
-{ #category : 'accessing' }
-HeraFeature >> name [
-
-	^ name
-]
-
-{ #category : 'accessing' }
-HeraFeature >> name: anObject [
-
-	name := anObject
-]
-
 { #category : 'printing' }
 HeraFeature >> printOn: aStream [
 
 	aStream
 		nextPutAll: 'Feature: ';
-		nextPutAll: name
+		nextPutAll: title
 ]
 
 { #category : 'accessing' }
@@ -121,4 +109,16 @@ HeraFeature >> tags [
 HeraFeature >> tags: anArrayOfSymbols [
 
 	tags := anArrayOfSymbols
+]
+
+{ #category : 'accessing' }
+HeraFeature >> title [
+
+	^ title
+]
+
+{ #category : 'accessing' }
+HeraFeature >> title: aString [
+
+	title := aString
 ]
