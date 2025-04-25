@@ -52,7 +52,7 @@ HeraRuleAstNode >> initialize [
 { #category : 'testing' }
 HeraRuleAstNode >> isEmpty [
 
-	^ self description isNil and: [ self scenarios isEmpty ]
+	^ self description isNil and: [ self background isNil and: [ self scenarios isEmpty ] ]
 ]
 
 { #category : 'accessing' }

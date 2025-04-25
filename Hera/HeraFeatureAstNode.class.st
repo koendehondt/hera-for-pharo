@@ -48,6 +48,7 @@ HeraFeatureAstNode >> description: aDescriptionAstNode [
 HeraFeatureAstNode >> initialize [
 
 	super initialize.
+	tags := Array new.
 	rules := OrderedCollection new.
 	scenarios := OrderedCollection new
 ]
@@ -55,7 +56,7 @@ HeraFeatureAstNode >> initialize [
 { #category : 'testing' }
 HeraFeatureAstNode >> isEmpty [
 
-	^ self tags isEmpty and: [ self description isNil and: [ self scenarios isEmpty ] ]
+	^ self tags isEmpty and: [ self description isNil and: [ self rules isEmpty and: [ self scenarios isEmpty ] ] ]
 ]
 
 { #category : 'accessing' }
