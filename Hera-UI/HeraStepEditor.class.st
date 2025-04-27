@@ -3,7 +3,8 @@ Class {
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'code',
-		'step'
+		'step',
+		'stepType'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -13,9 +14,15 @@ Class {
 { #category : 'layout' }
 HeraStepEditor >> defaultLayout [
 
+	| definition |
+	definition := SpBoxLayout newHorizontal
+		spacing: 5;
+		add: stepType width: 70;
+		add: step;
+		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;
-		add: step expand: false;
+		add: definition expand: false;
 		add: code;
 		yourself
 ]
@@ -23,28 +30,12 @@ HeraStepEditor >> defaultLayout [
 { #category : 'initialization' }
 HeraStepEditor >> initializePresenters [
 
+	stepType := self newDropList
+		items: { 'Given' . 'When' . 'Then' };
+		startWithoutSelection;
+		yourself.
 	step := self newTextInput.
 	code := self newCode
-]
-
-{ #category : 'api' }
-HeraStepEditor >> method: aCompiledMethod [
-
-	| source description sourceLines |
-	aCompiledMethod ifNil: [
-		step text: ''.
-		code text: ''.
-		^ self ].
-	description := (aCompiledMethod pragmaAt: #heraStepDefinition:) arguments first second.
-	step text: description.
-	sourceLines := aCompiledMethod sourceCode lines.
-	sourceLines := sourceLines size < 5
-		ifTrue: [ #() ]
-		ifFalse: [ (sourceLines copyFrom: 5 to: sourceLines size) collect: #trimBoth ].
-	source := Character cr join: sourceLines.
-	code
-		text: source;
-		selectionInterval: (0 to: 0)
 ]
 
 { #category : 'api' }
@@ -52,11 +43,13 @@ HeraStepEditor >> methodItem: aStepMethodItem [
 
 	| description |
 	aStepMethodItem ifNil: [
+		stepType resetSelection.
 		step text: ''.
 		code text: ''.
 		^ self ].
 	
 	description := aStepMethodItem stepDescription.
+	stepType selectItem: aStepMethodItem stepType.
 	step text: description.
 	code
 		beForMethod: aStepMethodItem stepMethod;
