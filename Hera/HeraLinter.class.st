@@ -138,6 +138,14 @@ HeraLinter >> visitScenarioAstNode: aScenarioAstNode [
 ]
 
 { #category : 'visiting' }
+HeraLinter >> visitStarAstNode: aStarAstNode [
+
+	currentStepIndex = 1 ifTrue: [
+		self warn: 'A * step should not be the first step in a scenario' from: aStarAstNode start to: aStarAstNode end ].
+	self checkStepDefinitionFor: aStarAstNode
+]
+
+{ #category : 'visiting' }
 HeraLinter >> visitThenAstNode: aThenAstNode [
 
 	self checkColonAfterKeyword: aThenAstNode.

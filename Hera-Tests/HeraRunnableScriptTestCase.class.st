@@ -198,3 +198,29 @@ HeraRunnableScriptTestCase >> testInstructionsWithRules [
 		HeraEndFeatureInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]
+
+{ #category : 'tests' }
+HeraRunnableScriptTestCase >> testInstructionsWithStarSteps [
+
+	| acceptanceTest scenarios feature scenario scenarioSteps |
+	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithStarSteps.
+	feature := acceptanceTest feature.
+	subject feature: feature.
+	scenarios := feature scenarios.
+	scenario := scenarios first.
+	scenarioSteps := scenario steps.
+	self assert: subject instructions equals: {
+		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartScenarioInstruction for: scenario) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: scenarioSteps first) .
+		(HeraRunStepInstruction for: scenarioSteps second) .
+		(HeraRunStepInstruction for: scenarioSteps third) .
+		(HeraRunStepInstruction for: scenarioSteps fourth) .
+		(HeraRunStepInstruction for: scenarioSteps fifth) .
+		(HeraRunStepInstruction for: scenarioSteps sixth) .
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		HeraEndFeatureInstruction new .
+		HeraResultSummaryInstruction new } asOrderedCollection
+]

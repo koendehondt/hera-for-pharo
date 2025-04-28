@@ -174,6 +174,26 @@ Feature: With rules
 	^ text
 ]
 
+{ #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithStarSteps [
+
+	| text |
+	text := Text fromString:	'
+Feature: With * steps
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I open the sign-in page
+		* I fill in my user name
+		* I fill in my password
+		* I press the sign-in button
+		Then I see the home page' allButFirst.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 25 to: 33.
+	^ text
+]
+
 { #category : 'tests' }
 HeraScriptGeneratorTestCase >> testGeneratedScript [
 
@@ -217,4 +237,13 @@ HeraScriptGeneratorTestCase >> testGeneratedScriptWithRules [
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithRules.
 	subject visit: feature.
 	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithRules
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithStarSteps [
+
+	| feature |
+	feature := HeraAcceptanceTestExamplesForTesting new featureWithStarSteps.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithStarSteps
 ]

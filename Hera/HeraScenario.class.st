@@ -123,6 +123,16 @@ HeraScenario >> printOn: aStream [
 		nextPutAll: title
 ]
 
+{ #category : 'dsl' }
+HeraScenario >> star: aString [
+
+	| step |
+	step := HeraStarStep new
+		description: aString;
+		scenario: self.
+	steps add: step
+]
+
 { #category : 'accessing' }
 HeraScenario >> steps [
 

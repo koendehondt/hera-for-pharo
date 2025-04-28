@@ -688,6 +688,51 @@ HeraParserTestCase >> testParseFeatureWithRules [
 	self assert: stepNode description equals: 'I cannot open the user management page'
 ]
 
+{ #category : 'tests' }
+HeraParserTestCase >> testParseFeatureWithStarSteps [
+
+	| script ast scenarioNode stepNode |
+	script := '
+	Feature: With * steps
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I open the sign-in page
+		* I fill in my user name
+		* I fill in my password
+		* I press the sign-in button
+		Then I see the home page'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast description isNil.
+	self assert: ast background isNil.
+	
+	self assert: ast scenarios size equals: 1.
+	scenarioNode := ast scenarios first.
+	self assert: scenarioNode class equals: HeraScenarioAstNode.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
+	self assert: scenarioNode steps size equals: 6.
+	stepNode := scenarioNode steps first.
+	self assert: stepNode class equals: HeraGivenAstNode.
+	self assert: stepNode description equals: 'I have credentials to sign in'.
+	stepNode := scenarioNode steps second.
+	self assert: stepNode class equals: HeraWhenAstNode.
+	self assert: stepNode description equals: 'I open the sign-in page'.
+	stepNode := scenarioNode steps third.
+	self assert: stepNode class equals: HeraStarAstNode.
+	self assert: stepNode description equals: 'I fill in my user name'.
+	stepNode := scenarioNode steps fourth.
+	self assert: stepNode class equals: HeraStarAstNode.
+	self assert: stepNode description equals: 'I fill in my password'.
+	stepNode := scenarioNode steps fifth.
+	self assert: stepNode class equals: HeraStarAstNode.
+	self assert: stepNode description equals: 'I press the sign-in button'.
+	stepNode := scenarioNode steps sixth.
+	self assert: stepNode class equals: HeraThenAstNode.
+	self assert: stepNode description equals: 'I see the home page'
+]
+
 { #category : 'tests - parsing errors' }
 HeraParserTestCase >> testParseFeatureWithStepButNoScenario [
 

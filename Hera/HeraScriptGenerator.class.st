@@ -176,6 +176,15 @@ HeraScriptGenerator >> visitScenario: aScenario [
 ]
 
 { #category : 'visiting' }
+HeraScriptGenerator >> visitStarStep: aStarStep [
+
+	stream
+		crtab: indentation;
+		nextPutAll: '* ';
+		nextPutAll: aStarStep description
+]
+
+{ #category : 'visiting' }
 HeraScriptGenerator >> visitThenStep: aThenStep [
 
 	stream

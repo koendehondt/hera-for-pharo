@@ -95,6 +95,17 @@ HeraScenarioTestCase >> testPrintString [
 ]
 
 { #category : 'tests - dsl' }
+HeraScenarioTestCase >> testStar [
+
+	| expectedStep |
+	subject star: 'I see the new messages'.
+	expectedStep := HeraStarStep new
+		description: 'I see the new messages';
+		scenario: subject.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests - dsl' }
 HeraScenarioTestCase >> testThen [
 
 	| expectedStep |

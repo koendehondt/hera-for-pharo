@@ -323,6 +323,12 @@ HeraFeatureMethodGenerator >> visitScenarioAstNode: aScenarioAstNode [
 ]
 
 { #category : 'visiting' }
+HeraFeatureMethodGenerator >> visitStarAstNode: aStarAstNode [
+
+	self visitStepAstNode: aStarAstNode named: 'star'
+]
+
+{ #category : 'visiting' }
 HeraFeatureMethodGenerator >> visitStepAstNode: aStepAstNode named: aString [
 
 	stream

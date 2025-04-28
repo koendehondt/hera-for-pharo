@@ -80,6 +80,7 @@ HeraScanner >> scanToken [
 	self tryScanStepToken: HeraThenToken ifFound: [ :token | ^ token ].
 	self tryScanStepToken: HeraAndToken ifFound: [ :token | ^ token ].
 	self tryScanStepToken: HeraButToken ifFound: [ :token | ^ token ].
+	self tryScanStepToken: HeraStarToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraDataTableToken ifFound: [ :token |
 		start := stream position.
 		^ stream nextLine

@@ -80,6 +80,12 @@ HeraAstVisitor >> visitScenarioAstNode: aScenarioAstNode [
 ]
 
 { #category : 'visiting' }
+HeraAstVisitor >> visitStarAstNode: aStarAstNode [
+
+	^ self default: aStarAstNode
+]
+
+{ #category : 'visiting' }
 HeraAstVisitor >> visitTagAstNode: aTagAstNode [
 
 	^ self default: aTagAstNode

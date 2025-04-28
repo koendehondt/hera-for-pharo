@@ -203,6 +203,27 @@ HeraScannerTestCase >> testScanScenarioToken [
 ]
 
 { #category : 'tests - scanning tokens' }
+HeraScannerTestCase >> testScanStarToken [
+
+	subject on: '*' readStream.
+	self assert: subject scanToken equals: (HeraStarToken new start: 1; end: 1)
+]
+
+{ #category : 'tests - scanning tokens' }
+HeraScannerTestCase >> testScanStarWithTrailingSpecialCharacterYieldsAndToken [
+
+	subject on: '*: I see the home page' readStream.
+	self assert: subject scanToken equals: (HeraStarToken new start: 1; end: 1)
+]
+
+{ #category : 'tests - scanning tokens' }
+HeraScannerTestCase >> testScanStarWithoutTrailingSpaceYieldsTextToken [
+
+	subject on: '*I see the home page' readStream.
+	self assert: subject scanToken equals: (HeraTextToken new start: 1; end: 20)
+]
+
+{ #category : 'tests - scanning tokens' }
 HeraScannerTestCase >> testScanTagToken [
 
 	| token |

@@ -316,6 +316,37 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFeatureWithSingleQuote
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFeatureWithStarSteps [
+
+	| document ast |
+	document := '
+Feature: With * steps
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I open the sign-in page
+		* I fill in my user name
+		* I fill in my password
+		* I press the sign-in button
+		Then I see the home page'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''With * steps''>
+
+	^ (self feature: ''With * steps'')
+		scenarios: {
+			(self scenario: ''Successful sign-in'')
+				given: ''I have credentials to sign in'';
+				when: ''I open the sign-in page'';
+				star: ''I fill in my user name'';
+				star: ''I fill in my password'';
+				star: ''I press the sign-in button'';
+				then: ''I see the home page'' }'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFullFeature [
 
 	| document ast |

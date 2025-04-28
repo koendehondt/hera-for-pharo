@@ -194,6 +194,22 @@ HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithUnimplementedStep
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithStarSteps [
+
+	<heraFeature: 'With * steps'>
+
+	^ (self feature: 'With * steps')
+		scenarios: {
+			(self scenario: 'Successful sign-in')
+				given: 'I have credentials to sign in';
+				when: 'I open the sign-in page';
+				star: 'I fill in my user name';
+				star: 'I fill in my password';
+				star: 'I press the sign-in button';
+				then: 'I see the home page' }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithTwoScenarios [
 
 	<heraFeature: 'Signing in'>
@@ -274,7 +290,7 @@ HeraAcceptanceTestExamplesForTesting >> stepIHaveCredentialsToSignIn [
 ]
 
 { #category : 'steps' }
-HeraAcceptanceTestExamplesForTesting >> stepIOpenTheUserManagemenntPage [
+HeraAcceptanceTestExamplesForTesting >> stepIOpenTheUserManagementPage [
 	
 	<heraStepDefinition: #(When 'I open the user management page')>
 ]
