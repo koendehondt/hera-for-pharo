@@ -87,6 +87,12 @@ HeraFeatureMethodItem >> remove [
 	self featureMethod removeFromSystem
 ]
 
+{ #category : 'actions' }
+HeraFeatureMethodItem >> removeFromScope: aScope [
+
+	"Do nothing."
+]
+
 { #category : 'accessing' }
 HeraFeatureMethodItem >> richScript [
 

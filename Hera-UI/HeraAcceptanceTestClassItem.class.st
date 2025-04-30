@@ -30,6 +30,12 @@ HeraAcceptanceTestClassItem >> remove [
 	acceptanceTestClass removeFromSystem
 ]
 
+{ #category : 'actions' }
+HeraAcceptanceTestClassItem >> removeFromScope: aScope [
+
+	aScope excludeClass: acceptanceTestClass
+]
+
 { #category : 'accessing' }
 HeraAcceptanceTestClassItem >> richScript [
 

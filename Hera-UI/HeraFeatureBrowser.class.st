@@ -55,6 +55,7 @@ HeraFeatureBrowser >> addAcceptanceTestClass [
 			name: className;
 			superclass: HeraAcceptanceTest;
 			package: packageName ].
+	self scope includeClass: acceptanceTestClass.
 	self updateClassesAndFeaturesAfterAddingClass: acceptanceTestClass
 ]
 
@@ -365,6 +366,7 @@ HeraFeatureBrowser >> removeSelectionInClassesAndFeatures [
 	| selectedItem |
 	selectedItem := classesAndFeatures selectedItem.
 	(self confirm: selectedItem removalConfirmationQuestion) ifFalse: [ ^ self ].
+	selectedItem removeFromScope: self scope.
 	selectedItem remove.
 	self updateClassesAndFeatures
 ]

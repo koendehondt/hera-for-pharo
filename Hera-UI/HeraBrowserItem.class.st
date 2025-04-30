@@ -102,6 +102,12 @@ HeraBrowserItem >> remove [
 	self subclassResponsibility
 ]
 
+{ #category : 'actions' }
+HeraBrowserItem >> removeFromScope: aScope [
+
+	self subclassResponsibility
+]
+
 { #category : 'accessing' }
 HeraBrowserItem >> richScript [
 

@@ -36,6 +36,12 @@ HeraScope >> allStepMethods [
 ]
 
 { #category : 'accessing' }
+HeraScope >> excludeClass: aClass [
+
+	acceptanceTestClasses remove: aClass
+]
+
+{ #category : 'accessing' }
 HeraScope >> excludeHierarchy: aClass [
 
 	acceptanceTestClasses removeAll: aClass withAllSubclasses
