@@ -16,6 +16,14 @@ HeraDataTable >> = other [
 ]
 
 { #category : 'converting' }
+HeraDataTable >> asAssociations [
+	"Assume that the first column is a header column and the second column holds the values.
+	 Answer an Array of Associations with headers and values."
+
+	^ (data inject: OrderedCollection new into: [ :accu :eachRow | accu add: eachRow first -> eachRow second; yourself]) asArray
+]
+
+{ #category : 'converting' }
 HeraDataTable >> asDictionaries [
 	"Assume that the first row is a header row. The cell values will be used as string keys in the dictionaries.
 	 Answer an Array of Dictionary instances with the data from the rows below the header row."

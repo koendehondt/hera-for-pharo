@@ -23,6 +23,19 @@ HeraDataTableTestCase >> initializeSubject [
 ]
 
 { #category : 'tests' }
+HeraDataTableTestCase >> testAsAssociations [
+
+	| expectedAssociations |
+	subject data: {
+		{ 'Name' . 'John' } .
+		{ 'Email' . 'john@testing.org' } }.
+	expectedAssociations := Array
+		with: 'Name' -> 'John'
+		with: 'Email' -> 'john@testing.org'.
+	self assert: subject asAssociations equals: expectedAssociations
+]
+
+{ #category : 'tests' }
 HeraDataTableTestCase >> testAsDictionaries [
 
 	| expectedDictionaries |
