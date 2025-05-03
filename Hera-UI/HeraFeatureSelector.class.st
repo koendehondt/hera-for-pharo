@@ -300,6 +300,12 @@ HeraFeatureSelector >> scope: aScope [
 	scope := aScope
 ]
 
+{ #category : 'test api' }
+HeraFeatureSelector >> selectPath: anArray [
+
+	^ classesAndFeatures selectPath: anArray
+]
+
 { #category : 'accessing' }
 HeraFeatureSelector >> selectedItem [
 
