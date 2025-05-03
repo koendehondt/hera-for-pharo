@@ -5,9 +5,9 @@ Class {
 		'stream',
 		'indentation'
 	],
-	#category : 'Hera-Script generation',
+	#category : 'Hera-Generation',
 	#package : 'Hera',
-	#tag : 'Script generation'
+	#tag : 'Generation'
 }
 
 { #category : 'private' }

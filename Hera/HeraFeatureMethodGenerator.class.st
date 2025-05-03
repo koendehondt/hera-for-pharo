@@ -6,9 +6,9 @@ Class {
 		'generatedSelector',
 		'indentation'
 	],
-	#category : 'Hera-AST',
+	#category : 'Hera-Generation',
 	#package : 'Hera',
-	#tag : 'AST'
+	#tag : 'Generation'
 }
 
 { #category : 'private' }
