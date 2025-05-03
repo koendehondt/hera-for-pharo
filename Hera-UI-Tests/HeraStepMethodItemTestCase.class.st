@@ -13,6 +13,13 @@ HeraStepMethodItemTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
+HeraStepMethodItemTestCase >> testAcceptanceTestClass [
+
+	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage.
+	self assert: subject acceptanceTestClass equals: HeraAcceptanceTestWithStepArgumentsForTesting
+]
+
+{ #category : 'tests' }
 HeraStepMethodItemTestCase >> testStepDescriptionForExactStepDefinition [
 
 	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage.

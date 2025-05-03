@@ -11,3 +11,9 @@ HeraStarAstNode >> accept: anAstVisitor [
 
 	^ anAstVisitor visitStarAstNode: self
 ]
+
+{ #category : 'accessing' }
+HeraStarAstNode >> typeForDefinition [
+
+	^ 'Given'
+]

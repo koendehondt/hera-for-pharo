@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraFeatureMethodGeneratorTestCase',
 	#superclass : 'HeraTestCase',
-	#category : 'Hera-Tests-AST',
+	#category : 'Hera-Tests-Generation',
 	#package : 'Hera-Tests',
-	#tag : 'AST'
+	#tag : 'Generation'
 }
 
 { #category : 'running' }

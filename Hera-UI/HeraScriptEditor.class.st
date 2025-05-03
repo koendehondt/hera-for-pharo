@@ -75,6 +75,12 @@ HeraScriptEditor >> defaultLayout [
 		yourself
 ]
 
+{ #category : 'private' }
+HeraScriptEditor >> hasChanged [
+
+	^ originalScript ~= self text
+]
+
 { #category : 'initialization' }
 HeraScriptEditor >> initializePresenters [
 
@@ -138,13 +144,8 @@ HeraScriptEditor >> parser [
 { #category : 'actions' }
 HeraScriptEditor >> save [
 
+	self hasChanged ifFalse: [ ^ self ].
 	self submit: script text
-]
-
-{ #category : 'private' }
-HeraScriptEditor >> scriptHasChanged [
-
-	^ originalScript ~= self text
 ]
 
 { #category : 'api' }
@@ -182,9 +183,9 @@ HeraScriptEditor >> showParseError [
 HeraScriptEditor >> showWarnings [
 
 	| decorator warnings |
+	script removeAllTextSegmentDecorations.
 	warnings := self lintWarnings.
 	warnings ifEmpty: [ ^ self ].
-	script removeAllTextSegmentDecorations.
 	warnings do: [ :warning |
 		decorator := SpTextPresenterDecorator new.
 		decorator underlineColor: warning color.
@@ -238,9 +239,15 @@ HeraScriptEditor >> updateAfterScriptChange [
 
 	| enabled |
 	modelChangedInProgress ifTrue: [ ^ self ].
-	enabled := self scriptHasChanged.
+	enabled := self hasChanged.
 	saveButton enabled: enabled.
 	cancelButton enabled: enabled
+]
+
+{ #category : 'api' }
+HeraScriptEditor >> updateWarnings [
+
+	self showWarnings
 ]
 
 { #category : 'api' }

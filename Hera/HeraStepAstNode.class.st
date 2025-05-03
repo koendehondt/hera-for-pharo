@@ -22,6 +22,18 @@ HeraStepAstNode >> argument: aDataTable [
 	argument := aDataTable
 ]
 
+{ #category : 'converting' }
+HeraStepAstNode >> asStepDefinitionPragma [
+
+	^ String streamContents: [ :stream |
+		stream
+			nextPutAll: '<heraStepDefinition: #(';
+			nextPutAll: self typeForDefinition;
+			space;
+			print: self description;
+			nextPutAll: ')>' ]
+]
+
 { #category : 'accessing' }
 HeraStepAstNode >> description [
 
@@ -44,4 +56,10 @@ HeraStepAstNode >> isGivenStepNode [
 HeraStepAstNode >> isStepNode [
 
 	^ true
+]
+
+{ #category : 'accessing' }
+HeraStepAstNode >> typeForDefinition [
+
+	self subclassResponsibility
 ]

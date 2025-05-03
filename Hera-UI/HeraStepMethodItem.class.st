@@ -15,6 +15,12 @@ HeraStepMethodItem >> < other [
 	^ self stepDescription < other stepDescription
 ]
 
+{ #category : 'accessing' }
+HeraStepMethodItem >> acceptanceTestClass [
+
+	^ stepMethod methodClass
+]
+
 { #category : 'private' }
 HeraStepMethodItem >> pragma [
 
@@ -25,6 +31,12 @@ HeraStepMethodItem >> pragma [
 HeraStepMethodItem >> pragmaArgument [
 
 	^ self pragma argumentAt: 1
+]
+
+{ #category : 'actions' }
+HeraStepMethodItem >> saveSource: stepMethodSource [
+
+	self acceptanceTestClass compile: stepMethodSource
 ]
 
 { #category : 'accessing' }

@@ -49,10 +49,14 @@ HeraBrowserItem >> addFeatureNamed: aString [
 HeraBrowserItem >> addStepDefinitionMethodFor: aStepAstNode as: targetSelector [
 
 	| stepMethodSource targetClass generatedMethod protocol |
-	stepMethodSource := '{1}{2}{2}{3}{4}'.
+	stepMethodSource := '{1}{2}{2}{3}{4}' format: {
+		targetSelector .
+		Character cr .
+		Character tab .
+		aStepAstNode asStepDefinitionPragma }.
 	targetClass := self targetClassForNewFeature.
 	targetClass compile: stepMethodSource.
-	generatedMethod := targetClass >> targetSelector.
+	generatedMethod := targetClass >> targetSelector asSymbol.
 	protocol := targetClass ensureProtocol: 'steps'.
 	targetClass classify: targetSelector under: protocol.
 	^ generatedMethod

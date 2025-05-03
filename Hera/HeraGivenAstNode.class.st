@@ -17,3 +17,9 @@ HeraGivenAstNode >> isGivenStepNode [
 
 	^ true
 ]
+
+{ #category : 'accessing' }
+HeraGivenAstNode >> typeForDefinition [
+
+	^ 'Given'
+]

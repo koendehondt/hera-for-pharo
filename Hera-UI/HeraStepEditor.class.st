@@ -22,12 +22,6 @@ HeraStepEditor >> cancel [
 	self modelChanged
 ]
 
-{ #category : 'private' }
-HeraStepEditor >> codeHasChanged [
-
-	^ type selectedItem ~= self model stepType or: [ originalDescription ~= description text or: [ originalCode ~= code text ] ]
-]
-
 { #category : 'initialization' }
 HeraStepEditor >> connectPresenters [
 
@@ -54,9 +48,16 @@ HeraStepEditor >> defaultLayout [
 		yourself
 ]
 
+{ #category : 'private' }
+HeraStepEditor >> hasChanged [
+
+	^ type selectedItem ~= self model stepType or: [ originalDescription ~= description text or: [ originalCode ~= code text ] ]
+]
+
 { #category : 'initialization' }
 HeraStepEditor >> initializePresenters [
 
+	self model: nil. "Otherwise the announcing object is not set."
 	self initializeToolbarButtons.
 	type := self newDropList
 		items: { 'Given' . 'When' . 'Then' };
@@ -112,8 +113,16 @@ HeraStepEditor >> modelChanged [
 
 { #category : 'actions' }
 HeraStepEditor >> save [
-self halt
-	"self submit: code text"
+
+	| stepMethodSource |
+	self hasChanged ifFalse: [ ^ self ].
+	stepMethodSource := HeraStepMethodGenerator new
+		type: type selectedItem;
+		description: description text;
+		source: code text;
+		acceptanceTestClass: self model acceptanceTestClass;
+		generatedCode.
+	self model saveSource: stepMethodSource
 ]
 
 { #category : 'private' }
@@ -153,7 +162,7 @@ HeraStepEditor >> updateAfterCodeChange [
 
 	| enabled |
 	modelChangedInProgress ifTrue: [ ^ self ].
-	enabled := self codeHasChanged.
+	enabled := self hasChanged.
 	saveButton enabled: enabled.
 	cancelButton enabled: enabled
 ]

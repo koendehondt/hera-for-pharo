@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraScriptGeneratorTestCase',
 	#superclass : 'HeraTestCase',
-	#category : 'Hera-Tests-Script generation',
+	#category : 'Hera-Tests-Generation',
 	#package : 'Hera-Tests',
-	#tag : 'Script generation'
+	#tag : 'Generation'
 }
 
 { #category : 'running' }

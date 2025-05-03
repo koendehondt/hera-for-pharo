@@ -30,7 +30,7 @@ HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
 		do: [ ^ self ].
 		invalidMessage := ' That is not a valid method selector. Only letters, digits, and underscores are allowed.'.
 		self allowedMethodSelector: methodSelector ] whileFalse.
-	featureSelector selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector
+	^ featureSelector selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector
 ]
 
 { #category : 'private' }
@@ -51,7 +51,9 @@ HeraFeatureBrowser >> connectPresenters [
 	featureSelector whenFeatureSelectionChangedDo: [ :featureMethodItem |
 		scriptEditor model: featureMethodItem ].
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
-	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
+	scriptEditor whenOpenStepDo: [ :stepAstNode |
+		self updateStepEditor: stepAstNode.
+		scriptEditor updateWarnings ]
 ]
 
 { #category : 'layout' }
@@ -184,10 +186,10 @@ HeraFeatureBrowser >> updateSelectedFeature: aFeatureAstNode [
 { #category : 'private' }
 HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 
-	(self methodFor: aStepAstNode)
-		ifNil: [ self addStepDefinitionMethodFor: aStepAstNode ]
-		ifNotNil: [ :stepMethod |
-			stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod) ]
+	| stepMethod |
+	stepMethod := self methodFor: aStepAstNode.
+	stepMethod ifNil: [ stepMethod := self addStepDefinitionMethodFor: aStepAstNode ].
+	stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod)
 ]
 
 { #category : 'accessing' }

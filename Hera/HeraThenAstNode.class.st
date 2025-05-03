@@ -11,3 +11,9 @@ HeraThenAstNode >> accept: anAstVisitor [
 
 	^ anAstVisitor visitThenAstNode: self
 ]
+
+{ #category : 'accessing' }
+HeraThenAstNode >> typeForDefinition [
+
+	^ 'Then'
+]
