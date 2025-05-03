@@ -6,7 +6,11 @@ Class {
 		'submitBlock',
 		'ast',
 		'openStepBlock',
-		'parser'
+		'parser',
+		'saveButton',
+		'cancelButton',
+		'modelChangedInProgress',
+		'originalScript'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -46,10 +50,17 @@ HeraScriptEditor >> buildAst: source [
 	ast := self astForScript: source
 ]
 
+{ #category : 'actions' }
+HeraScriptEditor >> cancel [
+
+	self modelChanged
+]
+
 { #category : 'initialization' }
 HeraScriptEditor >> connectPresenters [
 
-	script whenSubmitDo: [ :source | self submit: source ].
+	script whenTextChangedDo: [ self updateAfterScriptChange ].
+	script whenSubmitDo: [ :ignoredText | self save ].
 	script eventHandler whenMouseUpDo: [ :event |
 		event altKeyPressed ifTrue: [ self altKeyClick: event ] ]
 ]
@@ -58,6 +69,8 @@ HeraScriptEditor >> connectPresenters [
 HeraScriptEditor >> defaultLayout [
 
 	^ SpBoxLayout newVertical
+		spacing: 5;
+		add: self toolbar expand: false;
 		add: script;
 		yourself
 ]
@@ -65,8 +78,25 @@ HeraScriptEditor >> defaultLayout [
 { #category : 'initialization' }
 HeraScriptEditor >> initializePresenters [
 
+	modelChangedInProgress := false.
+	self initializeToolbarButtons.
 	script := self newText
 		addStyle: 'featureText';
+		yourself
+]
+
+{ #category : 'initialization' }
+HeraScriptEditor >> initializeToolbarButtons [
+
+	saveButton := self newButton
+		help: 'Save';
+		iconName: #accept;
+		action: [ self save ];
+		yourself.
+	cancelButton := self newButton
+		help: 'Cancel';
+		iconName: #cancel;
+		action: [ self cancel ];
 		yourself
 ]
 
@@ -82,20 +112,39 @@ HeraScriptEditor >> lintWarnings [
 { #category : 'initialization' }
 HeraScriptEditor >> modelChanged [
 
-	| text |
-	self model ifNil: [
-		self text: ''.
-		^ self ].
-	text := self model richScript.
-	self
-		text: text;
-		selectionInterval: (text size + 1 to: text size + 1)
+	| text enabled |
+	modelChangedInProgress := true.
+	enabled := self model ifNil: [ false ] ifNotNil: [ :model | model isEditable ].
+	script enabled: enabled.
+	saveButton enabled: false.
+	cancelButton enabled: false.
+	self model
+		ifNil: [ self text: '' ]
+		ifNotNil: [
+			text := self model richScript.
+			self
+				text: text;
+				selectionInterval: (text size + 1 to: text size + 1) ].
+	originalScript := self text copy asString.
+	modelChangedInProgress := false
 ]
 
 { #category : 'private' }
 HeraScriptEditor >> parser [
 
 	^ parser ifNil: [ parser := HeraParser new ]
+]
+
+{ #category : 'actions' }
+HeraScriptEditor >> save [
+
+	self submit: script text
+]
+
+{ #category : 'private' }
+HeraScriptEditor >> scriptHasChanged [
+
+	^ originalScript ~= self text
 ]
 
 { #category : 'api' }
@@ -171,6 +220,27 @@ HeraScriptEditor >> text: aText [
 	aText ifEmpty: [ ^ self ].
 	self buildAst: aText string.
 	self showWarnings
+]
+
+{ #category : 'layout' }
+HeraScriptEditor >> toolbar [
+
+	^ SpBoxLayout newLeftToRight
+		spacing: 10;
+		hAlignEnd;
+		add: saveButton width: 40;
+		add: cancelButton width: 40;
+		yourself
+]
+
+{ #category : 'private' }
+HeraScriptEditor >> updateAfterScriptChange [
+
+	| enabled |
+	modelChangedInProgress ifTrue: [ ^ self ].
+	enabled := self scriptHasChanged.
+	saveButton enabled: enabled.
+	cancelButton enabled: enabled
 ]
 
 { #category : 'api' }

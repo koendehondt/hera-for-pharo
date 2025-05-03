@@ -20,6 +20,12 @@ HeraAcceptanceTestClassItemTestCase >> testHashIsHashOfAcceptanceTestClass [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestClassItemTestCase >> testIsEditable [
+
+	self deny: subject isEditable
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestClassItemTestCase >> testIsEqualToAcceptanceTestClassItemWithTheSameAcceptanceTestClass [
 
 	| anotherAcceptanceTestClassItem |

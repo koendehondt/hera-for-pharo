@@ -2,16 +2,10 @@ Class {
 	#name : 'HeraFeatureBrowser',
 	#superclass : 'SpPresenter',
 	#instVars : [
-		'runButton',
-		'classesAndFeatures',
 		'scriptEditor',
 		'stepEditor',
-		'debugButton',
-		'stepByStepButton',
 		'scope',
-		'addAcceptanceTestClassButton',
-		'addFeatureButton',
-		'browseStepsButton'
+		'featureSelector'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -22,123 +16,6 @@ Class {
 HeraFeatureBrowser class >> defaultPreferredExtent [
 
 	^ 800@400
-]
-
-{ #category : 'initialization' }
-HeraFeatureBrowser >> acceptanceTestClassItems [
-
-	| items |
-	items := self scope allForBrowsing collect: [ :each |
-		HeraAcceptanceTestClassItem new acceptanceTestClass: each ].
-	items sort: [ :some :other | some nameInBrowser < other nameInBrowser ].
-	^ items
-]
-
-{ #category : 'actions' }
-HeraFeatureBrowser >> addAcceptanceTestClass [
-
-	| className packageName acceptanceTestClass |
-	self flag: 'This UI interaction can be improved a lot by using a dedicated dialog'.
-	className := [ self
-		request: 'Please enter the name of the class.'
-		initialAnswer: 'MyAcceptanceTest'
-		title: 'New Acceptance Test Class' ]
-		on: SpCancelledInteractionError do: [ ^ self ].
-	packageName := [ self
-		request: 'Please enter the name of the package of the class.'
-		initialAnswer: 'MyPackage'
-		title: 'New Acceptance Test Class' ]
-		on: SpCancelledInteractionError do: [ ^ self ].
-	self flag: 'TODO: check validity of the class name and the package name'.
-	acceptanceTestClass := Smalltalk classInstaller make: [ :classBuilder |
-		classBuilder
-			name: className;
-			superclass: HeraAcceptanceTest;
-			package: packageName ].
-	self scope includeClass: acceptanceTestClass.
-	self updateClassesAndFeaturesAfterAddingClass: acceptanceTestClass
-]
-
-{ #category : 'private - menus' }
-HeraFeatureBrowser >> addBrowseGroupTo: parentGroup [
-	
-		parentGroup addGroupWith: [ :group |
-			group
-				beDisplayedAsGroup;
-				addActionWith: [ :action |
-					action	
-						name: 'Browse';
-						description: 'Browse the selected class or feature.';
-						shortcutKey: $b meta;
-						actionEnabled: [ self hasSelectedClassOrFeature ];
-						action: [ self browseSelectionInClassesAndFeatures ] ] ]
-]
-
-{ #category : 'actions' }
-HeraFeatureBrowser >> addFeature [
-
-	| name featureMethod |
-	name := [ self
-		request: 'Please enter the name of the feature.'
-		initialAnswer: 'My awesome feature'
-		title: 'New Feature' ]
-		on: SpCancelledInteractionError do: [ ^ self ].
-	featureMethod := classesAndFeatures selectedItem addFeatureNamed: name.
-	self updateClassesAndFeaturesAfterAddingFeatureMethod: featureMethod
-]
-
-{ #category : 'private - menus' }
-HeraFeatureBrowser >> addManagementMenuGroupTo: parentGroup [
-
-	parentGroup
-		addActionWith: [ :action |
-			action
-				name: 'New acceptance test class…';
-				description: 'Add a new class to hold features.';
-				shortcutKey: $n meta;
-				action: [ self addAcceptanceTestClass ] ];
-		addActionWith: [ :action |
-			action
-				name: 'New feature…';
-				description: 'Add a new feature.';
-				shortcutKey: $n meta shift;
-				action: [ self addFeature ];
-				actionEnabled: [ self hasSelectedClassOrFeature ] ];
-		addActionWith: [ :action |
-			action		
-				name: 'Remove';
-				description: 'Remove the selected class or feature.';
-				actionEnabled: [ self hasSelectedClassOrFeature ];
-				action: [ self removeSelectionInClassesAndFeatures ] ]
-]
-
-{ #category : 'private - menus' }
-HeraFeatureBrowser >> addRunMenuGroupTo: parentGroup [
-
-		parentGroup addGroupWith: [ :group |
-			group
-				beDisplayedAsGroup;
-				addActionWith: [ :action |
-					action		
-						name: 'Run';
-						description: 'Run the selected feature';
-						shortcutKey: $r meta;
-						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self run ] ];
-				addActionWith: [ :action |
-					action		
-						name: 'Step';
-						description: 'Run the selected feature step by step';
-						shortcutKey: $r meta shift;
-						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self stepByStep ] ];
-				addActionWith: [ :action |
-					action		
-						name: 'Debug';
-						description: 'Run the selected feature in debug mode';
-						shortcutKey: $d meta;
-						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self debug ] ] ]
 ]
 
 { #category : 'private' }
@@ -153,7 +30,7 @@ HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
 		do: [ ^ self ].
 		invalidMessage := ' That is not a valid method selector. Only letters, digits, and underscores are allowed.'.
 		self allowedMethodSelector: methodSelector ] whileFalse.
-	classesAndFeatures selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector
+	featureSelector selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector
 ]
 
 { #category : 'private' }
@@ -168,101 +45,46 @@ HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 	^ aCharacter isLetter or: [ aCharacter isDigit or: [ aCharacter = $_ ] ]
 ]
 
-{ #category : 'actions' }
-HeraFeatureBrowser >> browseSelectionInClassesAndFeatures [
-
-	classesAndFeatures selectedItem browse
-]
-
-{ #category : 'actions' }
-HeraFeatureBrowser >> browseSteps [
-
-	HeraStepBrowser new
-		scope: self scope;
-		open
-]
-
 { #category : 'initialization' }
 HeraFeatureBrowser >> connectPresenters [
 
-	classesAndFeatures
-		children: [ :item | item subitems ];
-		display: [ :item | item nameInBrowser ];
-		whenSelectionChangedDo: [ :selection | self featureSelectionChanged ].
-	self installClassesAndFeaturesContextMenu.
+	featureSelector whenFeatureSelectionChangedDo: [ :featureMethodItem |
+		scriptEditor model: featureMethodItem ].
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
 	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
-]
-
-{ #category : 'actions' }
-HeraFeatureBrowser >> debug [
-
-	| runner acceptanceTest featureMethodItem |
-	featureMethodItem := classesAndFeatures selectedItem.
-	acceptanceTest := featureMethodItem acceptanceTest.
-	runner := self instantiate: HeraRunner.
-	runner open.
-	runner debugAcceptanceTest: acceptanceTest
 ]
 
 { #category : 'layout' }
 HeraFeatureBrowser >> defaultLayout [
 
-	| leftPanes panes |
+	| leftPanes |
 	leftPanes := SpPanedLayout newLeftToRight
-		add: classesAndFeatures;
+		add: featureSelector;
 		add: scriptEditor;
 		yourself.
-	panes := SpPanedLayout newLeftToRight
+	^ SpPanedLayout newLeftToRight
 		positionOfSlider: 66 percent;
 		add: leftPanes;
 		add: stepEditor;
-		yourself.
-	^ SpBoxLayout newTopToBottom
-		spacing: 5;
-		add: self toolbar expand: false;
-		add: panes;
 		yourself
 ]
 
 { #category : 'test api' }
 HeraFeatureBrowser >> displayedTreeItems [
 
-	| items |
-	items := classesAndFeatures roots collect: [ :each |
-		each nameInBrowser -> ((classesAndFeatures childrenFor: each) collect: #nameInBrowser) ].
-	^ items asArray
+	^ featureSelector displayedTreeItems
 ]
 
 { #category : 'private' }
 HeraFeatureBrowser >> featureSelectionChanged [
 
-	scriptEditor model: classesAndFeatures selectedItem.
-	self updateAfterSelectionChange
+	scriptEditor model: self selectedMethodItem
 ]
 
 { #category : 'test api' }
 HeraFeatureBrowser >> hasNoFeatures [
 
-	^ classesAndFeatures roots isEmpty
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> hasSelectedClass [
-
-	^ classesAndFeatures selectedItem isMemberOf: HeraAcceptanceTestClassItem
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> hasSelectedClassOrFeature [
-
-	^ classesAndFeatures selectedItem isNotNil
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> hasSelectedFeature [
-
-	^ classesAndFeatures selectedItem isMemberOf: HeraFeatureMethodItem
+	^ featureSelector hasNoFeatures
 ]
 
 { #category : 'private' }
@@ -291,45 +113,9 @@ HeraFeatureBrowser >> initialize [
 { #category : 'initialization' }
 HeraFeatureBrowser >> initializePresenters [
 
-	self initializeToolbarButtons.
-	classesAndFeatures := self newTree.
+	featureSelector := self instantiate: HeraFeatureSelector.
 	scriptEditor := self instantiate: HeraScriptEditor.
 	stepEditor := self instantiate: HeraStepEditor
-]
-
-{ #category : 'initialization' }
-HeraFeatureBrowser >> initializeToolbarButtons [
-
-	addAcceptanceTestClassButton := self newButton
-		help: 'Add acceptance test class';
-		iconName: #add;
-		action: [ self addAcceptanceTestClass ];
-		yourself.
-	addFeatureButton := self newButton
-		help: 'Add feature';
-		iconName: #scriptManager;
-		action: [ self addFeature ];
-		yourself.
-	runButton := self newButton
-		help: 'Run';
-		iconName: #go;
-		action: [ self run ];
-		yourself.
-	stepByStepButton := self newButton
-		help: 'Step';
-		iconName: #into;
-		action: [ self stepByStep ];
-		yourself.
-	debugButton := self newButton
-		help: 'Debug';
-		iconName: #bug;
-		action: [ self debug ];
-		yourself.
-	browseStepsButton := self newButton
-		help: 'Browse steps';
-		iconName: #bookmark;
-		action: [ self browseSteps ];
-		yourself
 ]
 
 { #category : 'initialization' }
@@ -337,49 +123,14 @@ HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter whenOpenedDo: [
-		classesAndFeatures
-			roots: self acceptanceTestClassItems;
-			expandAll.
-		scriptEditor setupAfterOpening.
-		self updateAfterSelectionChange ]
-]
-
-{ #category : 'private - menus' }
-HeraFeatureBrowser >> installClassesAndFeaturesContextMenu [
-
-	classesAndFeatures
-		actionsWith: [ :rootGroup |
-			self addManagementMenuGroupTo: rootGroup.
-			self addRunMenuGroupTo: rootGroup.
-			self addBrowseGroupTo: rootGroup ]
+		featureSelector setupAfterOpening.
+		scriptEditor setupAfterOpening ]
 ]
 
 { #category : 'private' }
 HeraFeatureBrowser >> methodFor: aStepAstNode [
 
 	^ self selectedMethodItem acceptanceTest methodForStepDescription: aStepAstNode description
-]
-
-{ #category : 'actions' }
-HeraFeatureBrowser >> removeSelectionInClassesAndFeatures [
-
-	| selectedItem |
-	selectedItem := classesAndFeatures selectedItem.
-	(self confirm: selectedItem removalConfirmationQuestion) ifFalse: [ ^ self ].
-	selectedItem removeFromScope: self scope.
-	selectedItem remove.
-	self updateClassesAndFeatures
-]
-
-{ #category : 'actions' }
-HeraFeatureBrowser >> run [
-
-	| runner acceptanceTest featureMethodItem |
-	featureMethodItem := classesAndFeatures selectedItem.
-	acceptanceTest := featureMethodItem acceptanceTest.
-	runner := self instantiate: HeraRunner.
-	runner open.
-	runner runAcceptanceTest: acceptanceTest
 ]
 
 { #category : 'accessing' }
@@ -391,7 +142,8 @@ HeraFeatureBrowser >> scope [
 { #category : 'accessing' }
 HeraFeatureBrowser >> scope: aScope [
 
-	scope := aScope
+	scope := aScope.
+	featureSelector scope: aScope
 ]
 
 { #category : 'test api' }
@@ -403,24 +155,13 @@ HeraFeatureBrowser >> script [
 { #category : 'test api' }
 HeraFeatureBrowser >> selectPath: anArray [
 
-	classesAndFeatures selectPath: anArray
+	featureSelector selectPath: anArray
 ]
 
 { #category : 'private' }
 HeraFeatureBrowser >> selectedMethodItem [
 
-	^ classesAndFeatures selectedItem
-]
-
-{ #category : 'actions' }
-HeraFeatureBrowser >> stepByStep [
-
-	| runner acceptanceTest featureMethodItem |
-	featureMethodItem := classesAndFeatures selectedItem.
-	acceptanceTest := featureMethodItem acceptanceTest.
-	runner := self instantiate: HeraRunner.
-	runner open.
-	runner stepAcceptanceTest: acceptanceTest
+	^ featureSelector selectedItem
 ]
 
 { #category : 'private' }
@@ -431,68 +172,6 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
 	suggestion := aStepAstNode description asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
 	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
-]
-
-{ #category : 'layout' }
-HeraFeatureBrowser >> toolbar [
-
-	| manageGroup runGroup browseGroup |
-	manageGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: addAcceptanceTestClassButton width: 40;
-		add: addFeatureButton width: 40;
-		yourself.
-	runGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: runButton width: 40;
-		add: stepByStepButton width: 40;
-		add: debugButton width: 40;
-		yourself.
-	browseGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		hAlignEnd;
-		add: browseStepsButton width: 40;
-		yourself.
-	^ SpBoxLayout newLeftToRight
-		add: manageGroup width: 120;
-		add: runGroup;
-		add: browseGroup;
-		yourself
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> updateAfterSelectionChange [
-
-	| enabled |
-	enabled := classesAndFeatures selectedItem ifNil: [ false ] ifNotNil: [ :browserItem | browserItem isRunnable ].
-	runButton enabled: enabled.
-	stepByStepButton enabled: enabled.
-	debugButton enabled: enabled.
-	scriptEditor enabled: enabled
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> updateClassesAndFeatures [
-
-	classesAndFeatures
-		roots: self acceptanceTestClassItems;
-		expandAll
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> updateClassesAndFeaturesAfterAddingClass: acceptanceTestClass [
-
-	self flag: 'Brute force update for now. Better: insert acceptanceTestClass.'.
-	self updateClassesAndFeatures.
-	classesAndFeatures selection selectItem: (HeraAcceptanceTestClassItem new acceptanceTestClass: acceptanceTestClass)
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> updateClassesAndFeaturesAfterAddingFeatureMethod: featureMethod [
-
-	self flag: 'Brute force update for now. Better: insert featureMethod.'.
-	self updateClassesAndFeatures.
-	classesAndFeatures selection selectItem: (HeraFeatureMethodItem new acceptanceTestClass: featureMethod methodClass; featureMethodSelector: featureMethod selector)
 ]
 
 { #category : 'private' }
@@ -508,7 +187,7 @@ HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 	(self methodFor: aStepAstNode)
 		ifNil: [ self addStepDefinitionMethodFor: aStepAstNode ]
 		ifNotNil: [ :stepMethod |
-			stepEditor methodItem: (HeraStepMethodItem new stepMethod: stepMethod) ]
+			stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod) ]
 ]
 
 { #category : 'accessing' }

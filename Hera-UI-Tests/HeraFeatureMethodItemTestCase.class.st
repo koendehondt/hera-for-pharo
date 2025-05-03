@@ -22,6 +22,12 @@ HeraFeatureMethodItemTestCase >> testHashIsHashOfSelector [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodItemTestCase >> testIsEditable [
+
+	self assert: subject isEditable
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodItemTestCase >> testIsEqualToMethodItemWithTheSameAcceptanceTestClassAndFeatureMethodSelector [
 
 	| anotherMethodItem |

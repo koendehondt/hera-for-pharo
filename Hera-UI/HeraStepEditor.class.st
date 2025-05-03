@@ -1,15 +1,41 @@
 Class {
 	#name : 'HeraStepEditor',
-	#superclass : 'SpPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#instVars : [
 		'code',
-		'step',
-		'stepType'
+		'description',
+		'type',
+		'saveButton',
+		'cancelButton',
+		'originalCode',
+		'modelChangedInProgress',
+		'originalDescription'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
 	#tag : 'Feature Browser'
 }
+
+{ #category : 'actions' }
+HeraStepEditor >> cancel [
+
+	self modelChanged
+]
+
+{ #category : 'private' }
+HeraStepEditor >> codeHasChanged [
+
+	^ type selectedItem ~= self model stepType or: [ originalDescription ~= description text or: [ originalCode ~= code text ] ]
+]
+
+{ #category : 'initialization' }
+HeraStepEditor >> connectPresenters [
+
+	code whenTextChangedDo: [ self updateAfterCodeChange ].
+	description whenTextChangedDo: [ self updateAfterCodeChange ].
+	type whenSelectionChangedDo: [ self updateAfterCodeChange ].
+	code whenSubmitDo: [ :ignoredText | self save ]
+]
 
 { #category : 'layout' }
 HeraStepEditor >> defaultLayout [
@@ -17,11 +43,12 @@ HeraStepEditor >> defaultLayout [
 	| definition |
 	definition := SpBoxLayout newHorizontal
 		spacing: 5;
-		add: stepType width: 70;
-		add: step;
+		add: type width: 70;
+		add: description;
 		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;
+		add: self toolbar expand: false;
 		add: definition expand: false;
 		add: code;
 		yourself
@@ -30,31 +57,63 @@ HeraStepEditor >> defaultLayout [
 { #category : 'initialization' }
 HeraStepEditor >> initializePresenters [
 
-	stepType := self newDropList
+	self initializeToolbarButtons.
+	type := self newDropList
 		items: { 'Given' . 'When' . 'Then' };
 		startWithoutSelection;
 		yourself.
-	step := self newTextInput.
+	description := self newTextInput.
 	code := self newCode
 ]
 
-{ #category : 'api' }
-HeraStepEditor >> methodItem: aStepMethodItem [
+{ #category : 'initialization' }
+HeraStepEditor >> initializeToolbarButtons [
 
-	| description |
-	aStepMethodItem ifNil: [
-		stepType resetSelection.
-		step text: ''.
-		code text: ''.
-		^ self ].
-	
-	description := aStepMethodItem stepDescription.
-	stepType selectItem: aStepMethodItem stepType.
-	step text: description.
-	code
-		beForMethod: aStepMethodItem stepMethod;
-		text: (self sourceFor: aStepMethodItem);
-		selectionInterval: (0 to: 0)
+	saveButton := self newButton
+		help: 'Save';
+		iconName: #accept;
+		action: [ self save ];
+		yourself.
+	cancelButton := self newButton
+		help: 'Cancel';
+		iconName: #cancel;
+		action: [ self cancel ];
+		yourself
+]
+
+{ #category : 'initialization' }
+HeraStepEditor >> modelChanged [
+
+	| stepMethodItem enabled |
+	stepMethodItem := self model.
+	modelChangedInProgress := true.
+	saveButton enabled: false.
+	cancelButton enabled: false.
+	enabled := stepMethodItem isNotNil.
+	type enabled: enabled.
+	description enabled: enabled.
+	code enabled: enabled.
+	stepMethodItem
+		ifNil: [
+			type resetSelection.
+			description text: ''.
+			code text: '' ]
+		ifNotNil: [
+			type selectItem: stepMethodItem stepType.
+			description text: stepMethodItem stepDescription.
+			code
+				beForMethod: stepMethodItem stepMethod;
+				text: (self sourceFor: stepMethodItem);
+				selectionInterval: (0 to: 0). ].
+	originalDescription := description text copy asString.
+	originalCode := code text copy asString.
+	modelChangedInProgress := false
+]
+
+{ #category : 'actions' }
+HeraStepEditor >> save [
+self halt
+	"self submit: code text"
 ]
 
 { #category : 'private' }
@@ -76,4 +135,25 @@ HeraStepEditor >> sourceFor: aStepMethodItem [
 	sourceLinesWithoutPragmaSection := (sourceLinesWithoutPragmaSection at: pragmaSectionEndLineIndex) trimBoth isEmpty
 		ifTrue: [ sourceLinesWithoutPragmaSection copyReplaceFrom: pragmaSectionStartLineIndex to: pragmaSectionEndLineIndex with: #() ].
 	^ Character cr join: sourceLinesWithoutPragmaSection
+]
+
+{ #category : 'layout' }
+HeraStepEditor >> toolbar [
+
+	^ SpBoxLayout newLeftToRight
+		spacing: 10;
+		hAlignEnd;
+		add: saveButton width: 40;
+		add: cancelButton width: 40;
+		yourself
+]
+
+{ #category : 'private' }
+HeraStepEditor >> updateAfterCodeChange [
+
+	| enabled |
+	modelChangedInProgress ifTrue: [ ^ self ].
+	enabled := self codeHasChanged.
+	saveButton enabled: enabled.
+	cancelButton enabled: enabled
 ]

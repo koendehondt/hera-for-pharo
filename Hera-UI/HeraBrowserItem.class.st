@@ -79,6 +79,12 @@ HeraBrowserItem >> hash [
 ]
 
 { #category : 'testing' }
+HeraBrowserItem >> isEditable [
+
+	^ false
+]
+
+{ #category : 'testing' }
 HeraBrowserItem >> isRunnable [
 
 	^ false

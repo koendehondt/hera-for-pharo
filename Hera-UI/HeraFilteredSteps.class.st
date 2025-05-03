@@ -17,7 +17,7 @@ HeraFilteredSteps >> connectPresenters [
 
 	table
 		whenSelectionChangedDo: [ :selection |
-			editor methodItem: selection selectedItem ]
+			editor model: selection selectedItem ]
 ]
 
 { #category : 'layout' }

@@ -64,6 +64,12 @@ HeraFeatureMethodItem >> hash [
 ]
 
 { #category : 'testing' }
+HeraFeatureMethodItem >> isEditable [
+
+	^ true
+]
+
+{ #category : 'testing' }
 HeraFeatureMethodItem >> isRunnable [
 
 	^ true
