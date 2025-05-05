@@ -6,7 +6,8 @@ Class {
 		'source',
 		'description',
 		'type',
-		'acceptanceTestClass'
+		'acceptanceTestClass',
+		'pattern'
 	],
 	#category : 'Hera-Generation',
 	#package : 'Hera',
@@ -26,7 +27,12 @@ HeraStepMethodGenerator >> definitionPragma [
 		pragmaStream
 			nextPutAll: '<heraStepDefinition: #(';
 			nextPutAll: type;
-			space;
+			space.
+		pattern ifNotNil: [ :matchOrRegex |
+			pragmaStream
+				nextPutAll: matchOrRegex;
+				space ].
+		pragmaStream
 			print: description;
 			nextPutAll: ')>' ]
 ]
@@ -74,6 +80,12 @@ HeraStepMethodGenerator >> initialize [
 
 	super initialize.
 	stream := (String new: 1000) writeStream
+]
+
+{ #category : 'accessing' }
+HeraStepMethodGenerator >> pattern: aString [
+
+	pattern := aString
 ]
 
 { #category : 'accessing' }

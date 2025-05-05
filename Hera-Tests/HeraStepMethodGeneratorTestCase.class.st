@@ -115,3 +115,31 @@ HeraStepMethodGeneratorTestCase >> testStepMethodWithBodyAndTemporaries [
 	| temp |
 	self yourself'
 ]
+
+{ #category : 'tests' }
+HeraStepMethodGeneratorTestCase >> testStepMethodWithMatch [
+
+	subject
+		type: 'Given';
+		pattern: 'match';
+		description: 'I am on the sign-in page';
+		source: 'stepIAmOnTheSignInPage';
+		acceptanceTestClass: HeraAcceptanceTest.
+	self assert: subject generatedCode equals: 'stepIAmOnTheSignInPage
+
+	<heraStepDefinition: #(Given match ''I am on the sign-in page'')>'
+]
+
+{ #category : 'tests' }
+HeraStepMethodGeneratorTestCase >> testStepMethodWithRegex [
+
+	subject
+		type: 'Given';
+		pattern: 'regex';
+		description: 'I am on the sign-in page';
+		source: 'stepIAmOnTheSignInPage';
+		acceptanceTestClass: HeraAcceptanceTest.
+	self assert: subject generatedCode equals: 'stepIAmOnTheSignInPage
+
+	<heraStepDefinition: #(Given regex ''I am on the sign-in page'')>'
+]

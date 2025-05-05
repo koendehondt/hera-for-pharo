@@ -9,7 +9,8 @@ Class {
 		'cancelButton',
 		'originalCode',
 		'modelChangedInProgress',
-		'originalDescription'
+		'originalDescription',
+		'pattern'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -28,6 +29,7 @@ HeraStepEditor >> connectPresenters [
 	code whenTextChangedDo: [ self updateAfterCodeChange ].
 	description whenTextChangedDo: [ self updateAfterCodeChange ].
 	type whenSelectionChangedDo: [ self updateAfterCodeChange ].
+	pattern whenSelectionChangedDo: [ self updateAfterCodeChange ].
 	code whenSubmitDo: [ :ignoredText | self save ]
 ]
 
@@ -39,6 +41,7 @@ HeraStepEditor >> defaultLayout [
 		spacing: 5;
 		add: type width: 70;
 		add: description;
+		add: pattern width: 55;
 		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;
@@ -51,7 +54,10 @@ HeraStepEditor >> defaultLayout [
 { #category : 'private' }
 HeraStepEditor >> hasChanged [
 
-	^ type selectedItem ~= self model stepType or: [ originalDescription ~= description text or: [ originalCode ~= code text ] ]
+	^ type selectedItem ~= self model stepType
+		or: [ pattern selectedItem ~= (self labelForPattern: self model stepPattern)
+		or: [ originalDescription ~= description text
+		or: [ originalCode ~= code text ] ] ]
 ]
 
 { #category : 'initialization' }
@@ -61,6 +67,10 @@ HeraStepEditor >> initializePresenters [
 	self initializeToolbarButtons.
 	type := self newDropList
 		items: { 'Given' . 'When' . 'Then' };
+		startWithoutSelection;
+		yourself.
+	pattern := self newDropList
+		items: { '=' . '{}' . '.*' };
 		startWithoutSelection;
 		yourself.
 	description := self newTextInput.
@@ -82,6 +92,14 @@ HeraStepEditor >> initializeToolbarButtons [
 		yourself
 ]
 
+{ #category : 'private' }
+HeraStepEditor >> labelForPattern: aPattern [
+
+	aPattern = 'match' ifTrue: [ ^ '{}' ].
+	aPattern = 'regex' ifTrue: [ ^ '.*' ].
+	^ '='
+]
+
 { #category : 'initialization' }
 HeraStepEditor >> modelChanged [
 
@@ -98,10 +116,12 @@ HeraStepEditor >> modelChanged [
 		ifNil: [
 			type resetSelection.
 			description text: ''.
+			pattern resetSelection.
 			code text: '' ]
 		ifNotNil: [
 			type selectItem: stepMethodItem stepType.
 			description text: stepMethodItem stepDescription.
+			pattern selectItem: (self labelForPattern: stepMethodItem stepPattern).
 			code
 				beForMethod: stepMethodItem stepMethod;
 				text: (self sourceFor: stepMethodItem);
@@ -111,18 +131,28 @@ HeraStepEditor >> modelChanged [
 	modelChangedInProgress := false
 ]
 
+{ #category : 'private' }
+HeraStepEditor >> patternForLabel: label [
+
+	label = '{}' ifTrue: [ ^ 'match' ].
+	label = '.*' ifTrue: [ ^ 'regex' ].
+	^ nil
+]
+
 { #category : 'actions' }
 HeraStepEditor >> save [
 
-	| stepMethodSource |
+	| stepMethodSource stepMethod |
 	self hasChanged ifFalse: [ ^ self ].
 	stepMethodSource := HeraStepMethodGenerator new
 		type: type selectedItem;
+		pattern: (self patternForLabel: pattern selectedItem);
 		description: description text;
 		source: code text;
 		acceptanceTestClass: self model acceptanceTestClass;
 		generatedCode.
-	self model saveSource: stepMethodSource
+	stepMethod := self model saveSource: stepMethodSource.
+	self model: (HeraStepMethodItem new stepMethod: stepMethod)
 ]
 
 { #category : 'private' }

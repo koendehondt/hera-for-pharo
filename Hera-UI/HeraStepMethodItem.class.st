@@ -36,7 +36,9 @@ HeraStepMethodItem >> pragmaArgument [
 { #category : 'actions' }
 HeraStepMethodItem >> saveSource: stepMethodSource [
 
-	self acceptanceTestClass compile: stepMethodSource
+	| selector |
+	selector := self acceptanceTestClass compile: stepMethodSource.
+	^ self acceptanceTestClass >> selector
 ]
 
 { #category : 'accessing' }
@@ -61,6 +63,14 @@ HeraStepMethodItem >> stepMethod [
 HeraStepMethodItem >> stepMethod: aCompiledMethod [
 
 	stepMethod := aCompiledMethod
+]
+
+{ #category : 'accessing' }
+HeraStepMethodItem >> stepPattern [
+
+	| argument |
+	argument := self pragmaArgument.
+	^ argument size > 2 ifTrue: [ argument second ]
 ]
 
 { #category : 'accessing' }
