@@ -589,6 +589,27 @@ HeraParserTestCase >> testParseFeatureWithEmptyBackground [
 	script := '
 	Feature: Signing in
 
+		Background:
+
+		Scenario: Successful sign-in'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
+	self assert: ast description isNil.
+	self assert: ast background class equals: HeraBackgroundAstNode.
+	self assert: ast background steps isEmpty.
+	self assert: ast scenarios size equals: 1.
+	self assert: ast scenarios first steps isEmpty
+]
+
+{ #category : 'tests' }
+HeraParserTestCase >> testParseFeatureWithEmptyBackgroundAtTheEnd [
+
+	| script ast |
+	script := '
+	Feature: Signing in
+
 	Background:'.
 	ast := self parseFeature: script.
 	self assert: ast class equals: HeraFeatureAstNode.
@@ -598,6 +619,35 @@ HeraParserTestCase >> testParseFeatureWithEmptyBackground [
 	self assert: ast background class equals: HeraBackgroundAstNode.
 	self assert: ast background steps isEmpty.
 	self assert: ast scenarios isEmpty
+]
+
+{ #category : 'tests' }
+HeraParserTestCase >> testParseFeatureWithEmptyLinesInBackground [
+
+	| script ast backgroundSteps |
+	script := '
+	Feature: Signing in
+		Background:
+
+			Given I am an administrator
+
+			And my account is active
+
+		Scenario: Successful sign-in'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
+	self assert: ast description isNil.
+	self assert: ast background class equals: HeraBackgroundAstNode.
+	backgroundSteps := ast background steps.
+	self assert: backgroundSteps size equals: 2.
+	self assert: backgroundSteps first class equals: HeraGivenAstNode.
+	self assert: backgroundSteps first description equals: 'I am an administrator'.
+	self assert: backgroundSteps second class equals: HeraAndAstNode.
+	self assert: backgroundSteps second description equals: 'my account is active'.
+	self assert: ast scenarios size equals: 1.
+	self assert: ast scenarios first steps isEmpty
 ]
 
 { #category : 'tests' }

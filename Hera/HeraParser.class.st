@@ -299,6 +299,7 @@ HeraParser >> parseStepArgument [
 HeraParser >> parseStepsRestricted: aBlock [
 
 	| stepNodes |
+	currentToken isEndOfLineToken ifTrue: [ self skipEmptyLines ].
 	stepNodes := OrderedCollection new.
 	[ currentToken isStepToken ] whileTrue: [ | stepNode |
 		aBlock value: currentToken.
