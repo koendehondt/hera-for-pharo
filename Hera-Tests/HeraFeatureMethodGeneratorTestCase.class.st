@@ -238,6 +238,52 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDocString [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfEmptyBackground [
+
+	| document ast |
+	document := '
+	Feature: Signing in
+
+		Background:
+
+		Scenario: Successful sign-in			
+			When I enter my credentials
+			And I press the button to sign in
+			Then I see the home page'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Signing in''>
+
+	^ (self feature: ''Signing in'')
+		background: self background;
+		scenarios: {
+			(self scenario: ''Successful sign-in'')
+				when: ''I enter my credentials'';
+				and: ''I press the button to sign in'';
+				then: ''I see the home page'' }'
+]
+
+{ #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfEmptyBackgroundAtTheEnd [
+
+	| document ast |
+	document := '
+	Feature: Signing in
+
+		Background:'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Signing in''>
+
+	^ (self feature: ''Signing in'')
+		background: self background'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfEmptyFeature [
 
 	| document ast |
