@@ -35,6 +35,9 @@ Feature: Signing in
 	Signing in is required to have access to the application.
 	Signing in requires credentials: an email address and a password.
 
+	Background:
+		Given my account is active
+
 	@successful_sign_in
 	Scenario: Successful sign-in
 		Access is allowed when the credentials are recognized.
@@ -49,6 +52,28 @@ Feature: Signing in
 HeraAstTextBasedSearchVisitorTestCase >> startPositionOf: aString [
 
 	^ self script indexOfSubCollection: aString
+]
+
+{ #category : 'tests' }
+HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureBackgroungFromEndPosition [
+
+	| astNode endPosition |
+	endPosition := self endPositionOf: 'Background:'.
+	astNode := subject
+		textPosition: endPosition;
+		visit: self ast.
+	self assert: astNode class equals: HeraBackgroundAstNode
+]
+
+{ #category : 'tests' }
+HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureBackgroungFromStartPosition [
+
+	| astNode startPosition |
+	startPosition := self startPositionOf: 'Background:'.
+	astNode := subject
+		textPosition: startPosition;
+		visit: self ast.
+	self assert: astNode class equals: HeraBackgroundAstNode
 ]
 
 { #category : 'tests' }
