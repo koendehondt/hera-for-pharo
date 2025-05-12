@@ -88,6 +88,26 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfBackground [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfBackgroundOnly [
+
+	| document ast |
+	document := '
+	Feature: Signing in
+
+		Background:
+			Given I have credentials to sign in'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Signing in''>
+
+	^ (self feature: ''Signing in'')
+		background: (self background
+			given: ''I have credentials to sign in'')'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDataTable [
 
 	| document ast |

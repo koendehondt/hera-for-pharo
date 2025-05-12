@@ -13,9 +13,16 @@ HeraFeatureAstNodeTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
-HeraFeatureAstNodeTestCase >> testIsEmptyWhenNoDescriptionNoTagsNoRulesNoScenarios [
+HeraFeatureAstNodeTestCase >> testIsEmptyWhenNoDescriptionNoTagsNoRulesNoBackgroundNoScenarios [
 
 	self assert: subject isEmpty
+]
+
+{ #category : 'tests' }
+HeraFeatureAstNodeTestCase >> testIsNotEmptyWithBackground [
+
+	subject background: HeraBackgroundAstNode new.
+	self deny: subject isEmpty
 ]
 
 { #category : 'tests' }

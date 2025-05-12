@@ -34,9 +34,9 @@ HeraLintIssue >> end [
 ]
 
 { #category : 'accessing' }
-HeraLintIssue >> end: anObject [
+HeraLintIssue >> end: anInteger [
 
-	end := anObject
+	end := anInteger
 ]
 
 { #category : 'accessing' }
@@ -52,9 +52,9 @@ HeraLintIssue >> message [
 ]
 
 { #category : 'accessing' }
-HeraLintIssue >> message: anObject [
+HeraLintIssue >> message: aString [
 
-	message := anObject
+	message := aString
 ]
 
 { #category : 'printing' }
@@ -73,7 +73,7 @@ HeraLintIssue >> start [
 ]
 
 { #category : 'accessing' }
-HeraLintIssue >> start: anObject [
+HeraLintIssue >> start: anInteger [
 
-	start := anObject
+	start := anInteger
 ]
