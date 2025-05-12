@@ -45,7 +45,7 @@ HeraParser >> parseBackground [
 	start := currentToken start.
 	end := currentToken end.
 	self nextToken.
-	currentToken isEndOfLineToken ifFalse: [
+	(currentToken isEndOfFileToken or: [ currentToken isEndOfLineToken ]) ifFalse: [
 		self parseError: 'Text after background keyword is not allowed' from: start to: end ].
 	self nextToken.
 	steps := self parseStepsRestricted: [ :stepToken |
