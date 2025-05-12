@@ -662,6 +662,18 @@ HeraScriptRunnerWithTextReporterTestCase >> testStepping [
 ]
 
 { #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testTerminateTriggersAfterScenarioHookOfAccepetanceTest [
+
+	subject acceptanceTest: (HeraAcceptanceTestWithHooksForTesting selector: #featureWithHooks).
+	subject reporter: reporter.
+	subject runNext. "Start feature"
+	subject runNext. "Start scenario"
+	self deny: subject currentAcceptanceTest isAfterHookInvoked.
+	subject terminate.
+	self assert: subject currentAcceptanceTest isAfterHookInvoked
+]
+
+{ #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testUndefineddStepErrorRun [
 
 	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithScenarioWithUndefinedStep).

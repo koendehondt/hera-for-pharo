@@ -34,6 +34,14 @@ HeraAcceptanceTestWithHooksForTesting >> featureWithHooks [
 				then: 'I see something' }
 ]
 
+{ #category : 'initialization' }
+HeraAcceptanceTestWithHooksForTesting >> initialize [
+
+	super initialize.
+	isAfterHookInvoked := false.
+	isBeforeHookInvoked := false
+]
+
 { #category : 'test api' }
 HeraAcceptanceTestWithHooksForTesting >> isAfterHookInvoked [
 

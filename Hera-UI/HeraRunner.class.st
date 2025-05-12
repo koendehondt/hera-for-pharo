@@ -146,6 +146,17 @@ HeraRunner >> report: aText [
 	self scrollToEndOfOutput
 ]
 
+{ #category : 'TOREMOVE' }
+HeraRunner >> requestWindowClose [
+
+	| shouldCloseMessage closeConfirmed |
+	scriptRunner hasRunAllScenarios ifTrue: [ ^ true ].
+	shouldCloseMessage := 'Not all scenarios have run.\Are you sure you want to close the runner?' withCRs.
+	closeConfirmed := self confirm: shouldCloseMessage.
+	closeConfirmed ifTrue: [ scriptRunner terminate ].
+	^ closeConfirmed
+]
+
 { #category : 'actions' }
 HeraRunner >> restart [
 

@@ -312,3 +312,10 @@ HeraScriptRunner >> startScenario: aScenario [
 	paused := false.
 	reporter reportStartOfScenario: aScenario
 ]
+
+{ #category : 'running' }
+HeraScriptRunner >> terminate [
+
+	self isRunningScenario ifFalse: [ ^ self ].
+	self afterScenarioHook
+]
