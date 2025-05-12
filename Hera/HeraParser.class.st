@@ -305,7 +305,7 @@ HeraParser >> parseStepsRestricted: aBlock [
 		stepNode := self parseStep.
 		stepNodes add: stepNode.
 		currentToken isEndOfLineToken ifTrue: [ self skipEmptyLines ] ].
-	(currentToken isEndOfFileToken or: [ currentToken isRuleToken or: [ currentToken isScenarioToken ] ])
+	(currentToken isEndOfFileToken or: [ currentToken isRuleToken or: [ currentToken isTagToken or: [ currentToken isScenarioToken ] ] ])
 		ifFalse: [ self parseError: 'Step, step argument, or scenario expected' from: currentToken start to: currentToken end ].
 	^ stepNodes
 ]

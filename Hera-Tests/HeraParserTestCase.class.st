@@ -526,6 +526,37 @@ HeraParserTestCase >> testParseEmptyFeature [
 ]
 
 { #category : 'tests' }
+HeraParserTestCase >> testParseFeatureWithBackgroundAndTaggedScenario [
+
+	| script ast scenarioNode backgroundSteps backgroundStepNode |
+	script := '
+	Feature: Signing in
+
+	Background:
+		Given I am a user
+
+	@successful_sign_in
+	Scenario: Successful sign-in'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Signing in'.
+	self assert: ast description isNil.
+	self assert: ast background class equals: HeraBackgroundAstNode.
+	backgroundSteps := ast background steps.
+	self assert: backgroundSteps size equals: 1.
+	backgroundStepNode := backgroundSteps first.
+	self assert: backgroundStepNode class equals: HeraGivenAstNode.
+	self assert: backgroundStepNode description equals: 'I am a user'.
+	self assert: ast scenarios size equals: 1.
+	scenarioNode := ast scenarios first.
+	self assert: scenarioNode class equals: HeraScenarioAstNode.
+	self assert: scenarioNode title class equals: HeraTitleAstNode.
+	self assert: scenarioNode title text equals: 'Successful sign-in'.
+	self assert: scenarioNode steps isEmpty
+]
+
+{ #category : 'tests' }
 HeraParserTestCase >> testParseFeatureWithDescription [
 
 	| script ast scenarioNode |
