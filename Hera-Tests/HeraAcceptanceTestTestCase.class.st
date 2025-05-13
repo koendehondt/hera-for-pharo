@@ -83,6 +83,8 @@ HeraAcceptanceTestTestCase >> testFeatureMethods [
 
 { #category : 'tests' }
 HeraAcceptanceTestTestCase >> testStepMethods [
-	
-	self assert: self describedClass stepMethods equals: { HeraAcceptanceTest >> #stepDebug }
+
+	| stepMethodSelectors |
+	stepMethodSelectors := self describedClass stepMethods collect: [ :each | each selector ].
+	self assert: stepMethodSelectors equals: { #stepDebug }
 ]

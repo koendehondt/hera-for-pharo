@@ -29,8 +29,10 @@ HeraAcceptanceTestWithFeatureTestCase >> testFeature [
 
 { #category : 'tests' }
 HeraAcceptanceTestWithFeatureTestCase >> testFeatureMethods [
-	
-	self assert: subject featureMethods equals: { HeraAcceptanceTestWithStepArgumentsForTesting >> #featureSigningInWithEmailAndPassword }
+
+	| featureMethodSelectors |
+	featureMethodSelectors := subject featureMethods collect: [ :each | each selector ].
+	self assert: featureMethodSelectors equals: { #featureSigningInWithEmailAndPassword }
 ]
 
 { #category : 'tests' }
@@ -95,48 +97,45 @@ HeraAcceptanceTestWithFeatureTestCase >> testRunningUnknowStepRaisesException [
 { #category : 'tests' }
 HeraAcceptanceTestWithFeatureTestCase >> testStepMethods [
 	
-	| sortedStepMethods |
-	sortedStepMethods := subject class stepMethods
-		sorted: [ :some :other | some selector <= other selector ].
-	self assert: sortedStepMethods equals: {
-		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage .
-		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIFillInTheFieldLabeled: .
-		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIPressTheButtonLabeled: .
-		HeraAcceptanceTestWithStepArgumentsForTesting >> #stepISeeTheHomePage }
+	| sortedStepMethodSelectors |
+	sortedStepMethodSelectors := (subject class stepMethods collect: [ :each | each selector ]) sorted.
+	self assert: sortedStepMethodSelectors equals: {
+		#stepIAmOnTheSignInPage .
+		#stepIFillInTheFieldLabeled: .
+		#stepIPressTheButtonLabeled: .
+		#stepISeeTheHomePage }
 ]
 
 { #category : 'tests' }
 HeraAcceptanceTestWithFeatureTestCase >> testStepMethodsForAcceptanceTestWithTrait [
 
-	| classWithTrait sortedStepMethods |
+	| classWithTrait sortedStepMethodSelectors |
 	classWithTrait := HeraAcceptanceTestWithTraitForTesting.
 	self deny: (classWithTrait >> #stepIAmOnTheSignInPage) isFromTrait.
 	self assert: (classWithTrait >> #stepIFillInTheFieldLabeled:) isFromTrait.
 	self assert: (classWithTrait >> #stepIPressTheButtonLabeled:) isFromTrait.
 	self assert: (classWithTrait >> #stepISeeTheHomePage) isFromTrait.
-	sortedStepMethods := classWithTrait stepMethods
-		sorted: [ :some :other | some selector <= other selector ].
+	sortedStepMethodSelectors := (classWithTrait stepMethods collect: [ :each | each selector ]) sorted.
 	self
-		assert: sortedStepMethods
+		assert: sortedStepMethodSelectors
 		equals: {
-			classWithTrait >> #stepIAmOnTheSignInPage .
-			classWithTrait >> #stepIFillInTheFieldLabeled: .
-			classWithTrait >> #stepIPressTheButtonLabeled: .
-			classWithTrait >> #stepISeeTheHomePage }
+			#stepIAmOnTheSignInPage .
+			#stepIFillInTheFieldLabeled: .
+			#stepIPressTheButtonLabeled: .
+			#stepISeeTheHomePage }
 ]
 
 { #category : 'tests' }
 HeraAcceptanceTestWithFeatureTestCase >> testStepMethodsForAcceptanceTestWithoutTraits [
 
-	| classWithoutTraits sortedStepMethods |
+	| classWithoutTraits sortedStepMethodSelectors |
 	classWithoutTraits := HeraAcceptanceTestWithStepArgumentsForTesting.
-	sortedStepMethods := classWithoutTraits stepMethods
-		sorted: [ :some :other | some selector <= other selector ].
+	sortedStepMethodSelectors := (classWithoutTraits stepMethods collect: [ :each | each selector ]) sorted.
 	self
-		assert: sortedStepMethods
+		assert: sortedStepMethodSelectors
 		equals: {
-			classWithoutTraits >> #stepIAmOnTheSignInPage .
-			classWithoutTraits >> #stepIFillInTheFieldLabeled: .
-			classWithoutTraits >> #stepIPressTheButtonLabeled: .
-			classWithoutTraits >> #stepISeeTheHomePage }
+			#stepIAmOnTheSignInPage .
+			#stepIFillInTheFieldLabeled: .
+			#stepIPressTheButtonLabeled: .
+			#stepISeeTheHomePage }
 ]
