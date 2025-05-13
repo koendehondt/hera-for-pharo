@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraAstTextBasedSearchVisitorTestCase',
+	#name : 'HeraTextBasedAstSearcherTestCase',
 	#superclass : 'HeraTestCase',
 	#category : 'Hera-Tests-AST',
 	#package : 'Hera-Tests',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'private' }
-HeraAstTextBasedSearchVisitorTestCase >> ast [
+HeraTextBasedAstSearcherTestCase >> ast [
 
 	^ HeraParser new
 		initializeParserWith: self script;
@@ -15,19 +15,19 @@ HeraAstTextBasedSearchVisitorTestCase >> ast [
 ]
 
 { #category : 'running' }
-HeraAstTextBasedSearchVisitorTestCase >> describedClass [
+HeraTextBasedAstSearcherTestCase >> describedClass [
 
-	^ HeraAstTextBasedSearchVisitor
+	^ HeraTextBasedAstSearcher
 ]
 
 { #category : 'helpers' }
-HeraAstTextBasedSearchVisitorTestCase >> endPositionOf: aString [
+HeraTextBasedAstSearcherTestCase >> endPositionOf: aString [
 
 	^ (self script indexOfSubCollection: aString) + aString size - 1
 ]
 
 { #category : 'private' }
-HeraAstTextBasedSearchVisitorTestCase >> script [
+HeraTextBasedAstSearcherTestCase >> script [
 
 	^ '@accessing_the_system
 @signing_in
@@ -49,13 +49,13 @@ Feature: Signing in
 ]
 
 { #category : 'helpers' }
-HeraAstTextBasedSearchVisitorTestCase >> startPositionOf: aString [
+HeraTextBasedAstSearcherTestCase >> startPositionOf: aString [
 
 	^ self script indexOfSubCollection: aString
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureBackgroungFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureBackgroundFromEndPosition [
 
 	| astNode endPosition |
 	endPosition := self endPositionOf: 'Background:'.
@@ -66,7 +66,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureBackgroungFromEndPosit
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureBackgroungFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureBackgroundFromStartPosition [
 
 	| astNode startPosition |
 	startPosition := self startPositionOf: 'Background:'.
@@ -77,7 +77,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureBackgroungFromStartPos
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureDescriptionFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureDescriptionFromEndPosition [
 
 	| astNode endPosition |
 	endPosition := self endPositionOf: 'Signing in is required to have access to the application.
@@ -94,7 +94,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureDescriptionFromEndPosi
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureDescriptionFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureDescriptionFromStartPosition [
 
 	| astNode startPosition |
 	startPosition := self startPositionOf: 'Signing in is required to have access to the application.
@@ -111,7 +111,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureDescriptionFromStartPo
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureFromEndPositionAnswersLastNode [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromEndPositionAnswersLastNode [
 
 	| astNode |
 	astNode := subject
@@ -122,7 +122,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureFromEndPositionAnswers
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureFromPositionOutsideAnyNode [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromPositionOutsideAnyNode [
 
 	| astNode |
 	astNode := subject
@@ -132,7 +132,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureFromPositionOutsideAny
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromStartPosition [
 
 	| astNode |
 	astNode := subject
@@ -142,7 +142,31 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFeatureFromStartPosition [
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstFeatureTagFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureTitleFromEndPosition [
+
+	| astNode endPosition |
+	endPosition := self endPositionOf: 'Signing in'.
+	astNode := subject
+		textPosition: endPosition;
+		visit: self ast.
+	self assert: astNode class equals: HeraTitleAstNode.
+	self assert: astNode text equals: 'Signing in'
+]
+
+{ #category : 'tests' }
+HeraTextBasedAstSearcherTestCase >> testSearchFeatureTitleFromStartPosition [
+
+	| astNode startPosition |
+	startPosition := self startPositionOf: 'Signing in'.
+	astNode := subject
+		textPosition: startPosition;
+		visit: self ast.
+	self assert: astNode class equals: HeraTitleAstNode.
+	self assert: astNode text equals: 'Signing in'
+]
+
+{ #category : 'tests' }
+HeraTextBasedAstSearcherTestCase >> testSearchFirstFeatureTagFromEndPosition [
 
 	| astNode |
 	astNode := subject
@@ -153,7 +177,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstFeatureTagFromEndPositio
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstFeatureTagFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFirstFeatureTagFromStartPosition [
 
 	| astNode |
 	astNode := subject
@@ -164,7 +188,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstFeatureTagFromStartPosit
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstStepFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFirstStepFromEndPosition [
 
 	| astNode |
 	astNode := subject
@@ -175,7 +199,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstStepFromEndPosition [
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstStepFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchFirstStepFromStartPosition [
 
 	| astNode |
 	astNode := subject
@@ -186,7 +210,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchFirstStepFromStartPosition [
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioDescriptionFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioDescriptionFromEndPosition [
 
 	| astNode |
 	astNode := subject
@@ -199,7 +223,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioDescriptionFromEndPos
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioDescriptionFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioDescriptionFromStartPosition [
 
 	| astNode |
 	astNode := subject
@@ -212,7 +236,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioDescriptionFromStartP
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioFromStartPosition [
 
 	| astNode |
 	astNode := subject
@@ -223,7 +247,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioFromStartPosition [
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioTagFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioTagFromEndPosition [
 
 	| astNode |
 	astNode := subject
@@ -234,7 +258,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioTagFromEndPosition [
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioTagFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioTagFromStartPosition [
 
 	| astNode |
 	astNode := subject
@@ -245,7 +269,18 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchScenarioTagFromStartPosition 
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchSecondFeatureTagFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioTitleFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'Successful sign-in');
+		visit: self ast.
+	self assert: astNode class equals: HeraTitleAstNode.
+	self assert: astNode text equals: 'Successful sign-in'
+]
+
+{ #category : 'tests' }
+HeraTextBasedAstSearcherTestCase >> testSearchSecondFeatureTagFromEndPosition [
 
 	| astNode |
 	astNode := subject
@@ -256,7 +291,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchSecondFeatureTagFromEndPositi
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchSecondFeatureTagFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchSecondFeatureTagFromStartPosition [
 
 	| astNode |
 	astNode := subject
@@ -267,7 +302,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchSecondFeatureTagFromStartPosi
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchSecondStepFromEndPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchSecondStepFromEndPosition [
 
 	| astNode |
 	astNode := subject
@@ -278,7 +313,7 @@ HeraAstTextBasedSearchVisitorTestCase >> testSearchSecondStepFromEndPosition [
 ]
 
 { #category : 'tests' }
-HeraAstTextBasedSearchVisitorTestCase >> testSearchSecondStepFromStartPosition [
+HeraTextBasedAstSearcherTestCase >> testSearchSecondStepFromStartPosition [
 
 	| astNode |
 	astNode := subject

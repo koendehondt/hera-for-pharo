@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraAstTextBasedSearchVisitor',
+	#name : 'HeraTextBasedAstSearcher',
 	#superclass : 'HeraAstVisitor',
 	#instVars : [
 		'textPosition'
@@ -10,31 +10,32 @@ Class {
 }
 
 { #category : 'private - visiting' }
-HeraAstTextBasedSearchVisitor >> default: anAstNode [
+HeraTextBasedAstSearcher >> default: anAstNode [
 
 	(anAstNode isLocatedAtTextPosition: textPosition) ifTrue: [ ^ anAstNode ].
 	^ nil
 ]
 
 { #category : 'initialization' }
-HeraAstTextBasedSearchVisitor >> textPosition: anInteger [
+HeraTextBasedAstSearcher >> textPosition: anInteger [
 
 	textPosition := anInteger
 ]
 
 { #category : 'visiting' }
-HeraAstTextBasedSearchVisitor >> visitBackgroundAstNode: aBackgroundAstNode [
+HeraTextBasedAstSearcher >> visitBackgroundAstNode: aBackgroundAstNode [
 
 	aBackgroundAstNode steps do: [ :each |
 		(self visit: each) ifNotNil: [ :stepNode | ^ stepNode ] ].
-	^ super visitScenarioAstNode: aBackgroundAstNode
+	^ super visitBackgroundAstNode: aBackgroundAstNode
 ]
 
 { #category : 'visiting' }
-HeraAstTextBasedSearchVisitor >> visitFeatureAstNode: aFeatureAstNode [
+HeraTextBasedAstSearcher >> visitFeatureAstNode: aFeatureAstNode [
 
 	aFeatureAstNode tags do: [ :each |
 		(self visit: each) ifNotNil: [ :tagNode | ^ tagNode ] ].
+	(self visit: aFeatureAstNode title) ifNotNil: [ :titleNode | ^ titleNode ].
 	aFeatureAstNode description ifNotNil: [ :description |
 		(self visit: description) ifNotNil: [ :descriptionNode | ^ descriptionNode ] ].
 	aFeatureAstNode background ifNotNil: [ :background |
@@ -47,7 +48,7 @@ HeraAstTextBasedSearchVisitor >> visitFeatureAstNode: aFeatureAstNode [
 ]
 
 { #category : 'visiting' }
-HeraAstTextBasedSearchVisitor >> visitRuleAstNode: aRuleAstNode [
+HeraTextBasedAstSearcher >> visitRuleAstNode: aRuleAstNode [
 
 	aRuleAstNode description ifNotNil: [ :description |
 		(self visit: description) ifNotNil: [ :descriptionNode | ^ descriptionNode ] ].
@@ -59,10 +60,11 @@ HeraAstTextBasedSearchVisitor >> visitRuleAstNode: aRuleAstNode [
 ]
 
 { #category : 'visiting' }
-HeraAstTextBasedSearchVisitor >> visitScenarioAstNode: aScenarioAstNode [
+HeraTextBasedAstSearcher >> visitScenarioAstNode: aScenarioAstNode [
 
 	aScenarioAstNode tags do: [ :each |
 		(self visit: each) ifNotNil: [ :tagNode | ^ tagNode ] ].
+	(self visit: aScenarioAstNode title) ifNotNil: [ :titleNode | ^ titleNode ].
 	aScenarioAstNode description ifNotNil: [ :description |
 		(self visit: description) ifNotNil: [ :descriptionNode | ^ descriptionNode ] ].
 	aScenarioAstNode steps do: [ :each |

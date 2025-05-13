@@ -29,7 +29,7 @@ HeraScriptEditor >> altKeyClick: event [
 	| caretPosition astNode |
 	ast ifNil: [ ^ self ].
 	caretPosition := script selectionInterval first.
-	astNode := HeraAstTextBasedSearchVisitor new
+	astNode := HeraTextBasedAstSearcher new
 		textPosition: caretPosition;
 		visit: ast.
 	(astNode isNil or: [ astNode isStepNode not ]) ifTrue: [ ^ self ].
