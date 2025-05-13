@@ -146,7 +146,7 @@ HeraRunner >> report: aText [
 	self scrollToEndOfOutput
 ]
 
-{ #category : 'TOREMOVE' }
+{ #category : 'closing' }
 HeraRunner >> requestWindowClose [
 
 	| shouldCloseMessage closeConfirmed |
