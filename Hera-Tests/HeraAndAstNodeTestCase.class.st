@@ -12,6 +12,19 @@ HeraAndAstNodeTestCase >> describedClass [
 	^ HeraAndAstNode
 ]
 
+{ #category : 'running' }
+HeraAndAstNodeTestCase >> initializeSubject [
+
+	super initializeSubject.
+	subject description: 'I have an active account'
+]
+
+{ #category : 'tests' }
+HeraAndAstNodeTestCase >> testAsStepDefinitionPragma [
+
+	self assert: subject asStepDefinitionPragma equals: '<heraStepDefinition: #(Given ''I have an active account'')>'
+]
+
 { #category : 'tests' }
 HeraAndAstNodeTestCase >> testTypeForDefinition [
 

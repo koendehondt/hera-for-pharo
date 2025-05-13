@@ -12,6 +12,19 @@ HeraThenAstNodeTestCase >> describedClass [
 	^ HeraThenAstNode
 ]
 
+{ #category : 'running' }
+HeraThenAstNodeTestCase >> initializeSubject [
+
+	super initializeSubject.
+	subject description: 'I see the home page'
+]
+
+{ #category : 'tests' }
+HeraThenAstNodeTestCase >> testAsStepDefinitionPragma [
+
+	self assert: subject asStepDefinitionPragma equals: '<heraStepDefinition: #(Then ''I see the home page'')>'
+]
+
 { #category : 'tests' }
 HeraThenAstNodeTestCase >> testTypeForDefinition [
 

@@ -22,3 +22,13 @@ HeraAstNodeTestCase >> testIsLocatedAtTextPosition [
 	self assert: (subject isLocatedAtTextPosition: 22).
 	self deny: (subject isLocatedAtTextPosition: 23)
 ]
+
+{ #category : 'tests' }
+HeraAstNodeTestCase >> testIsStepNode [
+
+	| stepClasses nonStepClasses |
+	stepClasses := HeraStepAstNode allSubclasses.
+	stepClasses do: [ :each | self assert: each new isStepNode ].
+	nonStepClasses := self describedClass allSubclasses removeAll: stepClasses; remove: HeraStepAstNode; yourself.
+	nonStepClasses do: [ :each | self deny: each new isStepNode ]
+]
