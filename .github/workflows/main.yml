@@ -12,13 +12,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        smalltalk: [ Pharo64-stable , Pharo64-13 , Pharo64-alpha ]
+        smalltalk: [Pharo64-stable, Pharo64-13, Pharo64-alpha]
     name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v4
       - uses: hpi-swa/setup-smalltalkCI@v1
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
+          smalltalkCI-branch: "debugci"
       - name: Run tests
         run: smalltalkci -s ${{ matrix.smalltalk }}
         env:
