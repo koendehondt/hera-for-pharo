@@ -1,0 +1,14 @@
+jobs:
+  build:
+    strategy:
+      matrix:
+        smalltalk: [ Pharo64-stable , Pharo64-13 , Pharo64-alpha ]
+    name: ${{ matrix.smalltalk }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hpi-swa/setup-smalltalkCI@v1
+        with:
+          smalltalk-image: ${{ matrix.smalltalk }}
+      - run: smalltalkci -s ${{ matrix.smalltalk }}
+        shell: bash
+        timeout-minutes: 10
