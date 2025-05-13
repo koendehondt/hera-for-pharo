@@ -91,7 +91,7 @@ HeraLinterTestCase >> testButCannotBeTheFirstStep [
 HeraLinterTestCase >> testFeatureTitleStartsWithUppercaseLetter [
 
 	self
-		assertWarning: 'A feature title should start with an uppercase letter'
+		assertWarning: 'A title should start with an uppercase letter'
 		start: 10
 		end: 19
 		whenLinting: 'Feature: signing in'
@@ -228,7 +228,7 @@ HeraLinterTestCase >> testRuleTitleStartsWithUppercaseLetter [
 HeraLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
 
 	self
-		assertWarning: 'A scenario title should start with an uppercase letter'
+		assertWarning: 'A title should start with an uppercase letter'
 		start: 40
 		end: 57
 		whenLinting: '

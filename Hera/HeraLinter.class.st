@@ -95,10 +95,7 @@ HeraLinter >> visitButAstNode: aButAstNode [
 { #category : 'visiting' }
 HeraLinter >> visitFeatureAstNode: aFeatureAstNode [
 
-	| titleNode |
-	aFeatureAstNode title text first isUppercase ifFalse: [
-		titleNode := aFeatureAstNode title.
-		self warn: 'A feature title should start with an uppercase letter' from: titleNode start to: titleNode end ].
+	self visitTitleAstNode: aFeatureAstNode title.
 	aFeatureAstNode background ifNotNil: [ :background | self visit: background ].
 	aFeatureAstNode scenarios do: [ :each | self visit: each ].
 	aFeatureAstNode rules do: [ :each | self visit: each ]
@@ -127,11 +124,8 @@ HeraLinter >> visitRuleAstNode: aRuleAstNode [
 { #category : 'visiting' }
 HeraLinter >> visitScenarioAstNode: aScenarioAstNode [
 
-	| titleNode |
 	currentAstNodeWithSteps := aScenarioAstNode.
-	aScenarioAstNode title text first isUppercase ifFalse: [
-		titleNode := aScenarioAstNode title.
-		self warn: 'A scenario title should start with an uppercase letter' from: titleNode start to: titleNode end ].
+	self visitTitleAstNode: aScenarioAstNode title.
 	aScenarioAstNode steps withIndexDo: [ :stepNode :stepIndex |
 		currentStepIndex := stepIndex.
 		self visit: stepNode ]
@@ -152,6 +146,13 @@ HeraLinter >> visitThenAstNode: aThenAstNode [
 	currentStepIndex = 1 ifTrue: [
 		self warn: 'A Then step should not be the first step in a scenario' from: aThenAstNode start to: aThenAstNode end ].
 	self checkStepDefinitionFor: aThenAstNode
+]
+
+{ #category : 'visiting' }
+HeraLinter >> visitTitleAstNode: aTitleAstNode [
+
+	aTitleAstNode text first isUppercase ifTrue: [ ^ self ].
+	self warn: 'A title should start with an uppercase letter' from: aTitleAstNode start to: aTitleAstNode end
 ]
 
 { #category : 'visiting' }
