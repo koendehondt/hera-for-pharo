@@ -168,6 +168,7 @@ HeraRunner >> restart [
 HeraRunner >> restartAcceptanceTest: anAcceptanceTest [
 
 	| wasDebugging |
+	scriptRunner terminate.
 	wasDebugging := scriptRunner isDebugging.
 	self stepAcceptanceTest: anAcceptanceTest.
 	scriptRunner isDebugging: wasDebugging
