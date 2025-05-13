@@ -20,6 +20,12 @@ HeraAcceptanceTest class >> featureMethods [
 	^ self methods select: [ :each | (each pragmaAt: #heraFeature:) isNotNil ]
 ]
 
+{ #category : 'testing' }
+HeraAcceptanceTest class >> isForTestingHera [
+
+	^ false
+]
+
 { #category : 'accessing' }
 HeraAcceptanceTest class >> nameInBrowser [
 

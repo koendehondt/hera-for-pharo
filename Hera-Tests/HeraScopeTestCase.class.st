@@ -37,3 +37,25 @@ HeraScopeTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 		HeraAcceptanceTestWithTraitForTesting
 	 }
 ]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
+
+	subject := self describedClass all.
+	self assert: subject allForBrowsing equals: {
+		HeraAcceptanceTestExamplesForTesting .
+		HeraAcceptanceTestForTesting .
+		HeraAcceptanceTestWithErrorForTesting .
+		HeraAcceptanceTestWithFailureForTesting .
+		HeraAcceptanceTestWithHelperForTesting .
+		HeraAcceptanceTestWithHooksForTesting .
+		HeraAcceptanceTestWithLintIssuesForTesting .
+		HeraAcceptanceTestWithPassForTesting .
+		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
+		HeraAcceptanceTestWithStepArgumentsForTesting .
+		HeraAcceptanceTestWithTraitForTesting .
+		HeraFeatureBrowserAcceptanceTest .
+		HeraRunnerAcceptanceTest .
+		HeraSelfAcceptanceTest
+	 }
+]
