@@ -83,6 +83,6 @@ HeraAcceptanceTestTestCase >> testFeatureMethods [
 
 { #category : 'tests' }
 HeraAcceptanceTestTestCase >> testStepMethods [
-	
+	self halt.
 	self assert: self describedClass stepMethods equals: { HeraAcceptanceTest >> #stepDebug }
 ]
