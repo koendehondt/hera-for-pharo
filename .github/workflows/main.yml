@@ -7,8 +7,10 @@ on:
     - cron: "5 0 * * 1" # At 00:05 on Monday.
 
 jobs:
-  build:
+  test:
+    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         smalltalk: [ Pharo64-stable , Pharo64-13 , Pharo64-alpha ]
     name: ${{ matrix.smalltalk }}
