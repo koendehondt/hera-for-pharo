@@ -1,8 +1,14 @@
 SmalltalkCISpec {
-  #loading : [
-    SCIMetacelloLoadSpec {
-      #baseline : 'Hera',
-      #platforms : [ #pharo ]
-    }
-  ]
+	#loading : [
+		SCIMetacelloLoadSpec {
+			#baseline : 'Hera',
+			#platforms : [ #pharo ]
+		}
+	],
+	#testing : {
+		#coverage : {
+			#packages : [ 'Hera*' ],
+			#format : #lcov
+		}
+	}
 }
