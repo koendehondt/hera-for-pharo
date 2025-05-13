@@ -22,3 +22,8 @@ jobs:
       - run: smalltalkci -s ${{ matrix.smalltalk }}
         shell: bash
         timeout-minutes: 10
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          name: ${{ matrix.smalltalk }}
+          token: ${{ secrets.CODECOV_TOKEN }}
