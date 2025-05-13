@@ -15,7 +15,7 @@ Metacello new
 
 Open a Feature Browser with all features in the image:
 ```smalltalk
-(HeraFeatureBrowser new analytics: HeraAnalytics all) open
+(HeraFeatureBrowser new scope: HeraScope all) open.
 ```
 
 Open a Feature Browser without all the features used for testing Hera:
