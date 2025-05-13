@@ -44,21 +44,11 @@ HeraAcceptanceTestWithFeatureTestCase >> testInstanceCreation [
 { #category : 'tests' }
 HeraAcceptanceTestWithFeatureTestCase >> testMethodForStepDescription [
 
-	self
-		assert: (subject methodForStepDescription: 'I am on the sign-in page')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage.
-	self
-		assert: (subject methodForStepDescription: 'I fill in the field labeled "Email:"')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIFillInTheFieldLabeled:.
-	self
-		assert: (subject methodForStepDescription: 'I fill in the field labeled "Password:"')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIFillInTheFieldLabeled:.
-	self
-		assert: (subject methodForStepDescription: 'I press the button labeled "Sign in"')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIPressTheButtonLabeled:.
-	self
-		assert: (subject methodForStepDescription: 'I see the home page')
-		equals: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepISeeTheHomePage
+	self assert: (subject methodForStepDescription: 'I am on the sign-in page') selector  equals: #stepIAmOnTheSignInPage.
+	self assert: (subject methodForStepDescription: 'I fill in the field labeled "Email:"') selector equals: #stepIFillInTheFieldLabeled:.
+	self assert: (subject methodForStepDescription: 'I fill in the field labeled "Password:"') selector equals: #stepIFillInTheFieldLabeled:.
+	self assert: (subject methodForStepDescription: 'I press the button labeled "Sign in"') selector equals: #stepIPressTheButtonLabeled:.
+	self assert: (subject methodForStepDescription: 'I see the home page') selector equals: #stepISeeTheHomePage
 ]
 
 { #category : 'tests' }
