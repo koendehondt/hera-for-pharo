@@ -12,15 +12,15 @@ Class {
 { #category : 'instance creation' }
 HeraScope class >> all [
 
-	^ self new
+	^ self new includeHierarchy: HeraAcceptanceTest
 ]
 
 { #category : 'instance creation' }
 HeraScope class >> default [
 
-	| forTestingClasses |
-	forTestingClasses := HeraAcceptanceTest allSubclasses select: [ :each | each isForTestingHera ].
-	^ self new excludeAllClasses: forTestingClasses
+	| testingClasses |
+	testingClasses := HeraAcceptanceTest allSubclasses select: [ :each | each isForTestingHera ].
+	^ self all excludeClasses: testingClasses
 ]
 
 { #category : 'accessing' }
@@ -36,21 +36,21 @@ HeraScope >> allStepMethods [
 ]
 
 { #category : 'accessing' }
-HeraScope >> excludeAllClasses: classes [
-
-	acceptanceTestClasses removeAll: classes
-]
-
-{ #category : 'accessing' }
 HeraScope >> excludeClass: aClass [
 
 	acceptanceTestClasses remove: aClass
 ]
 
 { #category : 'accessing' }
+HeraScope >> excludeClasses: classes [
+
+	acceptanceTestClasses removeAll: classes
+]
+
+{ #category : 'accessing' }
 HeraScope >> excludeHierarchy: aClass [
 
-	self excludeAllClasses: aClass withAllSubclasses
+	self excludeClasses: aClass allSubclasses
 ]
 
 { #category : 'accessing' }
@@ -60,14 +60,20 @@ HeraScope >> includeClass: aClass [
 ]
 
 { #category : 'accessing' }
+HeraScope >> includeClasses: classes [
+
+	acceptanceTestClasses addAll: classes
+]
+
+{ #category : 'accessing' }
 HeraScope >> includeHierarchy: aClass [
 
-	acceptanceTestClasses addAll: aClass allSubclasses
+	self includeClasses: aClass allSubclasses
 ]
 
 { #category : 'initialization' }
 HeraScope >> initialize [
 
 	super initialize.
-	acceptanceTestClasses := HeraAcceptanceTest allSubclasses asSet.
+	acceptanceTestClasses := Set new
 ]

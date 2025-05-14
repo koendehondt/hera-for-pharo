@@ -13,10 +13,10 @@ HeraScopeTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
-HeraScopeTestCase >> testAllForBrowsingDefaultsToEmptyArray [
+HeraScopeTestCase >> testAll [
 
-	subject := self describedClass default.
-	self assert: subject allForBrowsing equals: #()
+	subject := self describedClass all.
+	self assert: subject allForBrowsing asSet equals: HeraAcceptanceTest allSubclasses asSet
 ]
 
 { #category : 'tests' }
@@ -58,4 +58,73 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 		HeraRunnerAcceptanceTest .
 		HeraSelfAcceptanceTest
 	 }
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testAllStepMethods [
+
+	subject := self describedClass new.
+	subject includeClass: HeraAcceptanceTestWithStepArgumentsForTesting.
+	self assert: (subject allStepMethods collect: [ :each | each selector ]) sorted equals: {
+		#stepIAmOnTheSignInPage .
+		#stepIFillInTheFieldLabeled: .
+		#stepIPressTheButtonLabeled: .
+		#stepISeeTheHomePage
+	 }
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testDefault [
+
+	subject := self describedClass default.
+	self assert: subject allForBrowsing equals: #()
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testExcludeClass [
+
+	subject := self describedClass all.
+	subject excludeClass: HeraAcceptanceTestWithStepArgumentsForTesting.
+	self deny: (subject allForBrowsing includes: HeraAcceptanceTestWithStepArgumentsForTesting)
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testExcludeClasses [
+
+	subject := self describedClass all.
+	subject excludeClasses: HeraAcceptanceTest allSubclasses.
+	self assert: subject allForBrowsing isEmpty
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testExcludeHierarchy [
+
+	subject := self describedClass new.
+	subject includeHierarchy: HeraAcceptanceTestForTesting.
+	self assert: subject allForBrowsing size equals: HeraAcceptanceTestForTesting allSubclasses size.
+	subject excludeHierarchy: HeraAcceptanceTestForTesting.
+	self assert: subject allForBrowsing isEmpty
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testIncludeClass [
+
+	subject := self describedClass new.
+	subject includeClass: HeraAcceptanceTestWithStepArgumentsForTesting.
+	self assert: subject allForBrowsing equals: { HeraAcceptanceTestWithStepArgumentsForTesting }
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testIncludeHierarchy [
+
+	subject := self describedClass new.
+	subject includeHierarchy: HeraAcceptanceTestForTesting.
+	self assert: subject allForBrowsing size equals: HeraAcceptanceTestForTesting allSubclasses size
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testNew [
+
+	subject := self describedClass new.
+	self assert: subject allForBrowsing isEmpty
 ]
