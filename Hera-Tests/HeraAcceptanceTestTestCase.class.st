@@ -82,6 +82,37 @@ HeraAcceptanceTestTestCase >> testFeatureMethods [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestTestCase >> testIsForTestingHera [
+
+	self deny: self describedClass isForTestingHera
+]
+
+{ #category : 'tests' }
+HeraAcceptanceTestTestCase >> testNameInBrowser [
+
+	self assert: self describedClass nameInBrowser equals: 'HeraAcceptanceTest'
+]
+
+{ #category : 'tests' }
+HeraAcceptanceTestTestCase >> testRegexStringForMatchStepDefinition [
+
+	self assert: (subject regexStringForMatchStepDefinition: 'I fill in the {string} field') equals: 'I fill in the "([^"]+)" field'.
+	self assert: (subject regexStringForMatchStepDefinition: 'I fill in the name field') equals: 'I fill in the name field'
+]
+
+{ #category : 'tests' }
+HeraAcceptanceTestTestCase >> testStepDebug [
+
+	| stepMethodPragmas pragma |
+	stepMethodPragmas := (self describedClass >> #stepDebug) pragmas.
+	self assert: stepMethodPragmas size equals: 1.
+	pragma := stepMethodPragmas first.
+	self assert: pragma selector equals: #heraStepDefinition:.
+	self assert: (pragma argumentAt: 1) equals: #(When 'I debug').
+	self should: [ subject stepDebug ] raise: Halt
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestTestCase >> testStepMethods [
 
 	| stepMethodSelectors |
