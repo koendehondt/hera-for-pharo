@@ -110,7 +110,7 @@ HeraScriptGenerator >> visitFeature: aFeature [
 		aFeature scenarios ifNotEmpty: [ stream cr ] ].
 	aFeature scenarios do: [ :each | self visit: each ] separatedBy: [ stream cr ].
 	aFeature rules ifNotEmpty: [ stream cr ].
-	aFeature rules do: [ :each | self visitRule: each ] separatedBy: [ stream cr ].
+	aFeature rules do: [ :each | self visit: each ] separatedBy: [ stream cr ].
 	self decreaseIndentation
 ]
 
