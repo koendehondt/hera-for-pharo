@@ -5,8 +5,7 @@ Class {
 		'title',
 		'steps',
 		'tags',
-		'description',
-		'feature'
+		'description'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -71,18 +70,6 @@ HeraScenario >> description [
 HeraScenario >> description: anArrayOfStrings [
 
 	description := anArrayOfStrings
-]
-
-{ #category : 'accessing' }
-HeraScenario >> feature [
-
-	^ feature
-]
-
-{ #category : 'accessing' }
-HeraScenario >> feature: aFeature [
-
-	feature := aFeature
 ]
 
 { #category : 'dsl' }

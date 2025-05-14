@@ -67,8 +67,7 @@ HeraRule >> scenarios [
 { #category : 'accessing' }
 HeraRule >> scenarios: anArray [
 
-	scenarios := anArray.
-	anArray do: [ :each | each feature: self ]
+	scenarios := anArray
 ]
 
 { #category : 'accessing' }

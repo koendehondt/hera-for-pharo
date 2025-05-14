@@ -89,8 +89,7 @@ HeraFeature >> scenarios [
 { #category : 'accessing' }
 HeraFeature >> scenarios: anArray [
 
-	scenarios := anArray.
-	anArray do: [ :each | each feature: self ]
+	scenarios := anArray
 ]
 
 { #category : 'accessing' }
