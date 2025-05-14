@@ -9,7 +9,7 @@ Class {
 { #category : 'running' }
 HeraStarAstNodeTestCase >> describedClass [
 
-	^ HeraButAstNode
+	^ HeraStarAstNode
 ]
 
 { #category : 'running' }
