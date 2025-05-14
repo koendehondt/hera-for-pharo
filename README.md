@@ -22,8 +22,3 @@ Open a Feature Browser without all the features used for testing Hera:
 ```smalltalk
 HeraFeatureBrowser new open
 ```
-
-Open a Step Browser to see all the steps in the image:
-```smalltalk
-HeraStepBrowser new open
-```
