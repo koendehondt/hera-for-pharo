@@ -5,3 +5,9 @@ Class {
 	#package : 'Hera',
 	#tag : 'AST'
 }
+
+{ #category : 'testing' }
+HeraStepArgumentAstNode class >> isAbstract [
+
+	^ true
+]
