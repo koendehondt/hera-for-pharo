@@ -24,6 +24,18 @@ HeraRunnerReporter >> report: aBlock [
 ]
 
 { #category : 'reporting' }
+HeraRunnerReporter >> reportAfterScenarioHookError: anError [
+
+	self report: [ super reportAfterScenarioHookError: anError ]
+]
+
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportBeforeScenarioHookError: anError [
+
+	self report: [ super reportBeforeScenarioHookError: anError ]
+]
+
+{ #category : 'reporting' }
 HeraRunnerReporter >> reportEmptyFeature: aFeature [
 
 	self report: [ super reportEmptyFeature: aFeature ]

@@ -7,7 +7,19 @@ Class {
 }
 
 { #category : 'reporting' }
+HeraNoReporter >> reportAfterScenarioHookError: anError [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraNoReporter >> reportBackground: aBackground [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportBeforeScenarioHookError: anError [
 
 	"Do nothing."
 ]

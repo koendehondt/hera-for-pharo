@@ -27,6 +27,8 @@ HeraScopeTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 	self assert: subject allForBrowsing equals: {
 		HeraAcceptanceTestExamplesForTesting .
 		HeraAcceptanceTestWithErrorForTesting .
+		HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting .
+		HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting .
 		HeraAcceptanceTestWithFailureForTesting .
 		HeraAcceptanceTestWithHelperForTesting .
 		HeraAcceptanceTestWithHooksForTesting .
@@ -46,6 +48,8 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 		HeraAcceptanceTestExamplesForTesting .
 		HeraAcceptanceTestForTesting .
 		HeraAcceptanceTestWithErrorForTesting .
+		HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting .
+		HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting .
 		HeraAcceptanceTestWithFailureForTesting .
 		HeraAcceptanceTestWithHelperForTesting .
 		HeraAcceptanceTestWithHooksForTesting .

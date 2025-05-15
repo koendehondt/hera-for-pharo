@@ -14,7 +14,8 @@ Class {
 		'paused',
 		'scenarioCount',
 		'currentAcceptanceTest',
-		'currentRule'
+		'currentRule',
+		'beforeScenarioHookFailed'
 	],
 	#category : 'Hera-Running',
 	#package : 'Hera',
@@ -32,7 +33,12 @@ HeraScriptRunner >> acceptanceTest: anAcceptanceTest [
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> afterScenarioHook [
 
-	currentAcceptanceTest afterScenario
+	beforeScenarioHookFailed ifTrue: [^self].
+	[currentAcceptanceTest afterScenario] on: self errorClass
+		do: 
+			[:error |
+			reporter reportAfterScenarioHookError: error.
+			self recordErrorScenario]
 ]
 
 { #category : 'private - running' }
@@ -45,7 +51,12 @@ HeraScriptRunner >> basicRunStep: aStep [
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> beforeScenarioHook [
 
-	currentAcceptanceTest beforeScenario
+	[currentAcceptanceTest beforeScenario] on: self errorClass
+		do: 
+			[:error |
+			beforeScenarioHookFailed := true.
+			reporter reportBeforeScenarioHookError: error.
+			self recordErrorScenario]
 ]
 
 { #category : 'running' }
@@ -88,12 +99,13 @@ HeraScriptRunner >> endRule [
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> endScenario [
 
-	self hasRunSteps
-		ifTrue: [
-			currentScenarioPassed ifTrue: [ result recordPassedScenario: currentScenario ] ]
-		ifFalse: [
-			result recordEmptyScenario: currentScenario.
-			reporter reportEmptyScenario: currentScenario ].
+	beforeScenarioHookFailed ifFalse: [
+		self hasRunSteps
+			ifTrue: [
+				currentScenarioPassed ifTrue: [ result recordPassedScenario: currentScenario ] ]
+			ifFalse: [
+				result recordEmptyScenario: currentScenario.
+				reporter reportEmptyScenario: currentScenario ] ].
 	reporter reportEndOfScenario: currentScenario.
 	scenarioCount := scenarioCount + 1.
 	currentScenario := nil
@@ -306,6 +318,7 @@ HeraScriptRunner >> startRule: aRule [
 HeraScriptRunner >> startScenario: aScenario [
 
 	currentScenario := aScenario.
+	beforeScenarioHookFailed := false.
 	currentScenarioPassed := true.
 	hasRunSteps := false.
 	currentAcceptanceTest := acceptanceTest copyForRunning.

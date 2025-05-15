@@ -7,7 +7,19 @@ Class {
 }
 
 { #category : 'reporting' }
+HeraAbstractReporter >> reportAfterScenarioHookError: anError [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
 HeraAbstractReporter >> reportBackground: aBackground [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
+HeraAbstractReporter >> reportBeforeScenarioHookError: anError [
 
 	self subclassResponsibility
 ]

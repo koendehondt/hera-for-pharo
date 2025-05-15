@@ -92,6 +92,45 @@ Feature: Signing in
 ]
 
 { #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithErrorInAfterScenarioHook [
+
+	| text |
+	text := Text fromString: 'Feature: With single step scenario for testing
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		ERROR Some error in the after scenario hook.
+
+Total: 1. Passed: 0. Failed: 0. Error: 1.
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 50 to: 58;
+		addAttribute: TextEmphasis bold from: 119 to: 123;
+		addAttribute: (TextColor new color: Color red) from: 119 to: 123.
+	^ text
+]
+
+{ #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithErrorInBeforeScenarioHook [
+
+	| text |
+	text := Text fromString: 'Feature: With single step scenario for testing
+
+	Scenario: Successful sign-in
+		ERROR Some error in the before scenario hook.
+
+Total: 1. Passed: 0. Failed: 0. Error: 1.
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 50 to: 58;
+		addAttribute: TextEmphasis bold from: 81 to: 85;
+		addAttribute: (TextColor new color: Color red) from: 81 to: 85.
+	^ text
+]
+
+{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithTagsAndDescriptions [
 
 	| text |
@@ -487,6 +526,15 @@ HeraScriptRunnerWithTextReporterTestCase >> setUp [
 ]
 
 { #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testAfterScenarioHookIsNotTriggeredAfterErrorInBeforeScenarioHook [
+
+	subject acceptanceTest: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject reporter: reporter.
+	subject run.
+	self deny: subject currentAcceptanceTest afterScenarioWasTriggered
+]
+
+{ #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testDebugRun [
 
 	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDebugStep).
@@ -520,6 +568,24 @@ HeraScriptRunnerWithTextReporterTestCase >> testErrorDebug [
 	subject reporter: reporter.
 	self should: [ subject debug ] raise: Error description: 'Button not found'.
 	self assertText: reporter text equals: self expectedErrorDebugReportWithTagsAndDescriptions
+]
+
+{ #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testErrorInAfterScenarioHook [
+
+	subject acceptanceTest: (HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject reporter: reporter.
+	subject run.
+	self assertText: reporter text equals: self expectedErrorRunReportWithErrorInAfterScenarioHook
+]
+
+{ #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testErrorInBeforeScenarioHook [
+
+	subject acceptanceTest: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject reporter: reporter.
+	subject run.
+	self assertText: reporter text equals: self expectedErrorRunReportWithErrorInBeforeScenarioHook
 ]
 
 { #category : 'tests' }

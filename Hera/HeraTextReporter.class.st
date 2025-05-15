@@ -35,6 +35,30 @@ HeraTextReporter >> initialize [
 ]
 
 { #category : 'reporting' }
+HeraTextReporter >> reportAfterScenarioHookError: anError [
+
+	stream crtab: indentation.
+	stream
+		withAttributes:  self textAttributesForError
+		do: [ stream nextPutAll: 'ERROR' ].
+	stream
+		space;
+		nextPutAll: anError messageText
+]
+
+{ #category : 'reporting' }
+HeraTextReporter >> reportBeforeScenarioHookError: anError [
+
+	stream crtab: indentation.
+	stream
+		withAttributes:  self textAttributesForError
+		do: [ stream nextPutAll: 'ERROR' ].
+	stream
+		space;
+		nextPutAll: anError messageText
+]
+
+{ #category : 'reporting' }
 HeraTextReporter >> reportEmptyFeature: aFeature [
 
 	stream crtab: indentation.
