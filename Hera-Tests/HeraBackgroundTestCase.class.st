@@ -17,9 +17,7 @@ HeraBackgroundTestCase >> testGiven [
 
 	| expectedStep |
 	subject given: 'I have credentials to sign in'.
-	expectedStep := HeraGivenStep new
-		description: 'I have credentials to sign in';
-		scenario: subject.
+	expectedStep := HeraGivenStep new description: 'I have credentials to sign in'.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
@@ -32,8 +30,7 @@ HeraBackgroundTestCase >> testGivenWithDataTable [
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } }).
 	expectedStep := HeraGivenStep new
 		description: 'the following coordinates';
-		argument: expectedArgument;
-		scenario: subject.
+		argument: expectedArgument.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 

@@ -18,11 +18,7 @@ HeraBackground >> accept: visitor [
 { #category : 'dsl' }
 HeraBackground >> given: aString [
 
-	| step |
-	step := HeraGivenStep new
-		description: aString;
-		scenario: self.
-	steps add: step
+	steps add: (HeraGivenStep new description: aString)
 ]
 
 { #category : 'dsl' }
@@ -31,8 +27,7 @@ HeraBackground >> given: aString with: aStepArgument [
 	| step |
 	step := HeraGivenStep new
 		description: aString;
-		argument: aStepArgument;
-		scenario: self.
+		argument: aStepArgument.
 	steps add: step
 ]
 

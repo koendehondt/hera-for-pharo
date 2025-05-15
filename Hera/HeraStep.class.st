@@ -3,8 +3,7 @@ Class {
 	#superclass : 'HeraScriptElement',
 	#instVars : [
 		'description',
-		'argument',
-		'scenario'
+		'argument'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -68,16 +67,4 @@ HeraStep >> printOn: aStream [
 HeraStep >> runIn: context [
 
 	context runStep: self
-]
-
-{ #category : 'accessing' }
-HeraStep >> scenario [
-
-	^ scenario
-]
-
-{ #category : 'accessing' }
-HeraStep >> scenario: aScenario [
-
-	scenario := aScenario
 ]
