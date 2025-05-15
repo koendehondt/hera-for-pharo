@@ -13,12 +13,6 @@ HeraNoReporter >> reportAfterScenarioHookError: anError [
 ]
 
 { #category : 'reporting' }
-HeraNoReporter >> reportBackground: aBackground [
-
-	"Do nothing."
-]
-
-{ #category : 'reporting' }
 HeraNoReporter >> reportBeforeScenarioHookError: anError [
 
 	"Do nothing."

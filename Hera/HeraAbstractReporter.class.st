@@ -13,12 +13,6 @@ HeraAbstractReporter >> reportAfterScenarioHookError: anError [
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportBackground: aBackground [
-
-	self subclassResponsibility
-]
-
-{ #category : 'reporting' }
 HeraAbstractReporter >> reportBeforeScenarioHookError: anError [
 
 	self subclassResponsibility
