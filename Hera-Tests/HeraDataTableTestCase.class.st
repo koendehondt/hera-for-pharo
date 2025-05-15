@@ -60,7 +60,7 @@ HeraDataTableTestCase >> testPrintFormattedOnIndentedWithIndentation [
 	expectedOutput := '
 		| Name | Email            |
 		| John | john@testing.org |
-		| Jane | jane@testing.org |' trimLeft: [ :char | char = Character cr ].
+		| Jane | jane@testing.org |' allButFirst.
 	self assert: actualOutput equals: expectedOutput
 ]
 
@@ -72,7 +72,7 @@ HeraDataTableTestCase >> testPrintFormattedOnIndentedWithoutIndentation [
 	expectedOutput := '
 | Name | Email            |
 | John | john@testing.org |
-| Jane | jane@testing.org |' trimLeft: [ :char | char = Character cr ].
+| Jane | jane@testing.org |' allButFirst.
 	self assert: actualOutput equals: expectedOutput
 ]
 
@@ -84,6 +84,6 @@ HeraDataTableTestCase >> testPrintOn [
 	expectedOutput := '
 | Name | Email            |
 | John | john@testing.org |
-| Jane | jane@testing.org |' trimLeft: [ :char | char = Character cr ].
+| Jane | jane@testing.org |' allButFirst.
 	self assert: actualOutput equals: expectedOutput
 ]

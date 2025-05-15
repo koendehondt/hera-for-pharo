@@ -46,7 +46,7 @@ HeraDocStringTestCase >> testPrintFormattedOnIndentedWithIndentation [
 				<email>jane@testing.org</email>
 			</user>
 		</users>
-		"""' trimLeft: [ :char | char = Character cr ].
+		"""' allButFirst.
 	self assert: actualOutput equals: expectedOutput
 ]
 
@@ -67,7 +67,7 @@ HeraDocStringTestCase >> testPrintFormattedOnIndentedWithoutIndentation [
 		<email>jane@testing.org</email>
 	</user>
 </users>
-"""' trimLeft: [ :char | char = Character cr ].
+"""' allButFirst.
 	self assert: actualOutput equals: expectedOutput
 ]
 
@@ -88,6 +88,6 @@ HeraDocStringTestCase >> testPrintOn [
 		<email>jane@testing.org</email>
 	</user>
 </users>
-"""' trimLeft: [ :char | char = Character cr ].
+"""' allButFirst.
 	self assert: actualOutput equals: expectedOutput
 ]
