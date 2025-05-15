@@ -37,12 +37,6 @@ HeraNoReporter >> reportEndOfFeature: aFeature [
 ]
 
 { #category : 'reporting' }
-HeraNoReporter >> reportEndOfFeatures [
-
-	"Do nothing."
-]
-
-{ #category : 'reporting' }
 HeraNoReporter >> reportEndOfRule: aRule [
 
 	"Do nothing."
@@ -61,19 +55,7 @@ HeraNoReporter >> reportEndOfStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraNoReporter >> reportErrorStep: aStep [
-
-	"Do nothing."
-]
-
-{ #category : 'reporting' }
 HeraNoReporter >> reportErrorStep: aStep withError: anError [
-
-	"Do nothing."
-]
-
-{ #category : 'reporting' }
-HeraNoReporter >> reportFailedStep: aStep [
 
 	"Do nothing."
 ]
@@ -110,12 +92,6 @@ HeraNoReporter >> reportStartOfBackgroundStep: aStep [
 
 { #category : 'reporting' }
 HeraNoReporter >> reportStartOfFeature: aFeature [
-
-	"Do nothing."
-]
-
-{ #category : 'reporting' }
-HeraNoReporter >> reportStartOfFeatures: features withFilter: filter [
 
 	"Do nothing."
 ]

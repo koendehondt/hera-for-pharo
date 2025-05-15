@@ -102,12 +102,6 @@ HeraTextReporter >> reportEndOfFeature: aScenario [
 ]
 
 { #category : 'reporting' }
-HeraTextReporter >> reportEndOfFeatures [
-
-	"Do nothing."
-]
-
-{ #category : 'reporting' }
 HeraTextReporter >> reportEndOfRule: aRule [
 
 	self decreaseIndentation
@@ -241,12 +235,6 @@ HeraTextReporter >> reportStartOfFeature: aFeature [
 		stream cr.
 		each isEmpty ifFalse: [ stream tab: indentation ].
 		stream nextPutAll: each ]
-]
-
-{ #category : 'reporting' }
-HeraTextReporter >> reportStartOfFeatures: features withFilter: filter [
-
-	"Do nothing."
 ]
 
 { #category : 'reporting' }
