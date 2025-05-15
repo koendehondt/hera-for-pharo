@@ -15,26 +15,11 @@ HeraScriptRunnerWithNoReporterTestCase >> describedClass [
 	^ HeraScriptRunner
 ]
 
-{ #category : 'running' }
-HeraScriptRunnerWithNoReporterTestCase >> initializeReporter [
-
-	reporter := HeraTextReporter new
-		reportsTags: true;
-		reportsDescriptions: true
-]
-
-{ #category : 'running' }
-HeraScriptRunnerWithNoReporterTestCase >> setUp [
-
-	super setUp.
-	self initializeReporter
-]
-
 { #category : 'tests' }
 HeraScriptRunnerWithNoReporterTestCase >> testRunWithRules [
 
 	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithRules).
-	subject reporter: reporter.
+	subject reporter: HeraNoReporter new.
 	subject run
 	"No assertion here because HeraNoReporter does not have state."
 ]
