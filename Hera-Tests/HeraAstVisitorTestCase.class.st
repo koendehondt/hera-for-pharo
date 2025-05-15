@@ -15,35 +15,8 @@ HeraAstVisitorTestCase >> describedClass [
 { #category : 'tests' }
 HeraAstVisitorTestCase >> testVisit [
 
-	(HeraAstNode allSubclasses reject: [ :each | each isAbstract ]) do: [ :each | | node |
+	(HeraAstNode allSubclasses reject: [ :each | each class includesSelector: #isAbstract ]) do: [ :each | | node |
 		node := each new.
 		node accept: subject.
 		self assert: subject visitedNode identicalTo: node ]
-]
-
-{ #category : 'tests' }
-HeraAstVisitorTestCase >> testVisitAndAstNode [
-
-	| node |
-	node := HeraAndAstNode new.
-	node accept: subject.
-	self assert: subject visitedNode identicalTo: node
-]
-
-{ #category : 'tests' }
-HeraAstVisitorTestCase >> testVisitBackgroundAstNode [
-
-	| node |
-	node := HeraBackgroundAstNode new.
-	node accept: subject.
-	self assert: subject visitedNode identicalTo: node
-]
-
-{ #category : 'tests' }
-HeraAstVisitorTestCase >> testVisitButAstNode [
-
-	| node |
-	node := HeraButAstNode new.
-	node accept: subject.
-	self assert: subject visitedNode identicalTo: node
 ]
