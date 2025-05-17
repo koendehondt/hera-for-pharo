@@ -55,13 +55,13 @@ HeraNoReporter >> reportEndOfStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraNoReporter >> reportErrorStep: aStep withError: anError [
+HeraNoReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 
 	"Do nothing."
 ]
 
 { #category : 'reporting' }
-HeraNoReporter >> reportFailedStep: aStep withFailure: aFailure [
+HeraNoReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
 
 	"Do nothing."
 ]

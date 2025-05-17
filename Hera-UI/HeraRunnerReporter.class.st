@@ -78,15 +78,15 @@ HeraRunnerReporter >> reportEndOfStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraRunnerReporter >> reportErrorStep: aStep withError: anError [
+HeraRunnerReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 
-	self report: [ super reportErrorStep: aStep withError: anError ]
+	self report: [ super reportErrorStep: aStep of: aScenario withError: anError ]
 ]
 
 { #category : 'reporting' }
-HeraRunnerReporter >> reportFailedStep: aStep withFailure: aFailure [
+HeraRunnerReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
 
-	self report: [ super reportFailedStep: aStep withFailure: aFailure ]
+	self report: [ super reportFailedStep: aStep of: aScenario withFailure: aFailure ]
 ]
 
 { #category : 'reporting' }
@@ -145,21 +145,21 @@ HeraRunnerReporter >> runner: aRunner [
 ]
 
 { #category : 'private - reporting' }
-HeraRunnerReporter >> textAttributesForErrorFor: aStep [
+HeraRunnerReporter >> textAttributesForErrorFor: aStep of: aScenario [
 
 	^ {
 		TextEmphasis bold . 
-		TextAction new actOnClickBlock: [ runner debugScenario: aStep scenario ] .
+		TextAction new actOnClickBlock: [ runner debugScenario: aScenario ] .
 		"TextColor last, otherwise the text is blue due to the TextAction."
 		TextColor new color: Color red }
 ]
 
 { #category : 'private - reporting' }
-HeraRunnerReporter >> textAttributesForFailureFor: aStep [
+HeraRunnerReporter >> textAttributesForFailureFor: aStep of: aScenario [
 
 	^ {
 		TextEmphasis bold .
-		TextAction new actOnClickBlock: [ runner debugScenario: aStep scenario ] .
+		TextAction new actOnClickBlock: [ runner debugScenario: aScenario ] .
 		"TextColor last, otherwise the text is blue due to the TextAction."
 		TextColor new color: Color orange }
 ]

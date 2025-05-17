@@ -251,10 +251,10 @@ HeraScriptRunner >> runBackgroundStep: aStep [
 			[
 				[ self basicRunStep: aStep ]
 					on: self failureClass	do: [ :failure |
-						failure heraReportStep: aStep in: reporter.
+						failure heraReportStep: aStep of: currentScenario in: reporter.
 						self recordFailedScenario ]
 			] on: self errorClass do: [ :exception |
-				exception heraReportStep: aStep in: reporter.
+				exception heraReportStep: aStep of: currentScenario in: reporter.
 				self recordErrorScenario ] ].
 	reporter reportEndOfBackgroundStep: aStep
 ]
@@ -291,10 +291,10 @@ HeraScriptRunner >> runStep: aStep [
 			[
 				[ self basicRunStep: aStep ]
 					on: self failureClass	do: [ :failure |
-						failure heraReportStep: aStep in: reporter.
+						failure heraReportStep: aStep of: currentScenario in: reporter.
 						self recordFailedScenario ]
 			] on: self errorClass do: [ :exception |
-				exception heraReportStep: aStep in: reporter.
+				exception heraReportStep: aStep of: currentScenario in: reporter.
 				self recordErrorScenario ] ].
 	reporter reportEndOfStep: aStep
 ]

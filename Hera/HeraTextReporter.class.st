@@ -120,11 +120,11 @@ HeraTextReporter >> reportEndOfStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraTextReporter >> reportErrorStep: aStep withError: anError [
+HeraTextReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 
 	stream crtab: indentation + 1.
 	stream
-		withAttributes: (self textAttributesForErrorFor: aStep)
+		withAttributes: (self textAttributesForErrorFor: aStep of: aScenario)
 		do: [ stream nextPutAll: 'ERROR' ].
 	stream
 		space;
@@ -132,11 +132,11 @@ HeraTextReporter >> reportErrorStep: aStep withError: anError [
 ]
 
 { #category : 'reporting' }
-HeraTextReporter >> reportFailedStep: aStep withFailure: aFailure [
+HeraTextReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
 
 	stream crtab: indentation + 1.
 	stream
-		withAttributes: (self textAttributesForFailureFor: aStep)
+		withAttributes: (self textAttributesForFailureFor: aStep of: aScenario)
 		do: [ stream nextPutAll: 'FAILED' ].
 	stream
 		space;
@@ -317,13 +317,13 @@ HeraTextReporter >> textAttributesForError [
 ]
 
 { #category : 'private - reporting' }
-HeraTextReporter >> textAttributesForErrorFor: aStep [
+HeraTextReporter >> textAttributesForErrorFor: aStep of: aScenario [
 
 	^ self textAttributesForError
 ]
 
 { #category : 'private - reporting' }
-HeraTextReporter >> textAttributesForFailureFor: aStep [
+HeraTextReporter >> textAttributesForFailureFor: aStep of: aScenario [
 
 	^ {
 		TextEmphasis bold .

@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'running' }
-HeraFailure >> heraReportStep: aStep in: aReporter [
+HeraFailure >> heraReportStep: aStep of: aScenario in: aReporter [
 
-	aReporter reportFailedStep: aStep withFailure: self
+	aReporter reportFailedStep: aStep of: aScenario withFailure: self
 ]
