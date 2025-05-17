@@ -253,6 +253,21 @@ HeraLinterTestCase >> testScenarioTitleStartsWithUppercaseLetter [
 ]
 
 { #category : 'tests' }
+HeraLinterTestCase >> testStarCannotBeTheFirstStep [
+
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
+
+			Scenario: A * step cannot be the first step in a scenario
+				* I have credentials to sign in'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'A * step should not be the first step in a scenario' start: 90 end: 120.
+	self assertWarning: 'This step has no definition' start: 90 end: 120
+]
+
+{ #category : 'tests' }
 HeraLinterTestCase >> testThenCannotBeTheFirstStep [
 
 	| noWarnings |
