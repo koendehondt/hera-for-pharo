@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'subject'
 	],
-	#category : 'Hera-Tests-Support',
-	#package : 'Hera-Tests',
-	#tag : 'Support'
+	#category : 'Hera-Test support',
+	#package : 'Hera',
+	#tag : 'Test support'
 }
 
 { #category : 'asserting' }
