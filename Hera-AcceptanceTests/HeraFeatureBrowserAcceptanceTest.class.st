@@ -80,6 +80,7 @@ Feature: Signing in
 
 	@sign_in
 	Scenario: Successful sign-in
+
 		Access is allowed when the credentials are recognized.
 
 		Given I have credentials to sign in
