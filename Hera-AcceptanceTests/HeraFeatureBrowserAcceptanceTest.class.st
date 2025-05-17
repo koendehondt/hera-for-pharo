@@ -74,8 +74,9 @@ HeraFeatureBrowserAcceptanceTest >> stepISeeTheScriptOfTheFirstFeatureInTheBrows
 		toEqual: '@accessing_the_system
 @signing_in
 Feature: Signing in
+
 	Signing in is required to have access to the application.
-	
+
 	Signing in requires credentials: an email address and a password.
 
 	@sign_in
