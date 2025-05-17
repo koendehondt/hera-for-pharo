@@ -178,6 +178,21 @@ HeraLinterTestCase >> testNoColonAfterGivenStepKeyword [
 ]
 
 { #category : 'tests' }
+HeraLinterTestCase >> testNoColonAfterGivenStepKeywordInBackground [
+
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: Signing in
+
+			Background:
+				Given: I have credentials to sign in'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'A colon after a step keyword is not necessary' start: 44 end: 79.
+	self assertWarning: 'This step has no definition' start: 44 end: 79
+]
+
+{ #category : 'tests' }
 HeraLinterTestCase >> testNoColonAfterThenStepKeyword [
 
 	| noWarnings |
