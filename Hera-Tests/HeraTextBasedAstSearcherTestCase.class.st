@@ -14,6 +14,14 @@ HeraTextBasedAstSearcherTestCase >> ast [
 		parseFeature
 ]
 
+{ #category : 'private' }
+HeraTextBasedAstSearcherTestCase >> astForRule [
+
+	^ HeraParser new
+		initializeParserWith: self scriptWithRule;
+		parseFeature
+]
+
 { #category : 'running' }
 HeraTextBasedAstSearcherTestCase >> describedClass [
 
@@ -23,7 +31,14 @@ HeraTextBasedAstSearcherTestCase >> describedClass [
 { #category : 'helpers' }
 HeraTextBasedAstSearcherTestCase >> endPositionOf: aString [
 
-	^ (self script indexOfSubCollection: aString) + aString size - 1
+	^ self endPositionOf: aString in: self script
+
+]
+
+{ #category : 'helpers' }
+HeraTextBasedAstSearcherTestCase >> endPositionOf: aString in: aScript [
+
+	^ (aScript indexOfSubCollection: aString) + aString size - 1
 ]
 
 { #category : 'private' }
@@ -48,10 +63,25 @@ Feature: Signing in
 		Then I see the home page'
 ]
 
+{ #category : 'private' }
+HeraTextBasedAstSearcherTestCase >> scriptWithRule [
+
+	^ '
+Feature: Signing in
+
+	Rule: There is only one administrator'
+]
+
 { #category : 'helpers' }
 HeraTextBasedAstSearcherTestCase >> startPositionOf: aString [
 
-	^ self script indexOfSubCollection: aString
+	^ self startPositionOf: aString in: self script
+]
+
+{ #category : 'helpers' }
+HeraTextBasedAstSearcherTestCase >> startPositionOf: aString in: aScript [
+
+	^ aScript indexOfSubCollection: aString
 ]
 
 { #category : 'tests' }
@@ -207,6 +237,28 @@ HeraTextBasedAstSearcherTestCase >> testSearchFirstStepFromStartPosition [
 		visit: self ast.
 	self assert: astNode class equals: HeraGivenAstNode.
 	self assert: astNode description equals: 'I have credentials to sign in'
+]
+
+{ #category : 'tests' }
+HeraTextBasedAstSearcherTestCase >> testSearchRuleFromEndPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self endPositionOf: 'Rule: There is only one administrator' in: self scriptWithRule);
+		visit: self astForRule.
+	self assert: astNode class equals: HeraRuleAstNode.
+	self assert: astNode title text equals: 'There is only one administrator'
+]
+
+{ #category : 'tests' }
+HeraTextBasedAstSearcherTestCase >> testSearchRuleFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'Rule: There is only one administrator' in: self scriptWithRule);
+		visit: self astForRule.
+	self assert: astNode class equals: HeraRuleAstNode.
+	self assert: astNode title text equals: 'There is only one administrator'
 ]
 
 { #category : 'tests' }
