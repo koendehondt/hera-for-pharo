@@ -7,12 +7,6 @@ Class {
 }
 
 { #category : 'testing' }
-HeraHookInstruction class >> isAbstract [
-
-	^ true
-]
-
-{ #category : 'testing' }
 HeraHookInstruction >> canBeStepped [
 
 	^ false
