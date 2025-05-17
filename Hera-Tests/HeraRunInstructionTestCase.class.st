@@ -16,7 +16,7 @@ HeraRunInstructionTestCase >> describedClass [
 HeraRunInstructionTestCase >> testCanBeStepped [
 
 	| stepableInstructionClasses unsteppableInstructionClasses |
-	unsteppableInstructionClasses := { 
+	unsteppableInstructionClasses := {
 		HeraEndFeatureInstruction .
 		HeraEndRuleInstruction .
 		HeraEndScenarioInstruction .
@@ -24,7 +24,9 @@ HeraRunInstructionTestCase >> testCanBeStepped [
 		HeraAfterScenarioHookInstruction .
 		HeraResultSummaryInstruction }.
 	unsteppableInstructionClasses do: [ :each | self deny: each new canBeStepped ].
-	stepableInstructionClasses := self describedClass allSubclasses removeAll: unsteppableInstructionClasses; yourself.
-	stepableInstructionClasses := stepableInstructionClasses reject: [ :each | each isAbstract ].
-	stepableInstructionClasses do: [ :each | self assert: each new canBeStepped ].
+	stepableInstructionClasses := self describedClass allSubclasses
+		removeAll: unsteppableInstructionClasses;
+		remove: HeraHookInstruction;
+		yourself.
+	stepableInstructionClasses do: [ :each | self assert: each new canBeStepped ]
 ]

@@ -10,12 +10,6 @@ Class {
 	#tag : 'AST'
 }
 
-{ #category : 'testing' }
-HeraStepAstNode class >> isAbstract [
-
-	^ true
-]
-
 { #category : 'accessing' }
 HeraStepAstNode >> argument [
 
