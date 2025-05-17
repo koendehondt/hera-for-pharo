@@ -1,3 +1,6 @@
+"
+HeraAstVisitorTestCase uses me to test visiting behavior.
+"
 Class {
 	#name : 'HeraAstVisitorForTesting',
 	#superclass : 'HeraAstVisitor',
@@ -12,6 +15,7 @@ Class {
 { #category : 'private - visiting' }
 HeraAstVisitorForTesting >> default: anAstNode [
 
+	super default: anAstNode.
 	visitedNode := anAstNode
 ]
 
