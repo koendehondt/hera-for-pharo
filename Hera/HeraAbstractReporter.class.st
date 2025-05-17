@@ -61,12 +61,6 @@ HeraAbstractReporter >> reportErrorStep: aStep of: aScenario withError: anError 
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportFailedStep: aStep of: aScenario withError: anError [
-
-	self subclassResponsibility
-]
-
-{ #category : 'reporting' }
 HeraAbstractReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
 
 	self subclassResponsibility
