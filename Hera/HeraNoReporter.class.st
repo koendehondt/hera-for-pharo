@@ -113,3 +113,9 @@ HeraNoReporter >> reportStartOfStep: aStep [
 
 	"Do nothing."
 ]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportSuppressed [
+
+	"Do nothing."
+]

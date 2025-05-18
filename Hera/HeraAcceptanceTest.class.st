@@ -20,6 +20,12 @@ HeraAcceptanceTest class >> featureMethods [
 	^ self methods select: [ :each | (each pragmaAt: #heraFeature:) isNotNil ]
 ]
 
+{ #category : 'accessing' }
+HeraAcceptanceTest class >> features [
+
+	^ self featureMethods collect: [ :each | self selector: each selector ]
+]
+
 { #category : 'testing' }
 HeraAcceptanceTest class >> isForTestingHera [
 

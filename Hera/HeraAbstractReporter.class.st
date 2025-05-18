@@ -113,3 +113,9 @@ HeraAbstractReporter >> reportStartOfStep: aStep [
 
 	self subclassResponsibility
 ]
+
+{ #category : 'reporting' }
+HeraAbstractReporter >> reportSuppressed [
+
+	self subclassResponsibility
+]

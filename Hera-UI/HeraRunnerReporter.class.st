@@ -138,6 +138,12 @@ HeraRunnerReporter >> reportStartOfStep: aStep [
 	self report: [ super reportStartOfStep: aStep ]
 ]
 
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportSuppressed [
+
+	self report: [ super reportSuppressed ]
+]
+
 { #category : 'accessing' }
 HeraRunnerReporter >> runner: aRunner [
 

@@ -15,7 +15,9 @@ Class {
 		'scenarioCount',
 		'currentAcceptanceTest',
 		'currentRule',
-		'beforeScenarioHookFailed'
+		'beforeScenarioHookFailed',
+		'suppressResultSummary',
+		'suppressPauseAndDebugSteps'
 	],
 	#category : 'Hera-Running',
 	#package : 'Hera',
@@ -44,8 +46,21 @@ HeraScriptRunner >> afterScenarioHook [
 { #category : 'private - running' }
 HeraScriptRunner >> basicRunStep: aStep [
 
-	aStep runIn: currentAcceptanceTest.
-	reporter reportPassedStep: aStep
+	isDebugging
+		ifTrue: [
+			aStep runIn: currentAcceptanceTest.
+			reporter reportPassedStep: aStep  ]
+		ifFalse: [
+			[
+				[
+					aStep runIn: currentAcceptanceTest.
+					reporter reportPassedStep: aStep
+				] on: self failureClass	do: [ :failure |
+					failure heraReportStep: aStep of: currentScenario in: reporter.
+					self recordFailedScenario ]
+			] on: self errorClass do: [ :exception |
+				exception heraReportStep: aStep of: currentScenario in: reporter.
+				self recordErrorScenario ] ]
 ]
 
 { #category : 'instruction double dispatch' }
@@ -154,7 +169,9 @@ HeraScriptRunner >> initialize [
 	isDebugging := false.
 	hasRunSteps := false.
 	scenarioCount := 0.
-	self reporter: HeraNoReporter new
+	self reporter: HeraNoReporter new.
+	suppressResultSummary := false.
+	suppressPauseAndDebugSteps := false
 ]
 
 { #category : 'accessing' }
@@ -179,8 +196,9 @@ HeraScriptRunner >> isRunningScenario [
 HeraScriptRunner >> pause: aStep [
 
 	reporter reportStartOfStep: aStep.
+	suppressPauseAndDebugSteps ifTrue: [ reporter reportSuppressed ].
 	reporter reportEndOfStep: aStep.
-	paused := true
+	paused := suppressPauseAndDebugSteps not
 ]
 
 { #category : 'private - running' }
@@ -216,9 +234,16 @@ HeraScriptRunner >> result [
 	^ result
 ]
 
+{ #category : 'accessing' }
+HeraScriptRunner >> result: aResult [
+
+	result := aResult
+]
+
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> resultSummary [
 
+	suppressResultSummary ifTrue: [ ^ self ].
 	reporter reportResult: result
 ]
 
@@ -285,17 +310,13 @@ HeraScriptRunner >> runStep: aStep [
 
 	hasRunSteps := true.
 	reporter reportStartOfStep: aStep.
-	isDebugging
-		ifTrue: [ self basicRunStep: aStep ]
+	suppressPauseAndDebugSteps
+		ifTrue: [
+			[ self basicRunStep: aStep ]
+				on: Halt
+				do: [ :halt | reporter reportSuppressed ] ]
 		ifFalse: [
-			[
-				[ self basicRunStep: aStep ]
-					on: self failureClass	do: [ :failure |
-						failure heraReportStep: aStep of: currentScenario in: reporter.
-						self recordFailedScenario ]
-			] on: self errorClass do: [ :exception |
-				exception heraReportStep: aStep of: currentScenario in: reporter.
-				self recordErrorScenario ] ].
+			self basicRunStep: aStep ].
 	reporter reportEndOfStep: aStep
 ]
 
@@ -324,6 +345,18 @@ HeraScriptRunner >> startScenario: aScenario [
 	currentAcceptanceTest := acceptanceTest copyForRunning.
 	paused := false.
 	reporter reportStartOfScenario: aScenario
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> suppressPauseAndDebugSteps [
+
+	suppressPauseAndDebugSteps := true
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> suppressResultSummary [
+
+	suppressResultSummary := true
 ]
 
 { #category : 'running' }

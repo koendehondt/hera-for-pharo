@@ -290,6 +290,12 @@ HeraTextReporter >> reportStep: aStep [
 		stepArgument printFormattedOn: stream indentation: indentation + 1 ]
 ]
 
+{ #category : 'reporting' }
+HeraTextReporter >> reportSuppressed [
+
+	stream nextPutAll: ' [suppressed]'
+]
+
 { #category : 'accessing' }
 HeraTextReporter >> reportsDescriptions: aBoolean [
 

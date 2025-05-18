@@ -23,6 +23,12 @@ HeraScope class >> default [
 	^ self all excludeClasses: testingClasses
 ]
 
+{ #category : 'instance creation' }
+HeraScope class >> hera [
+
+	^ self new includeHierarchy: HeraSelfAcceptanceTest
+]
+
 { #category : 'accessing' }
 HeraScope >> allForBrowsing [
 
@@ -33,6 +39,12 @@ HeraScope >> allForBrowsing [
 HeraScope >> allStepMethods [
 
 	^ self allForBrowsing flatCollect: [ :each | each stepMethods ]
+]
+
+{ #category : 'enumerating' }
+HeraScope >> do: aBlock separatedBy: separatorBlock [
+
+	acceptanceTestClasses do: aBlock separatedBy: separatorBlock
 ]
 
 { #category : 'accessing' }

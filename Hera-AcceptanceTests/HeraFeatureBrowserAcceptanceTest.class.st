@@ -34,6 +34,8 @@ HeraFeatureBrowserAcceptanceTest >> featureBasicBrowsing [
 		scenarios: {
 			(self scenario: 'Browsing when no features exist')
 				given: 'no features exist';
+				when: 'I pause';
+				when: 'I debug';
 				when: 'I open the Feature Browser';
 				then: 'I see an empty list of features' .
 			(self scenario: 'Browsing features')
