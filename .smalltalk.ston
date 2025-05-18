@@ -10,5 +10,8 @@ SmalltalkCISpec {
 			#packages : [ 'Hera', 'Hera-UI', 'Hera-AcceptanceTests', 'Hera-Tests', 'Hera-UI-Tests' ],
 			#format : #lcov
 		}
-	}
+	},
+  #postTesting : [
+    'scripts/runHeraSelfAcceptanceTests.st'
+  ]
 }

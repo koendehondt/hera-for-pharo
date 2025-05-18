@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        smalltalk: [ Pharo64-stable , Pharo64-13 , Pharo64-alpha ]
+        smalltalk: [Pharo64-stable, Pharo64-13, Pharo64-alpha]
     name: ${{ matrix.smalltalk }}
     steps:
       - name: Checkout code
@@ -32,3 +32,9 @@ jobs:
         with:
           name: ${{ matrix.smalltalk }}
           token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Results of acceptance tests ${{ matrix.smalltalk }}
+          path: ${{ env.SMALLTALK_CI_BUILD }}/acceptance_tests_results.txt
