@@ -8,7 +8,7 @@ Class {
 { #category : 'accessing' }
 HeraRunnerTool >> resultsFileReference [
 
-	^ FileLocator imageDirectory / 'acceptance_tests_results.txt'
+	^ FileLocator imageDirectory / 'acceptance_test_results.txt'
 ]
 
 { #category : 'running' }
