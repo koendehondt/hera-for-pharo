@@ -37,4 +37,4 @@ jobs:
         if: always()
         with:
           name: Results of acceptance tests ${{ matrix.smalltalk }}
-          path: ${{ env.SMALLTALK_CI_BUILD }}/acceptance_tests_results.txt
+          path: ${{ env.SMALLTALK_CI_BUILD }}/acceptance_test_results.txt
