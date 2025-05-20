@@ -1,4 +1,4 @@
-name: smalltalkCI
+name: Tests
 
 on:
   push:
