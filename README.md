@@ -1,4 +1,4 @@
-[![Tests](https://github.com/koendehondt/hera-for-pharo/actions/workflows/main.yml/badge.svg)](https://github.com/koendehondt/hera-for-pharo/actions/workflows/main.yml)
+[![Tests](https://github.com/koendehondt/hera-for-pharo/actions/workflows/main.yml/badge.svg)](https://github.com/koendehondt/hera-for-pharo/actions/workflows/main.yml) [![codecov](https://codecov.io/gh/koendehondt/hera-for-pharo/graph/badge.svg?token=TJ1JGZUBTM)](https://codecov.io/gh/koendehondt/hera-for-pharo)
 
 # Hera for Pharo
 
