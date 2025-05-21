@@ -13,6 +13,16 @@ HeraAcceptanceTestTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestTestCase >> testClassFeatureMethods [
+
+	| featureMethods |
+	featureMethods := HeraAcceptanceTestWithPassForTesting featureMethods sorted: [ :some :other | some selector < other selector ].
+	self assert: featureMethods equals: { 
+		HeraAcceptanceTestWithPassForTesting >> #signingInFeature . 
+		HeraAcceptanceTestWithPassForTesting >> #signingOutFeature }
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestTestCase >> testCopyForRunning [
 
 	| copy |
@@ -78,7 +88,13 @@ HeraAcceptanceTestTestCase >> testDslScenario [
 { #category : 'tests' }
 HeraAcceptanceTestTestCase >> testFeatureMethods [
 	
-	self assert: subject featureMethods equals: #()
+	| featureMethods |
+	self assert: subject featureMethods equals: #().
+
+	featureMethods := HeraAcceptanceTestWithPassForTesting new featureMethods sorted: [ :some :other | some selector < other selector ].
+	self assert: featureMethods equals: { 
+		HeraAcceptanceTestWithPassForTesting >> #signingInFeature . 
+		HeraAcceptanceTestWithPassForTesting >> #signingOutFeature }
 ]
 
 { #category : 'tests' }
