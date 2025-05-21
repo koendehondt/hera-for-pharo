@@ -28,7 +28,7 @@ HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting >> featureWithSingleSte
 				given: 'I have credentials to sign in' }
 ]
 
-{ #category : 'features' }
+{ #category : 'steps' }
 HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting >> stepIHaveCredentialsToSignIn [
 
 	<heraStepDefinition: #(Given 'I have credentials to sign in')>
