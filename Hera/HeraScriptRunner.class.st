@@ -29,7 +29,7 @@ HeraScriptRunner >> acceptanceTest: anAcceptanceTest [
 
 	acceptanceTest := anAcceptanceTest.
 	runnableScript := HeraRunnableScript for: acceptanceTest feature.
-	result := HeraResult new
+	self result: HeraResult new
 ]
 
 { #category : 'instruction double dispatch' }

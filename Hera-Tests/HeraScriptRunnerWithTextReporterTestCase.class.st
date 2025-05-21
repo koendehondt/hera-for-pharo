@@ -264,6 +264,42 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedPassedRunReportWithSuppressResultSummary [
+
+	| text |
+	text := Text fromString: '@accessing_the_system
+@signing_in
+Feature: Signing in
+
+	Signing in is required to have access to the application.
+
+	Signing in requires credentials: an email address and a password.
+
+	@sign_in
+	Scenario: Successful sign-in
+
+		Access is allowed when the credentials are recognized.
+
+		Given I have credentials to sign in
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+	Scenario: Unsuccessful sign-in
+		Given I have credentials to sign in
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong
+'.
+	text
+		addAttribute: TextEmphasis bold from: 35 to: 42;
+		addAttribute: TextEmphasis bold from: 195 to: 203;
+		addAttribute: TextEmphasis bold from: 416 to: 424.
+	^ text
+]
+
+{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedPassedRunReportWithTagsAndDescriptions [
 
 	| text |
@@ -725,6 +761,16 @@ HeraScriptRunnerWithTextReporterTestCase >> testStepping [
 	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 647). "Step 5"
 	subject runNext.
 	self assertText: reporter text equals: allOutput "Result summary"
+]
+
+{ #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testSuppressResultSummary [
+
+	subject acceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	subject reporter: reporter.
+	subject suppressResultSummary.
+	subject run.
+	self assertText: reporter text equals: self expectedPassedRunReportWithSuppressResultSummary
 ]
 
 { #category : 'tests' }
