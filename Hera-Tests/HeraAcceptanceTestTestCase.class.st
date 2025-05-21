@@ -23,6 +23,18 @@ HeraAcceptanceTestTestCase >> testClassFeatureMethods [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestTestCase >> testClassFeatures [
+
+	| features |
+	features := HeraAcceptanceTestWithPassForTesting features sorted: [ :some :other | some featureSelector < other featureSelector ].
+	self assert: features size equals: 2.
+	self assert: features first class equals: HeraAcceptanceTestWithPassForTesting.
+	self assert: features first featureSelector equals: #signingInFeature.
+	self assert: features second class equals: HeraAcceptanceTestWithPassForTesting.
+	self assert: features second featureSelector equals: #signingOutFeature
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestTestCase >> testCopyForRunning [
 
 	| copy |
