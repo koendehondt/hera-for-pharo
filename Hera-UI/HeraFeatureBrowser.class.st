@@ -187,6 +187,9 @@ HeraFeatureBrowser >> updateSelectedFeature: aFeatureAstNode [
 HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 
 	| stepMethod |
+	aStepAstNode description = 'I pause' ifTrue: [
+		self inform: 'This step is implemented by Hera. There is no step implementation.'.
+		^ self ].
 	stepMethod := self methodFor: aStepAstNode.
 	stepMethod ifNil: [ stepMethod := self addStepDefinitionMethodFor: aStepAstNode ].
 	stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod)
