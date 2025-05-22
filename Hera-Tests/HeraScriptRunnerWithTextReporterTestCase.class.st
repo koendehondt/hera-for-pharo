@@ -31,6 +31,27 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedDebugRunReport [
 ]
 
 { #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedDebugStepRunWithSuppressPauseAndDebugSteps [
+
+	| text |
+	text := Text fromString: 'Feature: With debug step
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I debug [suppressed]
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+Total: 1. Passed: 1. Failed: 0. Error: 0.
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 28 to: 36.
+	^ text
+]
+
+{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyFeatureErrorRunReport [
 
 	| text |
@@ -601,6 +622,16 @@ HeraScriptRunnerWithTextReporterTestCase >> testDebugRun [
 ]
 
 { #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testDebugStepWithSuppressPauseAndDebugSteps [
+
+	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDebugStep).
+	subject reporter: reporter.
+	subject suppressPauseAndDebugSteps.
+	subject run.
+	self assertText: reporter text equals: self expectedDebugStepRunWithSuppressPauseAndDebugSteps
+]
+
+{ #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testEmptyFeatureErrorRun [
 
 	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #emptyFeature).
@@ -696,6 +727,16 @@ HeraScriptRunnerWithTextReporterTestCase >> testPassedRun [
 ]
 
 { #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testPauseStepWithSuppressPauseAndDebugSteps [
+
+	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep).
+	subject reporter: reporter.
+	subject suppressPauseAndDebugSteps.
+	subject run.
+	self assertText: reporter text equals: self expectedPausedRunWithSuppressPauseAndDebugSteps
+]
+
+{ #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testPausedRun [
 
 	| allOutput |
@@ -747,16 +788,6 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithRules [
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithRules
-]
-
-{ #category : 'tests' }
-HeraScriptRunnerWithTextReporterTestCase >> testRunWithSuppressPauseAndDebugSteps [
-
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep).
-	subject reporter: reporter.
-	subject suppressPauseAndDebugSteps.
-	subject run.
-	self assertText: reporter text equals: self expectedPausedRunWithSuppressPauseAndDebugSteps
 ]
 
 { #category : 'tests' }
