@@ -397,6 +397,27 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunWithSuppressPauseAndDebugSteps [
+
+	| text |
+	text := Text fromString: 'Feature: With pause step
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I pause [suppressed]
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+Total: 1. Passed: 1. Failed: 0. Error: 0.
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 28 to: 36.
+	^ text
+]
+
+{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithBackground [
 
 	| text |
@@ -726,6 +747,16 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithRules [
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithRules
+]
+
+{ #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testRunWithSuppressPauseAndDebugSteps [
+
+	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep).
+	subject reporter: reporter.
+	subject suppressPauseAndDebugSteps.
+	subject run.
+	self assertText: reporter text equals: self expectedPausedRunWithSuppressPauseAndDebugSteps
 ]
 
 { #category : 'tests' }
