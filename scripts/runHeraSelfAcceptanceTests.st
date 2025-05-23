@@ -1,1 +1,1 @@
-HeraRunnerTool new run: HeraScope hera
+HeraRunnerTool new run: (HeraScope new includeHierarchy: HeraSelfAcceptanceTest)
