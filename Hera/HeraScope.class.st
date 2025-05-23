@@ -23,12 +23,6 @@ HeraScope class >> default [
 	^ self all excludeClasses: testingClasses
 ]
 
-{ #category : 'instance creation' }
-HeraScope class >> hera [
-
-	^ self new includeHierarchy: HeraSelfAcceptanceTest
-]
-
 { #category : 'accessing' }
 HeraScope >> allForBrowsing [
 
