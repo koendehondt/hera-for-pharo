@@ -90,6 +90,36 @@ HeraRunner >> finish [
 	self updateButtons
 ]
 
+{ #category : 'test api' }
+HeraRunner >> hasDisabledStepOverScenarioButton [
+
+	^ self hasEnabledStepOverScenarioButton not
+]
+
+{ #category : 'test api' }
+HeraRunner >> hasEnabledContinueButton [
+
+	^ continueButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraRunner >> hasEnabledRestartButton [
+
+	^ restartButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraRunner >> hasEnabledStepOverButton [
+
+	^ stepOverButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraRunner >> hasEnabledStepOverScenarioButton [
+
+	^ stepOverScenarioButton isEnabled
+]
+
 { #category : 'testing' }
 HeraRunner >> hasRunAllScenarios [
 

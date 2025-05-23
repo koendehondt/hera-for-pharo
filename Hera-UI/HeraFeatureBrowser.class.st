@@ -45,6 +45,12 @@ HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 	^ aCharacter isLetter or: [ aCharacter isDigit or: [ aCharacter = $_ ] ]
 ]
 
+{ #category : 'test api' }
+HeraFeatureBrowser >> clickStepByStepButton [
+
+	featureSelector clickStepByStepButton
+]
+
 { #category : 'initialization' }
 HeraFeatureBrowser >> connectPresenters [
 
@@ -152,6 +158,12 @@ HeraFeatureBrowser >> scope: aScope [
 HeraFeatureBrowser >> script [
 
 	^ scriptEditor text
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> selectFeature: featureTitle in: classNameInBrowser [
+
+	featureSelector selectFeature: featureTitle in: classNameInBrowser
 ]
 
 { #category : 'test api' }

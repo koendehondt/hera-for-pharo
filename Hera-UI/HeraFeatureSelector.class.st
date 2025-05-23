@@ -148,6 +148,12 @@ HeraFeatureSelector >> browseSteps [
 		open
 ]
 
+{ #category : 'test api' }
+HeraFeatureSelector >> clickStepByStepButton [
+
+	stepByStepButton performAction
+]
+
 { #category : 'initialization' }
 HeraFeatureSelector >> connectPresenters [
 
@@ -298,6 +304,16 @@ HeraFeatureSelector >> scope [
 HeraFeatureSelector >> scope: aScope [
 
 	scope := aScope
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> selectFeature: featureTitle in: classNameInBrowser [
+
+	| items classIndex featureIndex |
+	items := self displayedTreeItems.
+	classIndex := classesAndFeatures roots detectIndex: [ :classItem | classItem nameInBrowser = classNameInBrowser ].
+	featureIndex := (classesAndFeatures childrenFor: (classesAndFeatures roots at: classIndex)) detectIndex: [ :featureItem | featureItem nameInBrowser = featureTitle ].
+	self selectPath: { classIndex . featureIndex }
 ]
 
 { #category : 'test api' }
