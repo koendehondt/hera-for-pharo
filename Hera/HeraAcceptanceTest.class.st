@@ -7,7 +7,8 @@ Class {
 		'featureSelector',
 		'exactStepDefinitions',
 		'patternStepDefinitions',
-		'helpers'
+		'helpers',
+		'openPresenters'
 	],
 	#category : 'Hera-Core',
 	#package : 'Hera',
@@ -56,7 +57,7 @@ HeraAcceptanceTest class >> stepMethods [
 HeraAcceptanceTest >> afterScenario [
 	"After scenario hook."
 	
-	"Default is to do nothing."
+	self closeWindows
 ]
 
 { #category : 'private' }
@@ -88,6 +89,13 @@ HeraAcceptanceTest >> beforeScenario [
 	"Default is to do nothing."
 ]
 
+{ #category : 'helpers - window management' }
+HeraAcceptanceTest >> closeWindows [
+
+	openPresenters do: [ :each | each window close ].
+	openPresenters := Dictionary new
+]
+
 { #category : 'copying' }
 HeraAcceptanceTest >> copyForRunning [
 
@@ -98,6 +106,12 @@ HeraAcceptanceTest >> copyForRunning [
 HeraAcceptanceTest >> dataTable: anArrayOfArrays [
 
 	^ HeraDataTableArgument new dataTable: (HeraDataTable new data: anArrayOfArrays)
+]
+
+{ #category : 'helpers - window management' }
+HeraAcceptanceTest >> detectPresenterInTopWindowAs: aNameSymbol [
+
+	^ openPresenters at: aNameSymbol put: SpWindow topWindow model presenter
 ]
 
 { #category : 'dsl' }
@@ -157,7 +171,8 @@ HeraAcceptanceTest >> initialize [
 	patternStepDefinitions := Dictionary new.
 	helpers := OrderedCollection new.
 	self registerHelpers.
-	self initializeStepDefinitions
+	self initializeStepDefinitions.
+	openPresenters := Dictionary new
 ]
 
 { #category : 'initialization' }
@@ -187,12 +202,25 @@ HeraAcceptanceTest >> methodForStepDescription: aString [
 	^ nil
 ]
 
+{ #category : 'helpers - window management' }
+HeraAcceptanceTest >> openPresenter: aPresenter as: aNameSymbol [
+
+	aPresenter open.
+	^ openPresenters at: aNameSymbol put: aPresenter
+]
+
 { #category : 'preferences' }
 HeraAcceptanceTest >> prefersDoubleQuotedStringArgumentsInStepDefinitions [
 	"Answer true when double quotes are preferred.
 	 Answer false when single quotes are preferred."
 
 	^ true
+]
+
+{ #category : 'helpers - window management' }
+HeraAcceptanceTest >> presenterAt: aNameSymbol [
+
+	^ openPresenters at: aNameSymbol ifAbsent: [ self error: ('Presenter with name "{1}" not found.' format: { aNameSymbol }) ]
 ]
 
 { #category : 'private' }
