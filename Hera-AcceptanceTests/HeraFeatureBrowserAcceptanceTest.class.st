@@ -2,7 +2,6 @@ Class {
 	#name : 'HeraFeatureBrowserAcceptanceTest',
 	#superclass : 'HeraSelfAcceptanceTest',
 	#instVars : [
-		'featureBrowser',
 		'browsingScope'
 	],
 	#category : 'Hera-AcceptanceTests',
@@ -13,12 +12,6 @@ Class {
 HeraFeatureBrowserAcceptanceTest class >> nameInBrowser [
 
 	^ 'Hera Feature Browser'
-]
-
-{ #category : 'hooks' }
-HeraFeatureBrowserAcceptanceTest >> afterScenario [
-
-	featureBrowser ifNotNil: [ featureBrowser window close ]
 ]
 
 { #category : 'features' }
@@ -51,9 +44,7 @@ HeraFeatureBrowserAcceptanceTest >> stepIOpenTheFeatureBrowser [
 
 	<heraStepDefinition: #(When 'I open the Feature Browser')>
 
-	featureBrowser := HeraFeatureBrowser new.
-	featureBrowser scope: browsingScope.
-	featureBrowser open
+	self openFeatureBrowser: (HeraFeatureBrowser new scope: browsingScope)
 ]
 
 { #category : 'steps' }
@@ -61,7 +52,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISeeAnEmptyListOfFeatures [
 
 	<heraStepDefinition: #(Then 'I see an empty list of features')>
 
-	self expect: featureBrowser hasNoFeatures
+	self expect: self featureBrowser hasNoFeatures
 ]
 
 { #category : 'steps' }
@@ -70,7 +61,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISeeTheScriptOfTheFirstFeatureInTheBrows
 	<heraStepDefinition: #(Then 'I see the script of the first feature in the browser')>
 
 	self
-		expect: featureBrowser script
+		expect: self featureBrowser script
 		toEqual: '@accessing_the_system
 @signing_in
 Feature: Signing in
@@ -103,7 +94,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISeeTheScriptOfTheSecondFeatureInTheBrow
 	<heraStepDefinition: #(Then 'I see the script of the second feature in the browser')>
 
 	self
-		expect: featureBrowser script
+		expect: self featureBrowser script
 		toEqual: '@accessing_the_system
 @signing_out
 Feature: Signing out
@@ -121,7 +112,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISeeTwoFeaturesInTheList [
 	<heraStepDefinition: #(Then 'I see two features in the list')>
 
 	self
-		expect: featureBrowser displayedTreeItems
+		expect: self featureBrowser displayedTreeItems
 		toEqual: {
 			'Example with pass and unimplemented step' -> {
 				'Signing in' .
@@ -133,7 +124,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISelectTheFirstFeature [
 
 	<heraStepDefinition: #(When 'I select the first feature')>
 
-	featureBrowser selectPath: #(1 1)
+	self featureBrowser selectPath: #(1 1)
 ]
 
 { #category : 'steps' }
@@ -141,7 +132,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISelectTheSecondFeature [
 
 	<heraStepDefinition: #(When 'I select the second feature')>
 
-	featureBrowser selectPath: #(1 2)
+	self featureBrowser selectPath: #(1 2)
 ]
 
 { #category : 'steps' }
@@ -157,6 +148,5 @@ HeraFeatureBrowserAcceptanceTest >> stepTwoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'two features exist')>
 
-	browsingScope := HeraScope default
-		includeClass: HeraAcceptanceTestWithPassForTesting
+	browsingScope := HeraScope default includeClass: HeraAcceptanceTestWithPassForTesting
 ]
