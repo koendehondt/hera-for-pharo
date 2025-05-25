@@ -36,7 +36,7 @@ HeraMultiScriptRunner >> runScope: aScope reportOn: aStream [
 	featureCount := 0.
 	aScope
 		do: [ :acceptanceTestClass |
-			acceptanceTestClass features
+			acceptanceTestClass sortedFeatures
 				do: [ :eachAcceptanceTest | | scriptRunner reporter |
 					featureCount := featureCount + 1.
 					reporter := HeraTextReporter new.

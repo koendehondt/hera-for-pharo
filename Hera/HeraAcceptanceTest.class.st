@@ -46,6 +46,12 @@ HeraAcceptanceTest class >> selector: aFeatureSelectorSymbol [
 ]
 
 { #category : 'accessing' }
+HeraAcceptanceTest class >> sortedFeatures [
+
+	^ self features sort: [ :some :other | some featureSelector < other featureSelector ]
+]
+
+{ #category : 'accessing' }
 HeraAcceptanceTest class >> stepMethods [
 	"Answer all compiled methods that represent step definitions,
 	 including methods from traits."
