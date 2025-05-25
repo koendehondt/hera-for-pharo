@@ -203,7 +203,7 @@ HeraScriptEditor >> submit: source [
 		ifNil: [ self showParseError ]
 		ifNotNil: [ :featureAstNode |
 			submitBlock value: featureAstNode.
-			ast := featureAstNode.
+			self buildAst: script text asString.
 			self showWarnings ]
 ]
 
