@@ -109,6 +109,17 @@ HeraAcceptanceTestExamplesForTesting >> featureWithEmptyScenario [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithError [
+
+	<heraFeature: 'With error'>
+
+	^ (self feature: 'With error')
+		scenarios: {
+			(self scenario: 'Running this scenario in debug mode opens the debugger')
+				when: 'an error occurs' }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithPauseStep [
 
 	<heraFeature: 'With pause step'>
@@ -232,6 +243,14 @@ HeraAcceptanceTestExamplesForTesting >> featureWithTwoScenarios [
 HeraAcceptanceTestExamplesForTesting >> stepAnAdministratorUserAndANonAdministratorUserExist [
 
 	<heraStepDefinition: #(Given 'an administrator user and a non-administrator user exist')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepAnErrorOccurs [
+
+	<heraStepDefinition: #(When 'an error occurs')>
+
+	(ZeroDivide new messageText: 'Zero divide') signal
 ]
 
 { #category : 'steps' }

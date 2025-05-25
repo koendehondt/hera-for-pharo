@@ -30,25 +30,18 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 			(self scenario: 'Running a feature from the Feature Browser')
 				when: 'I open the Runner from the Feature Browser to run a feature';
 				then: 'I see the full output of the test run';
-				and: 'the run buttons are disabled' .
+				then: 'I see a disabled "Continue" button';
+				and: 'I see a disabled "Step until end of scenario" button';
+				and: 'I see a disabled "Step" button';
+				and: 'I see an enabled "Restart" button' .
 			(self scenario: 'Debugging a feature from the Feature Browser')
 				when: 'I open the Runner from the Feature Browser to debug a feature';
 				then: 'I see the output of the test run upto the failing step';
 				and: 'a debugger is open on the definition of the failing step';
-				and: 'the run buttons are disabled' .
-			(self scenario: 'Stepping a feature from the Feature Browser')
-				given: 'a feature with one scenario';
-				when: 'I open the Runner from the Feature Browser to step through a feature';
-				then: 'I see no output';
-				when: 'I press the "Step" button';
-				then: 'I see the feature line of the script in the output';
-				when: 'I press the "Step" button';
-				then: 'I see the scenario line of the script in the output';
-				when: 'I press the "Step" button multiple times';
-				then: 'I see the executed steps';
-				when: 'I press the "Continue" button';
-				then: 'I see the full output of the test run';
-				and: 'the run buttons are disabled' }
+				then: 'I see an enabled "Continue" button';
+				and: 'I see a disabled "Step until end of scenario" button';
+				and: 'I see an enabled "Step" button';
+				and: 'I see an enabled "Restart" button' }
 ]
 
 { #category : 'features' }
@@ -94,12 +87,27 @@ HeraRunnerAcceptanceTest >> stepAFeatureWithOneScenario [
 HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToDebugAFeature [
 
 	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to debug a feature')>
+
+	| browser errorSignaled |
+	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new includeClass: HeraAcceptanceTestExamplesForTesting)).
+	browser selectFeature: 'With error' in: 'Examples for testing'.
+	"This test runs a test that raises an error, but this test captures the error unless we catch it here and resume it."
+	errorSignaled := false.
+	[ browser clickDebugButton ] on: ZeroDivide do: [ :error | errorSignaled := true ].
+	self assert: errorSignaled description: 'Expected the acceptance tests to raise an error'.
+	self detectPresenterInTopWindowAs: #featureRunner
 ]
 
 { #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToRunAFeature [
 
 	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to run a feature')>
+
+	| browser |
+	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new includeClass: HeraAcceptanceTestExamplesForTesting)).
+	browser selectFeature: 'With single step scenario' in: 'Examples for testing'.
+	browser clickRunButton.
+	self detectPresenterInTopWindowAs: #featureRunner
 ]
 
 { #category : 'steps' }
@@ -130,6 +138,22 @@ HeraRunnerAcceptanceTest >> stepIPressTheStepButton [
 HeraRunnerAcceptanceTest >> stepIPressTheStepButtonMultipleTimes [
 
 	<heraStepDefinition: #(When 'I press the "Step" button multiple times')>
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeADisabledContinueButton [
+
+	<heraStepDefinition: #(Then 'I see a disabled "Continue" button')>
+
+	self assert: self featureRunner hasDisabledContinueButton
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeADisabledStepButton [
+
+	<heraStepDefinition: #(Given 'I see a disabled "Step" button')>
+
+	self assert: self featureRunner hasDisabledStepOverButton
 ]
 
 { #category : 'steps' }
@@ -186,12 +210,25 @@ HeraRunnerAcceptanceTest >> stepISeeTheFeatureLineOfTheScriptInTheOutput [
 HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfTheTestRun [
 
 	<heraStepDefinition: #(Then 'I see the full output of the test run')>
+
+	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+
+Total: 1. Passed: 1. Failed: 0. Error: 0.
+'
 ]
 
 { #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepISeeTheOutputOfTheTestRunUptoTheFailingStep [
 
 	<heraStepDefinition: #(Then 'I see the output of the test run upto the failing step')>
+
+	self assert: self featureRunner runLog equals: 'Feature: With error
+
+	Scenario: Running this scenario in debug mode opens the debugger
+		When an error occurs'
 ]
 
 { #category : 'steps' }
@@ -228,6 +265,11 @@ HeraRunnerAcceptanceTest >> stepTheInstanceVariableHoldsTheValue [
 HeraRunnerAcceptanceTest >> stepTheRunButtonsAreDisabled [
 
 	<heraStepDefinition: #(Given 'the run buttons are disabled')>
+
+	self assert: self featureRunner hasDisabledContinueButton.
+	self assert: self featureRunner hasDisabledStepOverButton.
+	self assert: self featureRunner hasDisabledStepOverButton.
+	self assert: self featureRunner hasDisabledRestartButton
 ]
 
 { #category : 'steps' }

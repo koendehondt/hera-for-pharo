@@ -91,6 +91,24 @@ HeraRunner >> finish [
 ]
 
 { #category : 'test api' }
+HeraRunner >> hasDisabledContinueButton [
+
+	^ self hasEnabledContinueButton not
+]
+
+{ #category : 'test api' }
+HeraRunner >> hasDisabledRestartButton [
+
+	^ self hasEnabledRestartButton not
+]
+
+{ #category : 'test api' }
+HeraRunner >> hasDisabledStepOverButton [
+
+	^ self hasEnabledStepOverButton not
+]
+
+{ #category : 'test api' }
 HeraRunner >> hasDisabledStepOverScenarioButton [
 
 	^ self hasEnabledStepOverScenarioButton not
@@ -228,6 +246,12 @@ HeraRunner >> runAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
 	scriptRunner filter: aFilter.
 	resultSummary model: scriptRunner result.
 	scriptRunner run
+]
+
+{ #category : 'test api' }
+HeraRunner >> runLog [
+
+	^ output text
 ]
 
 { #category : 'private' }

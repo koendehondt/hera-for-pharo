@@ -46,6 +46,18 @@ HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 ]
 
 { #category : 'test api' }
+HeraFeatureBrowser >> clickDebugButton [
+
+	featureSelector clickDebugButton
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> clickRunButton [
+
+	featureSelector clickRunButton
+]
+
+{ #category : 'test api' }
 HeraFeatureBrowser >> clickStepByStepButton [
 
 	featureSelector clickStepByStepButton

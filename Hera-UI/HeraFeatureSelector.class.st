@@ -149,6 +149,18 @@ HeraFeatureSelector >> browseSteps [
 ]
 
 { #category : 'test api' }
+HeraFeatureSelector >> clickDebugButton [
+
+	debugButton performAction
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> clickRunButton [
+
+	runButton performAction
+]
+
+{ #category : 'test api' }
 HeraFeatureSelector >> clickStepByStepButton [
 
 	stepByStepButton performAction
