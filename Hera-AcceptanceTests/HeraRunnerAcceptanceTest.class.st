@@ -99,7 +99,7 @@ HeraRunnerAcceptanceTest >> stepADebuggerIsOpenOnTheDefinitionOfTheFailingStep [
 	<heraStepDefinition: #(Given 'a debugger is open on the definition of the failing step')>
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepIClickTheButtonLabeled: aString [
 
 	<heraStepDefinition: #(When match 'I click the {string} button')>

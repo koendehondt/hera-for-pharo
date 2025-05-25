@@ -48,31 +48,48 @@ Feature: Running features
 		Then I see an enabled "Continue" button
 		And I see a disabled "Step until end of scenario" button
 		And I see an enabled "Step" button
+		And I see an enabled "Restart" button
 
-	Scenario: Running a feature from the Feature Browser
-		When I open the Runner from the Feature Browser to run a feature
-		Then I see the full output of the test run
-		And the run buttons are disabled
+	Scenario: Running a passing feature from the Feature Browser
+		When I open the Runner from the Feature Browser to run a passing feature
+		Then I see the full output of the passed test run
+		Then I see a disabled "Continue" button
+		And I see a disabled "Step until end of scenario" button
+		And I see a disabled "Step" button
+		And I see an enabled "Restart" button
+
+	Scenario: Running a feature with an error from the Feature Browser
+		When I open the Runner from the Feature Browser to run a feature with an error
+		Then I see the full output of the errored test run
+		Then I see a disabled "Continue" button
+		And I see a disabled "Step until end of scenario" button
+		And I see a disabled "Step" button
+		And I see an enabled "Restart" button
 
 	Scenario: Debugging a feature from the Feature Browser
 		When I open the Runner from the Feature Browser to debug a feature
 		Then I see the output of the test run upto the failing step
 		And a debugger is open on the definition of the failing step
-		And the run buttons are disabled
+		Then I see an enabled "Continue" button
+		And I see a disabled "Step until end of scenario" button
+		And I see an enabled "Step" button
+		And I see an enabled "Restart" button
 
 	Scenario: Stepping a feature from the Feature Browser
-		Given a feature with one scenario
-		When I open the Runner from the Feature Browser to step through the feature
+		When I open the Runner from the Feature Browser to step through a feature
 		Then I see no output
-		When I press the "Step" button
+		When I click the "Step" button
 		Then I see the feature line of the script in the output
-		When I press the "Step" button
+		When I click the "Step" button
 		Then I see the scenario line of the script in the output
-		When I press the "Step" button multiple times
+		When I click the "Step" button
 		Then I see the executed steps
-		When I press the "Continue" button
+		When I click the "Continue" button
 		Then I see the full output of the test run
-		And the run buttons are disabled
+		And I see a disabled "Continue" button
+		And I see a disabled "Step until end of scenario" button
+		And I see a disabled "Step" button
+		And I see an enabled "Restart" button
 
 
 Feature: Running scenarios in isolation
@@ -87,8 +104,8 @@ Feature: Running scenarios in isolation
 
 
 Number of features: 3
-Number of scenarios: 8
-Passed: 8
+Number of scenarios: 9
+Passed: 9
 Failed: 0
 Error: 0'
 ]
