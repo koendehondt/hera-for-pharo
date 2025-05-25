@@ -160,51 +160,31 @@ HeraRunnerAcceptanceTest >> stepIPressTheStepButtonMultipleTimes [
 ]
 
 { #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeADisabledContinueButton [
+HeraRunnerAcceptanceTest >> stepISeeADisabledButtonLabeled: aString [
 
-	<heraStepDefinition: #(Then 'I see a disabled "Continue" button')>
-
-	self assert: self featureRunner hasDisabledContinueButton
+	<heraStepDefinition: #(Then match 'I see a disabled {string} button')>
+	
+	| mapping |
+	mapping := Dictionary
+		with: 'Continue' -> #hasDisabledContinueButton
+		with: 'Step until end of scenario' -> #hasDisabledStepOverScenarioButton
+		with: 'Step' -> #hasDisabledStepOverButton.
+		"The Restart button is not included here because it is never disabled."
+	self assert: (self featureRunner perform: (mapping at: aString))
 ]
 
 { #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeADisabledStepButton [
+HeraRunnerAcceptanceTest >> stepISeeAnEnabledButtonLabeled: aString [
 
-	<heraStepDefinition: #(Given 'I see a disabled "Step" button')>
-
-	self assert: self featureRunner hasDisabledStepOverButton
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeADisabledStepUntilEndOfScenarioButton [
-
-	<heraStepDefinition: #(Given 'I see a disabled "Step until end of scenario" button')>
-
-	self assert: self featureRunner hasDisabledStepOverScenarioButton
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeAnEnabledContinueButton [
-
-	<heraStepDefinition: #(Then 'I see an enabled "Continue" button')>
-
-	self assert: self featureRunner hasEnabledContinueButton
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeAnEnabledRestartButton [
-
-	<heraStepDefinition: #(Given 'I see an enabled "Restart" button')>
-
-	self assert: self featureRunner hasEnabledRestartButton
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeAnEnabledStepButton [
-
-	<heraStepDefinition: #(Given 'I see an enabled "Step" button')>
-
-	self assert: self featureRunner hasEnabledStepOverButton
+	<heraStepDefinition: #(Then match 'I see an enabled {string} button')>
+	
+	| mapping |
+	mapping := Dictionary
+		with: 'Continue' -> #hasEnabledContinueButton
+		with: 'Step until end of scenario' -> #hasEnabledStepOverScenarioButton
+		with: 'Step' -> #hasEnabledStepOverButton
+		with: 'Restart' -> #hasEnabledRestartButton.
+	self assert: (self featureRunner perform: (mapping at: aString))
 ]
 
 { #category : 'steps' }
