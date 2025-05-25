@@ -28,8 +28,15 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				and: 'I see an enabled "Step" button';
 				and: 'I see an enabled "Restart" button' .
 			(self scenario: 'Running a feature from the Feature Browser')
-				when: 'I open the Runner from the Feature Browser to run a feature';
-				then: 'I see the full output of the test run';
+				when: 'I open the Runner from the Feature Browser to run a passing feature';
+				then: 'I see the full output of the passed test run';
+				then: 'I see a disabled "Continue" button';
+				and: 'I see a disabled "Step until end of scenario" button';
+				and: 'I see a disabled "Step" button';
+				and: 'I see an enabled "Restart" button' .
+			(self scenario: 'Running a feature with an error from the Feature Browser')
+				when: 'I open the Runner from the Feature Browser to run a feature with an error';
+				then: 'I see the full output of the errored test run';
 				then: 'I see a disabled "Continue" button';
 				and: 'I see a disabled "Step until end of scenario" button';
 				and: 'I see a disabled "Step" button';
@@ -99,9 +106,21 @@ HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToDebugAFeatu
 ]
 
 { #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToRunAFeature [
+HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToRunAFeatureWithAnError [
 
-	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to run a feature')>
+	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to run a feature with an error')>
+
+	| browser |
+	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new includeClass: HeraAcceptanceTestExamplesForTesting)).
+	browser selectFeature: 'With error' in: 'Examples for testing'.
+	browser clickRunButton.
+	self detectPresenterInTopWindowAs: #featureRunner
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToRunAPassingFeature [
+
+	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to run a passing feature')>
 
 	| browser |
 	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new includeClass: HeraAcceptanceTestExamplesForTesting)).
@@ -207,9 +226,24 @@ HeraRunnerAcceptanceTest >> stepISeeTheFeatureLineOfTheScriptInTheOutput [
 ]
 
 { #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfTheTestRun [
+HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfTheErroredTestRun [
 
-	<heraStepDefinition: #(Then 'I see the full output of the test run')>
+	<heraStepDefinition: #(Then 'I see the full output of the errored test run')>
+
+	self assert: self featureRunner runLog equals: 'Feature: With error
+
+	Scenario: Running this scenario in debug mode opens the debugger
+		When an error occurs
+			ERROR Zero divide
+
+Total: 1. Passed: 0. Failed: 0. Error: 1.
+'
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfThePassedTestRun [
+
+	<heraStepDefinition: #(Then 'I see the full output of the passed test run')>
 
 	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
 
