@@ -38,7 +38,7 @@ HeraScope >> allStepMethods [
 { #category : 'enumerating' }
 HeraScope >> do: aBlock separatedBy: separatorBlock [
 
-	acceptanceTestClasses do: aBlock separatedBy: separatorBlock
+	self sortedAcceptanceTestClasses do: aBlock separatedBy: separatorBlock
 ]
 
 { #category : 'accessing' }
@@ -82,4 +82,10 @@ HeraScope >> initialize [
 
 	super initialize.
 	acceptanceTestClasses := Set new
+]
+
+{ #category : 'accessing' }
+HeraScope >> sortedAcceptanceTestClasses [
+
+	^ acceptanceTestClasses sorted: [ :some :other | some name < other name ]
 ]
