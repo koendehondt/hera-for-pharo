@@ -109,12 +109,6 @@ HeraRunner >> hasDisabledContinueButton [
 ]
 
 { #category : 'test api' }
-HeraRunner >> hasDisabledRestartButton [
-
-	^ self hasEnabledRestartButton not
-]
-
-{ #category : 'test api' }
 HeraRunner >> hasDisabledStepOverButton [
 
 	^ self hasEnabledStepOverButton not
@@ -247,16 +241,6 @@ HeraRunner >> runAcceptanceTest: anAcceptanceTest [
 	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
 	resultSummary model: scriptRunner result.
 	self updateButtons.
-	scriptRunner run
-]
-
-{ #category : 'running' }
-HeraRunner >> runAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
-
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
-	scriptRunner filter: aFilter.
-	resultSummary model: scriptRunner result.
 	scriptRunner run
 ]
 
