@@ -27,7 +27,7 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				and: 'I see a disabled "Step until end of scenario" button';
 				and: 'I see an enabled "Step" button';
 				and: 'I see an enabled "Restart" button' .
-			(self scenario: 'Running a feature from the Feature Browser')
+			(self scenario: 'Running a passing feature from the Feature Browser')
 				when: 'I open the Runner from the Feature Browser to run a passing feature';
 				then: 'I see the full output of the passed test run';
 				then: 'I see a disabled "Continue" button';
@@ -205,12 +205,6 @@ HeraRunnerAcceptanceTest >> stepISeeAnEnabledStepButton [
 	<heraStepDefinition: #(Given 'I see an enabled "Step" button')>
 
 	self assert: self featureRunner hasEnabledStepOverButton
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepISeeNoOutput [
-
-	<heraStepDefinition: #(Then 'I see no output')>
 ]
 
 { #category : 'steps' }
