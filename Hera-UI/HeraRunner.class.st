@@ -28,6 +28,18 @@ HeraRunner >> clear [
 	output text: Text new
 ]
 
+{ #category : 'test api' }
+HeraRunner >> clickContinueButton [
+
+	^ continueButton performAction
+]
+
+{ #category : 'test api' }
+HeraRunner >> clickStepButton [
+
+	^ stepOverButton performAction
+]
+
 { #category : 'actions' }
 HeraRunner >> continue [
 

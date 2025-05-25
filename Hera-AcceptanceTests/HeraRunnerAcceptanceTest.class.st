@@ -48,6 +48,21 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				then: 'I see an enabled "Continue" button';
 				and: 'I see a disabled "Step until end of scenario" button';
 				and: 'I see an enabled "Step" button';
+				and: 'I see an enabled "Restart" button' .
+			(self scenario: 'Stepping a feature from the Feature Browser')
+				when: 'I open the Runner from the Feature Browser to step through a feature';
+				then: 'I see no output';
+				when: 'I click the "Step" button';
+				then: 'I see the feature line of the script in the output';
+				when: 'I click the "Step" button';
+				then: 'I see the scenario line of the script in the output';
+				when: 'I click the "Step" button';
+				then: 'I see the executed steps';
+				when: 'I click the "Continue" button';
+				then: 'I see the full output of the test run';
+				and: 'I see a disabled "Continue" button';
+				and: 'I see a disabled "Step until end of scenario" button';
+				and: 'I see a disabled "Step" button';
 				and: 'I see an enabled "Restart" button' }
 ]
 
@@ -84,10 +99,16 @@ HeraRunnerAcceptanceTest >> stepADebuggerIsOpenOnTheDefinitionOfTheFailingStep [
 	<heraStepDefinition: #(Given 'a debugger is open on the definition of the failing step')>
 ]
 
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepAFeatureWithOneScenario [
+{ #category : 'as yet unclassified' }
+HeraRunnerAcceptanceTest >> stepIClickTheButtonLabeled: aString [
 
-	<heraStepDefinition: #(Given 'a feature with one scenario')>
+	<heraStepDefinition: #(When match 'I click the {string} button')>
+
+	| mapping |
+	mapping := Dictionary
+		with: 'Continue' -> #clickContinueButton
+		with: 'Step' -> #clickStepButton.
+	self featureRunner perform: (mapping at: aString)
 ]
 
 { #category : 'steps' }
@@ -148,12 +169,6 @@ HeraRunnerAcceptanceTest >> stepIPressTheContinueButton [
 ]
 
 { #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepIPressTheStepButton [
-
-	<heraStepDefinition: #(When 'I press the "Step" button')>
-]
-
-{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepIPressTheStepButtonMultipleTimes [
 
 	<heraStepDefinition: #(When 'I press the "Step" button multiple times')>
@@ -188,15 +203,30 @@ HeraRunnerAcceptanceTest >> stepISeeAnEnabledButtonLabeled: aString [
 ]
 
 { #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeNoOutput [
+
+	<heraStepDefinition: #(Then 'I see no output')>
+
+	self assertEmpty: self featureRunner runLog
+]
+
+{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepISeeTheExecutedSteps [
 
 	<heraStepDefinition: #(Then 'I see the executed steps')>
+
+	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in'
 ]
 
 { #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepISeeTheFeatureLineOfTheScriptInTheOutput [
 
 	<heraStepDefinition: #(Then 'I see the feature line of the script in the output')>
+
+	self assert: self featureRunner runLog equals: 'Feature: With single step scenario'
 ]
 
 { #category : 'steps' }
@@ -229,6 +259,20 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfTheTestRun [
+
+	<heraStepDefinition: #(Then 'I see the full output of the test run')>
+
+	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+
+Total: 1. Passed: 1. Failed: 0. Error: 0.
+'
+]
+
+{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepISeeTheOutputOfTheTestRunUptoTheFailingStep [
 
 	<heraStepDefinition: #(Then 'I see the output of the test run upto the failing step')>
@@ -243,6 +287,10 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfTheTestRunUptoTheFailingStep [
 HeraRunnerAcceptanceTest >> stepISeeTheScenarioLineOfTheScriptInTheOutput [
 
 	<heraStepDefinition: #(Then 'I see the scenario line of the script in the output')>
+
+	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+
+	Scenario: Successful sign-in'
 ]
 
 { #category : 'steps' }
@@ -267,17 +315,6 @@ HeraRunnerAcceptanceTest >> stepTheInstanceVariableHoldsTheValue [
 	<heraStepDefinition: #(When 'the instance variable holds the value')>
 
 	self assert: instanceVariable equals: 123
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepTheRunButtonsAreDisabled [
-
-	<heraStepDefinition: #(Given 'the run buttons are disabled')>
-
-	self assert: self featureRunner hasDisabledContinueButton.
-	self assert: self featureRunner hasDisabledStepOverButton.
-	self assert: self featureRunner hasDisabledStepOverButton.
-	self assert: self featureRunner hasDisabledRestartButton
 ]
 
 { #category : 'steps' }
