@@ -62,7 +62,7 @@ HeraVersion >> patch: anInteger [
 	patch := anInteger
 ]
 
-{ #category : 'accessing' }
+{ #category : 'printing' }
 HeraVersion >> printOn: aStream [
 
 	aStream
