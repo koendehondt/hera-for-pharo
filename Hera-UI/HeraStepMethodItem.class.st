@@ -21,6 +21,17 @@ HeraStepMethodItem >> acceptanceTestClass [
 	^ stepMethod methodClass
 ]
 
+{ #category : 'actions' }
+HeraStepMethodItem >> compileSourceWithoutPragma: stepMethodSource notifying: requestor [
+
+	^ self acceptanceTestClass compiler
+		source: stepMethodSource;
+		requestor: requestor;
+		failBlock: [ ^ nil ];
+		permitUndeclared: false;
+		compile
+]
+
 { #category : 'private' }
 HeraStepMethodItem >> pragma [
 

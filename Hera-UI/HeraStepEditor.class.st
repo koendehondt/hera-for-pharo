@@ -33,6 +33,12 @@ HeraStepEditor >> connectPresenters [
 	code whenSubmitDo: [ :ignoredText | self save ]
 ]
 
+{ #category : 'notification' }
+HeraStepEditor >> correctFrom: start to: stop with: aString [
+
+	code withAdapterDo: [ :textAdapter | textAdapter widgetDo: [ :textArea | textArea correctFrom: start to: stop with: aString ] ]
+]
+
 { #category : 'layout' }
 HeraStepEditor >> defaultLayout [
 
@@ -125,10 +131,16 @@ HeraStepEditor >> modelChanged [
 			code
 				beForMethod: stepMethodItem stepMethod;
 				text: (self sourceFor: stepMethodItem);
-				selectionInterval: (0 to: 0). ].
+				selectionInterval: (0 to: 0) ].
 	originalDescription := description text copy asString.
 	originalCode := code text copy asString.
 	modelChangedInProgress := false
+]
+
+{ #category : 'notification' }
+HeraStepEditor >> notify: aString at: anIteger in: source [
+
+	code notify: aString at: anIteger in: source
 ]
 
 { #category : 'private' }
@@ -144,6 +156,8 @@ HeraStepEditor >> save [
 
 	| stepMethodSource stepMethod |
 	self hasChanged ifFalse: [ ^ self ].
+	stepMethod := self model compileSourceWithoutPragma: self text notifying: self.
+	stepMethod ifNil: [ ^ self ].
 	stepMethodSource := HeraStepMethodGenerator new
 		type: type selectedItem;
 		pattern: (self patternForLabel: pattern selectedItem);
@@ -174,6 +188,12 @@ HeraStepEditor >> sourceFor: aStepMethodItem [
 	sourceLinesWithoutPragmaSection := (sourceLinesWithoutPragmaSection at: pragmaSectionEndLineIndex) trimBoth isEmpty
 		ifTrue: [ sourceLinesWithoutPragmaSection copyReplaceFrom: pragmaSectionStartLineIndex to: pragmaSectionEndLineIndex with: #() ].
 	^ Character cr join: sourceLinesWithoutPragmaSection
+]
+
+{ #category : 'accessing' }
+HeraStepEditor >> text [
+
+	^ code text
 ]
 
 { #category : 'layout' }
