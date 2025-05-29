@@ -173,7 +173,7 @@ HeraFeatureSelector >> connectPresenters [
 		children: [ :item | item subitems ];
 		display: [ :item | item nameInBrowser ];
 		whenSelectionChangedDo: [ :selection | self featureSelectionChanged ].
-	self installClassesAndFeaturesContextMenu
+	self installContextMenu
 ]
 
 { #category : 'actions' }
@@ -275,7 +275,7 @@ HeraFeatureSelector >> initializeToolbarButtons [
 ]
 
 { #category : 'private - menus' }
-HeraFeatureSelector >> installClassesAndFeaturesContextMenu [
+HeraFeatureSelector >> installContextMenu [
 
 	classesAndFeatures
 		actionsWith: [ :rootGroup |
