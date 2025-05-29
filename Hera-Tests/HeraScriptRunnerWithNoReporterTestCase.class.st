@@ -1,9 +1,6 @@
 Class {
 	#name : 'HeraScriptRunnerWithNoReporterTestCase',
 	#superclass : 'HeraUnitTestCase',
-	#instVars : [
-		'reporter'
-	],
 	#category : 'Hera-Tests-Running',
 	#package : 'Hera-Tests',
 	#tag : 'Running'
