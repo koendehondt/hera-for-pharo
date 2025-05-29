@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraStepBrowser',
-	#superclass : 'SpPresenter',
+	#superclass : 'HeraPresenter',
 	#instVars : [
 		'notebook',
 		'scope'

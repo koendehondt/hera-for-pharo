@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraFeatureMethodGeneratorTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-Generation',
 	#package : 'Hera-Tests',
 	#tag : 'Generation'

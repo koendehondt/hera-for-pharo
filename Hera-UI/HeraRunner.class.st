@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraRunner',
-	#superclass : 'SpPresenter',
+	#superclass : 'HeraPresenter',
 	#instVars : [
 		'output',
 		'lastRunAcceptanceTest',

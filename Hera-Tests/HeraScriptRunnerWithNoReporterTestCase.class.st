@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraScriptRunnerWithNoReporterTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#instVars : [
 		'reporter'
 	],

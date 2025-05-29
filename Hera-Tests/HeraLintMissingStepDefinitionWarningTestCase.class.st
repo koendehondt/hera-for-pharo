@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraLintMissingStepDefinitionWarningTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-Linter',
 	#package : 'Hera-Tests',
 	#tag : 'Linter'

@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraMatchStepDefinitionTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-Step definitions',
 	#package : 'Hera-Tests',
 	#tag : 'Step definitions'

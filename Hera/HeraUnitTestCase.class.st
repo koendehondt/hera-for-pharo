@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraTestCase',
+	#name : 'HeraUnitTestCase',
 	#superclass : 'TestCase',
 	#instVars : [
 		'subject'
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'asserting' }
-HeraTestCase >> assertText: actualText equals: expectedText [
+HeraUnitTestCase >> assertText: actualText equals: expectedText [
 	"This assertion is needed because Text>>#= only compares the text, not the text attributes.
 	 On top of that, comparing TextAction instances is based on Object>>#=, which is undesired."
 
@@ -23,33 +23,33 @@ HeraTestCase >> assertText: actualText equals: expectedText [
 ]
 
 { #category : 'asserting' }
-HeraTestCase >> assertTextAttribute: actualAttribute equals: expectedAttribute [
+HeraUnitTestCase >> assertTextAttribute: actualAttribute equals: expectedAttribute [
 
 	actualAttribute = expectedAttribute or: [
 		(actualAttribute isMemberOf: TextAction) and: [ expectedAttribute isMemberOf: TextAction ] ]
 ]
 
 { #category : 'asserting' }
-HeraTestCase >> assertTextRun: actualRun equals: expectedRun [
+HeraUnitTestCase >> assertTextRun: actualRun equals: expectedRun [
 
 	actualRun with: expectedRun do: [ :actualAttribute :expectedAttribute |
 		self assertTextAttribute: actualAttribute equals: expectedAttribute ]
 ]
 
 { #category : 'running' }
-HeraTestCase >> describedClass [
+HeraUnitTestCase >> describedClass [
 
 	self subclassResponsibility
 ]
 
 { #category : 'running' }
-HeraTestCase >> initializeSubject [
+HeraUnitTestCase >> initializeSubject [
 
 	subject := self describedClass new
 ]
 
 { #category : 'running' }
-HeraTestCase >> setUp [
+HeraUnitTestCase >> setUp [
 
 	super setUp.
 	self initializeSubject

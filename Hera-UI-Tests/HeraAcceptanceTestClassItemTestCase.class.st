@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestClassItemTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-UI-Tests-Feature Browser',
 	#package : 'Hera-UI-Tests',
 	#tag : 'Feature Browser'

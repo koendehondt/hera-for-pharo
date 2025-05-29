@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraAndStepTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-Script elements',
 	#package : 'Hera-Tests',
 	#tag : 'Script elements'

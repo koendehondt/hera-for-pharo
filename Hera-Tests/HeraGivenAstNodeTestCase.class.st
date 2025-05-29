@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraGivenAstNodeTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-AST',
 	#package : 'Hera-Tests',
 	#tag : 'AST'

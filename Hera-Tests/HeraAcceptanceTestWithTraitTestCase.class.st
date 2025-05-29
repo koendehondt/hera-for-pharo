@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestWithTraitTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-Core',
 	#package : 'Hera-Tests',
 	#tag : 'Core'

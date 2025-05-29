@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraStepMethodItemTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-UI-Tests-Step Browser',
 	#package : 'Hera-UI-Tests',
 	#tag : 'Step Browser'

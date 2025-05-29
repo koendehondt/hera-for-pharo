@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraRunnerTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-UI-Tests-Runner',
 	#package : 'Hera-UI-Tests',
 	#tag : 'Runner'

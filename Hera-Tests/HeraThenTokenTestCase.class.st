@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraThenTokenTestCase',
-	#superclass : 'HeraTestCase',
+	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-Parser',
 	#package : 'Hera-Tests',
 	#tag : 'Parser'

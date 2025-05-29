@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraFeatureBrowser',
-	#superclass : 'SpPresenter',
+	#superclass : 'HeraPresenter',
 	#instVars : [
 		'scriptEditor',
 		'stepEditor',
