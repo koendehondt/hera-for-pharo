@@ -12,6 +12,6 @@ HeraRegexStepDefinition >> match: aStepDescription [
 	| matcher |
 	matcher := RxMatcher forString: pattern.
 	(matcher matches: aStepDescription) ifFalse: [ ^ nil ].
-	matcher subexpressionCount = 1 ifTrue: [ ^ aStepDescription ].
-	^ matcher subexpressions: 2
+	matcher subexpressionCount = 1 ifTrue: [ ^ #() ].
+	^ (2 to: matcher subexpressionCount) collect: [ :subexpressionIndex | matcher subexpression: subexpressionIndex ]
 ]
