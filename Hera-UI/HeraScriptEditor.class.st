@@ -10,7 +10,8 @@ Class {
 		'saveButton',
 		'cancelButton',
 		'modelChangedInProgress',
-		'originalScript'
+		'originalScript',
+		'browseButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -94,6 +95,11 @@ HeraScriptEditor >> initializePresenters [
 { #category : 'initialization' }
 HeraScriptEditor >> initializeToolbarButtons [
 
+	browseButton := self newButton
+		help: 'Browse step method';
+		iconName: #nautilus;
+		action: [ self browseFeatureMethod ];
+		yourself.
 	saveButton := self newButton
 		help: 'Save';
 		iconName: #accept;
@@ -118,12 +124,13 @@ HeraScriptEditor >> lintWarnings [
 { #category : 'initialization' }
 HeraScriptEditor >> modelChanged [
 
-	| text enabled |
+	| text hasModel |
 	modelChangedInProgress := true.
-	enabled := self model ifNil: [ false ] ifNotNil: [ :model | model isEditable ].
-	script enabled: enabled.
+	hasModel := self model ifNil: [ false ] ifNotNil: [ :model | model isEditable ].
+	script enabled: hasModel.
 	saveButton enabled: false.
 	cancelButton enabled: false.
+	browseButton enabled: hasModel.
 	self model
 		ifNil: [ self text: '' ]
 		ifNotNil: [
@@ -226,11 +233,20 @@ HeraScriptEditor >> text: aText [
 { #category : 'layout' }
 HeraScriptEditor >> toolbar [
 
-	^ SpBoxLayout newLeftToRight
+	| leftSide rightSide |
+	leftSide := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: browseButton width: 40;
+		yourself.
+	rightSide := SpBoxLayout newLeftToRight
 		spacing: 10;
 		hAlignEnd;
 		add: saveButton width: 40;
 		add: cancelButton width: 40;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		add: leftSide;
+		add: rightSide;
 		yourself
 ]
 

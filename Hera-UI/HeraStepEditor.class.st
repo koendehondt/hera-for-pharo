@@ -10,12 +10,19 @@ Class {
 		'originalCode',
 		'modelChangedInProgress',
 		'originalDescription',
-		'pattern'
+		'pattern',
+		'browseButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
 	#tag : 'Feature Browser'
 }
+
+{ #category : 'actions' }
+HeraStepEditor >> browseStepMethod [
+
+	self model stepMethod browse
+]
 
 { #category : 'actions' }
 HeraStepEditor >> cancel [
@@ -86,6 +93,11 @@ HeraStepEditor >> initializePresenters [
 { #category : 'initialization' }
 HeraStepEditor >> initializeToolbarButtons [
 
+	browseButton := self newButton
+		help: 'Browse step method';
+		iconName: #nautilus;
+		action: [ self browseStepMethod ];
+		yourself.
 	saveButton := self newButton
 		help: 'Save';
 		iconName: #accept;
@@ -109,15 +121,16 @@ HeraStepEditor >> labelForPattern: aPattern [
 { #category : 'initialization' }
 HeraStepEditor >> modelChanged [
 
-	| stepMethodItem enabled |
+	| stepMethodItem hasModel |
 	stepMethodItem := self model.
 	modelChangedInProgress := true.
 	saveButton enabled: false.
 	cancelButton enabled: false.
-	enabled := stepMethodItem isNotNil.
-	type enabled: enabled.
-	description enabled: enabled.
-	code enabled: enabled.
+	hasModel := stepMethodItem isNotNil.
+	browseButton enabled: hasModel.
+	type enabled: hasModel.
+	description enabled: hasModel.
+	code enabled: hasModel.
 	stepMethodItem
 		ifNil: [
 			type resetSelection.
@@ -199,11 +212,20 @@ HeraStepEditor >> text [
 { #category : 'layout' }
 HeraStepEditor >> toolbar [
 
-	^ SpBoxLayout newLeftToRight
+	| leftSide rightSide |
+	leftSide := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: browseButton width: 40;
+		yourself.
+	rightSide := SpBoxLayout newLeftToRight
 		spacing: 10;
 		hAlignEnd;
 		add: saveButton width: 40;
 		add: cancelButton width: 40;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		add: leftSide;
+		add: rightSide;
 		yourself
 ]
 
