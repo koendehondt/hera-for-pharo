@@ -27,7 +27,7 @@ HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
 	[ message := 'The step "{1}" has no definition yet. If you want to create it, please enter a method selector.{2}' format: { aStepAstNode description . invalidMessage }.
 		[ methodSelector := self request: message initialAnswer: methodSelector title: 'Missing step definition' ]
 		on: SpCancelledInteractionError
-		do: [ ^ self ].
+		do: [ ^ nil ].
 		invalidMessage := ' That is not a valid method selector. Only letters, digits, and underscores are allowed.'.
 		self allowedMethodSelector: methodSelector ] whileFalse.
 	^ featureSelector selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector asSymbol
@@ -71,9 +71,7 @@ HeraFeatureBrowser >> connectPresenters [
 	featureSelector whenFeatureSelectionChangedDo: [ :featureMethodItem |
 		scriptEditor model: featureMethodItem ].
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
-	scriptEditor whenOpenStepDo: [ :stepAstNode |
-		self updateStepEditor: stepAstNode.
-		scriptEditor updateWarnings ]
+	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
 ]
 
 { #category : 'layout' }
@@ -218,7 +216,9 @@ HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 		^ self ].
 	stepMethod := self methodFor: aStepAstNode.
 	stepMethod ifNil: [ stepMethod := self addStepDefinitionMethodFor: aStepAstNode ].
-	stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod)
+	stepMethod ifNil: [ ^ self ].
+	stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod).
+	scriptEditor updateWarnings
 ]
 
 { #category : 'accessing' }
