@@ -71,6 +71,25 @@ HeraStepAstNode >> methodSignatureFor: aStepMethodSelector [
 	^ Character space join: (self methodSignaturePartsFor: aStepMethodSelector)
 ]
 
+{ #category : 'private' }
+HeraStepAstNode >> methodSignaturePartsFor: aStepMethodSelector [
+	
+	| parts keywords |
+	keywords := aStepMethodSelector keywords.
+	keywords size = 1 ifTrue: [
+		^ self hasArgument
+			ifTrue: [ { keywords first . self argument stepMethodArgumentName } ]
+			ifFalse: [ { keywords first . 'arg' } ]].
+	(keywords size = 2 and: [ self hasArgument ])
+		ifTrue: [ ^ { keywords first . 'arg' . keywords second . self argument stepMethodArgumentName } ].
+	parts := OrderedCollection new.
+	keywords doWithIndex: [ :each :index |
+		parts add: each.
+		parts add: ('arg{1}' format: { index }) ].
+	self hasArgument ifTrue: [ parts at: parts size put: self argument stepMethodArgumentName ].
+	^ parts
+]
+
 { #category : 'accessing' }
 HeraStepAstNode >> typeForDefinition [
 
