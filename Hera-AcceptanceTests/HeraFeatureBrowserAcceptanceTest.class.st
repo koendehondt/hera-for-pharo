@@ -148,5 +148,5 @@ HeraFeatureBrowserAcceptanceTest >> stepTwoFeaturesExist [
 
 	<heraStepDefinition: #(Given 'two features exist')>
 
-	browsingScope := HeraScope default includeClass: HeraAcceptanceTestWithPassForTesting
+	browsingScope := HeraScope default addClass: HeraAcceptanceTestWithPassForTesting
 ]

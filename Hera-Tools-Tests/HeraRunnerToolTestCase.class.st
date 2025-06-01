@@ -22,7 +22,7 @@ HeraRunnerToolTestCase >> tearDown [
 HeraRunnerToolTestCase >> testRunAllSelfAcceptanceTests [
 
 	| script |
-	subject run: (HeraScope new includeHierarchy: HeraSelfAcceptanceTest).
+	subject run: (HeraScope new addHierarchy: HeraSelfAcceptanceTest).
 	script := subject resultsFileReference readStreamDo: [ :stream | stream contents ].
 	self assert: script equals: 'Feature: Basic browsing
 

@@ -48,7 +48,7 @@ HeraFeatureSelector >> addAcceptanceTestClass [
 			name: className;
 			superclass: HeraAcceptanceTest;
 			package: packageName ].
-	self scope includeClass: acceptanceTestClass.
+	self scope addClass: acceptanceTestClass.
 	self updateClassesAndFeaturesAfterAddingClass: acceptanceTestClass
 ]
 

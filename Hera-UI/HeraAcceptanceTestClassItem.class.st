@@ -33,7 +33,7 @@ HeraAcceptanceTestClassItem >> remove [
 { #category : 'actions' }
 HeraAcceptanceTestClassItem >> removeFromScope: aScope [
 
-	aScope excludeClass: acceptanceTestClass
+	aScope removeClass: acceptanceTestClass
 ]
 
 { #category : 'accessing' }

@@ -23,7 +23,7 @@ HeraScopeTestCase >> testAll [
 HeraScopeTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 
 	subject := self describedClass default.
-	subject includeHierarchy: HeraAcceptanceTestForTesting.
+	subject addHierarchy: HeraAcceptanceTestForTesting.
 	self assert: subject allForBrowsing equals: {
 		HeraAcceptanceTestExamplesForTesting .
 		HeraAcceptanceTestWithErrorForTesting .
@@ -68,7 +68,7 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 HeraScopeTestCase >> testAllStepMethods [
 
 	subject := self describedClass new.
-	subject includeClass: HeraAcceptanceTestWithStepArgumentsForTesting.
+	subject addClass: HeraAcceptanceTestWithStepArgumentsForTesting.
 	self assert: (subject allStepMethods collect: [ :each | each selector ]) sorted equals: {
 		#stepIAmOnTheSignInPage .
 		#stepIFillInTheFieldLabeled: .
@@ -88,7 +88,7 @@ HeraScopeTestCase >> testDefault [
 HeraScopeTestCase >> testExcludeClass [
 
 	subject := self describedClass all.
-	subject excludeClass: HeraAcceptanceTestWithStepArgumentsForTesting.
+	subject removeClass: HeraAcceptanceTestWithStepArgumentsForTesting.
 	self deny: (subject allForBrowsing includes: HeraAcceptanceTestWithStepArgumentsForTesting)
 ]
 
@@ -96,7 +96,7 @@ HeraScopeTestCase >> testExcludeClass [
 HeraScopeTestCase >> testExcludeClasses [
 
 	subject := self describedClass all.
-	subject excludeClasses: HeraAcceptanceTest allSubclasses.
+	subject removeClasses: HeraAcceptanceTest allSubclasses.
 	self assert: subject allForBrowsing isEmpty
 ]
 
@@ -104,9 +104,9 @@ HeraScopeTestCase >> testExcludeClasses [
 HeraScopeTestCase >> testExcludeHierarchy [
 
 	subject := self describedClass new.
-	subject includeHierarchy: HeraAcceptanceTestForTesting.
+	subject addHierarchy: HeraAcceptanceTestForTesting.
 	self assert: subject allForBrowsing size equals: HeraAcceptanceTestForTesting allSubclasses size.
-	subject excludeHierarchy: HeraAcceptanceTestForTesting.
+	subject removeHierarchy: HeraAcceptanceTestForTesting.
 	self assert: subject allForBrowsing isEmpty
 ]
 
@@ -114,7 +114,7 @@ HeraScopeTestCase >> testExcludeHierarchy [
 HeraScopeTestCase >> testIncludeClass [
 
 	subject := self describedClass new.
-	subject includeClass: HeraAcceptanceTestWithStepArgumentsForTesting.
+	subject addClass: HeraAcceptanceTestWithStepArgumentsForTesting.
 	self assert: subject allForBrowsing equals: { HeraAcceptanceTestWithStepArgumentsForTesting }
 ]
 
@@ -122,7 +122,7 @@ HeraScopeTestCase >> testIncludeClass [
 HeraScopeTestCase >> testIncludeHierarchy [
 
 	subject := self describedClass new.
-	subject includeHierarchy: HeraAcceptanceTestForTesting.
+	subject addHierarchy: HeraAcceptanceTestForTesting.
 	self assert: subject allForBrowsing size equals: HeraAcceptanceTestForTesting allSubclasses size
 ]
 
