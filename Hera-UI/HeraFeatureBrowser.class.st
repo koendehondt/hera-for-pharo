@@ -30,13 +30,15 @@ HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
 		do: [ ^ self ].
 		invalidMessage := ' That is not a valid method selector. Only letters, digits, and underscores are allowed.'.
 		self allowedMethodSelector: methodSelector ] whileFalse.
-	^ featureSelector selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector
+	^ featureSelector selectedItem addStepDefinitionMethodFor: aStepAstNode as: methodSelector asSymbol
 ]
 
 { #category : 'private' }
 HeraFeatureBrowser >> allowedMethodSelector: methodSelector [
 
-	^ methodSelector allSatisfy: [ :char | self allowedMethodSelectorCharacter: char ]
+	| selector |
+	selector := methodSelector asSymbol.
+	^ selector isUnary or: [ selector isKeyword ]
 ]
 
 { #category : 'private' }

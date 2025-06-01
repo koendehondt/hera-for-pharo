@@ -47,6 +47,12 @@ HeraStepAstNode >> description: aString [
 ]
 
 { #category : 'testing' }
+HeraStepAstNode >> hasArgument [
+
+	^ self argument isNotNil
+]
+
+{ #category : 'testing' }
 HeraStepAstNode >> isGivenStepNode [
 
 	^ false
@@ -56,6 +62,13 @@ HeraStepAstNode >> isGivenStepNode [
 HeraStepAstNode >> isStepNode [
 
 	^ true
+]
+
+{ #category : 'accessing' }
+HeraStepAstNode >> methodSignatureFor: aStepMethodSelector [
+	
+	aStepMethodSelector numArgs = 0 ifTrue: [ ^ aStepMethodSelector asString ].
+	^ Character space join: (self methodSignaturePartsFor: aStepMethodSelector)
 ]
 
 { #category : 'accessing' }

@@ -50,7 +50,7 @@ HeraBrowserItem >> addStepDefinitionMethodFor: aStepAstNode as: targetSelector [
 
 	| stepMethodSource targetClass generatedMethod protocol |
 	stepMethodSource := '{1}{2}{2}{3}{4}' format: {
-		targetSelector .
+		(aStepAstNode methodSignatureFor: targetSelector) .
 		Character cr .
 		Character tab .
 		aStepAstNode asStepDefinitionPragma }.

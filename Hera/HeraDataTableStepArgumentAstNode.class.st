@@ -26,3 +26,9 @@ HeraDataTableStepArgumentAstNode >> dataTable: aDataTable [
 
 	dataTable := aDataTable
 ]
+
+{ #category : 'accessing' }
+HeraDataTableStepArgumentAstNode >> stepMethodArgumentName [
+
+	^ 'aDataTable'
+]
