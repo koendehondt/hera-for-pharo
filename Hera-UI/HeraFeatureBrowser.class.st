@@ -222,6 +222,12 @@ HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 ]
 
 { #category : 'accessing' }
+HeraFeatureBrowser >> windowIcon [
+
+	^ Hera settings iconNamed: #crown
+]
+
+{ #category : 'accessing' }
 HeraFeatureBrowser >> windowTitle [
 
 	^ 'Hera Feature Browser'

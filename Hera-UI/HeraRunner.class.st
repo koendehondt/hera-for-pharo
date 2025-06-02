@@ -311,7 +311,7 @@ HeraRunner >> updateButtons [
 { #category : 'accessing' }
 HeraRunner >> windowIcon [
 
-	^ Hera settings iconNamed: #heraRunner
+	^ Hera settings iconNamed: #checkedCircle
 ]
 
 { #category : 'accessing' }

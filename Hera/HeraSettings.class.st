@@ -29,7 +29,7 @@ HeraSettings class >> installIcon: aForm as: nameSymbol [
 { #category : 'class initialization' }
 HeraSettings class >> installIcons [
 
-	| heraRepo iconFolder iconProvider heraRunner |
+	| heraRepo iconFolder iconProvider checkedCircle crown |
 	Icons := Dictionary new.
 
 	heraRepo := IceRepository repositories detect: [ :repo | repo name = 'hera-for-pharo' ].
@@ -37,8 +37,10 @@ HeraSettings class >> installIcons [
 	iconProvider := SpLocationIconProvider newLocation: iconFolder.
 	iconProvider loadAllIcons.
 
-	heraRunner := iconProvider iconNamed: #heraRunner ifAbsent: [ nil ].
-	self installIcon: heraRunner as: #heraRunner.
+	crown := iconProvider iconNamed: #crown ifAbsent: [ nil ].
+	checkedCircle := iconProvider iconNamed: #checkedCircle ifAbsent: [ nil ].
+	self installIcon: crown as: #crown.
+	self installIcon: checkedCircle as: #checkedCircle
 ]
 
 { #category : 'accessing' }
