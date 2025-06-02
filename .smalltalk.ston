@@ -2,7 +2,6 @@ SmalltalkCISpec {
 	#loading : [
 		SCIMetacelloLoadSpec {
 			#baseline : 'Hera',
-      #directory : 'src',
 			#platforms : [ #pharo ]
 		}
 	],
