@@ -4,7 +4,6 @@ SmalltalkCISpec {
 			#baseline : 'Hera',
       #directory : 'src',
 			#onConflict : #useIncoming,
-			#useLatestMetacello : true,
 			#platforms : [ #pharo ]
 		}
 	],
