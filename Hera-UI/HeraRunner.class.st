@@ -309,6 +309,12 @@ HeraRunner >> updateButtons [
 ]
 
 { #category : 'accessing' }
+HeraRunner >> windowIcon [
+
+	^ Hera settings iconNamed: #heraRunner
+]
+
+{ #category : 'accessing' }
 HeraRunner >> windowTitle [
 
 	^ 'Hera Runner'
