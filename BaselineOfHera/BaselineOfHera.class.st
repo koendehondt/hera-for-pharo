@@ -27,7 +27,7 @@ BaselineOfHera >> baseline: spec [
 { #category : 'baselines' }
 BaselineOfHera >> initializeClasses [
 
-	"Placeholder in case some classes have to be initialized. Currently there are none."
+	HeraSettings initialize
 ]
 
 { #category : 'baselines' }
