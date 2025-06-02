@@ -24,6 +24,35 @@ HeraScriptEditor >> acceptanceTest [
 	^ self model acceptanceTest
 ]
 
+{ #category : 'private - menus' }
+HeraScriptEditor >> addRunMenuGroupTo: parentGroup [
+
+		parentGroup addGroupWith: [ :group |
+			group
+				beDisplayedAsGroup;
+				addActionWith: [ :action |
+					action		
+						name: 'Run scenario';
+						description: 'Run the selected feature';
+						shortcutKey: $r meta;
+						"actionEnabled: [ self hasSelectedFeature ];"
+						action: [ self runScenario ] ];
+				addActionWith: [ :action |
+					action		
+						name: 'Step scenario';
+						description: 'Run the selected feature step by step';
+						shortcutKey: $r meta shift;
+						"actionEnabled: [ self hasSelectedFeature ];"
+						action: [ self stepScenario ] ];
+				addActionWith: [ :action |
+					action		
+						name: 'Debug scenario';
+						description: 'Run the selected feature in debug mode';
+						shortcutKey: $d meta;
+						"actionEnabled: [ self hasSelectedFeature ];"
+						action: [ self debugScenario ] ] ]
+]
+
 { #category : 'private' }
 HeraScriptEditor >> altKeyClick: event [
 
@@ -45,6 +74,12 @@ HeraScriptEditor >> astForScript: aString [
 		parseFeature
 ]
 
+{ #category : 'actions' }
+HeraScriptEditor >> browseFeatureMethod [
+
+	self model featureMethod browse
+]
+
 { #category : 'private' }
 HeraScriptEditor >> buildAst: source [
 
@@ -63,7 +98,8 @@ HeraScriptEditor >> connectPresenters [
 	script whenTextChangedDo: [ self updateAfterScriptChange ].
 	script whenSubmitDo: [ :ignoredText | self save ].
 	script eventHandler whenMouseUpDo: [ :event |
-		event altKeyPressed ifTrue: [ self altKeyClick: event ] ]
+		event altKeyPressed ifTrue: [ self altKeyClick: event ] ].
+	self installContextMenu
 ]
 
 { #category : 'layout' }
@@ -110,6 +146,14 @@ HeraScriptEditor >> initializeToolbarButtons [
 		iconName: #cancel;
 		action: [ self cancel ];
 		yourself
+]
+
+{ #category : 'private - menus' }
+HeraScriptEditor >> installContextMenu [
+
+	script
+		actionsWith: [ :rootGroup |
+			self addRunMenuGroupTo: rootGroup ]
 ]
 
 { #category : 'private' }
