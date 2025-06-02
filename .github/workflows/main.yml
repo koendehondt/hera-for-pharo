@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all commits, which is a prerequisite for registering the repo in Iceberg.
       - name: Set up SmalltalkCI
         uses: hpi-swa/setup-smalltalkCI@v1
         with:
