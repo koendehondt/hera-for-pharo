@@ -27,9 +27,7 @@ BaselineOfHera >> baseline: spec [
 { #category : 'baselines' }
 BaselineOfHera >> initializeClasses [
 
-	Smalltalk globals allClasses
-		select: [ :class | class name beginsWith: 'Hera' ]
-		thenDo: [ :class | class initialize ]
+	"Placeholder in case some classes have to be initialized. Currently there are none."
 ]
 
 { #category : 'baselines' }
