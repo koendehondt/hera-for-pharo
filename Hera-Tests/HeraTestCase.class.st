@@ -24,6 +24,12 @@ Hera is a Behaviour Driven Development framework for Pharo. It allows for a bett
 ]
 
 { #category : 'tests' }
+HeraTestCase >> testSettings [
+
+	self assert: self describedClass settings identicalTo: HeraSettings uniqueInstance
+]
+
+{ #category : 'tests' }
 HeraTestCase >> testVersion [
 
 	self assert: self describedClass version equals: (HeraVersion major: 1 minor: 0 patch: 0)

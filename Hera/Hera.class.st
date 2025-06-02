@@ -23,6 +23,12 @@ Hera class >> aboutText [
 ]
 
 { #category : 'accessing' }
+Hera class >> settings [
+
+	^ HeraSettings uniqueInstance
+]
+
+{ #category : 'accessing' }
 Hera class >> version [
 	"From https://semver.org/
 		Given a version number MAJOR.MINOR.PATCH, increment the:
