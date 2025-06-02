@@ -3,7 +3,6 @@ SmalltalkCISpec {
 		SCIMetacelloLoadSpec {
 			#baseline : 'Hera',
       #directory : 'src',
-			#onConflict : #useIncoming,
 			#platforms : [ #pharo ]
 		}
 	],
