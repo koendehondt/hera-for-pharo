@@ -22,5 +22,6 @@ HeraSettingsTestCase >> initializeSubject [
 HeraSettingsTestCase >> testIcons [
 
 	self assert: ((subject iconNamed: #crown) isKindOf: Form).
-	self assert: ((subject iconNamed: #checkedCircle) isKindOf: Form)
+	self assert: ((subject iconNamed: #checkedCircle) isKindOf: Form).
+	self assert: ((subject iconNamed: #book) isKindOf: Form)
 ]

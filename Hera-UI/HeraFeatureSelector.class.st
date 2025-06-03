@@ -269,7 +269,7 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		yourself.
 	browseStepsButton := self newButton
 		help: 'Browse steps';
-		iconName: #bookmark;
+		icon: (Hera settings iconNamed: #book);
 		action: [ self browseSteps ];
 		yourself
 ]

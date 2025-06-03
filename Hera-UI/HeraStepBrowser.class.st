@@ -45,6 +45,12 @@ HeraStepBrowser >> scope: aScope [
 ]
 
 { #category : 'accessing' }
+HeraStepBrowser >> windowIcon [
+
+	^ Hera settings iconNamed: #book
+]
+
+{ #category : 'accessing' }
 HeraStepBrowser >> windowTitle [
 
 	^ 'Hera Step Browser'
