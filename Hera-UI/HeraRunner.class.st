@@ -240,6 +240,16 @@ HeraRunner >> runAcceptanceTest: anAcceptanceTest [
 	scriptRunner run
 ]
 
+{ #category : 'running' }
+HeraRunner >> runAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
+
+	lastRunAcceptanceTest := anAcceptanceTest.
+	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
+	scriptRunner filter: aFilter.
+	resultSummary model: scriptRunner result.
+	scriptRunner run
+]
+
 { #category : 'test api' }
 HeraRunner >> runLog [
 

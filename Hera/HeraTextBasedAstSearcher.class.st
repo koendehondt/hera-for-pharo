@@ -2,12 +2,19 @@ Class {
 	#name : 'HeraTextBasedAstSearcher',
 	#superclass : 'HeraAstVisitor',
 	#instVars : [
-		'textPosition'
+		'textPosition',
+		'searchTarget'
 	],
 	#category : 'Hera-AST',
 	#package : 'Hera',
 	#tag : 'AST'
 }
+
+{ #category : 'initialization' }
+HeraTextBasedAstSearcher >> beForSearchingScenario [
+
+	searchTarget := #scenario
+]
 
 { #category : 'private - visiting' }
 HeraTextBasedAstSearcher >> default: anAstNode [
@@ -62,8 +69,9 @@ HeraTextBasedAstSearcher >> visitRuleAstNode: aRuleAstNode [
 { #category : 'visiting' }
 HeraTextBasedAstSearcher >> visitScenarioAstNode: aScenarioAstNode [
 
+	(searchTarget = #scenario and: [ aScenarioAstNode isLocatedAtTextPosition: textPosition ]) ifTrue: [ ^ aScenarioAstNode ].
 	aScenarioAstNode tags do: [ :each |
-		(self visit: each) ifNotNil: [ :tagNode | ^ tagNode ] ].
+		(self visit: each) ifNotNil: [ :tagNode | ^ searchTarget = #scenario ifTrue: [ aScenarioAstNode ] ifFalse: [ tagNode ] ] ].
 	(self visit: aScenarioAstNode title) ifNotNil: [ :titleNode | ^ titleNode ].
 	aScenarioAstNode description ifNotNil: [ :description |
 		(self visit: description) ifNotNil: [ :descriptionNode | ^ descriptionNode ] ].

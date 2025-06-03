@@ -194,6 +194,22 @@ HeraScriptEditor >> parser [
 ]
 
 { #category : 'actions' }
+HeraScriptEditor >> runScenario [
+
+	| caretPosition astNode |
+	self hasChanged ifTrue: [
+		self inform: 'Please save the script first.'.
+		^ self ].
+	caretPosition := script selectionInterval first.
+	astNode := HeraTextBasedAstSearcher new
+		textPosition: caretPosition;
+		beForSearchingScenario;
+		visit: ast.
+	(astNode isNil or: [ astNode isScenarioNode not ]) ifTrue: [ ^ self ].
+	runScenarioBlock value: astNode
+]
+
+{ #category : 'actions' }
 HeraScriptEditor >> save [
 
 	self hasChanged ifFalse: [ ^ self ].
@@ -315,6 +331,12 @@ HeraScriptEditor >> updateWarnings [
 HeraScriptEditor >> whenOpenStepDo: aBlock [
 
 	openStepBlock := aBlock
+]
+
+{ #category : 'api' }
+HeraScriptEditor >> whenRunScenarioDo: aBlock [
+
+	runScenarioBlock := aBlock
 ]
 
 { #category : 'api' }

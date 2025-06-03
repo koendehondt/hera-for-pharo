@@ -35,6 +35,12 @@ HeraAstNode >> isLocatedAtTextPosition: anInteger [
 ]
 
 { #category : 'testing' }
+HeraAstNode >> isScenarioNode [
+
+	^ false
+]
+
+{ #category : 'testing' }
 HeraAstNode >> isStepNode [
 
 	^ false

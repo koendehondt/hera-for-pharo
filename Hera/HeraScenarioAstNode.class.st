@@ -44,6 +44,12 @@ HeraScenarioAstNode >> isEmpty [
 	^ self tags isEmpty and: [ self description isNil and: [ self steps isEmpty ] ]
 ]
 
+{ #category : 'testing' }
+HeraScenarioAstNode >> isScenarioNode [
+
+	^ true
+]
+
 { #category : 'accessing' }
 HeraScenarioAstNode >> steps [
 

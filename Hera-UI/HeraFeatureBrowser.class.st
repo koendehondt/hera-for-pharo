@@ -71,7 +71,8 @@ HeraFeatureBrowser >> connectPresenters [
 	featureSelector whenFeatureSelectionChangedDo: [ :featureMethodItem |
 		scriptEditor model: featureMethodItem ].
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
-	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ]
+	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ].
+	scriptEditor whenRunScenarioDo: [ :scenarioAstNode | self runScenario: scenarioAstNode ]
 ]
 
 { #category : 'layout' }
@@ -151,6 +152,17 @@ HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 HeraFeatureBrowser >> methodFor: aStepAstNode [
 
 	^ self selectedMethodItem acceptanceTest methodForStepDescription: aStepAstNode description
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> runScenario: scenarioAstNode [
+
+	| runner scenarioFilter |
+	runner := self instantiate: HeraRunner.
+	runner open.
+	self flag: 'We are not sure that we are running the right scenario because 2 scenarios could have the same title.'.
+	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
+	runner runAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
 ]
 
 { #category : 'accessing' }
