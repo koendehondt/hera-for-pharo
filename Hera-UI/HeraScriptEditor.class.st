@@ -11,7 +11,8 @@ Class {
 		'cancelButton',
 		'modelChangedInProgress',
 		'originalScript',
-		'browseButton'
+		'browseButton',
+		'runScenarioBlock'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -115,7 +116,7 @@ HeraScriptEditor >> defaultLayout [
 { #category : 'private' }
 HeraScriptEditor >> hasChanged [
 
-	^ originalScript ~= self text
+	^ originalScript ~= self text asString
 ]
 
 { #category : 'initialization' }
