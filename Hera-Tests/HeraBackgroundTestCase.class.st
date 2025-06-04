@@ -16,9 +16,17 @@ HeraBackgroundTestCase >> describedClass [
 HeraBackgroundTestCase >> testAnd [
 
 	| expectedStep |
-	subject and: 'I see the new messages'.
-	expectedStep := HeraAndStep new
-		description: 'I see the new messages'.
+	subject and: 'I have a password'.
+	expectedStep := HeraAndStep new description: 'I have a password'.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests - dsl' }
+HeraBackgroundTestCase >> testBut [
+
+	| expectedStep |
+	subject but: 'no email'.
+	expectedStep := HeraButStep new description: 'no email'.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 

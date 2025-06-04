@@ -30,7 +30,8 @@ HeraAcceptanceTestExamplesForTesting >> featureWithBackground [
 	^ (self feature: 'With background')
 		background: (self background
 			given: 'I have a user name';
-			and: 'a password');
+			and: 'a password';
+			but: 'no email');
 		scenarios: {
 			(self scenario: 'Successful sign-in')
 				when: 'I enter my credentials';

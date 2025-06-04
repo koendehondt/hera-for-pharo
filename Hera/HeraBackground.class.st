@@ -21,6 +21,12 @@ HeraBackground >> and: aString [
 	steps add: (HeraAndStep new description: aString)
 ]
 
+{ #category : 'accessing' }
+HeraBackground >> but: aString [
+
+	steps add: (HeraButStep new description: aString)
+]
+
 { #category : 'dsl' }
 HeraBackground >> given: aString [
 
