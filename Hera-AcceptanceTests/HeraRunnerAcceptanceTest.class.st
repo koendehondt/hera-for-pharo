@@ -67,11 +67,11 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 ]
 
 { #category : 'features' }
-HeraRunnerAcceptanceTest >> featureRunningScenariosInIsolation [
+HeraRunnerAcceptanceTest >> featureScenariosRunInIsolation [
 
-	<heraFeature: 'Running scenarios in isolation'>
+	<heraFeature: 'Scenarios run in isolation'>
 
-	^ (self feature: 'Running scenarios in isolation')
+	^ (self feature: 'Scenarios run in isolation')
 		scenarios: {
 			(self scenario: 'Storing a value in an instance variable')
 				when: 'the first scenario stores a value in an instance variable';

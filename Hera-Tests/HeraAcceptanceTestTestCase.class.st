@@ -38,7 +38,7 @@ HeraAcceptanceTestTestCase >> testClassFeatures [
 HeraAcceptanceTestTestCase >> testCopyForRunning [
 
 	| copy |
-	subject := HeraRunnerAcceptanceTest selector: #featureRunningScenariosInIsolation.
+	subject := HeraRunnerAcceptanceTest selector: #featureScenariosRunInIsolation.
 	subject instanceVariable: 1234.
 	copy := subject copyForRunning.
 	self assert: copy class equals: subject class.
