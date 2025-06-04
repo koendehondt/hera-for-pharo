@@ -96,6 +96,13 @@ HeraAcceptanceTest >> beforeScenario [
 ]
 
 { #category : 'helpers - window management' }
+HeraAcceptanceTest >> closePresenterAt: aNameSymbol [
+
+	(self presenterAt: aNameSymbol) window close.
+	openPresenters removeKey: aNameSymbol
+]
+
+{ #category : 'helpers - window management' }
 HeraAcceptanceTest >> closeWindows [
 
 	openPresenters do: [ :each | each window close ].
@@ -197,6 +204,29 @@ HeraAcceptanceTest >> initializeStepDefinitions [
 				helper: eachHelper;
 				stepMethod: eachStepMethod.
 						self registerExecutableStep: executableStep forStepMethod: eachStepMethod ] ].
+]
+
+{ #category : 'helpers - simulating events' }
+HeraAcceptanceTest >> keyDownEventFromChar: aCharacter alt: useAlt ctrl: useCtrl command: useCommand shift: useShift [
+
+	| event modifier code |
+	event := KeyboardEvent new.
+	modifier := 0.
+	useShift ifTrue: [ modifier := modifier + 8 ].
+	useCtrl ifTrue: [ modifier := modifier + 16 ].
+	useAlt ifTrue: [ modifier := modifier + 32 ].
+	useCommand ifTrue: [ modifier := modifier + 64 ].
+	code := aCharacter asInteger.
+	event
+		setType: #keyDown
+		buttons: modifier
+		position: 0 @ 0
+		keyValue: code
+		charCode: code
+		hand: self currentWorld currentHand
+		stamp: Time now.
+	event key: (KeyboardKey fromCharacter: aCharacter).
+	^ event
 ]
 
 { #category : 'accessing' }

@@ -2,7 +2,8 @@ Class {
 	#name : 'HeraRunnerAcceptanceTest',
 	#superclass : 'HeraSelfAcceptanceTest',
 	#instVars : [
-		'instanceVariable'
+		'instanceVariable',
+		'browsingScope'
 	],
 	#category : 'Hera-AcceptanceTests',
 	#package : 'Hera-AcceptanceTests'
@@ -67,6 +68,29 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 ]
 
 { #category : 'features' }
+HeraRunnerAcceptanceTest >> featureRunningSingleScenarios [
+
+	<heraFeature: 'Running single scenarios'>
+
+	^ (self feature: 'Running single scenarios')
+		scenarios: {
+			(self scenario: 'Run one scenario of a feature with two scenarios')
+				given: 'a feature with two scenarios';
+				when: 'I open the Feature Browser';
+				when: 'I select the feature';
+				then: 'I see the script of the feature in the browser';
+				when: 'I click in a step of the second scenario';
+				and: 'I press Command-R';
+				then: 'I see a Feature Runner';
+				and: 'I see the output of running the second scenario';
+				when: 'I close the Feature Runner';
+				when: 'I click in a step of the first scenario';
+				and: 'I press Command-R';
+				then: 'I see a Feature Runner';
+				and: 'I see the output of running the first scenario' }
+]
+
+{ #category : 'features' }
 HeraRunnerAcceptanceTest >> featureScenariosRunInIsolation [
 
 	<heraFeature: 'Scenarios run in isolation'>
@@ -100,6 +124,34 @@ HeraRunnerAcceptanceTest >> stepADebuggerIsOpenOnTheDefinitionOfTheFailingStep [
 ]
 
 { #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepAFeatureWithTwoScenarios [
+
+	<heraStepDefinition: #(Given 'a feature with two scenarios')>
+
+	browsingScope := HeraScope default addClass: HeraAcceptanceTestWithPassForTesting
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepIClickInAStepOfTheFirstScenario [
+
+	<heraStepDefinition: #(When 'I click in a step of the first scenario')>
+
+	| startOfStep |
+	startOfStep := self featureBrowser script string indexOfSubCollection: 'I see the home page'.
+	self featureBrowser setCaretAt: startOfStep
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepIClickInAStepOfTheSecondScenario [
+
+	<heraStepDefinition: #(When 'I click in a step of the second scenario')>
+
+	| startOfStep |
+	startOfStep := self featureBrowser script string indexOfSubCollection: 'I am still on the sign-in page'.
+	self featureBrowser setCaretAt: startOfStep
+]
+
+{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepIClickTheButtonLabeled: aString [
 
 	<heraStepDefinition: #(When match 'I click the {string} button')>
@@ -109,6 +161,22 @@ HeraRunnerAcceptanceTest >> stepIClickTheButtonLabeled: aString [
 		with: 'Continue' -> #clickContinueButton
 		with: 'Step' -> #clickStepButton.
 	self featureRunner perform: (mapping at: aString)
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepICloseTheFeatureRunner [
+
+	<heraStepDefinition: #(When 'I close the Feature Runner')>
+
+	self closePresenterAt: #featureRunner
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepIOpenTheFeatureBrowser [
+
+	<heraStepDefinition: #(When 'I open the Feature Browser')>
+
+	self openFeatureBrowser: (HeraFeatureBrowser new scope: browsingScope)
 ]
 
 { #category : 'steps' }
@@ -163,6 +231,14 @@ HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToStepThrough
 ]
 
 { #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepIPressCommandR [
+
+	<heraStepDefinition: #(When 'I press Command-R')>
+
+	self featureBrowser simulateEventInScriptEditor: (self keyDownEventFromChar: $r alt: false ctrl: false command: true shift: false)
+]
+
+{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepIPressTheContinueButton [
 
 	<heraStepDefinition: #(When 'I press the "Continue" button')>
@@ -186,6 +262,14 @@ HeraRunnerAcceptanceTest >> stepISeeADisabledButtonLabeled: aString [
 		with: 'Step' -> #hasDisabledStepOverButton.
 		"The Restart button is not included here because it is never disabled."
 	self assert: (self featureRunner perform: (mapping at: aString))
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeAFeatureRunner [
+
+	<heraStepDefinition: #(Then 'I see a Feature Runner')>
+
+	self detectPresenterInTopWindowAs: #featureRunner
 ]
 
 { #category : 'steps' }
@@ -273,6 +357,41 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheFirstScenario [
+
+	<heraStepDefinition: #(Given 'I see the output of running the first scenario')>
+
+	self assert: self featureRunner runLog asString equals: 'Feature: Signing in
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+Total: 1. Passed: 1. Failed: 0. Error: 0.
+'
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheSecondScenario [
+
+	<heraStepDefinition: #(Then 'I see the output of running the second scenario')>
+
+	self assert: self featureRunner runLog asString equals: 'Feature: Signing in
+
+	Scenario: Unsuccessful sign-in
+		Given I have credentials to sign in
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong
+
+Total: 1. Passed: 1. Failed: 0. Error: 0.
+'
+]
+
+{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepISeeTheOutputOfTheTestRunUptoTheFailingStep [
 
 	<heraStepDefinition: #(Then 'I see the output of the test run upto the failing step')>
@@ -291,6 +410,47 @@ HeraRunnerAcceptanceTest >> stepISeeTheScenarioLineOfTheScriptInTheOutput [
 	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
 
 	Scenario: Successful sign-in'
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISeeTheScriptOfTheFeatureInTheBrowser [
+
+	<heraStepDefinition: #(Then 'I see the script of the feature in the browser')>
+
+	self
+		expect: self featureBrowser script
+		toEqual: '@accessing_the_system
+@signing_in
+Feature: Signing in
+
+	Signing in is required to have access to the application.
+
+	Signing in requires credentials: an email address and a password.
+
+	@sign_in
+	Scenario: Successful sign-in
+
+		Access is allowed when the credentials are recognized.
+
+		Given I have credentials to sign in
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+	Scenario: Unsuccessful sign-in
+		Given I have credentials to sign in
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong'
+]
+
+{ #category : 'steps' }
+HeraRunnerAcceptanceTest >> stepISelectTheFeature [
+
+	<heraStepDefinition: #(When 'I select the feature')>
+
+	self featureBrowser selectPath: #(1 1)
 ]
 
 { #category : 'steps' }

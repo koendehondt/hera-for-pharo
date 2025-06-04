@@ -202,6 +202,20 @@ HeraFeatureBrowser >> selectedMethodItem [
 	^ featureSelector selectedItem
 ]
 
+{ #category : 'test api' }
+HeraFeatureBrowser >> setCaretAt: caretPosition [
+
+	scriptEditor setCaretAt: caretPosition
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> simulateEventInScriptEditor: event [
+
+	scriptEditor withAdapterDo: [ :anAdapter |
+		anAdapter widgetDo: [ :widget|
+			widget activeHand handleEvent: event ] ]
+]
+
 { #category : 'private' }
 HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 

@@ -222,6 +222,13 @@ HeraScriptEditor >> selectionInterval: anInterval [
 	script selectionInterval: anInterval
 ]
 
+{ #category : 'test api' }
+HeraScriptEditor >> setCaretAt: caretPosition [
+
+	script takeKeyboardFocus.
+	self selectionInterval: (caretPosition to: caretPosition - 1)
+]
+
 { #category : 'initialization' }
 HeraScriptEditor >> setupAfterOpening [
 
