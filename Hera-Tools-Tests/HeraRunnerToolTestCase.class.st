@@ -92,7 +92,25 @@ Feature: Running features
 		And I see an enabled "Restart" button
 
 
-Feature: Running scenarios in isolation
+Feature: Running single scenarios
+
+	Scenario: Run one scenario of a feature with two scenarios
+		Given a feature with two scenarios
+		When I open the Feature Browser
+		When I select the feature
+		Then I see the script of the feature in the browser
+		When I click in a step of the second scenario
+		And I press Command-R
+		Then I see a Feature Runner
+		And I see the output of running the second scenario
+		When I close the Feature Runner
+		When I click in a step of the first scenario
+		And I press Command-R
+		Then I see a Feature Runner
+		And I see the output of running the first scenario
+
+
+Feature: Scenarios run in isolation
 
 	Scenario: Storing a value in an instance variable
 		When the first scenario stores a value in an instance variable
@@ -103,9 +121,9 @@ Feature: Running scenarios in isolation
 		Then the instance variable does not hold the value stored by the first scenario
 
 
-Number of features: 3
-Number of scenarios: 9
-Passed: 9
+Number of features: 4
+Number of scenarios: 10
+Passed: 10
 Failed: 0
 Error: 0'
 ]
