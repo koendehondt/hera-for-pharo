@@ -65,6 +65,8 @@ HeraRunnableScriptTestCase >> testInstructionsWithBackground [
 		(HeraStartScenarioInstruction for: firstScenario) .
 		HeraBeforeScenarioHookInstruction new .
 		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: feature background steps first)).
+		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: feature background steps second)).
+		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: feature background steps third)).
 		(HeraRunStepInstruction for: firstScenarioSteps first) .
 		(HeraRunStepInstruction for: firstScenarioSteps second) .
 		(HeraRunStepInstruction for: firstScenarioSteps third) .
@@ -73,6 +75,8 @@ HeraRunnableScriptTestCase >> testInstructionsWithBackground [
 		(HeraStartScenarioInstruction for: secondScenario) .
 		HeraBeforeScenarioHookInstruction new .
 		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: feature background steps first)).
+		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: feature background steps second)).
+		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: feature background steps third)).
 		(HeraRunStepInstruction for: secondScenarioSteps first) .
 		(HeraRunStepInstruction for: secondScenarioSteps second) .
 		(HeraRunStepInstruction for: secondScenarioSteps third) .
@@ -84,7 +88,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithBackground [
 	backgroundStep := feature background steps first.
 	backgroundInstruction := (instructions at: 5) stepInstruction.
 	self assert: backgroundInstruction equals: (HeraRunStepInstruction for: backgroundStep).
-	backgroundInstruction := (instructions at: 13) stepInstruction.
+	backgroundInstruction := (instructions at: 15) stepInstruction.
 	self assert: backgroundInstruction equals: (HeraRunStepInstruction for: backgroundStep)
 ]
 

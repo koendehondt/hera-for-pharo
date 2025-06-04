@@ -54,7 +54,9 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 	text := Text fromString:	'Feature: With background
 
 	Background:
-		Given I have credentials to sign in
+		Given I have a user name
+		And a password
+		But no email
 
 	Scenario: Successful sign-in
 		When I enter my credentials
@@ -69,8 +71,8 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 28 to: 38;
-		addAttribute: TextEmphasis bold from: 80 to: 88;
-		addAttribute: TextEmphasis bold from: 204 to: 212.
+		addAttribute: TextEmphasis bold from: 101 to: 109;
+		addAttribute: TextEmphasis bold from: 225 to: 233.
 	^ text
 ]
 

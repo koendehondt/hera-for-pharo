@@ -366,6 +366,12 @@ HeraAcceptanceTestExamplesForTesting >> stepISeeThemInTheListOfUsers [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepNoEmail [
+
+	<heraStepDefinition: #(Given 'no email')>
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepTheAPIReceivesARequest: aHttpVerb for: aUrl [
 
 	<heraStepDefinition: #(When match 'the API receives a {word} request {}')>

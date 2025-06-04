@@ -445,16 +445,22 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithBackground [
 	text := Text fromString: 'Feature: With background
 
 	Background:
-		Given I have credentials to sign in
+		Given I have a user name
+		And a password
+		But no email
 
 	Scenario: Successful sign-in
-		Given I have credentials to sign in [Background]
+		Given I have a user name [Background]
+		And a password [Background]
+		But no email [Background]
 		When I enter my credentials
 		And I press the button to sign in
 		Then I see the home page
 
 	Scenario: Unsuccessful sign-in
-		Given I have credentials to sign in [Background]
+		Given I have a user name [Background]
+		And a password [Background]
+		But no email [Background]
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
@@ -465,8 +471,8 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 28 to: 38;
-		addAttribute: TextEmphasis bold from: 80 to: 88;
-		addAttribute: TextEmphasis bold from: 255 to: 263.
+		addAttribute: TextEmphasis bold from: 101 to: 109;
+		addAttribute: TextEmphasis bold from: 323 to: 331.
 	^ text
 ]
 
