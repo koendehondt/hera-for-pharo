@@ -61,21 +61,18 @@ HeraParser >> parseBackground [
 HeraParser >> parseDataTableStepArgument [
 
 	"DataTableToken has already been read."
-	| rows rowSizes end skippedEmptyLines start |
+	| rows rowSizes end start |
 	start := currentToken start.
 	rowSizes := Set new.
 	rows := OrderedCollection new.
-	skippedEmptyLines := false.
 	[ currentToken isDataTableToken ] whileTrue: [ | cellValues |
 		cellValues := self dataValuesFrom: currentToken.
 		rowSizes add: cellValues size.
 		rows add: cellValues.
 		end := currentToken end.
 		self nextToken. "Read end of line"
-		skippedEmptyLines := skippedEmptyLines or: [ self skipEmptyLines ] ].
+		self skipEmptyLines].
 	rows ifEmpty: [ ^ nil ].
-	skippedEmptyLines ifTrue: [
-		self parseError: 'Empty lines in data tables are not allowed' from: start to: end ].
 	rowSizes size > 1 ifTrue: [
 		self parseError: 'Data table has missing cells' from: start to: end ].
 	^ HeraDataTableStepArgumentAstNode new
@@ -278,7 +275,7 @@ HeraParser >> parseStep [
 		end: currentToken end.
 	self skipEndOfLineToken.
 	scanner skipWhiteSpace.
-	self nextToken.
+	self skipEmptyLines.
 	self parseStepArgument ifNotNil: [ :argumentAstNode |
 		stepNode
 			argument: argumentAstNode;

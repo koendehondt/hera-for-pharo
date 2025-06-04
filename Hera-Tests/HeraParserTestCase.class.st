@@ -197,22 +197,77 @@ HeraParserTestCase >> testParseDataTable [
 	self assert: butStepNode end equals: 691
 ]
 
-{ #category : 'tests - parsing errors' }
-HeraParserTestCase >> testParseDataTableWithEmptyLine [
+{ #category : 'tests' }
+HeraParserTestCase >> testParseDataTableBeforeScenario [
 
-	self
-		assertError: 'Empty lines in data tables are not allowed'
-		start: 103
-		end: 164
-		whenParsing: '
+	| script ast firstScenarioNode stepNodes givenStepNode secondScenarioNode |
+	script := '
+	Feature: Unfinished with a scenario after a data table
+		Scenario: 10% raise
+			Given the current salaries of the following employees
+				| Name  | Salary |
+				| John  | 1000   |
+
+		Scenario: 20% raise'.
+	ast := self parseFeature: script.
+	self assert: ast scenarios size equals: 2.
+	firstScenarioNode := ast scenarios first.
+	stepNodes := firstScenarioNode steps.
+	self assert: stepNodes size equals: 1.
+
+	givenStepNode := stepNodes first.
+	self assert: givenStepNode class equals: HeraGivenAstNode.
+	self assert: givenStepNode description equals: 'the current salaries of the following employees'.
+	self assert: givenStepNode argument class equals: HeraDataTableStepArgumentAstNode.
+	self assert: givenStepNode argument dataTable equals: (HeraDataTable new data: {
+		{ 'Name' . 'Salary' } .
+		{ 'John' . '1000' } }).
+	self assert: givenStepNode start equals: 83.
+	self assert: givenStepNode end equals: 181.
+	secondScenarioNode := ast scenarios second.
+	self assert: secondScenarioNode steps isEmpty.
+	self assert: secondScenarioNode start equals: 186.
+	self assert: secondScenarioNode end equals: 204
+]
+
+{ #category : 'tests - parsing errors' }
+HeraParserTestCase >> testParseDataTableWithEmptyLines [
+
+	| script ast scenarioNode firstStepNode secondStepNode |
+	script := '
 			Feature: User management
 
 				Scenario: Listing users
 					Given the following users exist:
+
 						| Name | Email            |
 
 						| Jane | jane@testing.org |
-					Then I see them in the list of users'
+
+					Then I see them in the list of users'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'User management'.
+	self assert: ast scenarios size equals: 1.
+	scenarioNode := ast scenarios first.
+	self assert: scenarioNode class equals: HeraScenarioAstNode.
+	self assert: scenarioNode tags isEmpty.
+	self assert: scenarioNode title text equals: 'Listing users'.
+	self assert: scenarioNode steps size equals: 2.
+	firstStepNode := scenarioNode steps first.
+	self assert: firstStepNode class equals: HeraGivenAstNode.
+	self assert: firstStepNode description equals: 'the following users exist:'.
+	self assert: firstStepNode argument dataTable equals: (HeraDataTable new data: {
+		{ 'Name' . 'Email' } .
+		{ 'Jane' . 'jane@testing.org' }}).
+	self assert: firstStepNode start equals: 64.
+	self assert: firstStepNode end equals: 165.
+	secondStepNode := scenarioNode steps second.
+	self assert: secondStepNode class equals: HeraThenAstNode.
+	self assert: secondStepNode description equals: 'I see them in the list of users'.
+	self assert: secondStepNode argument isNil
 ]
 
 { #category : 'tests - parsing errors' }
