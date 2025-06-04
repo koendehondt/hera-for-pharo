@@ -446,6 +446,74 @@ HeraParserTestCase >> testParseDocString [
 ]
 
 { #category : 'tests - parsing errors' }
+HeraParserTestCase >> testParseDocStringWithEmptyLineAfterClosingTripleQuotes [
+
+	| script ast firstScenarioNode stepNodes givenStepNode secondScenarioNode |
+	script := '
+	Feature: REST API for users
+
+		Scenario: GET users
+			Given the following users:
+
+				"""
+				John,john@testing.org
+				Jane,jane@testing.org
+				"""
+
+			Scenario: GET users'.
+	ast := self parseFeature: script.
+	self assert: ast scenarios size equals: 2.
+	firstScenarioNode := ast scenarios first.
+	stepNodes := firstScenarioNode steps.
+	self assert: stepNodes size equals: 1.
+
+	givenStepNode := stepNodes first.
+	self assert: givenStepNode class equals: HeraGivenAstNode.
+	self assert: givenStepNode description equals: 'the following users:'.
+	self assert: givenStepNode argument class equals: HeraDocStringStepArgumentAstNode.
+	self assert: givenStepNode argument docString equals: (HeraDocString new lines: { 
+		'John,john@testing.org' .
+		'Jane,jane@testing.org' }).
+	self assert: givenStepNode start equals: 57.
+	self assert: givenStepNode end equals: 151.
+	secondScenarioNode := ast scenarios second.
+	self assert: secondScenarioNode steps isEmpty.
+	self assert: secondScenarioNode start equals: 157.
+	self assert: secondScenarioNode end equals: 175
+]
+
+{ #category : 'tests - parsing errors' }
+HeraParserTestCase >> testParseDocStringWithEmptyLineBeforeOpeningTripleQuotes [
+
+	| script ast scenarioNode stepNodes givenStepNode |
+	script := '
+	Feature: REST API for users
+
+		Scenario: GET users
+			Given the following users:
+
+				"""
+				John,john@testing.org
+				Jane,jane@testing.org
+				"""'.
+	ast := self parseFeature: script.
+	self assert: ast scenarios size equals: 1.
+	scenarioNode := ast scenarios first.
+	stepNodes := scenarioNode steps.
+	self assert: stepNodes size equals: 1.
+
+	givenStepNode := stepNodes first.
+	self assert: givenStepNode class equals: HeraGivenAstNode.
+	self assert: givenStepNode description equals: 'the following users:'.
+	self assert: givenStepNode argument class equals: HeraDocStringStepArgumentAstNode.
+	self assert: givenStepNode argument docString equals: (HeraDocString new lines: { 
+		'John,john@testing.org' .
+		'Jane,jane@testing.org' }).
+	self assert: givenStepNode start equals: 57.
+	self assert: givenStepNode end equals: 151
+]
+
+{ #category : 'tests - parsing errors' }
 HeraParserTestCase >> testParseDocStringWithLessIndentationIsNotAllowed [
 
 	self
