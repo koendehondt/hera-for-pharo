@@ -9,13 +9,13 @@ Class {
 { #category : 'running' }
 HeraAcceptanceTestWithSingleQuotedStepArgumentsTestCase >> describedClass [
 
-	^ HeraAcceptanceTest
+	^ HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting
 ]
 
 { #category : 'running' }
 HeraAcceptanceTestWithSingleQuotedStepArgumentsTestCase >> initializeSubject [
 
-	subject := HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting selector: #featureSigningInWithEmailAndPassword
+	subject := self describedClass selector: #featureSigningInWithEmailAndPassword
 ]
 
 { #category : 'tests' }
