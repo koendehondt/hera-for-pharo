@@ -19,6 +19,17 @@ HeraSettingsTestCase >> initializeSubject [
 ]
 
 { #category : 'tests' }
+HeraSettingsTestCase >> testClassInitialization [
+
+	| oldUniqueInstance newUniqueInstance |
+	oldUniqueInstance := self describedClass uniqueInstance. 
+	self describedClass initialize.
+	newUniqueInstance := self describedClass uniqueInstance.
+	self assert: (newUniqueInstance isMemberOf: self describedClass).
+	self deny: newUniqueInstance equals: oldUniqueInstance
+]
+
+{ #category : 'tests' }
 HeraSettingsTestCase >> testIcons [
 
 	self assert: ((subject iconNamed: #crown) isKindOf: Form).

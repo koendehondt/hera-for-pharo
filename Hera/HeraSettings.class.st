@@ -52,12 +52,6 @@ HeraSettings class >> uniqueInstance [
 ]
 
 { #category : 'accessing' }
-HeraSettings >> iconForClass: aClass [
-
-	^ self iconNamed: aClass systemIconName
-]
-
-{ #category : 'accessing' }
 HeraSettings >> iconNamed: aSymbol [
 
 	^ Icons at: aSymbol ifAbsent: [ Smalltalk ui icons iconNamed: aSymbol ]
