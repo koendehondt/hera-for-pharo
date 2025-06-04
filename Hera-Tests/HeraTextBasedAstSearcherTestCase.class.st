@@ -60,7 +60,17 @@ Feature: Signing in
 		Given I have credentials to sign in
 		When I enter my credentials
 		And I press the button to sign in
-		Then I see the home page'
+		Then I see the home page
+
+	Scenario: Unsuccessful sign-in
+
+		Signing in is impossible without correct credentials.
+
+		Given I have credentials to sign in
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong'
 ]
 
 { #category : 'private' }
@@ -84,7 +94,7 @@ HeraTextBasedAstSearcherTestCase >> startPositionOf: aString in: aScript [
 	^ aScript indexOfSubCollection: aString
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureBackgroundFromEndPosition [
 
 	| astNode endPosition |
@@ -95,7 +105,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureBackgroundFromEndPosition [
 	self assert: astNode class equals: HeraBackgroundAstNode
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureBackgroundFromStartPosition [
 
 	| astNode startPosition |
@@ -106,7 +116,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureBackgroundFromStartPosition
 	self assert: astNode class equals: HeraBackgroundAstNode
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureDescriptionFromEndPosition [
 
 	| astNode endPosition |
@@ -123,7 +133,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureDescriptionFromEndPosition 
 			with: 'Signing in requires credentials: an email address and a password.')
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureDescriptionFromStartPosition [
 
 	| astNode startPosition |
@@ -140,18 +150,18 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureDescriptionFromStartPositio
 			with: 'Signing in requires credentials: an email address and a password.')
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromEndPositionAnswersLastNode [
 
 	| astNode |
 	astNode := subject
 		textPosition: self script size;
 		visit: self ast.
-	self assert: astNode class equals: HeraThenAstNode.
-	self assert: astNode description equals: 'I see the home page'
+	self assert: astNode class equals: HeraButAstNode.
+	self assert: astNode description equals: 'I see a message that the credentials are wrong'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromPositionOutsideAnyNode [
 
 	| astNode |
@@ -161,7 +171,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromPositionOutsideAnyNode 
 	self deny: astNode class equals: HeraFeatureAstNode
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromStartPosition [
 
 	| astNode |
@@ -171,7 +181,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureFromStartPosition [
 	self assert: astNode class equals: HeraFeatureAstNode
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureTitleFromEndPosition [
 
 	| astNode endPosition |
@@ -183,7 +193,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureTitleFromEndPosition [
 	self assert: astNode text equals: 'Signing in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFeatureTitleFromStartPosition [
 
 	| astNode startPosition |
@@ -195,7 +205,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFeatureTitleFromStartPosition [
 	self assert: astNode text equals: 'Signing in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFirstFeatureTagFromEndPosition [
 
 	| astNode |
@@ -206,7 +216,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFirstFeatureTagFromEndPosition [
 	self assert: astNode name equals: 'accessing_the_system'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFirstFeatureTagFromStartPosition [
 
 	| astNode |
@@ -217,7 +227,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFirstFeatureTagFromStartPosition [
 	self assert: astNode name equals: 'accessing_the_system'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFirstStepFromEndPosition [
 
 	| astNode |
@@ -228,7 +238,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFirstStepFromEndPosition [
 	self assert: astNode description equals: 'I have credentials to sign in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchFirstStepFromStartPosition [
 
 	| astNode |
@@ -239,7 +249,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchFirstStepFromStartPosition [
 	self assert: astNode description equals: 'I have credentials to sign in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchRuleFromEndPosition [
 
 	| astNode |
@@ -250,7 +260,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchRuleFromEndPosition [
 	self assert: astNode title text equals: 'There is only one administrator'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchRuleFromStartPosition [
 
 	| astNode |
@@ -261,7 +271,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchRuleFromStartPosition [
 	self assert: astNode title text equals: 'There is only one administrator'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchScenarioDescriptionFromEndPosition [
 
 	| astNode |
@@ -274,7 +284,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchScenarioDescriptionFromEndPosition
 		equals: (OrderedCollection with: 'Access is allowed when the credentials are recognized.')
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchScenarioDescriptionFromStartPosition [
 
 	| astNode |
@@ -287,7 +297,19 @@ HeraTextBasedAstSearcherTestCase >> testSearchScenarioDescriptionFromStartPositi
 		equals: (OrderedCollection with: 'Access is allowed when the credentials are recognized.')
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching scenarios' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioFromDescription [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'Signing in is impossible without correct credentials.');
+		beForSearchingScenario;
+		visit: self ast.
+	self assert: astNode class equals: HeraScenarioAstNode.
+	self assert: astNode title text equals: 'Unsuccessful sign-in'
+]
+
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchScenarioFromStartPosition [
 
 	| astNode |
@@ -298,7 +320,31 @@ HeraTextBasedAstSearcherTestCase >> testSearchScenarioFromStartPosition [
 	self assert: astNode title text equals: 'Successful sign-in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching scenarios' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioFromStepPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'I am still on the sign-in page');
+		beForSearchingScenario;
+		visit: self ast.
+	self assert: astNode class equals: HeraScenarioAstNode.
+	self assert: astNode title text equals: 'Unsuccessful sign-in'
+]
+
+{ #category : 'tests - searching scenarios' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioFromTag [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: '@successful_sign_in');
+		beForSearchingScenario;
+		visit: self ast.
+	self assert: astNode class equals: HeraScenarioAstNode.
+	self assert: astNode title text equals: 'Successful sign-in'
+]
+
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchScenarioTagFromEndPosition [
 
 	| astNode |
@@ -309,7 +355,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchScenarioTagFromEndPosition [
 	self assert: astNode name equals: 'successful_sign_in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchScenarioTagFromStartPosition [
 
 	| astNode |
@@ -320,7 +366,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchScenarioTagFromStartPosition [
 	self assert: astNode name equals: 'successful_sign_in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchScenarioTitleFromStartPosition [
 
 	| astNode |
@@ -331,7 +377,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchScenarioTitleFromStartPosition [
 	self assert: astNode text equals: 'Successful sign-in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchSecondFeatureTagFromEndPosition [
 
 	| astNode |
@@ -342,7 +388,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchSecondFeatureTagFromEndPosition [
 	self assert: astNode name equals: 'signing_in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchSecondFeatureTagFromStartPosition [
 
 	| astNode |
@@ -353,7 +399,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchSecondFeatureTagFromStartPosition 
 	self assert: astNode name equals: 'signing_in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchSecondStepFromEndPosition [
 
 	| astNode |
@@ -364,7 +410,7 @@ HeraTextBasedAstSearcherTestCase >> testSearchSecondStepFromEndPosition [
 	self assert: astNode description equals: 'I enter my credentials'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - searching deepest node' }
 HeraTextBasedAstSearcherTestCase >> testSearchSecondStepFromStartPosition [
 
 	| astNode |

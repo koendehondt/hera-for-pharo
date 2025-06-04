@@ -24,6 +24,15 @@ HeraAstNodeTestCase >> testIsLocatedAtTextPosition [
 ]
 
 { #category : 'tests' }
+HeraAstNodeTestCase >> testIsScenarioNode [
+
+	| nonScenarioClasses |
+	self assert: HeraScenarioAstNode new isScenarioNode.
+	nonScenarioClasses := HeraAstNode allSubclasses remove: HeraScenarioAstNode; yourself.
+	nonScenarioClasses do: [ :each | self deny: each new isScenarioNode ]
+]
+
+{ #category : 'tests' }
 HeraAstNodeTestCase >> testIsStepNode [
 
 	| stepClasses nonStepClasses |
