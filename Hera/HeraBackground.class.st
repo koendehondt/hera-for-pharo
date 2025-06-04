@@ -15,6 +15,12 @@ HeraBackground >> accept: visitor [
 	visitor visitBackground: self
 ]
 
+{ #category : 'accessing' }
+HeraBackground >> and: aString [
+
+	steps add: (HeraAndStep new description: aString)
+]
+
 { #category : 'dsl' }
 HeraBackground >> given: aString [
 

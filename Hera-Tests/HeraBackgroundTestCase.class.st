@@ -13,6 +13,16 @@ HeraBackgroundTestCase >> describedClass [
 ]
 
 { #category : 'tests - dsl' }
+HeraBackgroundTestCase >> testAnd [
+
+	| expectedStep |
+	subject and: 'I see the new messages'.
+	expectedStep := HeraAndStep new
+		description: 'I see the new messages'.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests - dsl' }
 HeraBackgroundTestCase >> testGiven [
 
 	| expectedStep |

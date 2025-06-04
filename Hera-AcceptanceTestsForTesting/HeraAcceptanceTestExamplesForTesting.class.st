@@ -29,7 +29,8 @@ HeraAcceptanceTestExamplesForTesting >> featureWithBackground [
 
 	^ (self feature: 'With background')
 		background: (self background
-			given: 'I have credentials to sign in');
+			given: 'I have a user name';
+			and: 'a password');
 		scenarios: {
 			(self scenario: 'Successful sign-in')
 				when: 'I enter my credentials';
@@ -240,6 +241,12 @@ HeraAcceptanceTestExamplesForTesting >> featureWithTwoScenarios [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepAPassword [
+
+	<heraStepDefinition: #(Given 'a password')>
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepAnAdministratorUserAndANonAdministratorUserExist [
 
 	<heraStepDefinition: #(Given 'an administrator user and a non-administrator user exist')>
@@ -299,6 +306,12 @@ HeraAcceptanceTestExamplesForTesting >> stepIEnterMyCredentials [
 HeraAcceptanceTestExamplesForTesting >> stepIEnterTheWrongCredentials [
 	
 	<heraStepDefinition: #(When 'I enter the wrong credentials')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIHaveAUserName [
+
+	<heraStepDefinition: #(Given 'I have a user name')>
 ]
 
 { #category : 'steps' }
