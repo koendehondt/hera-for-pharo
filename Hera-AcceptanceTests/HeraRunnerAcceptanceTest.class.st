@@ -269,7 +269,9 @@ HeraRunnerAcceptanceTest >> stepISeeAFeatureRunner [
 
 	<heraStepDefinition: #(Then 'I see a Feature Runner')>
 
-	self detectPresenterInTopWindowAs: #featureRunner
+	| runner |
+	runner := self detectPresenterInTopWindowAs: #featureRunner.
+	self assert: (runner isMemberOf: HeraRunner)
 ]
 
 { #category : 'steps' }
