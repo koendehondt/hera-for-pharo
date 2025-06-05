@@ -235,7 +235,9 @@ HeraRunnerAcceptanceTest >> stepIPressCommandR [
 
 	<heraStepDefinition: #(When 'I press Command-R')>
 
-	self featureBrowser simulateEventInScriptEditor: (self keyDownEventFromChar: $r alt: false ctrl: false command: true shift: false)
+	| isMacOS |
+	isMacOS := Smalltalk os isMacOS.
+	self featureBrowser simulateEventInScriptEditor: (self keyDownEventFromChar: $r alt: false ctrl: isMacOS not command: isMacOS shift: false)
 ]
 
 { #category : 'steps' }
