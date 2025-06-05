@@ -80,11 +80,11 @@ HeraFeatureBrowser >> connectPresenters [
 { #category : 'private' }
 HeraFeatureBrowser >> debugScenario: scenarioAstNode [
 
-	| runner scenarioFilter |
-	runner := self instantiate: HeraRunner.
-	runner open.
+	| scenarioFilter |
 	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
-	runner debugAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
+	(self instantiate: HeraRunner)
+		open;
+		debugAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
 ]
 
 { #category : 'layout' }
@@ -169,12 +169,12 @@ HeraFeatureBrowser >> methodFor: aStepAstNode [
 { #category : 'private' }
 HeraFeatureBrowser >> runScenario: scenarioAstNode [
 
-	| runner scenarioFilter |
-	runner := self instantiate: HeraRunner.
-	runner open.
+	| scenarioFilter |
 	self flag: 'We are not sure that we are running the right scenario because 2 scenarios could have the same title.'.
 	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
-	runner runAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
+	(self instantiate: HeraRunner)
+		open;
+		runAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
 ]
 
 { #category : 'accessing' }
@@ -231,11 +231,11 @@ HeraFeatureBrowser >> simulateEventInScriptEditor: event [
 { #category : 'private' }
 HeraFeatureBrowser >> stepScenario: scenarioAstNode [
 
-	| runner scenarioFilter |
-	runner := self instantiate: HeraRunner.
-	runner open.
+	| scenarioFilter |
 	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
-	runner stepAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
+	(self instantiate: HeraRunner)
+		open;
+		stepAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
 ]
 
 { #category : 'private' }
