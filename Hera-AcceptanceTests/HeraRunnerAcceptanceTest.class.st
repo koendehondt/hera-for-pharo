@@ -271,7 +271,7 @@ HeraRunnerAcceptanceTest >> stepISeeAFeatureRunner [
 
 	| runner |
 	runner := self detectPresenterInTopWindowAs: #featureRunner.
-	self assert: (runner isMemberOf: HeraRunner)
+	self assert: (runner isMemberOf: HeraRunner) description: 'Found: ', SpWindow topWindow model presenter class name
 ]
 
 { #category : 'steps' }
