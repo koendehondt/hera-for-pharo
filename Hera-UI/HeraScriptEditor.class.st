@@ -12,7 +12,9 @@ Class {
 		'modelChangedInProgress',
 		'originalScript',
 		'browseButton',
-		'runScenarioBlock'
+		'runScenarioBlock',
+		'stepScenarioBlock',
+		'debugScenarioBlock'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -101,6 +103,22 @@ HeraScriptEditor >> connectPresenters [
 	script eventHandler whenMouseUpDo: [ :event |
 		event altKeyPressed ifTrue: [ self altKeyClick: event ] ].
 	self installContextMenu
+]
+
+{ #category : 'actions' }
+HeraScriptEditor >> debugScenario [
+
+	| caretPosition astNode |
+	self hasChanged ifTrue: [
+		self inform: 'Please save the script first.'.
+		^ self ].
+	caretPosition := script selectionInterval first.
+	astNode := HeraTextBasedAstSearcher new
+		textPosition: caretPosition;
+		beForSearchingScenario;
+		visit: ast.
+	(astNode isNil or: [ astNode isScenarioNode not ]) ifTrue: [ ^ self ].
+	debugScenarioBlock value: astNode
 ]
 
 { #category : 'layout' }
@@ -271,6 +289,22 @@ HeraScriptEditor >> showWarnings [
 		script addTextSegmentDecoration: decorator ]
 ]
 
+{ #category : 'actions' }
+HeraScriptEditor >> stepScenario [
+
+	| caretPosition astNode |
+	self hasChanged ifTrue: [
+		self inform: 'Please save the script first.'.
+		^ self ].
+	caretPosition := script selectionInterval first.
+	astNode := HeraTextBasedAstSearcher new
+		textPosition: caretPosition;
+		beForSearchingScenario;
+		visit: ast.
+	(astNode isNil or: [ astNode isScenarioNode not ]) ifTrue: [ ^ self ].
+	stepScenarioBlock value: astNode
+]
+
 { #category : 'private' }
 HeraScriptEditor >> submit: source [
 
@@ -335,6 +369,12 @@ HeraScriptEditor >> updateWarnings [
 ]
 
 { #category : 'api' }
+HeraScriptEditor >> whenDebugScenarioDo: aBlock [
+
+	debugScenarioBlock := aBlock
+]
+
+{ #category : 'api' }
 HeraScriptEditor >> whenOpenStepDo: aBlock [
 
 	openStepBlock := aBlock
@@ -344,6 +384,12 @@ HeraScriptEditor >> whenOpenStepDo: aBlock [
 HeraScriptEditor >> whenRunScenarioDo: aBlock [
 
 	runScenarioBlock := aBlock
+]
+
+{ #category : 'api' }
+HeraScriptEditor >> whenStepScenarioDo: aBlock [
+
+	stepScenarioBlock := aBlock
 ]
 
 { #category : 'api' }

@@ -72,7 +72,19 @@ HeraFeatureBrowser >> connectPresenters [
 		scriptEditor model: featureMethodItem ].
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
 	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ].
-	scriptEditor whenRunScenarioDo: [ :scenarioAstNode | self runScenario: scenarioAstNode ]
+	scriptEditor whenRunScenarioDo: [ :scenarioAstNode | self runScenario: scenarioAstNode ].
+	scriptEditor whenStepScenarioDo: [ :scenarioAstNode | self stepScenario: scenarioAstNode ].
+	scriptEditor whenDebugScenarioDo: [ :scenarioAstNode | self debugScenario: scenarioAstNode ]
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> debugScenario: scenarioAstNode [
+
+	| runner scenarioFilter |
+	runner := self instantiate: HeraRunner.
+	runner open.
+	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
+	runner debugAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
 ]
 
 { #category : 'layout' }
@@ -214,6 +226,16 @@ HeraFeatureBrowser >> simulateEventInScriptEditor: event [
 	scriptEditor withAdapterDo: [ :anAdapter |
 		anAdapter widgetDo: [ :widget|
 			widget activeHand handleEvent: event ] ]
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> stepScenario: scenarioAstNode [
+
+	| runner scenarioFilter |
+	runner := self instantiate: HeraRunner.
+	runner open.
+	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
+	runner stepAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
 ]
 
 { #category : 'private' }

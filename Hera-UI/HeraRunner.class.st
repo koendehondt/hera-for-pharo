@@ -61,8 +61,8 @@ HeraRunner >> debugAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
 
 	lastRunAcceptanceTest := anAcceptanceTest.
 	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
-	scriptRunner filter: aFilter.
 	resultSummary model: scriptRunner result.
+	self updateButtons.
 	scriptRunner debug
 ]
 
@@ -245,8 +245,8 @@ HeraRunner >> runAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
 
 	lastRunAcceptanceTest := anAcceptanceTest.
 	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
-	scriptRunner filter: aFilter.
 	resultSummary model: scriptRunner result.
+	self updateButtons.
 	scriptRunner run
 ]
 
@@ -286,6 +286,15 @@ HeraRunner >> stepAcceptanceTest: anAcceptanceTest [
 
 	lastRunAcceptanceTest := anAcceptanceTest.
 	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
+	resultSummary model: scriptRunner result.
+	self updateButtons
+]
+
+{ #category : 'running' }
+HeraRunner >> stepAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
+
+	lastRunAcceptanceTest := anAcceptanceTest.
+	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
 	resultSummary model: scriptRunner result.
 	self updateButtons
 ]
