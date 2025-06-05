@@ -15,16 +15,36 @@ HeraBackground >> accept: visitor [
 	visitor visitBackground: self
 ]
 
-{ #category : 'accessing' }
+{ #category : 'dsl' }
 HeraBackground >> and: aString [
 
 	steps add: (HeraAndStep new description: aString)
 ]
 
-{ #category : 'accessing' }
+{ #category : 'dsl' }
+HeraBackground >> and: aString with: aStepArgument [
+
+	| step |
+	step := HeraAndStep new
+		description: aString;
+		argument: aStepArgument.
+	steps add: step
+]
+
+{ #category : 'dsl' }
 HeraBackground >> but: aString [
 
 	steps add: (HeraButStep new description: aString)
+]
+
+{ #category : 'dsl' }
+HeraBackground >> but: aString with: aStepArgument [
+
+	| step |
+	step := HeraButStep new
+		description: aString;
+		argument: aStepArgument.
+	steps add: step
 ]
 
 { #category : 'dsl' }

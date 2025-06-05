@@ -22,11 +22,37 @@ HeraBackgroundTestCase >> testAnd [
 ]
 
 { #category : 'tests - dsl' }
+HeraBackgroundTestCase >> testAndWithDataTable [
+
+	| expectedStep argument expectedArgument |
+	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	subject and: 'these points are connected' with: argument.
+	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	expectedStep := HeraAndStep new
+		description: 'these points are connected';
+		argument: expectedArgument.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests - dsl' }
 HeraBackgroundTestCase >> testBut [
 
 	| expectedStep |
 	subject but: 'no email'.
 	expectedStep := HeraButStep new description: 'no email'.
+	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests - dsl' }
+HeraBackgroundTestCase >> testButWithDataTable [
+
+	| expectedStep argument expectedArgument |
+	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	subject but: 'these points are not connected' with: argument.
+	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
+	expectedStep := HeraButStep new
+		description: 'these points are not connected';
+		argument: expectedArgument.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
 ]
 
