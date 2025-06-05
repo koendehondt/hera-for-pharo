@@ -24,3 +24,6 @@ Open a Feature Browser without all the features used for testing Hera:
 ```smalltalk
 HeraFeatureBrowser new open
 ```
+## Blog
+
+Hera was introduced in http://localhost:4200/#/blog/posts/13.
