@@ -27,3 +27,15 @@ HeraFeatureBrowser new open
 ## Blog
 
 Hera was introduced in http://localhost:4200/#/blog/posts/13.
+
+## Documentation
+
+Documentation will be available soon. A link to the documentation will be included here.
+
+## Contributions
+
+If you like to contribute, please fork the repo and submit a pull request.
+
+Please run the unit tests before submitting a pull request. You can use Dr Test to run them all after filtering the package list on "Hera".
+
+If the unit tests are not green, the pull request will be rejected without further comment. The same will happen if the test coverage decreases.
