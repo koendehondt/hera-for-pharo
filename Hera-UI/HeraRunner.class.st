@@ -150,7 +150,7 @@ HeraRunner >> hasRunAllScenarios [
 	^ scriptRunner hasRunAllScenarios
 ]
 
-{ #category : 'test api' }
+{ #category : 'testing' }
 HeraRunner >> hasRunSteps [
 
 	^ scriptRunner hasRunSteps
@@ -217,11 +217,16 @@ HeraRunner >> restart [
 { #category : 'running' }
 HeraRunner >> restartAcceptanceTest: anAcceptanceTest [
 
-	| wasDebugging |
+	| wasDebugging filter |
 	scriptRunner terminate.
 	wasDebugging := scriptRunner isDebugging.
-	self stepAcceptanceTest: anAcceptanceTest.
-	scriptRunner isDebugging: wasDebugging
+	filter := scriptRunner filter.
+	lastRunAcceptanceTest := anAcceptanceTest.
+	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
+	resultSummary model: scriptRunner result.
+	scriptRunner isDebugging: wasDebugging.
+	scriptRunner filter: filter.
+	self updateButtons
 ]
 
 { #category : 'test api' }

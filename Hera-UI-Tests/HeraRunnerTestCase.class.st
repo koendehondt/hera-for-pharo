@@ -33,6 +33,62 @@ HeraRunnerTestCase >> testDebugAcceptanceTestFilteredBy [
 ]
 
 { #category : 'tests' }
+HeraRunnerTestCase >> testRestart [
+
+	| expectedRunLog |
+	expectedRunLog := 'Feature: Signing in
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+	Scenario: Unsuccessful sign-in
+		Given I have credentials to sign in
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong
+
+Total: 2. Passed: 2. Failed: 0. Error: 0.
+'.
+	subject runAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	self assert: subject runLog equals: expectedRunLog.
+	subject restart.
+	self deny: subject hasRunSteps.
+	self deny: subject isRunningScenario.
+	subject continue.
+	self assert: subject runLog equals: expectedRunLog
+]
+
+{ #category : 'tests' }
+HeraRunnerTestCase >> testRestartFilteredAcceptanceTest [
+
+	| expectedRunLog |
+	expectedRunLog := 'Feature: Signing in
+
+	Scenario: Unsuccessful sign-in
+		Given I have credentials to sign in
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong
+
+Total: 1. Passed: 1. Failed: 0. Error: 0.
+'.
+	subject
+		runAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature)
+		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').	
+	self assert: subject runLog equals: expectedRunLog.
+	subject restart.
+	self deny: subject hasRunSteps.
+	self deny: subject isRunningScenario.
+	subject continue.
+	self assert: subject runLog equals: expectedRunLog
+]
+
+{ #category : 'tests' }
 HeraRunnerTestCase >> testRunAcceptanceTest [
 
 	subject runAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).

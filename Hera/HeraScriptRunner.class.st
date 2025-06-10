@@ -139,6 +139,12 @@ HeraScriptRunner >> failureClass [
 ]
 
 { #category : 'accessing' }
+HeraScriptRunner >> filter [
+
+	^ runnableScript filter
+]
+
+{ #category : 'accessing' }
 HeraScriptRunner >> filter: aFilter [
 
 	runnableScript filter: aFilter

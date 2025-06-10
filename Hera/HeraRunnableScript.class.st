@@ -31,6 +31,12 @@ HeraRunnableScript >> feature: aFeature [
 	instructionPointer := 0
 ]
 
+{ #category : 'accessing' }
+HeraRunnableScript >> filter [
+
+	^ filter
+]
+
 { #category : 'initialization' }
 HeraRunnableScript >> filter: aFilter [
 
