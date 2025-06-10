@@ -18,6 +18,32 @@ HeraFeatureBrowser class >> defaultPreferredExtent [
 	^ 800@400
 ]
 
+{ #category : 'world menu' }
+HeraFeatureBrowser class >> featureBrowserMenuItemOn: aBuilder [
+	<worldMenu>
+
+	(aBuilder item: #Hera)
+		parent: #Testing;
+		order: 99;
+		keyText: 'o, f';
+		label: self windowTitle;
+		icon: self windowIcon;
+		action: [ self new open ];
+		withSeparatorAfter
+]
+
+{ #category : 'accessing' }
+HeraFeatureBrowser class >> windowIcon [
+
+	^ Hera settings iconNamed: #crown
+]
+
+{ #category : 'accessing' }
+HeraFeatureBrowser class >> windowTitle [
+
+	^ 'Hera Feature Browser'
+]
+
 { #category : 'private' }
 HeraFeatureBrowser >> addStepDefinitionMethodFor: aStepAstNode [
 
@@ -272,11 +298,11 @@ HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 { #category : 'accessing' }
 HeraFeatureBrowser >> windowIcon [
 
-	^ Hera settings iconNamed: #crown
+	^ self class windowIcon
 ]
 
 { #category : 'accessing' }
 HeraFeatureBrowser >> windowTitle [
 
-	^ 'Hera Feature Browser'
+	^ self class windowTitle
 ]
