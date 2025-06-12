@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraAbstractReporter',
+	#name : 'HeraReporter',
 	#superclass : 'Object',
 	#category : 'Hera-Reporting',
 	#package : 'Hera',
@@ -7,115 +7,115 @@ Class {
 }
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportAfterScenarioHookError: anError [
+HeraReporter >> reportAfterScenarioHookError: anError [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportBeforeScenarioHookError: anError [
+HeraReporter >> reportBeforeScenarioHookError: anError [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportEndOfBackground: aBackground [
+HeraReporter >> reportEndOfBackground: aBackground [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportEndOfBackgroundStep: aStep [
+HeraReporter >> reportEndOfBackgroundStep: aStep [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportEndOfFeature: aFeature [
+HeraReporter >> reportEndOfFeature: aFeature [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportEndOfRule: aRule [
+HeraReporter >> reportEndOfRule: aRule [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportEndOfScenario: aScenario [
+HeraReporter >> reportEndOfScenario: aScenario [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportEndOfStep: aStep [
+HeraReporter >> reportEndOfStep: aStep [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportErrorStep: aStep of: aScenario withError: anError [
+HeraReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
+HeraReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportPassedStep: aStep [
+HeraReporter >> reportPassedStep: aStep [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportResult: result [
+HeraReporter >> reportResult: result [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportStartOfBackground: aBackground [
+HeraReporter >> reportStartOfBackground: aBackground [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportStartOfBackgroundStep: aStep [
+HeraReporter >> reportStartOfBackgroundStep: aStep [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportStartOfFeature: aFeature [
+HeraReporter >> reportStartOfFeature: aFeature [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportStartOfRule: aRule [
+HeraReporter >> reportStartOfRule: aRule [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportStartOfScenario: aScenario [
+HeraReporter >> reportStartOfScenario: aScenario [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportStartOfStep: aStep [
+HeraReporter >> reportStartOfStep: aStep [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
-HeraAbstractReporter >> reportSuppressed [
+HeraReporter >> reportSuppressed [
 
 	self subclassResponsibility
 ]

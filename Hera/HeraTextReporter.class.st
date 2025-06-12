@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraTextReporter',
-	#superclass : 'HeraAbstractReporter',
+	#superclass : 'HeraReporter',
 	#instVars : [
 		'stream',
 		'reportsTags',

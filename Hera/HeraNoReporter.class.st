@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraNoReporter',
-	#superclass : 'HeraAbstractReporter',
+	#superclass : 'HeraReporter',
 	#category : 'Hera-Reporting',
 	#package : 'Hera',
 	#tag : 'Reporting'
