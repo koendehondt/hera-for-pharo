@@ -33,6 +33,12 @@ HeraAcceptanceTest class >> isForTestingHera [
 	^ false
 ]
 
+{ #category : 'testing' }
+HeraAcceptanceTest class >> isForTestingPharo [
+
+	^ false
+]
+
 { #category : 'accessing' }
 HeraAcceptanceTest class >> nameInBrowser [
 
@@ -243,6 +249,12 @@ HeraAcceptanceTest >> openPresenter: aPresenter as: aNameSymbol [
 
 	aPresenter open.
 	^ openPresenters at: aNameSymbol put: aPresenter
+]
+
+{ #category : 'helpers - window management' }
+HeraAcceptanceTest >> openPresenterAs: aNameSymbol with: aBlock [
+
+	^ openPresenters at: aNameSymbol put: aBlock value
 ]
 
 { #category : 'preferences' }
