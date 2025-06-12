@@ -62,7 +62,7 @@ HeraAcceptanceTest class >> stepMethods [
 { #category : 'hooks' }
 HeraAcceptanceTest >> afterScenario [
 	"After scenario hook."
-	
+
 	self closeWindows
 ]
 
