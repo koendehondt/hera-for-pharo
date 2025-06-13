@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraStepMethodItemTestCase',
 	#superclass : 'HeraUnitTestCase',
-	#category : 'Hera-UI-Tests-Step Browser',
+	#category : 'Hera-UI-Tests-Feature Browser',
 	#package : 'Hera-UI-Tests',
-	#tag : 'Step Browser'
+	#tag : 'Feature Browser'
 }
 
 { #category : 'running' }
@@ -17,6 +17,23 @@ HeraStepMethodItemTestCase >> testAcceptanceTestClass [
 
 	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage.
 	self assert: subject acceptanceTestClass equals: HeraAcceptanceTestWithStepArgumentsForTesting
+]
+
+{ #category : 'tests' }
+HeraStepMethodItemTestCase >> testSaveSourcePutsMethodInStepsProtocol [
+
+	subject stepMethod: HeraAcceptanceTestExamplesForTesting>>#stepNoEmail.
+	self deny: (HeraAcceptanceTestExamplesForTesting class includesSelector: #stepTest).
+	[
+		subject saveSource: 'stepTest
+
+	<heraStepDefinition: #(When ''I test'')>
+
+	"Do something"'.
+		self assert: (HeraAcceptanceTestExamplesForTesting>>#stepTest) protocol name equals: #steps ]
+		ensure: [
+			(HeraAcceptanceTestExamplesForTesting includesSelector: #stepTest)
+				ifTrue: [ (HeraAcceptanceTestExamplesForTesting>>#stepTest) removeFromSystem ] ]
 ]
 
 { #category : 'tests' }
