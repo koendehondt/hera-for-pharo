@@ -36,13 +36,13 @@ PharoFinderAcceptanceTest >> stepISearchInSelectorsForStepDebug [
 ]
 
 { #category : 'steps' }
-PharoFinderAcceptanceTest >> stepISee3MatchingMethods [
+PharoFinderAcceptanceTest >> stepISeeMatchingMethods: expectedCount [
 
-	<heraStepDefinition: #(Then 'I see 3 matching methods')>
+	<heraStepDefinition: #(Then match 'I see {int} matching methods')>
 
 	| resultTree |
 	resultTree := (self presenterAt: #finder) resultTree.
-	self assert: resultTree roots size equals: 3
+	self assert: resultTree roots size equals: expectedCount
 ]
 
 { #category : 'steps' }
