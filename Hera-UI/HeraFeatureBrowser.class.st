@@ -151,6 +151,7 @@ HeraFeatureBrowser >> heraApplication [
 
 	^ HeraApplication new
 		addStyleSheetFromString: '.application [
+			.resultCount [ Draw { #color: #black } ],
 			.total [ Draw { #backgroundColor: #white} ],
 			.passed [ Draw { #backgroundColor: #green } ],
 			.failed [ Draw { #backgroundColor: #yellow } ],

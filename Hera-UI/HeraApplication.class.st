@@ -1,7 +1,7 @@
 Class {
 	#name : 'HeraApplication',
 	#superclass : 'SpApplication',
-	#category : 'Hera-UI-Feature Browser',
+	#category : 'Hera-UI-Core',
 	#package : 'Hera-UI',
-	#tag : 'Feature Browser'
+	#tag : 'Core'
 }

@@ -27,4 +27,6 @@ HeraRunnerResultCount >> defaultLayout [
 HeraRunnerResultCount >> initializePresenters [
 
 	countLabel := self newLabel
+		addStyle: 'resultCount';
+		yourself
 ]
