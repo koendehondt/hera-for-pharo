@@ -130,7 +130,7 @@ HeraAcceptanceTest >> dataTable: anArrayOfArrays [
 { #category : 'helpers - window management' }
 HeraAcceptanceTest >> detectPresenterInTopWindowAs: aNameSymbol [
 
-	^ openPresenters at: aNameSymbol put: SpWindow topWindow model presenter
+	^ openPresenters at: aNameSymbol put: SystemWindow topWindow model presenter
 ]
 
 { #category : 'dsl' }
