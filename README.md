@@ -26,11 +26,11 @@ HeraFeatureBrowser new open
 ```
 ## Blog
 
-Hera was introduced in http://localhost:4200/#/blog/posts/13.
+Read the [introduction](https://all-objects-all-the-time.st/#/blog/posts/13).
 
 ## Documentation
 
-Documentation will be available soon. A link to the documentation will be included here.
+Read the [documentation](https://all-objects-all-the-time.st/#/projects/hera).
 
 ## Contributions
 
