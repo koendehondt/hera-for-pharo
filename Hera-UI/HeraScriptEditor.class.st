@@ -195,9 +195,7 @@ HeraScriptEditor >> modelChanged [
 	cancelButton enabled: false.
 	browseButton enabled: hasModel.
 	self model
-		ifNil: [
-			self text: ''.
-			script placeholder: self scriptPlaceholderText ]
+		ifNil: [ self text: '' ]
 		ifNotNil: [
 			text := self model richScript.
 			self
@@ -234,12 +232,6 @@ HeraScriptEditor >> save [
 
 	self hasChanged ifFalse: [ ^ self ].
 	self submit: script text
-]
-
-{ #category : 'private' }
-HeraScriptEditor >> scriptPlaceholderText [
-
-	^ 'Select a feature in the feature selector to edit its Gherkin script.'
 ]
 
 { #category : 'api' }

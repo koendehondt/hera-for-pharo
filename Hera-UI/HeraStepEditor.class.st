@@ -30,14 +30,6 @@ HeraStepEditor >> cancel [
 	self modelChanged
 ]
 
-{ #category : 'private' }
-HeraStepEditor >> codePlaceholderText [
-
-	^ Smalltalk os isMacOS
-		ifTrue: [ 'Option-Click on a step in the script editor to edit its definition.' ]
-		ifFalse: [ 'Alt-Click on a step in the script editor to edit its definition.' ]
-]
-
 { #category : 'initialization' }
 HeraStepEditor >> connectPresenters [
 
@@ -146,8 +138,7 @@ HeraStepEditor >> modelChanged [
 			type resetSelection.
 			description text: ''.
 			pattern resetSelection.
-			code text: ''.
-			code placeholder: self codePlaceholderText ]
+			code text: '' ]
 		ifNotNil: [
 			type selectItem: stepMethodItem stepType.
 			description text: stepMethodItem stepDescription.
