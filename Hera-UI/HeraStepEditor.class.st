@@ -30,6 +30,14 @@ HeraStepEditor >> cancel [
 	self modelChanged
 ]
 
+{ #category : 'private' }
+HeraStepEditor >> codePlaceholderText [
+
+	^ Smalltalk os isMacOS
+		ifTrue: [ 'Option-Click on a step in the script editor to edit its definition.' ]
+		ifFalse: [ 'Alt-Click on a step in the script editor to edit its definition.' ]
+]
+
 { #category : 'initialization' }
 HeraStepEditor >> connectPresenters [
 
@@ -67,15 +75,16 @@ HeraStepEditor >> defaultLayout [
 { #category : 'private' }
 HeraStepEditor >> hasChanged [
 
-	^ type selectedItem ~= self model stepType
+	^ self model isNotNil and: [ type selectedItem ~= self model stepType
 		or: [ pattern selectedItem ~= (self labelForPattern: self model stepPattern)
 		or: [ originalDescription ~= description text
-		or: [ originalCode ~= code text ] ] ]
+		or: [ originalCode ~= code text ] ] ] ]
 ]
 
 { #category : 'initialization' }
 HeraStepEditor >> initializePresenters [
 
+	modelChangedInProgress := false.
 	self model: nil. "Otherwise the announcing object is not set."
 	self initializeToolbarButtons.
 	type := self newDropList
@@ -130,13 +139,15 @@ HeraStepEditor >> modelChanged [
 	browseButton enabled: hasModel.
 	type enabled: hasModel.
 	description enabled: hasModel.
+	pattern enabled: hasModel.
 	code enabled: hasModel.
 	stepMethodItem
 		ifNil: [
 			type resetSelection.
 			description text: ''.
 			pattern resetSelection.
-			code text: '' ]
+			code text: ''.
+			code placeholder: self codePlaceholderText ]
 		ifNotNil: [
 			type selectItem: stepMethodItem stepType.
 			description text: stepMethodItem stepDescription.
@@ -180,6 +191,12 @@ HeraStepEditor >> save [
 		generatedCode.
 	stepMethod := self model saveSource: stepMethodSource.
 	self model: (HeraStepMethodItem new stepMethod: stepMethod)
+]
+
+{ #category : 'initialization' }
+HeraStepEditor >> setupAfterOpening [
+
+	self modelChanged
 ]
 
 { #category : 'private' }
@@ -237,4 +254,10 @@ HeraStepEditor >> updateAfterCodeChange [
 	enabled := self hasChanged.
 	saveButton enabled: enabled.
 	cancelButton enabled: enabled
+]
+
+{ #category : 'updating' }
+HeraStepEditor >> updatePresenter [
+
+	"Do not send #modelChanged because the adapter of the script text presenter does not exist yet."
 ]

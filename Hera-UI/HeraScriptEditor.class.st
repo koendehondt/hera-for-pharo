@@ -195,7 +195,9 @@ HeraScriptEditor >> modelChanged [
 	cancelButton enabled: false.
 	browseButton enabled: hasModel.
 	self model
-		ifNil: [ self text: '' ]
+		ifNil: [
+			self text: ''.
+			script placeholder: self scriptPlaceholderText ]
 		ifNotNil: [
 			text := self model richScript.
 			self
@@ -234,6 +236,12 @@ HeraScriptEditor >> save [
 	self submit: script text
 ]
 
+{ #category : 'private' }
+HeraScriptEditor >> scriptPlaceholderText [
+
+	^ 'Select a feature in the feature selector to edit its Gherkin script.'
+]
+
 { #category : 'api' }
 HeraScriptEditor >> selectionInterval: anInterval [
 
@@ -253,7 +261,8 @@ HeraScriptEditor >> setupAfterOpening [
 	script withAdapterDo: [ :textAdapter |
 		textAdapter widget
 			withTextSegmentIcons;
-			withLineNumbers ]
+			withLineNumbers ].
+	self modelChanged
 ]
 
 { #category : 'private' }
@@ -360,6 +369,12 @@ HeraScriptEditor >> updateAfterScriptChange [
 	enabled := self hasChanged.
 	saveButton enabled: enabled.
 	cancelButton enabled: enabled
+]
+
+{ #category : 'updating' }
+HeraScriptEditor >> updatePresenter [
+
+	"Do not send #modelChanged because the adapter of the script text presenter does not exist yet."
 ]
 
 { #category : 'api' }

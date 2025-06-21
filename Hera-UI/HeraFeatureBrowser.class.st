@@ -184,7 +184,8 @@ HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter whenOpenedDo: [
 		featureSelector setupAfterOpening.
-		scriptEditor setupAfterOpening ]
+		scriptEditor setupAfterOpening.
+		stepEditor setupAfterOpening ]
 ]
 
 { #category : 'private' }
