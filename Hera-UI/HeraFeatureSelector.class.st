@@ -249,7 +249,7 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		yourself.
 	addFeatureButton := self newButton
 		help: 'Add feature';
-		iconName: #scriptManager;
+		icon: (Hera settings iconNamed: #addFeature);
 		action: [ self addFeature ];
 		yourself.
 	runButton := self newButton
