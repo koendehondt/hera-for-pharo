@@ -284,6 +284,42 @@ HeraFeatureSelector >> installContextMenu [
 			self addBrowseGroupTo: rootGroup ]
 ]
 
+{ #category : 'test api' }
+HeraFeatureSelector >> isAddAcceptanceTestClassButtonEnabled [
+
+	^ addAcceptanceTestClassButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isAddFeatureButtonEnabled [
+
+	^ addFeatureButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isBrowseStepsButtonEnabled [
+
+	^ browseStepsButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isDebugButtonEnabled [
+
+	^ debugButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isRunButtonEnabled [
+
+	^ runButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isStepByStepButtonEnabled [
+
+	^ stepByStepButton isEnabled
+]
+
 { #category : 'actions' }
 HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 
@@ -390,11 +426,13 @@ HeraFeatureSelector >> toolbar [
 { #category : 'private' }
 HeraFeatureSelector >> updateAfterSelectionChange [
 
-	| enabled |
-	enabled := classesAndFeatures selectedItem ifNil: [ false ] ifNotNil: [ :browserItem | browserItem isRunnable ].
+	| enabled selectedItem |
+	selectedItem := classesAndFeatures selectedItem.
+	enabled := selectedItem ifNil: [ false ] ifNotNil: [ :browserItem | browserItem isRunnable ].
 	runButton enabled: enabled.
 	stepByStepButton enabled: enabled.
-	debugButton enabled: enabled
+	debugButton enabled: enabled.
+	addFeatureButton enabled: selectedItem isNotNil
 ]
 
 { #category : 'private' }

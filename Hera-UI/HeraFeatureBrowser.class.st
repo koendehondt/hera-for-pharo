@@ -188,6 +188,42 @@ HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 		stepEditor setupAfterOpening ]
 ]
 
+{ #category : 'test api' }
+HeraFeatureBrowser >> isAddAcceptanceTestClassButtonEnabled [
+
+	^ featureSelector isAddAcceptanceTestClassButtonEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> isAddFeatureButtonEnabled [
+
+	^ featureSelector isAddFeatureButtonEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> isBrowseStepsButtonEnabled [
+
+	^ featureSelector isBrowseStepsButtonEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> isDebugButtonEnabled [
+
+	^ featureSelector isDebugButtonEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> isRunButtonEnabled [
+
+	^ featureSelector isRunButtonEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> isStepByStepButtonEnabled [
+
+	^ featureSelector isStepByStepButtonEnabled
+]
+
 { #category : 'private' }
 HeraFeatureBrowser >> methodFor: aStepAstNode [
 
