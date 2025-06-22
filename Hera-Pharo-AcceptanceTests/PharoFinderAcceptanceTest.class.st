@@ -20,29 +20,40 @@ PharoFinderAcceptanceTest >> featureBasicFinding [
 		scenarios: {
 			(self scenario: 'Find in selectors')
 				given: 'the Finder is open';
-				when: 'I search in selectors for "stepDebug"';
-				then: 'I see 3 matching methods' }
+				when: 'I search in Selectors for "stepDebug"';
+				then: 'I see 2 matching methods' }
+]
+
+{ #category : 'private' }
+PharoFinderAcceptanceTest >> indexOf: scope in: searchModeDropList [
+
+	| index |
+	index := searchModeDropList getList detectIndex: [ :each | each model name = scope ] ifNone: [ 0 ].
+	self assert: index > 0 description: 'Search mode not found: ' , scope.
+	^ index
 ]
 
 { #category : 'steps' }
-PharoFinderAcceptanceTest >> stepISearchInSelectorsForStepDebug [
+PharoFinderAcceptanceTest >> stepISearchIn: scope for: searchString [
 
-	<heraStepDefinition: #(When 'I search in selectors for "stepDebug"')>
+	<heraStepDefinition: #(When match 'I search in {word} for {string}')>
 
-	| searchBar |
+	| searchBar index |
 	searchBar := (self presenterAt: #finder) searchBar.
-	searchBar searchInput text: 'stepDebug'.
+	index := self indexOf: scope in: searchBar searchModeDropList.
+	searchBar searchModeDropList selectIndex: index.
+	searchBar searchInput text: searchString.
 	searchBar searchButton click
 ]
 
 { #category : 'steps' }
-PharoFinderAcceptanceTest >> stepISeeMatchingMethods: expectedCount [
+PharoFinderAcceptanceTest >> stepISeeMatchingMethods: quantity [
 
 	<heraStepDefinition: #(Then match 'I see {int} matching methods')>
 
 	| resultTree |
 	resultTree := (self presenterAt: #finder) resultTree.
-	self assert: resultTree roots size equals: expectedCount
+	self assert: resultTree roots size equals: quantity
 ]
 
 { #category : 'steps' }
