@@ -11,7 +11,8 @@ Class {
 		'modelChangedInProgress',
 		'originalDescription',
 		'pattern',
-		'browseButton'
+		'browseButton',
+		'methodInfo'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -61,6 +62,7 @@ HeraStepEditor >> defaultLayout [
 		add: self toolbar expand: false;
 		add: definition expand: false;
 		add: code;
+		add: methodInfo expand: false;
 		yourself
 ]
 
@@ -88,7 +90,8 @@ HeraStepEditor >> initializePresenters [
 		startWithoutSelection;
 		yourself.
 	description := self newTextInput.
-	code := self newCode
+	code := self newCode.
+	methodInfo := self newLabel
 ]
 
 { #category : 'initialization' }
@@ -119,6 +122,21 @@ HeraStepEditor >> labelForPattern: aPattern [
 	^ '='
 ]
 
+{ #category : 'private' }
+HeraStepEditor >> methodInfoFor: aStepMethodItem [
+
+	^ String streamContents: [ :stream |
+		stream
+			nextPutAll: 'Defined in ';
+			print: aStepMethodItem acceptanceTestClass ]
+]
+
+{ #category : 'test api' }
+HeraStepEditor >> methodInfoText [
+
+	^ methodInfo label
+]
+
 { #category : 'initialization' }
 HeraStepEditor >> modelChanged [
 
@@ -138,7 +156,8 @@ HeraStepEditor >> modelChanged [
 			type resetSelection.
 			description text: ''.
 			pattern resetSelection.
-			code text: '' ]
+			code text: ''.
+			methodInfo label: '' ]
 		ifNotNil: [
 			type selectItem: stepMethodItem stepType.
 			description text: stepMethodItem stepDescription.
@@ -146,7 +165,8 @@ HeraStepEditor >> modelChanged [
 			code
 				beForMethod: stepMethodItem stepMethod;
 				text: (self sourceFor: stepMethodItem);
-				selectionInterval: (0 to: 0) ].
+				selectionInterval: (0 to: 0).
+			methodInfo label: (self methodInfoFor: stepMethodItem) ].
 	originalDescription := description text copy asString.
 	originalCode := code text copy asString.
 	modelChangedInProgress := false
