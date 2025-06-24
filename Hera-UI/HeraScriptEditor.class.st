@@ -59,11 +59,10 @@ HeraScriptEditor >> addRunMenuGroupTo: parentGroup [
 { #category : 'private' }
 HeraScriptEditor >> altKeyClick: event [
 
-	| caretPosition astNode |
+	| astNode |
 	ast ifNil: [ ^ self ].
-	caretPosition := script selectionInterval first.
 	astNode := HeraTextBasedAstSearcher new
-		textPosition: caretPosition;
+		textPosition: self caretPositionForAltClick;
 		visit: ast.
 	(astNode isNil or: [ astNode isStepNode not ]) ifTrue: [ ^ self ].
 	openStepBlock value: astNode
@@ -93,6 +92,18 @@ HeraScriptEditor >> buildAst: source [
 HeraScriptEditor >> cancel [
 
 	self modelChanged
+]
+
+{ #category : 'private' }
+HeraScriptEditor >> caretPositionForAltClick [
+	"Answer a position inside an AST node, even if the real caret position is located after the last character of the node.
+	 This allows Alt-Clicking after a step to select it."
+
+	| caretPosition |
+	caretPosition := script selectionInterval first.
+	caretPosition := caretPosition min: script text size.
+	(script text at: caretPosition) = Character cr ifTrue: [ ^ caretPosition - 1 ].
+	^ caretPosition
 ]
 
 { #category : 'initialization' }
