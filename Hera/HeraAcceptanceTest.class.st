@@ -101,6 +101,25 @@ HeraAcceptanceTest >> beforeScenario [
 	"Default is to do nothing."
 ]
 
+{ #category : 'helpers - presenters' }
+HeraAcceptanceTest >> check: aTogglePresenterPathArray [
+
+	| presenter |
+	presenter := self presenterAtPath: aTogglePresenterPathArray.
+	self assert: presenter isEnabled description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is not enabled.' ] .
+	self assert: presenter state not description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is already checked.' ] .
+	presenter click
+]
+
+{ #category : 'helpers - presenters' }
+HeraAcceptanceTest >> click: aPresenterPathArray [
+
+	| presenter |
+	presenter := self presenterAtPath: aPresenterPathArray.
+	self assert: presenter isEnabled description: [ 'The presenter at ' , aPresenterPathArray printString , ' is not enabled.' ] .
+	presenter click
+]
+
 { #category : 'helpers - window management' }
 HeraAcceptanceTest >> closePresenterAt: aNameSymbol [
 
@@ -265,10 +284,24 @@ HeraAcceptanceTest >> prefersDoubleQuotedStringArgumentsInStepDefinitions [
 	^ true
 ]
 
-{ #category : 'helpers - window management' }
+{ #category : 'helpers - presenters' }
 HeraAcceptanceTest >> presenterAt: aNameSymbol [
 
 	^ openPresenters at: aNameSymbol ifAbsent: [ self error: ('Presenter with name "{1}" not found.' format: { aNameSymbol }) ]
+]
+
+{ #category : 'helpers - presenters' }
+HeraAcceptanceTest >> presenterAtPath: aPresenterPathArray [
+
+	^ aPresenterPathArray allButFirst
+		inject: (self presenterAt: aPresenterPathArray first)
+		into: [ :accu :each | accu perform: each ]
+]
+
+{ #category : 'helpers - presenters' }
+HeraAcceptanceTest >> presenterAtPath: aPresenterPathArray do: aBlock [
+
+	aBlock value: (self presenterAtPath: aPresenterPathArray)
 ]
 
 { #category : 'private' }
@@ -356,4 +389,14 @@ HeraAcceptanceTest >> stepNotImplemented [
 
 	HeraStepNotImplemented signal: 'Step not implemented.'
 	
+]
+
+{ #category : 'helpers - presenters' }
+HeraAcceptanceTest >> uncheck: aTogglePresenterPathArray [
+
+	| presenter |
+	presenter := self presenterAtPath: aTogglePresenterPathArray.
+	self assert: presenter isEnabled description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is not enabled.' ] .
+	self assert: presenter state description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is already unchecked.' ] .
+	presenter click
 ]

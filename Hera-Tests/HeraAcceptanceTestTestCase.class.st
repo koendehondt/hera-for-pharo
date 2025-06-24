@@ -12,6 +12,30 @@ HeraAcceptanceTestTestCase >> describedClass [
 	^ HeraAcceptanceTest
 ]
 
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testCheck [
+
+	| finder |
+	finder := StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new.
+	self deny: finder searchOptions caseCheckBox state.
+	subject openPresenterAs: #finder with: [ finder ].
+	subject check: { #finder . #searchOptions . #caseCheckBox }.
+	self assert: finder searchOptions caseCheckBox state
+]
+
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testCheckingCheckedPresenterSignalsFailure [
+
+	| finder |
+	finder := StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new.
+	subject openPresenterAs: #finder with: [ finder ].
+	self
+		should: [ subject check: { #finder . #searchOptions . #substringBox } ]
+		raise: HeraFailure
+		withExceptionDo: [ :anException |
+			self assert: anException messageText equals: 'The presenter at #(#finder #searchOptions #substringBox) is already checked.']
+]
+
 { #category : 'tests' }
 HeraAcceptanceTestTestCase >> testClassFeatureMethods [
 
@@ -32,6 +56,17 @@ HeraAcceptanceTestTestCase >> testClassFeatures [
 	self assert: features first featureSelector equals: #signingInFeature.
 	self assert: features second class equals: HeraAcceptanceTestWithPassForTesting.
 	self assert: features second featureSelector equals: #signingOutFeature
+]
+
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testClick [
+
+	| finder |
+	finder := StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new.
+	self assert: finder searchOptions substringBox state.
+	subject openPresenterAs: #finder with: [ finder ].
+	subject click: { #finder . #searchOptions . #substringBox }.
+	self deny: finder searchOptions substringBox state
 ]
 
 { #category : 'tests' }
@@ -121,6 +156,39 @@ HeraAcceptanceTestTestCase >> testNameInBrowser [
 	self assert: self describedClass nameInBrowser equals: 'HeraAcceptanceTest'
 ]
 
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testPresenterAt [
+
+	| finder |
+	finder := StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new.
+	subject
+		openPresenterAs: #finder
+		with: [ finder ].
+	self assert: (subject presenterAt: #finder) identicalTo: finder
+]
+
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testPresenterAtPath [
+
+	subject
+		openPresenterAs: #finder
+		with: [ StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new ].
+	self assert: ((subject presenterAtPath: { #finder . #searchOptions . #substringBox }) isMemberOf: SpCheckBoxPresenter)
+]
+
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testPresenterAtPathDo [
+
+	| actualCheckbox |
+	subject
+		openPresenterAs: #finder
+		with: [ StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new ].
+	subject
+		presenterAtPath: { #finder . #searchOptions . #substringBox }
+		do: [ :checkbox | actualCheckbox := checkbox ].
+	self assert: (actualCheckbox isMemberOf: SpCheckBoxPresenter)
+]
+
 { #category : 'tests' }
 HeraAcceptanceTestTestCase >> testRegexStringForMatchStepDefinition [
 
@@ -146,4 +214,28 @@ HeraAcceptanceTestTestCase >> testStepMethods [
 	| stepMethodSelectors |
 	stepMethodSelectors := self describedClass stepMethods collect: [ :each | each selector ].
 	self assert: stepMethodSelectors equals: { #stepDebug }
+]
+
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testUncheck [
+
+	| finder |
+	finder := StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new.
+	self assert: finder searchOptions substringBox state.
+	subject openPresenterAs: #finder with: [ finder ].
+	subject uncheck: { #finder . #searchOptions . #substringBox }.
+	self deny: finder searchOptions substringBox state
+]
+
+{ #category : 'tests - helpers - presenters' }
+HeraAcceptanceTestTestCase >> testUncheckingUncheckedPresenterSignalsFailure [
+
+	| finder |
+	finder := StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new.
+	subject openPresenterAs: #finder with: [ finder ].
+	self
+		should: [ subject uncheck: { #finder . #searchOptions . #caseCheckBox }. ]
+		raise: HeraFailure
+		withExceptionDo: [ :anException |
+			self assert: anException messageText equals: 'The presenter at #(#finder #searchOptions #caseCheckBox) is already unchecked.']
 ]
