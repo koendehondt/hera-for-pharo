@@ -16,11 +16,19 @@ HeraDataTable >> = other [
 ]
 
 { #category : 'converting' }
+HeraDataTable >> asArray [
+	"Assume that there is one column.
+	 Answer an Array with the values in the single column."
+
+	^ (data inject: OrderedCollection new into: [ :accu :eachRow | accu add: eachRow first; yourself ]) asArray
+]
+
+{ #category : 'converting' }
 HeraDataTable >> asAssociations [
 	"Assume that the first column is a header column and the second column holds the values.
 	 Answer an Array of Associations with headers and values."
 
-	^ (data inject: OrderedCollection new into: [ :accu :eachRow | accu add: eachRow first -> eachRow second; yourself]) asArray
+	^ (data inject: OrderedCollection new into: [ :accu :eachRow | accu add: eachRow first -> eachRow second; yourself ]) asArray
 ]
 
 { #category : 'converting' }
