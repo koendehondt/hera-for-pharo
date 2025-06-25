@@ -76,19 +76,19 @@ HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 { #category : 'test api' }
 HeraFeatureBrowser >> clickDebugButton [
 
-	featureSelector clickDebugButton
+	scriptEditor clickDebugButton
 ]
 
 { #category : 'test api' }
 HeraFeatureBrowser >> clickRunButton [
 
-	featureSelector clickRunButton
+	scriptEditor clickRunButton
 ]
 
 { #category : 'test api' }
 HeraFeatureBrowser >> clickStepByStepButton [
 
-	featureSelector clickStepByStepButton
+	scriptEditor clickStepByStepButton
 ]
 
 { #category : 'initialization' }
@@ -204,24 +204,6 @@ HeraFeatureBrowser >> isAddFeatureButtonEnabled [
 HeraFeatureBrowser >> isBrowseStepsButtonEnabled [
 
 	^ featureSelector isBrowseStepsButtonEnabled
-]
-
-{ #category : 'test api' }
-HeraFeatureBrowser >> isDebugButtonEnabled [
-
-	^ featureSelector isDebugButtonEnabled
-]
-
-{ #category : 'test api' }
-HeraFeatureBrowser >> isRunButtonEnabled [
-
-	^ featureSelector isRunButtonEnabled
-]
-
-{ #category : 'test api' }
-HeraFeatureBrowser >> isStepByStepButtonEnabled [
-
-	^ featureSelector isStepByStepButtonEnabled
 ]
 
 { #category : 'private' }

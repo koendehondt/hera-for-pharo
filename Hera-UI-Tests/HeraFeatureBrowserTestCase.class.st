@@ -31,8 +31,5 @@ HeraFeatureBrowserTestCase >> testInitialButtonEnablement [
 
 	self assert: subject isAddAcceptanceTestClassButtonEnabled.
 	self deny: subject isAddFeatureButtonEnabled.
-	self deny: subject isRunButtonEnabled.
-	self deny: subject isStepByStepButtonEnabled.
-	self deny: subject isDebugButtonEnabled.
 	self assert: subject isBrowseStepsButtonEnabled
 ]

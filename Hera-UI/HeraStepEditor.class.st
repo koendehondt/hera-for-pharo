@@ -263,20 +263,21 @@ HeraStepEditor >> text [
 { #category : 'layout' }
 HeraStepEditor >> toolbar [
 
-	| leftSide rightSide |
-	leftSide := SpBoxLayout newLeftToRight
+	| browseGroup saveGroup |
+	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
+		hAlignEnd;
 		add: browseButton width: 40;
 		yourself.
-	rightSide := SpBoxLayout newLeftToRight
+	saveGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		hAlignEnd;
 		add: saveButton width: 40;
 		add: cancelButton width: 40;
 		yourself.
 	^ SpBoxLayout newLeftToRight
-		add: leftSide;
-		add: rightSide;
+		add: browseGroup;
+		add: saveGroup width: 140;
 		yourself
 ]
 

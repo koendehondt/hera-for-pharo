@@ -14,7 +14,10 @@ Class {
 		'browseButton',
 		'runScenarioBlock',
 		'stepScenarioBlock',
-		'debugScenarioBlock'
+		'debugScenarioBlock',
+		'runButton',
+		'stepByStepButton',
+		'debugButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -106,6 +109,24 @@ HeraScriptEditor >> caretPositionForAltClick [
 	^ caretPosition
 ]
 
+{ #category : 'test api' }
+HeraScriptEditor >> clickDebugButton [
+
+	debugButton performAction
+]
+
+{ #category : 'test api' }
+HeraScriptEditor >> clickRunButton [
+
+	runButton performAction
+]
+
+{ #category : 'test api' }
+HeraScriptEditor >> clickStepByStepButton [
+
+	stepByStepButton performAction
+]
+
 { #category : 'initialization' }
 HeraScriptEditor >> connectPresenters [
 
@@ -114,6 +135,14 @@ HeraScriptEditor >> connectPresenters [
 	script eventHandler whenMouseUpDo: [ :event |
 		event altKeyPressed ifTrue: [ self altKeyClick: event ] ].
 	self installContextMenu
+]
+
+{ #category : 'actions' }
+HeraScriptEditor >> debugFeature [
+
+	(self instantiate: HeraRunner)
+		open;
+		debugAcceptanceTest: self acceptanceTest
 ]
 
 { #category : 'actions' }
@@ -166,6 +195,21 @@ HeraScriptEditor >> initializeToolbarButtons [
 		iconName: #nautilus;
 		action: [ self browseFeatureMethod ];
 		yourself.
+	runButton := self newButton
+		help: 'Run';
+		iconName: #go;
+		action: [ self runFeature ];
+		yourself.
+	stepByStepButton := self newButton
+		help: 'Step';
+		iconName: #into;
+		action: [ self stepFeature ];
+		yourself.
+	debugButton := self newButton
+		help: 'Debug';
+		iconName: #bug;
+		action: [ self debugFeature ];
+		yourself.
 	saveButton := self newButton
 		help: 'Save';
 		iconName: #accept;
@@ -186,6 +230,30 @@ HeraScriptEditor >> installContextMenu [
 			self addRunMenuGroupTo: rootGroup ]
 ]
 
+{ #category : 'test api' }
+HeraScriptEditor >> isBrowseButtonEnabled [
+
+	^ browseButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraScriptEditor >> isDebugButtonEnabled [
+
+	^ debugButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraScriptEditor >> isRunButtonEnabled [
+
+	^ runButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraScriptEditor >> isStepByStepButtonEnabled [
+
+	^ stepByStepButton isEnabled
+]
+
 { #category : 'private' }
 HeraScriptEditor >> lintWarnings [
 
@@ -202,6 +270,9 @@ HeraScriptEditor >> modelChanged [
 	modelChangedInProgress := true.
 	hasModel := self model ifNil: [ false ] ifNotNil: [ :model | model isEditable ].
 	script enabled: hasModel.
+	runButton enabled: hasModel.
+	stepByStepButton enabled: hasModel.
+	debugButton enabled: hasModel.
 	saveButton enabled: false.
 	cancelButton enabled: false.
 	browseButton enabled: hasModel.
@@ -220,6 +291,14 @@ HeraScriptEditor >> modelChanged [
 HeraScriptEditor >> parser [
 
 	^ parser ifNil: [ parser := HeraParser new ]
+]
+
+{ #category : 'actions' }
+HeraScriptEditor >> runFeature [
+
+	(self instantiate: HeraRunner)
+		open;
+		runAcceptanceTest: self acceptanceTest
 ]
 
 { #category : 'actions' }
@@ -302,6 +381,14 @@ HeraScriptEditor >> showWarnings [
 ]
 
 { #category : 'actions' }
+HeraScriptEditor >> stepFeature [
+
+	(self instantiate: HeraRunner)
+		open;
+		stepAcceptanceTest: self acceptanceTest
+]
+
+{ #category : 'actions' }
 HeraScriptEditor >> stepScenario [
 
 	| caretPosition astNode |
@@ -347,20 +434,29 @@ HeraScriptEditor >> text: aText [
 { #category : 'layout' }
 HeraScriptEditor >> toolbar [
 
-	| leftSide rightSide |
-	leftSide := SpBoxLayout newLeftToRight
+	| browseGroup saveGroup runGroup spacer |
+	runGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
+		add: runButton width: 40;
+		add: stepByStepButton width: 40;
+		add: debugButton width: 40;
+		yourself.
+	browseGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		hAlignEnd;
 		add: browseButton width: 40;
 		yourself.
-	rightSide := SpBoxLayout newLeftToRight
+	saveGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		hAlignEnd;
 		add: saveButton width: 40;
 		add: cancelButton width: 40;
 		yourself.
+	spacer := SpPresenter new layout: SpBoxLayout newLeftToRight; yourself.
 	^ SpBoxLayout newLeftToRight
-		add: leftSide;
-		add: rightSide;
+		add: runGroup;
+		add: browseGroup;
+		add: saveGroup width: 140;
 		yourself
 ]
 

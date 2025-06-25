@@ -4,9 +4,6 @@ Class {
 	#instVars : [
 		'addAcceptanceTestClassButton',
 		'addFeatureButton',
-		'runButton',
-		'stepByStepButton',
-		'debugButton',
 		'browseStepsButton',
 		'classesAndFeatures',
 		'scope',
@@ -117,21 +114,21 @@ HeraFeatureSelector >> addRunMenuGroupTo: parentGroup [
 						description: 'Run the selected feature';
 						shortcutKey: $r meta;
 						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self run ] ];
+						action: [ self runFeature ] ];
 				addActionWith: [ :action |
 					action		
 						name: 'Step';
 						description: 'Run the selected feature step by step';
 						shortcutKey: $r meta shift;
 						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self stepByStep ] ];
+						action: [ self stepFeature ] ];
 				addActionWith: [ :action |
 					action		
 						name: 'Debug';
 						description: 'Run the selected feature in debug mode';
 						shortcutKey: $d meta;
 						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self debug ] ] ]
+						action: [ self debugFeature ] ] ]
 ]
 
 { #category : 'actions' }
@@ -148,24 +145,6 @@ HeraFeatureSelector >> browseSteps [
 		open
 ]
 
-{ #category : 'test api' }
-HeraFeatureSelector >> clickDebugButton [
-
-	debugButton performAction
-]
-
-{ #category : 'test api' }
-HeraFeatureSelector >> clickRunButton [
-
-	runButton performAction
-]
-
-{ #category : 'test api' }
-HeraFeatureSelector >> clickStepByStepButton [
-
-	stepByStepButton performAction
-]
-
 { #category : 'initialization' }
 HeraFeatureSelector >> connectPresenters [
 
@@ -177,14 +156,11 @@ HeraFeatureSelector >> connectPresenters [
 ]
 
 { #category : 'actions' }
-HeraFeatureSelector >> debug [
+HeraFeatureSelector >> debugFeature [
 
-	| runner acceptanceTest featureMethodItem |
-	featureMethodItem := classesAndFeatures selectedItem.
-	acceptanceTest := featureMethodItem acceptanceTest.
-	runner := self instantiate: HeraRunner.
-	runner open.
-	runner debugAcceptanceTest: acceptanceTest
+	(self instantiate: HeraRunner)
+		open;
+		debugAcceptanceTest: classesAndFeatures selectedItem acceptanceTest
 ]
 
 { #category : 'layout' }
@@ -252,21 +228,6 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		icon: (Hera settings iconNamed: #addFeature);
 		action: [ self addFeature ];
 		yourself.
-	runButton := self newButton
-		help: 'Run';
-		iconName: #go;
-		action: [ self run ];
-		yourself.
-	stepByStepButton := self newButton
-		help: 'Step';
-		iconName: #into;
-		action: [ self stepByStep ];
-		yourself.
-	debugButton := self newButton
-		help: 'Debug';
-		iconName: #bug;
-		action: [ self debug ];
-		yourself.
 	browseStepsButton := self newButton
 		help: 'Browse steps';
 		icon: (Hera settings iconNamed: #book);
@@ -302,24 +263,6 @@ HeraFeatureSelector >> isBrowseStepsButtonEnabled [
 	^ browseStepsButton isEnabled
 ]
 
-{ #category : 'test api' }
-HeraFeatureSelector >> isDebugButtonEnabled [
-
-	^ debugButton isEnabled
-]
-
-{ #category : 'test api' }
-HeraFeatureSelector >> isRunButtonEnabled [
-
-	^ runButton isEnabled
-]
-
-{ #category : 'test api' }
-HeraFeatureSelector >> isStepByStepButtonEnabled [
-
-	^ stepByStepButton isEnabled
-]
-
 { #category : 'actions' }
 HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 
@@ -332,14 +275,11 @@ HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 ]
 
 { #category : 'actions' }
-HeraFeatureSelector >> run [
+HeraFeatureSelector >> runFeature [
 
-	| runner acceptanceTest featureMethodItem |
-	featureMethodItem := classesAndFeatures selectedItem.
-	acceptanceTest := featureMethodItem acceptanceTest.
-	runner := self instantiate: HeraRunner.
-	runner open.
-	runner runAcceptanceTest: acceptanceTest
+	(self instantiate: HeraRunner)
+		open;
+		runAcceptanceTest: classesAndFeatures selectedItem acceptanceTest
 ]
 
 { #category : 'accessing' }
@@ -386,39 +326,28 @@ HeraFeatureSelector >> setupAfterOpening [
 ]
 
 { #category : 'actions' }
-HeraFeatureSelector >> stepByStep [
+HeraFeatureSelector >> stepFeature [
 
-	| runner acceptanceTest featureMethodItem |
-	featureMethodItem := classesAndFeatures selectedItem.
-	acceptanceTest := featureMethodItem acceptanceTest.
-	runner := self instantiate: HeraRunner.
-	runner open.
-	runner stepAcceptanceTest: acceptanceTest
+	(self instantiate: HeraRunner)
+		open;
+		stepAcceptanceTest: classesAndFeatures selectedItem acceptanceTest
 ]
 
 { #category : 'layout' }
 HeraFeatureSelector >> toolbar [
 
-	| manageGroup runGroup browseGroup |
+	| manageGroup browseGroup |
 	manageGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		add: addAcceptanceTestClassButton width: 40;
 		add: addFeatureButton width: 40;
 		yourself.
-	runGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: runButton width: 40;
-		add: stepByStepButton width: 40;
-		add: debugButton width: 40;
-		yourself.
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
-		hAlignEnd;
 		add: browseStepsButton width: 40;
 		yourself.
 	^ SpBoxLayout newLeftToRight
-		add: manageGroup width: 120;
-		add: runGroup;
+		add: manageGroup width: 140;
 		add: browseGroup;
 		yourself
 ]
@@ -429,9 +358,6 @@ HeraFeatureSelector >> updateAfterSelectionChange [
 	| enabled selectedItem |
 	selectedItem := classesAndFeatures selectedItem.
 	enabled := selectedItem ifNil: [ false ] ifNotNil: [ :browserItem | browserItem isRunnable ].
-	runButton enabled: enabled.
-	stepByStepButton enabled: enabled.
-	debugButton enabled: enabled.
 	addFeatureButton enabled: selectedItem isNotNil
 ]
 

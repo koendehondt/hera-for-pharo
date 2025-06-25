@@ -57,6 +57,17 @@ PharoFinderAcceptanceTest >> featureFindingInSelectors [
 					{ 'indexOf:startingAt:ifAbsent:using:' } }) }
 ]
 
+{ #category : 'features' }
+PharoFinderAcceptanceTest >> featureKoenTest [
+
+	<heraFeature: 'Koen test'>
+
+	^ (self feature: 'Koen test')
+		scenarios: {
+			(self scenario: 'Search')
+				when: 'I search "Koen"' }
+]
+
 { #category : 'private' }
 PharoFinderAcceptanceTest >> indexOf: scope in: searchModeDropList [
 
@@ -105,6 +116,14 @@ PharoFinderAcceptanceTest >> stepISearchIn: scope for: aSearchString [
 	searchBar searchModeDropList selectIndex: index.
 	searchBar searchInput text: aSearchString.
 	searchBar searchButton click
+]
+
+{ #category : 'steps' }
+PharoFinderAcceptanceTest >> stepISearchLena: aString [
+
+	<heraStepDefinition: #(When match 'I search {string}')>
+
+	aString inspect
 ]
 
 { #category : 'steps' }
