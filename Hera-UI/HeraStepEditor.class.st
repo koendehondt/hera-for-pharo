@@ -12,7 +12,8 @@ Class {
 		'originalDescription',
 		'pattern',
 		'browseButton',
-		'methodInfo'
+		'methodInfo',
+		'originalSelector'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -157,7 +158,8 @@ HeraStepEditor >> modelChanged [
 			description text: ''.
 			pattern resetSelection.
 			code text: ''.
-			methodInfo label: '' ]
+			methodInfo label: ''.
+			originalSelector := nil ]
 		ifNotNil: [
 			type selectItem: stepMethodItem stepType.
 			description text: stepMethodItem stepDescription.
@@ -166,7 +168,8 @@ HeraStepEditor >> modelChanged [
 				beForMethod: stepMethodItem stepMethod;
 				text: (self sourceFor: stepMethodItem);
 				selectionInterval: (0 to: 0).
-			methodInfo label: (self methodInfoFor: stepMethodItem) ].
+			methodInfo label: (self methodInfoFor: stepMethodItem).
+			originalSelector := stepMethodItem stepSelector ].
 	originalDescription := description text copy asString.
 	originalCode := code text copy asString.
 	modelChangedInProgress := false
@@ -187,12 +190,32 @@ HeraStepEditor >> patternForLabel: label [
 ]
 
 { #category : 'actions' }
+HeraStepEditor >> removeStepMethodIfNecessaryBeforeInstallingNewStepMethod: originalStepMethod [
+
+	| message |
+	message := String streamContents: [ :stream |
+		stream
+			nextPutAll: 'The selector of the step method has changed from ';
+			print: originalSelector;
+			nextPutAll: ' to ';
+			print: originalStepMethod selector;
+			nextPut: $.;
+			cr;
+			nextPutAll: 'It is strongly advised to remove the original method, as keeping it may result in multiple step definitions matching the steps in scripts.';
+			cr;
+			nextPutAll: 'Do you want to remove the original method?' ].
+	(self confirm: message) ifFalse: [ ^ self ].
+	originalStepMethod removeFromSystem
+]
+
+{ #category : 'actions' }
 HeraStepEditor >> save [
 
 	| stepMethodSource stepMethod |
 	self hasChanged ifFalse: [ ^ self ].
 	stepMethod := self model compileSourceWithoutPragma: self text notifying: self.
 	stepMethod ifNil: [ ^ self ].
+	originalSelector = stepMethod selector ifFalse: [ self removeStepMethodIfNecessaryBeforeInstallingNewStepMethod: self model stepMethod ].
 	stepMethodSource := HeraStepMethodGenerator new
 		type: type selectedItem;
 		pattern: (self patternForLabel: pattern selectedItem);

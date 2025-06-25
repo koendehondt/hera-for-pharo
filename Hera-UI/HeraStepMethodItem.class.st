@@ -88,6 +88,12 @@ HeraStepMethodItem >> stepPattern [
 ]
 
 { #category : 'accessing' }
+HeraStepMethodItem >> stepSelector [
+
+	^ self stepMethod selector
+]
+
+{ #category : 'accessing' }
 HeraStepMethodItem >> stepType [
 
 	^ self pragmaArgument first
