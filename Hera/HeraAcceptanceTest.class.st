@@ -39,6 +39,12 @@ HeraAcceptanceTest class >> isForTestingPharo [
 	^ false
 ]
 
+{ #category : 'testing' }
+HeraAcceptanceTest class >> isHeraExample [
+
+	^ false
+]
+
 { #category : 'accessing' }
 HeraAcceptanceTest class >> nameInBrowser [
 

@@ -151,6 +151,12 @@ HeraAcceptanceTestTestCase >> testIsForTestingHera [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestTestCase >> testIsHeraExample [
+
+	self deny: self describedClass isHeraExample
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestTestCase >> testNameInBrowser [
 
 	self assert: self describedClass nameInBrowser equals: 'HeraAcceptanceTest'

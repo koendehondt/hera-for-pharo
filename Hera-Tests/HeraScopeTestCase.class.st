@@ -61,6 +61,8 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 		HeraFeatureBrowserAcceptanceTest .
 		HeraRunnerAcceptanceTest .
 		HeraSelfAcceptanceTest .
+		HeraWebAcceptanceTest .
+		HeraWebAcceptanceTestExample .
 		PharoFinderAcceptanceTest
 	 }
 ]
