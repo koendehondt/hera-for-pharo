@@ -84,6 +84,12 @@ HeraWebAcceptanceTest >> press: aKey [
 	driver getKeyboard sendKeys: (String with: (mapping at: aKey))
 ]
 
+{ #category : 'private' }
+HeraWebAcceptanceTest >> screenshotLocation [
+
+	^ FileLocator imageDirectory
+]
+
 { #category : 'steps' }
 HeraWebAcceptanceTest >> stepIEnter: aString inField: labelOrPlaceholder [
 
@@ -133,6 +139,14 @@ HeraWebAcceptanceTest >> stepISeeAPageWithH1: h1String [
 ]
 
 { #category : 'steps' }
+HeraWebAcceptanceTest >> stepITakeAScreenshot [
+
+	<heraStepDefinition: #(When 'I take a screenshot')>
+
+	self takeScreenshot
+]
+
+{ #category : 'steps' }
 HeraWebAcceptanceTest >> stepTheCurrentURLIs: url [
 
 	<heraStepDefinition: #(Then match 'the current URL is {}')>
@@ -140,6 +154,20 @@ HeraWebAcceptanceTest >> stepTheCurrentURLIs: url [
 	self
 		waitUntil: [ driver getCurrentURL = url ]
 		ifTimeout: [ self signalFailure: ('Expected URL is {1}, but after a timeout, the URL is {2}' format: { url . driver getCurrentURL }) ]
+]
+
+{ #category : 'helpers' }
+HeraWebAcceptanceTest >> takeScreenshot [
+
+	| now filename file |
+	now := DateAndTime now.
+	filename := 'Screenshot {1} at {2}.png' format: {
+		now asDate yyyymmdd .
+		now asTime print24 copyReplaceAll: ':' with: '.' }.
+	file := (self screenshotLocation / filename) asFileReference.
+	file ensureDelete.
+	file binaryWriteStreamDo: [ :str | str nextPutAll: driver getScreenshotAsByteArray ].
+	^ file fullName
 ]
 
 { #category : 'helpers' }
