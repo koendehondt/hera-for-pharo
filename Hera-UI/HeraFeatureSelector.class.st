@@ -43,7 +43,7 @@ HeraFeatureSelector >> addAcceptanceTestClass [
 	acceptanceTestClass := Smalltalk classInstaller make: [ :classBuilder |
 		classBuilder
 			name: className;
-			superclass: HeraAcceptanceTest;
+			superclass: HeraSpecAcceptanceTest;
 			package: packageName ].
 	self scope addClass: acceptanceTestClass.
 	self updateClassesAndFeaturesAfterAddingClass: acceptanceTestClass

@@ -7,8 +7,7 @@ Class {
 		'featureSelector',
 		'exactStepDefinitions',
 		'patternStepDefinitions',
-		'helpers',
-		'openPresenters'
+		'helpers'
 	],
 	#category : 'Hera-Core',
 	#package : 'Hera',
@@ -107,39 +106,6 @@ HeraAcceptanceTest >> beforeScenario [
 	"Default is to do nothing."
 ]
 
-{ #category : 'helpers - presenters' }
-HeraAcceptanceTest >> check: aTogglePresenterPathArray [
-
-	| presenter |
-	presenter := self presenterAtPath: aTogglePresenterPathArray.
-	self assert: presenter isEnabled description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is not enabled.' ] .
-	self assert: presenter state not description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is already checked.' ] .
-	presenter click
-]
-
-{ #category : 'helpers - presenters' }
-HeraAcceptanceTest >> click: aPresenterPathArray [
-
-	| presenter |
-	presenter := self presenterAtPath: aPresenterPathArray.
-	self assert: presenter isEnabled description: [ 'The presenter at ' , aPresenterPathArray printString , ' is not enabled.' ] .
-	presenter click
-]
-
-{ #category : 'helpers - window management' }
-HeraAcceptanceTest >> closePresenterAt: aNameSymbol [
-
-	(self presenterAt: aNameSymbol) window close.
-	openPresenters removeKey: aNameSymbol
-]
-
-{ #category : 'helpers - window management' }
-HeraAcceptanceTest >> closeWindows [
-
-	openPresenters do: [ :each | each window close ].
-	openPresenters := Dictionary new
-]
-
 { #category : 'copying' }
 HeraAcceptanceTest >> copyForRunning [
 
@@ -150,12 +116,6 @@ HeraAcceptanceTest >> copyForRunning [
 HeraAcceptanceTest >> dataTable: anArrayOfArrays [
 
 	^ HeraDataTableArgument new dataTable: (HeraDataTable new data: anArrayOfArrays)
-]
-
-{ #category : 'helpers - window management' }
-HeraAcceptanceTest >> detectPresenterInTopWindowAs: aNameSymbol [
-
-	^ openPresenters at: aNameSymbol put: SystemWindow topWindow model presenter
 ]
 
 { #category : 'dsl' }
@@ -215,8 +175,7 @@ HeraAcceptanceTest >> initialize [
 	patternStepDefinitions := Dictionary new.
 	helpers := OrderedCollection new.
 	self registerHelpers.
-	self initializeStepDefinitions.
-	openPresenters := Dictionary new
+	self initializeStepDefinitions
 ]
 
 { #category : 'initialization' }
@@ -237,29 +196,6 @@ HeraAcceptanceTest >> initializeStepDefinitions [
 						self registerExecutableStep: executableStep forStepMethod: eachStepMethod ] ].
 ]
 
-{ #category : 'helpers - simulating events' }
-HeraAcceptanceTest >> keyDownEventFromChar: aCharacter alt: useAlt ctrl: useCtrl command: useCommand shift: useShift [
-
-	| event modifier code |
-	event := KeyboardEvent new.
-	modifier := 0.
-	useShift ifTrue: [ modifier := modifier + 8 ].
-	useCtrl ifTrue: [ modifier := modifier + 16 ].
-	useAlt ifTrue: [ modifier := modifier + 32 ].
-	useCommand ifTrue: [ modifier := modifier + 64 ].
-	code := aCharacter asInteger.
-	event
-		setType: #keyDown
-		buttons: modifier
-		position: 0 @ 0
-		keyValue: code
-		charCode: code
-		hand: self currentWorld currentHand
-		stamp: Time now.
-	event key: (KeyboardKey fromCharacter: aCharacter).
-	^ event
-]
-
 { #category : 'accessing' }
 HeraAcceptanceTest >> methodForStepDescription: aString [
 
@@ -269,45 +205,12 @@ HeraAcceptanceTest >> methodForStepDescription: aString [
 	^ nil
 ]
 
-{ #category : 'helpers - window management' }
-HeraAcceptanceTest >> openPresenter: aPresenter as: aNameSymbol [
-
-	aPresenter open.
-	^ openPresenters at: aNameSymbol put: aPresenter
-]
-
-{ #category : 'helpers - window management' }
-HeraAcceptanceTest >> openPresenterAs: aNameSymbol with: aBlock [
-
-	^ openPresenters at: aNameSymbol put: aBlock value
-]
-
 { #category : 'preferences' }
 HeraAcceptanceTest >> prefersDoubleQuotedStringArgumentsInStepDefinitions [
 	"Answer true when double quotes are preferred.
 	 Answer false when single quotes are preferred."
 
 	^ true
-]
-
-{ #category : 'helpers - presenters' }
-HeraAcceptanceTest >> presenterAt: aNameSymbol [
-
-	^ openPresenters at: aNameSymbol ifAbsent: [ self error: ('Presenter with name "{1}" not found.' format: { aNameSymbol }) ]
-]
-
-{ #category : 'helpers - presenters' }
-HeraAcceptanceTest >> presenterAtPath: aPresenterPathArray [
-
-	^ aPresenterPathArray allButFirst
-		inject: (self presenterAt: aPresenterPathArray first)
-		into: [ :accu :each | accu perform: each ]
-]
-
-{ #category : 'helpers - presenters' }
-HeraAcceptanceTest >> presenterAtPath: aPresenterPathArray do: aBlock [
-
-	aBlock value: (self presenterAtPath: aPresenterPathArray)
 ]
 
 { #category : 'private' }
@@ -395,14 +298,4 @@ HeraAcceptanceTest >> stepNotImplemented [
 
 	HeraStepNotImplemented signal: 'Step not implemented.'
 	
-]
-
-{ #category : 'helpers - presenters' }
-HeraAcceptanceTest >> uncheck: aTogglePresenterPathArray [
-
-	| presenter |
-	presenter := self presenterAtPath: aTogglePresenterPathArray.
-	self assert: presenter isEnabled description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is not enabled.' ] .
-	self assert: presenter state description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is already unchecked.' ] .
-	presenter click
 ]

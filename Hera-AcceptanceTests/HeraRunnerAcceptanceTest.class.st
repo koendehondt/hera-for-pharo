@@ -2,8 +2,7 @@ Class {
 	#name : 'HeraRunnerAcceptanceTest',
 	#superclass : 'HeraSelfAcceptanceTest',
 	#instVars : [
-		'instanceVariable',
-		'browsingScope'
+		'instanceVariable'
 	],
 	#category : 'Hera-AcceptanceTests',
 	#package : 'Hera-AcceptanceTests'
@@ -169,14 +168,6 @@ HeraRunnerAcceptanceTest >> stepICloseTheFeatureRunner [
 	<heraStepDefinition: #(When 'I close the Feature Runner')>
 
 	self closePresenterAt: #featureRunner
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepIOpenTheFeatureBrowser [
-
-	<heraStepDefinition: #(When 'I open the Feature Browser')>
-
-	self openFeatureBrowser: (HeraFeatureBrowser new scope: browsingScope)
 ]
 
 { #category : 'steps' }
