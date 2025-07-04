@@ -9,6 +9,13 @@ Class {
 	#tag : 'Web'
 }
 
+{ #category : 'hooks' }
+HeraSpecAcceptanceTest >> afterScenario [
+
+	super afterScenario.
+	self closeWindows
+]
+
 { #category : 'helpers - presenters' }
 HeraSpecAcceptanceTest >> check: aTogglePresenterPathArray [
 

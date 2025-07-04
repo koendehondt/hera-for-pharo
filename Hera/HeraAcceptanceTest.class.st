@@ -73,8 +73,8 @@ HeraAcceptanceTest class >> stepMethods [
 { #category : 'hooks' }
 HeraAcceptanceTest >> afterScenario [
 	"After scenario hook."
-
-	self closeWindows
+	
+	"Default is to do nothing."
 ]
 
 { #category : 'private' }
