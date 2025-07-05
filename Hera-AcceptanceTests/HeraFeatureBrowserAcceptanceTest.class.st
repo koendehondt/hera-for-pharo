@@ -1,9 +1,6 @@
 Class {
 	#name : 'HeraFeatureBrowserAcceptanceTest',
 	#superclass : 'HeraSelfAcceptanceTest',
-	#instVars : [
-		'browsingScope'
-	],
 	#category : 'Hera-AcceptanceTests',
 	#package : 'Hera-AcceptanceTests'
 }
@@ -37,14 +34,6 @@ HeraFeatureBrowserAcceptanceTest >> featureBasicBrowsing [
 				then: 'I see the script of the first feature in the browser';
 				when: 'I select the second feature';
 				then: 'I see the script of the second feature in the browser' }
-]
-
-{ #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepIOpenTheFeatureBrowser [
-
-	<heraStepDefinition: #(When 'I open the Feature Browser')>
-
-	self openFeatureBrowser: (HeraFeatureBrowser new scope: browsingScope)
 ]
 
 { #category : 'steps' }

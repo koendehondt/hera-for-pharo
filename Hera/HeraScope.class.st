@@ -19,9 +19,11 @@ HeraScope class >> all [
 HeraScope class >> default [
 
 	| testingClasses |
-	testingClasses := HeraAcceptanceTest allSubclasses select: [ :each | each isForTestingHera or: [ each isForTestingPharo or: [ each isHeraExample ]] ].
+	testingClasses := HeraAcceptanceTest allSubclasses select: [ :each |
+		each isForTestingHera or: [ each isForTestingPharo or: [ each isHeraExample ]] ].
 	^ self all
 		removeClasses: testingClasses;
+		removeClass: HeraSpecAcceptanceTest;
 		removeClass: HeraWebAcceptanceTest 
 ]
 

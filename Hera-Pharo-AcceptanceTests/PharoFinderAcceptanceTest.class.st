@@ -1,6 +1,6 @@
 Class {
 	#name : 'PharoFinderAcceptanceTest',
-	#superclass : 'HeraAcceptanceTest',
+	#superclass : 'HeraSpecAcceptanceTest',
 	#category : 'Hera-Pharo-AcceptanceTests',
 	#package : 'Hera-Pharo-AcceptanceTests'
 }

@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestForTesting',
-	#superclass : 'HeraAcceptanceTest',
+	#superclass : 'HeraSpecAcceptanceTest',
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }

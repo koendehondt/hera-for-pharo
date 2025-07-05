@@ -1,6 +1,9 @@
 Class {
 	#name : 'HeraSelfAcceptanceTest',
-	#superclass : 'HeraAcceptanceTest',
+	#superclass : 'HeraSpecAcceptanceTest',
+	#instVars : [
+		'browsingScope'
+	],
 	#category : 'Hera-AcceptanceTests',
 	#package : 'Hera-AcceptanceTests'
 }
@@ -27,4 +30,12 @@ HeraSelfAcceptanceTest >> featureRunner [
 HeraSelfAcceptanceTest >> openFeatureBrowser: aFeatureBrowser [
 
 	^ self openPresenter: aFeatureBrowser as: #featureBrowser
+]
+
+{ #category : 'steps' }
+HeraSelfAcceptanceTest >> stepIOpenTheFeatureBrowser [
+
+	<heraStepDefinition: #(When 'I open the Feature Browser')>
+
+	self openFeatureBrowser: (HeraFeatureBrowser new scope: browsingScope)
 ]
