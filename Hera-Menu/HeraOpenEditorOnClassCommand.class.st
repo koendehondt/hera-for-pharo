@@ -1,16 +1,6 @@
 "
-Description
---------------------
-
-I am a command available in the class context menu of Calypso. When activated I'll jump on the test class corresponding to the class. 
-
-If the class does not exists I will create it in the corresponding package.
-	
-Internal Representation and Key Implementation Points.
---------------------
-
-    Instance Variables
-	testClass:		<aClass>		Test class corresponding to the class I was activated with
+I am in charge to create a submenu in Calypso when the selected class is `HeraAcceptanceTest`.
+I can open a Hera Feature Browser with the selected class as a scope.
 "
 Class {
 	#name : 'HeraOpenEditorOnClassCommand',

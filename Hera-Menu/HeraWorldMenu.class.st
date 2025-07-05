@@ -1,3 +1,6 @@
+"
+I am in charge to manage all WorldMenu for Hera.
+"
 Class {
 	#name : 'HeraWorldMenu',
 	#superclass : 'Object',
