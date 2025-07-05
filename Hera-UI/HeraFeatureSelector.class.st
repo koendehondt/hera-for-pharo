@@ -28,23 +28,40 @@ HeraFeatureSelector >> acceptanceTestClassItems [
 HeraFeatureSelector >> addAcceptanceTestClass [
 
 	| className packageName acceptanceTestClass |
-	self flag: 'This UI interaction can be improved a lot by using a dedicated dialog'.
-	className := [ self
-		request: 'Please enter the name of the class.'
-		initialAnswer: 'MyAcceptanceTest'
-		title: 'New Acceptance Test Class' ]
-		on: SpCancelledInteractionError do: [ ^ self ].
-	packageName := [ self
-		request: 'Please enter the name of the package of the class.'
-		initialAnswer: 'MyPackage'
-		title: 'New Acceptance Test Class' ]
-		on: SpCancelledInteractionError do: [ ^ self ].
-	self flag: 'TODO: check validity of the class name and the package name'.
+	self flag:
+		'This UI interaction can be improved a lot by using a dedicated dialog'.
+	className := [
+		             self
+			             request: 'Please enter the name of the class.'
+			             initialAnswer: 'MyAcceptanceTest'
+			             title: 'New Acceptance Test Class' ]
+		             on: SpCancelledInteractionError
+		             do: [ ^ self ].
+	className isValidGlobalName ifFalse: [
+			self inform: 'Invalid class name.'.
+			^ self ].
+	(Smalltalk environment classNamed: className) ifNotNil: [ :aClass |
+			(self application newConfirm
+				 title: 'Override class';
+				 label:
+					 'You are about to override an existing class. Are you sure you want to do that ?';
+				 openModal) ifFalse: [ ^ self ] ].
+
+	packageName := [
+		               self
+			               request:
+			               'Please enter the name of the package of the class.'
+			               initialAnswer: 'MyPackage'
+			               title: 'New Acceptance Test Class' ]
+		               on: SpCancelledInteractionError
+		               do: [ ^ self ].
+	self flag: 'TODO: check validity of the package name'.
+
 	acceptanceTestClass := Smalltalk classInstaller make: [ :classBuilder |
-		classBuilder
-			name: className;
-			superclass: HeraAcceptanceTest;
-			package: packageName ].
+			                       classBuilder
+				                       name: className;
+				                       superclass: HeraAcceptanceTest;
+				                       package: packageName ].
 	self scope addClass: acceptanceTestClass.
 	self updateClassesAndFeaturesAfterAddingClass: acceptanceTestClass
 ]
