@@ -33,7 +33,7 @@ HeraFilteredSteps >> defaultLayout [
 HeraFilteredSteps >> filter: aStepFilter [
 
 	filter := aStepFilter.
-	table items: self stepMethodItems
+	table items: self sortedStepMethodItems
 ]
 
 { #category : 'initialization' }
@@ -57,6 +57,12 @@ HeraFilteredSteps >> scope: aScope [
 ]
 
 { #category : 'private' }
+HeraFilteredSteps >> sortedStepMethodItems [
+
+	^ self stepMethodItems sort: [ :some :other | some stepDescription caseInsensitiveLessOrEqual: other stepDescription ]
+]
+
+{ #category : 'private' }
 HeraFilteredSteps >> stepMethodItems [
 
 	^ self stepMethods
@@ -68,4 +74,10 @@ HeraFilteredSteps >> stepMethodItems [
 HeraFilteredSteps >> stepMethods [
 
 	^ scope allStepMethods
+]
+
+{ #category : 'test api' }
+HeraFilteredSteps >> tableItems [
+
+	^ table items
 ]
