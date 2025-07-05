@@ -18,20 +18,6 @@ HeraFeatureBrowser class >> defaultPreferredExtent [
 	^ 800@400
 ]
 
-{ #category : 'world menu' }
-HeraFeatureBrowser class >> featureBrowserMenuItemOn: aBuilder [
-	<worldMenu>
-
-	(aBuilder item: #Hera)
-		parent: #Testing;
-		order: 99;
-		keyText: 'o, f';
-		label: self windowTitle;
-		icon: self windowIcon;
-		action: [ self new open ];
-		withSeparatorAfter
-]
-
 { #category : 'accessing' }
 HeraFeatureBrowser class >> windowIcon [
 
