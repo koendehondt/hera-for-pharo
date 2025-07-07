@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'openPresenters'
 	],
-	#category : 'Hera-Web',
+	#category : 'Hera-Core',
 	#package : 'Hera',
-	#tag : 'Web'
+	#tag : 'Core'
 }
 
 { #category : 'hooks' }
