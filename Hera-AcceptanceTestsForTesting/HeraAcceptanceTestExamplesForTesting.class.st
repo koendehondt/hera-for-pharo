@@ -56,7 +56,22 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDataTable [
 					{ 'Name' . 'Email' } .
 					{ 'John' . 'john@testing.org' } .
 					{ 'Jane' . 'jane@testing.org' } });
-				then: 'I see them in the list of users' }
+				when: 'I add the following users:' with: (self dataTable: {
+					{ 'Name' . 'Email' } .
+					{ 'Jake' . 'jake@testing.org' } .
+					{ 'Emma' . 'emma@testing.org' } });
+				and: 'I add the following users:' with: (self dataTable: {
+					{ 'Name' . 'Email' } .
+					{ 'Jill' . 'jill@testing.org' } });
+				but: 'I remove the following users:' with: (self dataTable: {
+					{ 'Name' . 'Email' } .
+					{ 'Jake' . 'jake@testing.org' } });
+				then: 'I see these users in the list:' with: (self dataTable: {
+					{ 'Name' . 'Email' } .
+					{ 'John' . 'john@testing.org' } .
+					{ 'Jane' . 'jane@testing.org' } .
+					{ 'Emma' . 'emma@testing.org' } .
+					{ 'Jill' . 'jill@testing.org' } }) }
 ]
 
 { #category : 'features' }
@@ -268,6 +283,14 @@ HeraAcceptanceTestExamplesForTesting >> stepIAddANewUser [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIAddTheFollowingUsers: aDataTable [
+
+	<heraStepDefinition: #(When 'I add the following users:')>
+
+	users addAll: aDataTable asDictionaries
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIAmAnAdministrator [
 	
 	<heraStepDefinition: #(Given 'I am an administrator')>
@@ -340,6 +363,14 @@ HeraAcceptanceTestExamplesForTesting >> stepIRemoveAUser [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIRemoveTheFollowingUsers: aDataTable [
+
+	<heraStepDefinition: #(Given 'I remove the following users:')>
+
+	users removeAll: aDataTable asDictionaries
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepISeeAMessageThatTheCredentialsAreWrong [
 	
 	<heraStepDefinition: #(Then 'I see a message that the credentials are wrong')>
@@ -352,17 +383,17 @@ HeraAcceptanceTestExamplesForTesting >> stepISeeTheHomePage [
 ]
 
 { #category : 'steps' }
-HeraAcceptanceTestExamplesForTesting >> stepISeeThemInTheListOfUsers [
+HeraAcceptanceTestExamplesForTesting >> stepISeeTheseUsersInTheList: aDataTable [
 
-	<heraStepDefinition: #(Then 'I see them in the list of users')>
+	<heraStepDefinition: #(Then 'I see these users in the list:')>
 
-	| john jane |
-	john := users first.
-	jane := users second.
-	self assert: (john at: 'Name') equals: 'John'.
-	self assert: (john at: 'Email') equals: 'john@testing.org'.
-	self assert: (jane at: 'Name') equals: 'Jane'.
-	self assert: (jane at: 'Email') equals: 'jane@testing.org'
+	| expectedUsers |
+	expectedUsers := aDataTable asDictionaries.
+	self assert: users size equals: expectedUsers size.
+	expectedUsers withIndexDo: [ :expectedUser :index | | user |
+		user := users at: index.
+		self assert: (user at: 'Name') equals: (expectedUser at: 'Name').
+		self assert: (user at: 'Email') equals: (expectedUser at: 'Email') ]
 ]
 
 { #category : 'steps' }
@@ -384,11 +415,11 @@ HeraAcceptanceTestExamplesForTesting >> stepTheAPIRespondsWith: expectedResponse
 ]
 
 { #category : 'steps' }
-HeraAcceptanceTestExamplesForTesting >> stepTheFollowingUsersExist: dataTable [
+HeraAcceptanceTestExamplesForTesting >> stepTheFollowingUsersExist: aDataTable [
 
 	<heraStepDefinition: #(Given 'the following users exist:')>
 
-	users := dataTable asDictionaries
+	users := aDataTable asDictionaries asOrderedCollection
 ]
 
 { #category : 'steps' }

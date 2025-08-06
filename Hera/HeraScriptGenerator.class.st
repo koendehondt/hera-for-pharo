@@ -50,7 +50,10 @@ HeraScriptGenerator >> visitAndStep: anAndStep [
 	stream
 		crtab: indentation;
 		nextPutAll: 'And ';
-		nextPutAll: anAndStep description
+		nextPutAll: anAndStep description.
+	anAndStep argument ifNotNil: [ :stepArgument |
+		stream cr.
+		self visit: anAndStep argument ]
 ]
 
 { #category : 'visiting' }
@@ -64,12 +67,15 @@ HeraScriptGenerator >> visitBackground: aBackground [
 ]
 
 { #category : 'visiting' }
-HeraScriptGenerator >> visitButStep: anButStep [
+HeraScriptGenerator >> visitButStep: aButStep [
 
 	stream
 		crtab: indentation;
 		nextPutAll: 'But ';
-		nextPutAll: anButStep description
+		nextPutAll: aButStep description.
+	aButStep argument ifNotNil: [ :stepArgument |
+		stream cr.
+		self visit: aButStep argument ]
 ]
 
 { #category : 'visiting' }

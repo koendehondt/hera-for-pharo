@@ -87,7 +87,22 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 			| Name | Email            |
 			| John | john@testing.org |
 			| Jane | jane@testing.org |
-		Then I see them in the list of users'.
+		When I add the following users:
+			| Name | Email            |
+			| Jake | jake@testing.org |
+			| Emma | emma@testing.org |
+		And I add the following users:
+			| Name | Email            |
+			| Jill | jill@testing.org |
+		But I remove the following users:
+			| Name | Email            |
+			| Jake | jake@testing.org |
+		Then I see these users in the list:
+			| Name | Email            |
+			| John | john@testing.org |
+			| Jane | jane@testing.org |
+			| Emma | emma@testing.org |
+			| Jill | jill@testing.org |'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 28 to: 36.
