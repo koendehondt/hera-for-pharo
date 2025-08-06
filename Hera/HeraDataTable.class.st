@@ -47,6 +47,14 @@ HeraDataTable >> asDictionaries [
 	^ dictionaries asArray
 ]
 
+{ #category : 'converting' }
+HeraDataTable >> asDictionary [
+	"Assume that the first column is a header column and the second column holds the values.
+	 Answer a Dictionary that maps the headers to the values."
+
+	^ Dictionary newFrom: self asAssociations
+]
+
 { #category : 'private - accessing' }
 HeraDataTable >> data [
 	"Private because the receiver is immutable."

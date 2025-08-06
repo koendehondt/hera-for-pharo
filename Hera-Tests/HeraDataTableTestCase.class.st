@@ -64,6 +64,19 @@ HeraDataTableTestCase >> testAsDictionariesWhenTableHasNoValueRows [
 ]
 
 { #category : 'tests' }
+HeraDataTableTestCase >> testAsDictionary [
+
+	| expectedDictionary |
+	subject data: {
+		{ 'Name' . 'John' } .
+		{ 'Email' . 'john@testing.org' } }.
+	expectedDictionary := Dictionary
+		with: 'Name' -> 'John'
+		with: 'Email' -> 'john@testing.org'.
+	self assert: subject asDictionary equals: expectedDictionary
+]
+
+{ #category : 'tests' }
 HeraDataTableTestCase >> testPrintFormattedOnIndentedWithIndentation [
 
 	| actualOutput expectedOutput |
