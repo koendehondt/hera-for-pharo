@@ -23,11 +23,12 @@ HeraFilteredStepsTestCase >> testTableItemsAreSortedCaseInsensitively [
 		equals: {
 			'I check "Case"' .
 			'I check "Exact"' .
+			'I debug' .
 			'I search for {string}' .
 			'I search in {word} for {string}' .
 			'I search {string}' .
 			'I see the following matching methods:' .
 			'I uncheck "Substring"' .
 			'the Finder is open' .
-			'the search mode is {string}' }
+			'the search mode is {string}' } asOrderedCollection
 ]
