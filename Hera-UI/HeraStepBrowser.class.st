@@ -27,7 +27,7 @@ HeraStepBrowser >> initializePresenters [
 		addPageTitle: 'When' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #When) ];
 		addPageTitle: 'Then' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #Then) ];
 		addPageTitle: 'Duplicates' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
-		addPageTitle: 'Empty' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
+		addPageTitle: 'Empty' provider: [ HeraFilteredSteps new scope: self scope; filter: HeraEmptyStepFilter new ];
 		addPageTitle: 'Unused' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
 		yourself
 ]
