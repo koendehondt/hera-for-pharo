@@ -54,7 +54,21 @@ HeraScope >> allForBrowsing [
 { #category : 'accessing' }
 HeraScope >> allStepMethods [
 
-	^ self allForBrowsing flatCollect: [ :each | each stepMethods ]
+	| classes |
+	classes := Set new.
+	acceptanceTestClasses do: [ :each | self collectAcceptanceTestSuperclassesOf: each in: classes ].
+	classes addAll: acceptanceTestClasses.
+	^ classes asOrderedCollection flatCollect: [ :each | each stepMethods ]
+]
+
+{ #category : 'private' }
+HeraScope >> collectAcceptanceTestSuperclassesOf: aClass in: aSet [
+
+	| superclass |
+	superclass := aClass superclass.
+	aSet add: superclass.
+	superclass == HeraAcceptanceTest ifTrue: [ ^ self ].
+	self collectAcceptanceTestSuperclassesOf: superclass in: aSet
 ]
 
 { #category : 'enumerating' }

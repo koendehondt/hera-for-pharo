@@ -69,16 +69,46 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 ]
 
 { #category : 'tests' }
-HeraScopeTestCase >> testAllStepMethods [
+HeraScopeTestCase >> testAllStepMethodsWhenOneClassInScope [
 
+	| stepMethods stepMethodsOfClass stepMethodsOfHeraSpecAcceptanceTest stepMethodsOfHeraAcceptanceTest |
 	subject := self describedClass new.
 	subject addClass: HeraAcceptanceTestWithStepArgumentsForTesting.
-	self assert: (subject allStepMethods collect: [ :each | each selector ]) sorted equals: {
-		#stepIAmOnTheSignInPage .
-		#stepIFillInTheFieldLabeled: .
-		#stepIPressTheButtonLabeled: .
-		#stepISeeTheHomePage
-	 }
+	stepMethods := subject allStepMethods.
+	stepMethodsOfClass := HeraAcceptanceTestWithStepArgumentsForTesting stepMethods.
+	stepMethodsOfHeraSpecAcceptanceTest := HeraSpecAcceptanceTest stepMethods.
+	stepMethodsOfHeraAcceptanceTest := HeraAcceptanceTest stepMethods.
+	self assert: (stepMethods includesAll: stepMethodsOfClass).
+	self assert: (stepMethods includesAll: stepMethodsOfHeraSpecAcceptanceTest).
+	self assert: (stepMethods includesAll: stepMethodsOfHeraAcceptanceTest).
+	self assert: stepMethods size equals: stepMethodsOfClass size + stepMethodsOfHeraSpecAcceptanceTest size + stepMethodsOfHeraAcceptanceTest size
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testAllStepMethodsWhenScopeIsEmpty [
+
+	self assert: subject allStepMethods isEmpty
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testAllStepMethodsWhenTwoClassInScope [
+	"Verify that superclasses are not considered twice."
+
+	| stepMethods stepMethodsOfClassOne stepMethodsOfHeraSpecAcceptanceTest stepMethodsOfHeraAcceptanceTest stepMethodsOfClassTwo |
+	subject := self describedClass new.
+	subject
+		addClass: HeraAcceptanceTestWithStepArgumentsForTesting;
+		addClass: HeraAcceptanceTestWithPassForTesting.
+	stepMethods := subject allStepMethods.
+	stepMethodsOfClassOne := HeraAcceptanceTestWithStepArgumentsForTesting stepMethods.
+	stepMethodsOfClassTwo := HeraAcceptanceTestWithPassForTesting stepMethods.
+	stepMethodsOfHeraSpecAcceptanceTest := HeraSpecAcceptanceTest stepMethods.
+	stepMethodsOfHeraAcceptanceTest := HeraAcceptanceTest stepMethods.
+	self assert: (stepMethods includesAll: stepMethodsOfClassOne).
+	self assert: (stepMethods includesAll: stepMethodsOfClassTwo).
+	self assert: (stepMethods includesAll: stepMethodsOfHeraSpecAcceptanceTest).
+	self assert: (stepMethods includesAll: stepMethodsOfHeraAcceptanceTest).
+	self assert: stepMethods size equals: stepMethodsOfClassOne size + stepMethodsOfClassTwo size + stepMethodsOfHeraSpecAcceptanceTest size + stepMethodsOfHeraAcceptanceTest size
 ]
 
 { #category : 'tests' }
