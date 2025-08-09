@@ -110,6 +110,38 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 ]
 
 { #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDescriptionInBackground [
+
+	| text |
+	text := Text fromString:	'Feature: With description in background
+
+	Background:
+
+		Signing in is required for all other functionality
+
+		Given I have a user name
+		And a password
+		But no email
+
+	Scenario: Successful sign-in
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+	Scenario: Unsuccessful sign-in
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 43 to: 53;
+		addAttribute: TextEmphasis bold from: 171 to: 179;
+		addAttribute: TextEmphasis bold from: 295 to: 303.
+	^ text
+]
+
+{ #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 
 	| text |
@@ -236,6 +268,15 @@ HeraScriptGeneratorTestCase >> testGeneratedScriptWithDataTable [
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithDataTable.
 	subject visit: feature.
 	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithDataTable
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithDescriptionInBackground [
+
+	| feature |
+	feature := HeraAcceptanceTestExamplesForTesting new featureWithDescriptionInBackground.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithDescriptionInBackground
 ]
 
 { #category : 'tests' }

@@ -78,17 +78,24 @@ HeraFeatureMethodGenerator >> visitAndAstNode: aGivenAstNode [
 { #category : 'visiting' }
 HeraFeatureMethodGenerator >> visitBackgroundAstNode: aBackgroundAstNode [
 
+	| parenthesesNeeded |
 	stream crtab: indentation.
 	stream nextPutAll: 'background: '.
-	aBackgroundAstNode steps ifNotEmpty: [stream nextPut: $( ].
+	parenthesesNeeded := aBackgroundAstNode description isNotNil or: [ aBackgroundAstNode steps isNotEmpty ].
+	parenthesesNeeded ifTrue: [stream nextPut: $( ].
 	stream nextPutAll: 'self background'.
+	aBackgroundAstNode description ifNotNil: [ :description |
+		self increaseIndentation.
+		self visit: description.
+		aBackgroundAstNode steps ifNotEmpty: [ stream nextPut: $; ].
+		self decreaseIndentation ].
 	aBackgroundAstNode steps
 		do: [ :each |
 			self increaseIndentation.
 			self visit: each.
 			self decreaseIndentation ]
 		separatedBy: [ stream nextPut: $; ].
-	aBackgroundAstNode steps ifNotEmpty: [stream nextPut: $) ]
+	parenthesesNeeded ifTrue: [stream nextPut: $) ]
 ]
 
 { #category : 'visiting' }
@@ -182,7 +189,7 @@ HeraFeatureMethodGenerator >> visitFeatureAstNode: aFeatureAstNode [
 		print: aFeatureAstNode title text.
 	aFeatureAstNode isEmpty ifFalse: [ stream nextPut: $) ].
 	aFeatureAstNode tags ifNotEmpty: [
-	self increaseIndentation.
+		self increaseIndentation.
 		stream
 			crtab: indentation;
 			nextPutAll: 'tags: {'.

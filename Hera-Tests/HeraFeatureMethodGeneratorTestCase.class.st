@@ -108,6 +108,71 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfBackgroundOnly [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfBackgroundWithDescription [
+
+	| document ast |
+	document := '
+	Feature: Signing in
+
+		Background:
+			Singing in is required for all other activity.
+
+		Scenario: Successful sign-in			
+			When I enter my credentials
+			And I press the button to sign in
+			Then I see the home page'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Signing in''>
+
+	^ (self feature: ''Signing in'')
+		background: (self background
+			description: {
+				''Singing in is required for all other activity.'' });
+		scenarios: {
+			(self scenario: ''Successful sign-in'')
+				when: ''I enter my credentials'';
+				and: ''I press the button to sign in'';
+				then: ''I see the home page'' }'
+]
+
+{ #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfBackgroundWithDescriptionAndOneStep [
+
+	| document ast |
+	document := '
+	Feature: Signing in
+
+		Background:
+			Singing in is required for all other activity.
+
+			Given the sign-in page is open
+
+		Scenario: Successful sign-in			
+			When I enter my credentials
+			And I press the button to sign in
+			Then I see the home page'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Signing in''>
+
+	^ (self feature: ''Signing in'')
+		background: (self background
+			description: {
+				''Singing in is required for all other activity.'' };
+			given: ''the sign-in page is open'');
+		scenarios: {
+			(self scenario: ''Successful sign-in'')
+				when: ''I enter my credentials'';
+				and: ''I press the button to sign in'';
+				then: ''I see the home page'' }'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDataTable [
 
 	| document ast |

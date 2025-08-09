@@ -475,6 +475,44 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'expected output' }
+HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDescriptionInBackground [
+
+	| text |
+	text := Text fromString: 'Feature: With description in background
+
+	Background:
+		Given I have a user name
+		And a password
+		But no email
+
+	Scenario: Successful sign-in
+		Given I have a user name [Background]
+		And a password [Background]
+		But no email [Background]
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+	Scenario: Unsuccessful sign-in
+		Given I have a user name [Background]
+		And a password [Background]
+		But no email [Background]
+		When I enter the wrong credentials
+		And I press the button to sign in
+		Then I am still on the sign-in page
+		But I see a message that the credentials are wrong
+
+Total: 2. Passed: 2. Failed: 0. Error: 0.
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 43 to: 53;
+		addAttribute: TextEmphasis bold from: 116 to: 124;
+		addAttribute: TextEmphasis bold from: 338 to: 346.
+	^ text
+]
+
+{ #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithRules [
 
 	| text |
@@ -762,6 +800,15 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithDataTable [
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithDataTable
+]
+
+{ #category : 'tests' }
+HeraScriptRunnerWithTextReporterTestCase >> testRunWithDescriptionInBackground [
+
+	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDescriptionInBackground).
+	subject reporter: reporter.
+	subject run.
+	self assertText: reporter text equals: self expectedRunReportWithDescriptionInBackground
 ]
 
 { #category : 'tests' }

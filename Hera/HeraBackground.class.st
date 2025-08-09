@@ -2,7 +2,8 @@ Class {
 	#name : 'HeraBackground',
 	#superclass : 'HeraScriptElement',
 	#instVars : [
-		'steps'
+		'steps',
+		'description'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -47,6 +48,18 @@ HeraBackground >> but: aString with: aStepArgument [
 	steps add: step
 ]
 
+{ #category : 'accessing' }
+HeraBackground >> description [
+
+	^ description
+]
+
+{ #category : 'accessing' }
+HeraBackground >> description: anArrayOfStrings [
+
+	description := anArrayOfStrings
+]
+
 { #category : 'dsl' }
 HeraBackground >> given: aString [
 
@@ -67,6 +80,7 @@ HeraBackground >> given: aString with: aStepArgument [
 HeraBackground >> initialize [
 
 	super initialize.
+	description := #().
 	steps := OrderedCollection new
 ]
 

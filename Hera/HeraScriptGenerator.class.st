@@ -62,6 +62,12 @@ HeraScriptGenerator >> visitBackground: aBackground [
 	stream crtab: indentation.
 	self nextPutKeyword: 'Background:'.
 	self increaseIndentation.
+	aBackground description ifNotEmpty: [ stream cr ].
+	aBackground description do: [ :each |
+		stream cr.
+		each ifNotEmpty: [ stream tab: indentation ].
+		stream nextPutAll: each ].
+	aBackground description ifNotEmpty: [ stream cr ].
 	aBackground steps do: [ :each | self visit: each ].
 	self decreaseIndentation
 ]

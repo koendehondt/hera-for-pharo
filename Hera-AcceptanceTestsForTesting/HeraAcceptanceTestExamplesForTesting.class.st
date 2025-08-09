@@ -90,6 +90,30 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDebugStep [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithDescriptionInBackground [
+
+	<heraFeature: 'With description in background'>
+
+	^ (self feature: 'With description in background')
+		background: (self background
+			description: {
+				'Signing in is required for all other functionality' };
+			given: 'I have a user name';
+			and: 'a password';
+			but: 'no email');
+		scenarios: {
+			(self scenario: 'Successful sign-in')
+				when: 'I enter my credentials';
+				and: 'I press the button to sign in';
+				then: 'I see the home page' .
+			(self scenario: 'Unsuccessful sign-in')
+				when: 'I enter the wrong credentials';
+				and: 'I press the button to sign in';
+				then: 'I am still on the sign-in page';
+				but: 'I see a message that the credentials are wrong' }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithDocString [
 
 	<heraFeature: 'With doc string'>
