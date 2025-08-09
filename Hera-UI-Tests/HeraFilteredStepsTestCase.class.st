@@ -26,7 +26,6 @@ HeraFilteredStepsTestCase >> testTableItemsAreSortedCaseInsensitively [
 			'I debug' .
 			'I search for {string}' .
 			'I search in {word} for {string}' .
-			'I search {string}' .
 			'I see the following matching methods:' .
 			'I uncheck "Substring"' .
 			'the Finder is open' .

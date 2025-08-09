@@ -49,12 +49,6 @@ HeraAcceptanceTestWithFailureForTesting >> step1 [
 ]
 
 { #category : 'steps' }
-HeraAcceptanceTestWithFailureForTesting >> step10 [
-	
-	<heraStepDefinition: #(Then 'I see the sign-in page')>
-]
-
-{ #category : 'steps' }
 HeraAcceptanceTestWithFailureForTesting >> step2 [
 	
 	<heraStepDefinition: #(When 'I enter my credentials')>
@@ -90,16 +84,4 @@ HeraAcceptanceTestWithFailureForTesting >> step7 [
 	<heraStepDefinition: #(Then 'I am still on the sign-in page')>
 
 	self expect: false description: 'The current page is not the sign-in page.'
-]
-
-{ #category : 'steps' }
-HeraAcceptanceTestWithFailureForTesting >> step8 [
-	
-	<heraStepDefinition: #(Given 'I am signed in')>
-]
-
-{ #category : 'steps' }
-HeraAcceptanceTestWithFailureForTesting >> step9 [
-	
-	<heraStepDefinition: #(When 'I sign out')>
 ]

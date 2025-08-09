@@ -232,18 +232,6 @@ HeraRunnerAcceptanceTest >> stepIPressCommandR [
 ]
 
 { #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepIPressTheContinueButton [
-
-	<heraStepDefinition: #(When 'I press the "Continue" button')>
-]
-
-{ #category : 'steps' }
-HeraRunnerAcceptanceTest >> stepIPressTheStepButtonMultipleTimes [
-
-	<heraStepDefinition: #(When 'I press the "Step" button multiple times')>
-]
-
-{ #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepISeeADisabledButtonLabeled: aString [
 
 	<heraStepDefinition: #(Then match 'I see a disabled {string} button')>

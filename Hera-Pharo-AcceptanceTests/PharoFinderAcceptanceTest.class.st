@@ -40,8 +40,8 @@ PharoFinderAcceptanceTest >> featureFindingInSelectors [
 				when: 'I search for "indexOf:startingAt:ifAbsent:"';
 				then: 'I see the following matching methods:' with: (self dataTable: {
 					{ 'indexOf:startingAt:ifAbsent:' } .
-					{ 'lastIndexOf:startingAt:ifAbsent:' } .
-					{ 'indexOf:startingAt:ifAbsent:using:' } }) .
+					{ 'indexOf:startingAt:ifAbsent:using:' } .
+					{ 'lastIndexOf:startingAt:ifAbsent:' } }) .
 			(self scenario: 'Exact search')
 				when: 'I uncheck "Substring"';
 				and: 'I check "Exact"';
@@ -105,14 +105,6 @@ PharoFinderAcceptanceTest >> stepISearchIn: scope for: aSearchString [
 	searchBar searchModeDropList selectIndex: index.
 	searchBar searchInput text: aSearchString.
 	searchBar searchButton click
-]
-
-{ #category : 'steps' }
-PharoFinderAcceptanceTest >> stepISearchLena: aString [
-
-	<heraStepDefinition: #(When match 'I search {string}')>
-
-	aString inspect
 ]
 
 { #category : 'steps' }

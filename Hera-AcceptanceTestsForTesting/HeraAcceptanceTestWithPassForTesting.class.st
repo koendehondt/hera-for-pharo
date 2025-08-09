@@ -67,12 +67,6 @@ HeraAcceptanceTestWithPassForTesting >> step1 [
 ]
 
 { #category : 'steps' }
-HeraAcceptanceTestWithPassForTesting >> step10 [
-	
-	<heraStepDefinition: #(Then 'I see the sign-in page')>
-]
-
-{ #category : 'steps' }
 HeraAcceptanceTestWithPassForTesting >> step2 [
 	
 	<heraStepDefinition: #(When 'I enter my credentials')>
@@ -106,12 +100,6 @@ HeraAcceptanceTestWithPassForTesting >> step6 [
 HeraAcceptanceTestWithPassForTesting >> step7 [
 	
 	<heraStepDefinition: #(Then 'I am still on the sign-in page')>
-]
-
-{ #category : 'steps' }
-HeraAcceptanceTestWithPassForTesting >> step8 [
-	
-	<heraStepDefinition: #(Given 'I am signed in')>
 ]
 
 { #category : 'steps' }

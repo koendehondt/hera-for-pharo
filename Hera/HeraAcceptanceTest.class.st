@@ -213,6 +213,13 @@ HeraAcceptanceTest >> prefersDoubleQuotedStringArgumentsInStepDefinitions [
 	^ true
 ]
 
+{ #category : 'printing' }
+HeraAcceptanceTest >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream space; print: featureSelector 
+]
+
 { #category : 'private' }
 HeraAcceptanceTest >> regexStringForMatchStepDefinition: stepDefinition [
 
