@@ -204,7 +204,15 @@ HeraTextReporter >> reportStartOfBackground: aBackground [
 
 	stream cr; crtab: indentation.
 	self reportKeyword: 'Background:'.
-	self increaseIndentation
+	self increaseIndentation.
+	reportsDescriptions ifFalse: [ ^ self ].
+	aBackground description ifEmpty: [ ^ self ].
+	stream cr.
+	aBackground description do: [ :each |
+		stream cr.
+		each isEmpty ifFalse: [ stream tab: 2 ].
+		stream nextPutAll: each ].
+	stream cr
 ]
 
 { #category : 'reporting' }

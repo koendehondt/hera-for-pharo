@@ -481,6 +481,9 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDescriptionInBa
 	text := Text fromString: 'Feature: With description in background
 
 	Background:
+
+		Signing in is required for all other functionality
+
 		Given I have a user name
 		And a password
 		But no email
@@ -507,8 +510,8 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 43 to: 53;
-		addAttribute: TextEmphasis bold from: 116 to: 124;
-		addAttribute: TextEmphasis bold from: 338 to: 346.
+		addAttribute: TextEmphasis bold from: 171 to: 179;
+		addAttribute: TextEmphasis bold from: 393 to: 401.
 	^ text
 ]
 
