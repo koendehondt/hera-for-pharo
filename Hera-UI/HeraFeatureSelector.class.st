@@ -7,7 +7,8 @@ Class {
 		'browseStepsButton',
 		'classesAndFeatures',
 		'scope',
-		'featureSelectionChangedBlock'
+		'featureSelectionChangedBlock',
+		'runAllFeaturesButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -228,6 +229,11 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		icon: (Hera settings iconNamed: #addFeature);
 		action: [ self addFeature ];
 		yourself.
+	runAllFeaturesButton := self newButton
+		help: 'Run all features';
+		icon: (Hera settings iconNamed: #runAll);
+		action: [ self runAllFeatures ];
+		yourself.
 	browseStepsButton := self newButton
 		help: 'Browse steps';
 		icon: (Hera settings iconNamed: #book);
@@ -272,6 +278,10 @@ HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 	selectedItem removeFromScope: self scope.
 	selectedItem remove.
 	self updateClassesAndFeatures
+]
+
+{ #category : 'actions' }
+HeraFeatureSelector >> runAllFeatures [
 ]
 
 { #category : 'actions' }
@@ -336,18 +346,23 @@ HeraFeatureSelector >> stepFeature [
 { #category : 'layout' }
 HeraFeatureSelector >> toolbar [
 
-	| manageGroup browseGroup |
+	| manageGroup browseGroup runGroup |
 	manageGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		add: addAcceptanceTestClassButton width: 40;
 		add: addFeatureButton width: 40;
+		yourself.
+	runGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: runAllFeaturesButton width: 40;
 		yourself.
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		add: browseStepsButton width: 40;
 		yourself.
 	^ SpBoxLayout newLeftToRight
-		add: manageGroup width: 140;
+		add: manageGroup width: 120;
+		add: runGroup width: 70;
 		add: browseGroup;
 		yourself
 ]

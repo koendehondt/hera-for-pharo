@@ -197,12 +197,12 @@ HeraScriptEditor >> initializeToolbarButtons [
 		yourself.
 	runButton := self newButton
 		help: 'Run';
-		iconName: #go;
+		icon: (Hera settings iconNamed: #run);
 		action: [ self runFeature ];
 		yourself.
 	stepByStepButton := self newButton
 		help: 'Step';
-		iconName: #into;
+		icon: (Hera settings iconNamed: #runAndPause);
 		action: [ self stepFeature ];
 		yourself.
 	debugButton := self newButton
