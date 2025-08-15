@@ -10,6 +10,9 @@ To load it:
 Metacello new
    baseline: 'Hera';
    repository: 'github://koendehondt/hera-for-pharo:main';
+	onConflict: [ :e | e useIncoming ];
+	onUpgrade: [ :e | e useIncoming ];
+	ignoreImage;
    load
 ```
 
