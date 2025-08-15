@@ -10,6 +10,12 @@ Class {
 	#tag : 'Step Browser'
 }
 
+{ #category : 'test api' }
+HeraStepBrowser >> copyStepDescriptionToClipboard [
+
+	notebook selectedPage activePresenter copyStepDescriptionToClipboard
+]
+
 { #category : 'layout' }
 HeraStepBrowser >> defaultLayout [
 
@@ -42,6 +48,12 @@ HeraStepBrowser >> scope [
 HeraStepBrowser >> scope: aScope [
 
 	scope := aScope
+]
+
+{ #category : 'test api' }
+HeraStepBrowser >> selectStepMethodItem: aStepMethodItem [
+
+	notebook selectedPage activePresenter selectStepMethodItem: aStepMethodItem
 ]
 
 { #category : 'accessing' }

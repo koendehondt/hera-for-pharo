@@ -15,6 +15,14 @@ HeraStepMethodItem >> < other [
 	^ self stepDescription < other stepDescription
 ]
 
+{ #category : 'comparing' }
+HeraStepMethodItem >> = anObject [
+
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ stepMethod = anObject stepMethod
+]
+
 { #category : 'accessing' }
 HeraStepMethodItem >> acceptanceTestClass [
 
@@ -30,6 +38,18 @@ HeraStepMethodItem >> compileSourceWithoutPragma: stepMethodSource notifying: re
 		failBlock: [ ^ nil ];
 		permitUndeclared: false;
 		compile
+]
+
+{ #category : 'accessing' }
+HeraStepMethodItem >> fullStepDescription [
+
+	^ '{1} {2}' format: { self stepType . self stepDescription }
+]
+
+{ #category : 'comparing' }
+HeraStepMethodItem >> hash [
+
+	^ stepMethod hash
 ]
 
 { #category : 'private' }

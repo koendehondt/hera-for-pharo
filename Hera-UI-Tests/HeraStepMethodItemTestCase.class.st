@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraStepMethodItemTestCase',
 	#superclass : 'HeraUnitTestCase',
-	#category : 'Hera-UI-Tests-Feature Browser',
+	#category : 'Hera-UI-Tests-Step Browser',
 	#package : 'Hera-UI-Tests',
-	#tag : 'Feature Browser'
+	#tag : 'Step Browser'
 }
 
 { #category : 'running' }
@@ -17,6 +17,20 @@ HeraStepMethodItemTestCase >> testAcceptanceTestClass [
 
 	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage.
 	self assert: subject acceptanceTestClass equals: HeraAcceptanceTestWithStepArgumentsForTesting
+]
+
+{ #category : 'tests' }
+HeraStepMethodItemTestCase >> testFullStepDescriptionForGivenStep [
+
+	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIAmOnTheSignInPage.
+	self assert: subject fullStepDescription equals: 'Given I am on the sign-in page'
+]
+
+{ #category : 'tests' }
+HeraStepMethodItemTestCase >> testFullStepDescriptionForThenStep [
+
+	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepISeeTheHomePage.
+	self assert: subject fullStepDescription equals: 'Then I see the home page'
 ]
 
 { #category : 'tests' }
@@ -55,6 +69,13 @@ HeraStepMethodItemTestCase >> testStepDescriptionForRegexStepDefinition [
 
 	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIPressTheButtonLabeled:.
 	self assert: subject stepDescription equals: 'I press the button labeled "([^"]+)"'
+]
+
+{ #category : 'tests' }
+HeraStepMethodItemTestCase >> testStepFullDescriptionForWhenStep [
+
+	subject stepMethod: HeraAcceptanceTestWithStepArgumentsForTesting >> #stepIFillInTheFieldLabeled:.
+	self assert: subject fullStepDescription equals: 'When I fill in the field labeled {string}'
 ]
 
 { #category : 'tests' }
