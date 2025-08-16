@@ -12,13 +12,24 @@ Class {
 
 { #category : 'private' }
 HeraMatchStepDefinition >> argumentConversion [
+	"The conversion blocks may signal errors. They will be handled and reported by the Hera runner."
 
-	^ Dictionary
-		with: 'string' -> [ :argument | argument ]
-		with: 'word' -> [ :argument | argument ]
-		with: 'int' -> [ :argument | argument asInteger ]
-		with: 'float' -> [ :argument | Float readFrom: argument readStream ]
-		with: '' -> [ :argument | argument ]
+	^ Dictionary new
+		add: 'string' -> [ :argument | argument ];
+		add: 'word' -> [ :argument | argument ];
+		add: 'int' -> [ :argument | argument asInteger ];
+		add: 'float' -> [ :argument | Float readFrom: argument readStream ];
+		add: '' -> [ :argument | argument ];
+		add: 'date' -> [ :argument | Date readFrom: argument pattern: 'yyyy-mm-dd' ];
+		add: 'date:iso' -> [ :argument | Date readFrom: argument pattern: 'yyyy-mm-dd' ];
+		add: 'date:dmy' -> [ :argument | Date readFrom: argument pattern: 'dd/mm/yyyy' ];
+		add: 'date:mdy' -> [ :argument | Date readFrom: argument pattern: 'mm/dd/yyyy' ];
+		add: 'date:ymd' -> [ :argument | Date readFrom: argument pattern: 'yyyy/mm/dd' ];
+		add: 'time' -> [ :argument | Time fromString: argument ];
+		add: 'time:24h' -> [ :argument | Time fromString: argument ];
+		add: 'time:12h' -> [ :argument | Time fromString: argument ];
+		add: 'timestamp' -> [ :argument | DateAndTime readFrom: argument readStream ];
+		yourself
 ]
 
 { #category : 'private' }
@@ -39,13 +50,20 @@ HeraMatchStepDefinition >> initialize [
 { #category : 'matching' }
 HeraMatchStepDefinition >> match: aStepDescription [
 
-	| matcher matches regex |
+	| matcher matches regex lastMatchEnd |
 	types := self argumentTypesIn: pattern.
 	regex := pattern format: self supportedArguments.
 	matcher := RxMatcher forString: regex.
 	(matcher matches: aStepDescription) ifFalse: [ ^ nil ].
-	matches := (2 to: matcher subexpressionCount) collect: [ :index | matcher subexpression: index ].
-	^ self typeConvert: matches
+	matcher subexpressionCount < 2 ifTrue: [ ^ nil ].
+	matches := OrderedCollection with: (matcher subexpression: 2).
+	lastMatchEnd := (matcher subEnd: 2) first.
+	3 to: matcher subexpressionCount do: [ :index | | begin |
+		begin := matcher subBeginning: index.
+		(begin isNotEmpty and: [ begin first > lastMatchEnd ]) ifTrue: [
+			lastMatchEnd := (matcher subEnd: index) first.
+			matches add: (matcher subexpression: index) ] ].
+	^ self typeConvert: matches asArray
 ]
 
 { #category : 'accessing' }
@@ -57,18 +75,29 @@ HeraMatchStepDefinition >> preferSingleQuotedStringArguments [
 
 { #category : 'private' }
 HeraMatchStepDefinition >> supportedArguments [
-	"Hera support a subset of the parameter types defined by Cucumber.
-	 See https://github.com/cucumber/cucumber-expressions"
+	"Hera supports a subset of the parameter types defined by Cucumber. See https://github.com/cucumber/cucumber-expressions.
+	 Some Cucumber expressions are not useful in Pharo. Therefore Hera does not support them.
+	 Hera adds date, time and timestamp parameter types."
 
 	| quotedStringRegex |
 	self flag: 'The regex for float may be too strict. RxMatcher does not support non-capturing groups, like (-?\d+(?:\.\d+))'.
 	quotedStringRegex := preferDoubleQuotedStringArguments ifTrue: [ '"([^"]*)"' ] ifFalse: [ '''([^'']*)''' ].
-	^ Dictionary
-		with: 'string' -> quotedStringRegex
-		with: 'word' -> '(\w+)'
-		with: 'int' -> '(-?\d+)'
-		with: 'float' -> '(-?\d+\.\d+)'
-		with: '' -> '(.*)'
+	^ Dictionary new
+		add: 'string' -> quotedStringRegex;
+		add: 'word' -> '(\w+)';
+		add: 'int' -> '(-?\d+)';
+		add: 'float' -> '(-?\d+\.\d+)';
+		add: '' -> '(.*)';
+		add: 'date' -> '(\d\d\d\d\-\d\d\-\d\d)';
+		add: 'date:iso' -> '(\d\d\d\d\-\d\d\-\d\d)';
+		add: 'date:dmy' -> '(\d\d/\d\d/\d\d\d\d)';
+		add: 'date:mdy' -> '(\d\d/\d\d/\d\d\d\d)';
+		add: 'date:ymd' -> '(\d\d\d\d/\d\d/\d\d)';
+		add: 'time' -> '(\d\d\:\d\d)';
+		add: 'time:24h' -> '(\d\d\:\d\d(\:\d\d)?)';
+		add: 'time:12h' -> '(\d?\d\:\d\d(\:\d\d)?\s?(AM|PM|am|pm))';
+		add: 'timestamp' -> '(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d(([+-]\d\d\:\d\d)|Z))';
+		yourself
 ]
 
 { #category : 'private' }
