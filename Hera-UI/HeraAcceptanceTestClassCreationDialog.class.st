@@ -40,7 +40,8 @@ HeraAcceptanceTestClassCreationDialog >> clickOkButton [
 { #category : 'initialization' }
 HeraAcceptanceTestClassCreationDialog >> connectPresenters [
 
-	packageList whenSelectedItemChangedDo: [ :selectedPackage |
+	packageList whenSelectionChangedDo: [ :selectionMode | | selectedPackage |
+		selectedPackage := selectionMode selectedItem.
 		tagList items: (selectedPackage ifNil: [ #() ] ifNotNil: [ self tagsOfPackage: selectedPackage ] ).
 		self updateMessageAndOkButton ].
 	classNameField whenTextChangedDo: [ :text |
@@ -50,7 +51,7 @@ HeraAcceptanceTestClassCreationDialog >> connectPresenters [
 { #category : 'layout' }
 HeraAcceptanceTestClassCreationDialog >> defaultLayout [
 
-	| listsLayout superclassesLayout packagesLayout tagsLayout buttonBarLayout |
+	| listsLayout superclassesLayout packagesLayout tagsLayout buttonBarLayout packagesAndTagsLayout |
 	superclassesLayout := SpBoxLayout newTopToBottom
 		spacing: 5;
 		add: (self newLabel label: 'Superclass:'; yourself) expand: false;
@@ -66,11 +67,15 @@ HeraAcceptanceTestClassCreationDialog >> defaultLayout [
 		add: (self newLabel label: 'Tag:'; yourself) expand: false;
 		add: tagList;
 		yourself.
-	listsLayout := SpBoxLayout newHorizontal
-		spacing: 5;
-		add: superclassesLayout;
+	packagesAndTagsLayout := SpPanedLayout newHorizontal
+		positionOfSlider: 50 percent;
 		add: packagesLayout;
 		add: tagsLayout;
+		yourself.	
+	listsLayout := SpPanedLayout newHorizontal
+		positionOfSlider: 33 percent;
+		add: superclassesLayout;
+		add: packagesAndTagsLayout;
 		yourself.	
 	buttonBarLayout := SpBoxLayout newLeftToRight
 		spacing: 5;
@@ -146,7 +151,7 @@ HeraAcceptanceTestClassCreationDialog >> initializePresenters [
 		display: [ :aNode | aNode name ];
 		expandRoots;
 		yourself.
-	packageList := self newList
+	packageList := self newFilteringList
 		items: self packages;
 		display: [ :aNode | aNode name ];
 		yourself.
@@ -199,7 +204,9 @@ HeraAcceptanceTestClassCreationDialog >> selectTagNamed: aString [
 { #category : 'private' }
 HeraAcceptanceTestClassCreationDialog >> tagsOfPackage: aPackage [
 
-	^ aPackage tags sorted: [ :some :other | some name < other name ]
+	| nonRootTags |
+	nonRootTags := aPackage tags reject: [ :each | each isRoot ].
+	^ nonRootTags sorted: [ :some :other | some name < other name ]
 ]
 
 { #category : 'private' }
@@ -208,7 +215,7 @@ HeraAcceptanceTestClassCreationDialog >> updateMessageAndOkButton [
 	| isValid text |
 	text := ''.
 	isValid := true.
-	packageList selection isEmpty ifTrue: [
+	packageList selectedItem ifNil: [
 		text := 'Please select a package.'.
 		isValid := false ].
 	classNameField text
