@@ -39,7 +39,7 @@ HeraUnitTestCase >> assertTextRun: actualRun equals: expectedRun [
 { #category : 'running' }
 HeraUnitTestCase >> describedClass [
 
-	self subclassResponsibility
+	^ self subclassResponsibility
 ]
 
 { #category : 'running' }
