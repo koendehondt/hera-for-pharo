@@ -353,7 +353,7 @@ HeraFeatureMethodGenerator >> visitStepAstNode: aStepAstNode named: aString [
 { #category : 'visiting' }
 HeraFeatureMethodGenerator >> visitTagAstNode: aTagAstNode [
 
-	stream nextPut: $#; nextPutAll: aTagAstNode name
+	stream print: aTagAstNode name asSymbol
 ]
 
 { #category : 'visiting' }

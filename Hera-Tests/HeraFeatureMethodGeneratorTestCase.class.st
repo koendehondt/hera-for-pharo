@@ -478,6 +478,31 @@ Feature: With * steps
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFeatureWithTagsWithMinusSigns [
+
+	| document ast |
+	document := '
+	@story-1234
+	Feature: Tags with special characters
+
+		@github-1234
+		Scenario: Using a tag with special characters'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Tags with special characters''>
+
+	^ (self feature: ''Tags with special characters'')
+		tags: {
+			#''story-1234'' };
+		scenarios: {
+			(self scenario: ''Using a tag with special characters'')
+				tags: {
+					#''github-1234'' } }'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFullFeature [
 
 	| document ast |
