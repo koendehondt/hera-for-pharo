@@ -230,6 +230,50 @@ HeraParserTestCase >> testParseDataTableBeforeScenario [
 	self assert: secondScenarioNode end equals: 204
 ]
 
+{ #category : 'tests' }
+HeraParserTestCase >> testParseDataTableWithEmptyCell [
+
+	| script ast scenarioNode stepNodes givenStepNode |
+	script := '
+	Feature: Employee management
+
+		Scenario: 10% raise
+			Given the current salaries of the following employees
+				| Name  | Salary |
+				|       |        |'.
+	ast := self parseFeature: script.
+	scenarioNode := ast scenarios first.
+	stepNodes := scenarioNode steps.
+	self assert: stepNodes size equals: 1.
+
+	givenStepNode := stepNodes first.
+	self assert: givenStepNode class equals: HeraGivenAstNode.
+	self assert: givenStepNode description equals: 'the current salaries of the following employees'.
+	self assert: givenStepNode argument class equals: HeraDataTableStepArgumentAstNode.
+	self assert: givenStepNode argument dataTable equals: (HeraDataTable new data: {
+		{ 'Name' . 'Salary' } .
+		{ '' . '' } }).
+	self assert: givenStepNode start equals: 58.
+	self assert: givenStepNode end equals: 156.
+]
+
+{ #category : 'tests - parsing errors' }
+HeraParserTestCase >> testParseDataTableWithEmptyCellWithMissingTerminatingBar [
+
+	self
+		assertError: 'Data table row not closed with |'
+		start: 104
+		end: 104
+		whenParsing: 'Feature: Employee management
+Scenario: 10% raise
+Given the current salaries of the following employees
+|
+When the company raises the salaries of the following users with 10%
+| Name |
+| John |
+| Jane |'
+]
+
 { #category : 'tests - parsing errors' }
 HeraParserTestCase >> testParseDataTableWithEmptyLines [
 

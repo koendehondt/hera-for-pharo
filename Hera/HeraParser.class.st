@@ -17,7 +17,7 @@ HeraParser >> dataValuesFrom: aDataTableToken [
 
 	| concatenatedValues |
 	concatenatedValues := aDataTableToken text.
-	concatenatedValues last = $| ifTrue: [
+	(concatenatedValues notEmpty and: [concatenatedValues last = $|]) ifTrue: [
 		^ ($| split: concatenatedValues allButLast) collect: [ :each | each trimBoth ] as: Array ].
 	self parseError: 'Data table row not closed with |' from: aDataTableToken end to: aDataTableToken end
 ]
@@ -72,7 +72,7 @@ HeraParser >> parseDataTableStepArgument [
 		rowSizes add: cellValues size.
 		rows add: cellValues.
 		end := currentToken end.
-		self nextToken. "Read end of line"
+		self skipEndOfLineToken.
 		self skipEmptyLines].
 	rows ifEmpty: [ ^ nil ].
 	rowSizes size > 1 ifTrue: [

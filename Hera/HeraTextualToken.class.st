@@ -9,6 +9,13 @@ Class {
 	#tag : 'Parser'
 }
 
+{ #category : 'initialization' }
+HeraTextualToken >> initialize [
+
+	super initialize.
+	self text: ''
+]
+
 { #category : 'accessing' }
 HeraTextualToken >> text [
 

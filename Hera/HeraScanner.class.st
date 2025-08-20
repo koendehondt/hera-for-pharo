@@ -83,17 +83,19 @@ HeraScanner >> scanToken [
 	self tryScanStepToken: HeraStarToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraDataTableToken ifFound: [ :token |
 		start := stream position.
-		^ stream nextLine
-			ifNil: [ token ]
+		stream nextLine
 			ifNotNil: [ :line | | trimmedLine |
 				trimmedLine := line trimRight.
-				trimmedLine isEmpty ifTrue: [
-					self startLine.
-					^ HeraEndOfLineToken new start: stream position ].
-				nextToken := stream atEnd
-					ifTrue: [ HeraEndOfFileToken new start: stream position + 1 ]
-					ifFalse: [ HeraEndOfLineToken new start: stream position ].
-				token text: trimmedLine; start: start; end: start + trimmedLine size ] ].
+				nextToken := trimmedLine
+					ifEmpty: [
+						self startLine.
+						HeraEndOfLineToken new start: stream position ]
+					ifNotEmpty: [
+						token text: trimmedLine; start: start; end: start + trimmedLine size.
+						stream atEnd
+							ifTrue: [ HeraEndOfFileToken new start: stream position + 1 ]
+							ifFalse: [ HeraEndOfLineToken new start: stream position ] ] ].
+		^ token ].
 	self tryScanToken: HeraDocStringToken ifFound: [ :token |
 		token indentation: token start - indexOfCurrentLine.
 		self scanDocStringLinesFor: token.
