@@ -1172,6 +1172,52 @@ HeraParserTestCase >> testParseFullFeature [
 ]
 
 { #category : 'tests' }
+HeraParserTestCase >> testParseMultipleScenariosWithTags [
+
+	| script ast firstScenarioNode title secondScenarioNode |
+	script := '
+Feature: With scenario tags
+
+	@first-scenario-level-tag
+	Scenario: A first scenario
+
+	@second-scenario-level-tag
+	Scenario: A second scenario'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'With scenario tags'.
+	self assert: ast start equals: 2.
+	self assert: ast end equals: 142.
+
+
+	self assert: ast scenarios size equals: 2.
+
+	firstScenarioNode := ast scenarios first.
+	self assert: firstScenarioNode class equals: HeraScenarioAstNode.
+	self assert: firstScenarioNode tags size equals: 1.
+	self assert: firstScenarioNode tags first class equals: HeraTagAstNode.
+	self assert: firstScenarioNode tags first name equals: 'first-scenario-level-tag'.
+	title := firstScenarioNode title.
+	self assert: title class equals: HeraTitleAstNode.
+	self assert: title text equals: 'A first scenario'.
+	self assert: firstScenarioNode steps isEmpty.
+	self assert: firstScenarioNode start equals: 32.
+	self assert: firstScenarioNode end equals: 84.
+
+	secondScenarioNode := ast scenarios second.
+	self assert: secondScenarioNode class equals: HeraScenarioAstNode.
+	self assert: secondScenarioNode tags size equals: 1.
+	self assert: secondScenarioNode tags first class equals: HeraTagAstNode.
+	self assert: secondScenarioNode tags first name equals: 'second-scenario-level-tag'.
+	title := secondScenarioNode title.
+	self assert: title class equals: HeraTitleAstNode.
+	self assert: title text equals: 'A second scenario'.
+	self assert: secondScenarioNode steps isEmpty
+]
+
+{ #category : 'tests' }
 HeraParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
 
 	| script ast |

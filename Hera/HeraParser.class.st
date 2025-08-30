@@ -220,7 +220,7 @@ HeraParser >> parseRules [
 { #category : 'parsing' }
 HeraParser >> parseScenario [
 
-	| scenarioNode tags description steps titleToken scenarioToken title |
+	| scenarioNode tags description steps titleToken scenarioToken title start end |
 	"scenarioToken or tagToken has already been read."
 	tags := self parseTags.
 	currentToken isScenarioToken 
@@ -240,13 +240,15 @@ HeraParser >> parseScenario [
 	currentToken isEndOfFileToken ifFalse: [
 		steps := self parseStepsRestricted: [ :ignore | ] ].
 	scenarioNode := HeraScenarioAstNode new.
+	start := tags ifEmpty: [ scenarioToken start ] ifNotEmpty: [ tags first start ].
+	end := steps ifEmpty: [ title end ] ifNotEmpty: [ steps last end ].
 	scenarioNode
 		tags: tags;
 		title: title;
 		description: description;
 		steps: steps;
-		start: scenarioToken start;
-		end: scanner position.
+		start: start;
+		end: end.
 	^ scenarioNode
 ]
 

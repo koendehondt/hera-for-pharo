@@ -261,6 +261,23 @@ HeraAcceptanceTestExamplesForTesting >> featureWithStarSteps [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithTags [
+
+	<heraFeature: 'With tags'>
+
+	^ (self feature: 'With tags')
+		tags: {
+			#feature_level_tag };
+		scenarios: {
+			(self scenario: 'A first scenario')
+				tags: {
+					#'first-scenario-level-tag' } .
+			(self scenario: 'A second scenario')
+				tags: {
+					#'second-scenario-level-tag' } }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithTwoScenarios [
 
 	<heraFeature: 'Signing in'>
