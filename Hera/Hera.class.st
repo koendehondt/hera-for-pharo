@@ -23,6 +23,12 @@ Hera class >> aboutText [
 ]
 
 { #category : 'accessing' }
+Hera class >> repositoryUrl [
+
+	^ 'https://github.com/koendehondt/hera-for-pharo'
+]
+
+{ #category : 'accessing' }
 Hera class >> settings [
 
 	^ HeraSettings uniqueInstance
