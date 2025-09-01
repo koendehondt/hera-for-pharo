@@ -3,9 +3,6 @@ Class {
 	#superclass : 'HeraAcceptanceTestForTesting',
 	#traits : 'HeraWidgetHelperTraitForTesting',
 	#classTraits : 'HeraWidgetHelperTraitForTesting classTrait',
-	#instVars : [
-		'seenTheSignInPage'
-	],
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }
@@ -28,7 +25,7 @@ HeraAcceptanceTestWithTraitForTesting >> featureSigningInWithEmailAndPassword [
 { #category : 'test api' }
 HeraAcceptanceTestWithTraitForTesting >> seenTheSignInPage [
 
-	^ seenTheSignInPage
+	^ self stateAt: #seenTheSignInPage
 ]
 
 { #category : 'steps' }
@@ -36,5 +33,5 @@ HeraAcceptanceTestWithTraitForTesting >> stepIAmOnTheSignInPage [
 	
 	<heraStepDefinition: #(Given 'I am on the sign-in page')>
 
-	seenTheSignInPage := true
+	self stateAt: #seenTheSignInPage put: true
 ]

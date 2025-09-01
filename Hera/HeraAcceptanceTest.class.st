@@ -7,7 +7,8 @@ Class {
 		'featureSelector',
 		'exactStepDefinitions',
 		'patternStepDefinitions',
-		'helpers'
+		'helpers',
+		'state'
 	],
 	#category : 'Hera-Core',
 	#package : 'Hera',
@@ -171,6 +172,7 @@ HeraAcceptanceTest >> featureSelector: aSymbol [
 HeraAcceptanceTest >> initialize [
 
 	super initialize.
+	state := HeraState new.
 	exactStepDefinitions := Dictionary new.
 	patternStepDefinitions := Dictionary new.
 	helpers := OrderedCollection new.
@@ -288,6 +290,18 @@ HeraAcceptanceTest >> signalFailure: aString [
 	<debuggerCompleteToSender>
 
 	HeraFailure signal: aString
+]
+
+{ #category : 'accessing state' }
+HeraAcceptanceTest >> stateAt: aSymbol [
+
+	^ state at: aSymbol
+]
+
+{ #category : 'accessing state' }
+HeraAcceptanceTest >> stateAt: aSymbol put: anObject [
+
+	^ state at: aSymbol put: anObject
 ]
 
 { #category : 'steps' }

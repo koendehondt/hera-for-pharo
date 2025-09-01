@@ -1,11 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
-	#instVars : [
-		'givenFieldLabelArgument',
-		'givenButtonLabelArgument',
-		'seenTheHomePage'
-	],
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }
@@ -28,13 +23,13 @@ HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> featureSigningInWit
 { #category : 'test api' }
 HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> givenButtonLabelArgument [
 
-	^ givenButtonLabelArgument
+	^ self stateAt: #givenButtonLabelArgument
 ]
 
 { #category : 'test api' }
 HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> givenFieldLabelArgument [
 
-	^ givenFieldLabelArgument
+	^ self stateAt: #givenFieldLabelArgument
 ]
 
 { #category : 'preferences' }
@@ -46,7 +41,7 @@ HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> prefersDoubleQuoted
 { #category : 'accessing' }
 HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> seenTheHomePage [
 
-	^ seenTheHomePage
+	^ self stateAt: #seenTheHomePage
 ]
 
 { #category : 'steps' }
@@ -60,7 +55,7 @@ HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> stepIFillInTheField
 
 	<heraStepDefinition: #(When match 'I fill in the field labeled {string}')>
 
-	givenFieldLabelArgument := fieldLabel
+	self stateAt: #givenFieldLabelArgument put: fieldLabel
 ]
 
 { #category : 'steps' }
@@ -68,7 +63,7 @@ HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> stepIPressTheButton
 
 	<heraStepDefinition: #(When regex 'I press the button labeled ''([^"]+)''')>
 
-	givenButtonLabelArgument := buttonLabel
+	self stateAt: #givenButtonLabelArgument put: buttonLabel
 ]
 
 { #category : 'steps' }
@@ -76,5 +71,5 @@ HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting >> stepISeeTheHomePage
 
 	<heraStepDefinition: #(Then 'I see the home page')>
 
-	seenTheHomePage := true
+	self stateAt: #seenTheHomePage put: true
 ]

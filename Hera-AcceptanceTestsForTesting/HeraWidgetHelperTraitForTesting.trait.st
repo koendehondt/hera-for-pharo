@@ -1,10 +1,5 @@
 Trait {
 	#name : 'HeraWidgetHelperTraitForTesting',
-	#instVars : [
-		'givenFieldLabelArgument',
-		'givenButtonLabelArgument',
-		'seenTheHomePage'
-	],
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }
@@ -12,19 +7,19 @@ Trait {
 { #category : 'accessing' }
 HeraWidgetHelperTraitForTesting >> givenButtonLabelArgument [
 
-	^ givenButtonLabelArgument
+	^ self stateAt: #givenButtonLabelArgument
 ]
 
 { #category : 'accessing' }
 HeraWidgetHelperTraitForTesting >> givenFieldLabelArgument [
 
-	^ givenFieldLabelArgument
+	^ self stateAt: #givenFieldLabelArgument
 ]
 
 { #category : 'accessing' }
 HeraWidgetHelperTraitForTesting >> seenTheHomePage [
 
-	^ seenTheHomePage
+	^ self stateAt: #seenTheHomePage
 ]
 
 { #category : 'accessing' }
@@ -32,7 +27,7 @@ HeraWidgetHelperTraitForTesting >> stepIFillInTheFieldLabeled: fieldLabel [
 
 	<heraStepDefinition: #(When match 'I fill in the field labeled {string}')>
 
-	givenFieldLabelArgument := fieldLabel
+	self stateAt: #givenFieldLabelArgument put: fieldLabel
 ]
 
 { #category : 'accessing' }
@@ -40,7 +35,7 @@ HeraWidgetHelperTraitForTesting >> stepIPressTheButtonLabeled: buttonLabel [
 
 	<heraStepDefinition: #(When regex 'I press the button labeled "([^"]+)"')>
 
-	givenButtonLabelArgument := buttonLabel
+	self stateAt: #givenButtonLabelArgument put: buttonLabel
 ]
 
 { #category : 'accessing' }
@@ -48,5 +43,5 @@ HeraWidgetHelperTraitForTesting >> stepISeeTheHomePage [
 
 	<heraStepDefinition: #(Then 'I see the home page')>
 
-	seenTheHomePage := true
+	self stateAt: #seenTheHomePage put: true
 ]

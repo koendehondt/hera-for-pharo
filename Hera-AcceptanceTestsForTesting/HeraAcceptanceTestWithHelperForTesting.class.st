@@ -2,7 +2,6 @@ Class {
 	#name : 'HeraAcceptanceTestWithHelperForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
 	#instVars : [
-		'seenTheSignInPage',
 		'fieldHelper'
 	],
 	#category : 'Hera-AcceptanceTestsForTesting',
@@ -52,7 +51,7 @@ HeraAcceptanceTestWithHelperForTesting >> seenTheHomePage [
 { #category : 'test api' }
 HeraAcceptanceTestWithHelperForTesting >> seenTheSignInPage [
 
-	^ seenTheSignInPage
+	^ self stateAt: #seenTheSignInPage
 ]
 
 { #category : 'steps' }
@@ -60,5 +59,5 @@ HeraAcceptanceTestWithHelperForTesting >> stepIAmOnTheSignInPage [
 	
 	<heraStepDefinition: #(Given 'I am on the sign-in page')>
 
-	seenTheSignInPage := true
+	self stateAt: #seenTheSignInPage put: true
 ]

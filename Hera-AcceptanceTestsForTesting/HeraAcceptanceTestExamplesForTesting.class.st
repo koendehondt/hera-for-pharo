@@ -1,9 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestExamplesForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
-	#instVars : [
-		'users'
-	],
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }
@@ -328,7 +325,7 @@ HeraAcceptanceTestExamplesForTesting >> stepIAddTheFollowingUsers: aDataTable [
 
 	<heraStepDefinition: #(When 'I add the following users:')>
 
-	users addAll: aDataTable asDictionaries
+	(self stateAt: #users) addAll: aDataTable asDictionaries
 ]
 
 { #category : 'steps' }
@@ -408,7 +405,7 @@ HeraAcceptanceTestExamplesForTesting >> stepIRemoveTheFollowingUsers: aDataTable
 
 	<heraStepDefinition: #(Given 'I remove the following users:')>
 
-	users removeAll: aDataTable asDictionaries
+	(self stateAt: #users) removeAll: aDataTable asDictionaries
 ]
 
 { #category : 'steps' }
@@ -428,7 +425,8 @@ HeraAcceptanceTestExamplesForTesting >> stepISeeTheseUsersInTheList: aDataTable 
 
 	<heraStepDefinition: #(Then 'I see these users in the list:')>
 
-	| expectedUsers |
+	| expectedUsers users |
+	users := self stateAt: #users.
 	expectedUsers := aDataTable asDictionaries.
 	self assert: users size equals: expectedUsers size.
 	expectedUsers withIndexDo: [ :expectedUser :index | | user |
@@ -460,7 +458,7 @@ HeraAcceptanceTestExamplesForTesting >> stepTheFollowingUsersExist: aDataTable [
 
 	<heraStepDefinition: #(Given 'the following users exist:')>
 
-	users := aDataTable asDictionaries asOrderedCollection
+	self stateAt: #users put: aDataTable asDictionaries asOrderedCollection
 ]
 
 { #category : 'steps' }

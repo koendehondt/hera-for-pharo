@@ -1,11 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestWithStepArgumentsForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
-	#instVars : [
-		'givenFieldLabelArgument',
-		'givenButtonLabelArgument',
-		'seenTheHomePage'
-	],
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }
@@ -28,19 +23,19 @@ HeraAcceptanceTestWithStepArgumentsForTesting >> featureSigningInWithEmailAndPas
 { #category : 'test api' }
 HeraAcceptanceTestWithStepArgumentsForTesting >> givenButtonLabelArgument [
 
-	^ givenButtonLabelArgument
+	^ self stateAt: #givenButtonLabelArgument
 ]
 
 { #category : 'test api' }
 HeraAcceptanceTestWithStepArgumentsForTesting >> givenFieldLabelArgument [
 
-	^ givenFieldLabelArgument
+	^ self stateAt: #givenFieldLabelArgument
 ]
 
 { #category : 'test api' }
 HeraAcceptanceTestWithStepArgumentsForTesting >> seenTheHomePage [
 
-	^ seenTheHomePage
+	^ self stateAt: #seenTheHomePage
 ]
 
 { #category : 'steps' }
@@ -54,7 +49,7 @@ HeraAcceptanceTestWithStepArgumentsForTesting >> stepIFillInTheFieldLabeled: fie
 
 	<heraStepDefinition: #(When match 'I fill in the field labeled {string}')>
 
-	givenFieldLabelArgument := fieldLabel
+	self stateAt: #givenFieldLabelArgument put: fieldLabel
 ]
 
 { #category : 'steps' }
@@ -62,7 +57,7 @@ HeraAcceptanceTestWithStepArgumentsForTesting >> stepIPressTheButtonLabeled: but
 
 	<heraStepDefinition: #(When regex 'I press the button labeled "([^"]+)"')>
 
-	givenButtonLabelArgument := buttonLabel
+	self stateAt: #givenButtonLabelArgument put: buttonLabel
 ]
 
 { #category : 'steps' }
@@ -70,5 +65,5 @@ HeraAcceptanceTestWithStepArgumentsForTesting >> stepISeeTheHomePage [
 
 	<heraStepDefinition: #(Then 'I see the home page')>
 
-	seenTheHomePage := true
+	self stateAt: #seenTheHomePage put: true
 ]

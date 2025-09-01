@@ -1,10 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestWithHooksForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
-	#instVars : [
-		'isBeforeHookInvoked',
-		'isAfterHookInvoked'
-	],
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }
@@ -12,13 +8,13 @@ Class {
 { #category : 'hooks' }
 HeraAcceptanceTestWithHooksForTesting >> afterScenario [
 
-	isAfterHookInvoked := true
+	self stateAt: #isAfterHookInvoked put: true
 ]
 
 { #category : 'hooks' }
 HeraAcceptanceTestWithHooksForTesting >> beforeScenario [
 
-	isBeforeHookInvoked := true
+	self stateAt: #isBeforeHookInvoked put: true
 ]
 
 { #category : 'features' }
@@ -37,20 +33,20 @@ HeraAcceptanceTestWithHooksForTesting >> featureWithHooks [
 HeraAcceptanceTestWithHooksForTesting >> initialize [
 
 	super initialize.
-	isAfterHookInvoked := false.
-	isBeforeHookInvoked := false
+	self stateAt: #isAfterHookInvoked put: false.
+	self stateAt: #isBeforeHookInvoked put: false
 ]
 
 { #category : 'test api' }
 HeraAcceptanceTestWithHooksForTesting >> isAfterHookInvoked [
 
-	^ isAfterHookInvoked
+	^ self stateAt: #isAfterHookInvoked
 ]
 
 { #category : 'test api' }
 HeraAcceptanceTestWithHooksForTesting >> isBeforeHookInvoked [
 
-	^ isBeforeHookInvoked
+	^ self stateAt: #isBeforeHookInvoked
 ]
 
 { #category : 'steps' }

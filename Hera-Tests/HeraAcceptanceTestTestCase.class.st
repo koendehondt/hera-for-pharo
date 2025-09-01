@@ -153,3 +153,11 @@ HeraAcceptanceTestTestCase >> testStepMethods [
 	stepMethodSelectors := self describedClass stepMethods collect: [ :each | each selector ].
 	self assert: stepMethodSelectors equals: { #stepDebug }
 ]
+
+{ #category : 'tests - state' }
+HeraAcceptanceTestTestCase >> testStoringAndRetrievingState [
+
+	self assert: (subject stateAt: #something) isNil.
+	subject stateAt: #something put: 'value'.
+	self assert: (subject stateAt: #something) equals: 'value'
+]

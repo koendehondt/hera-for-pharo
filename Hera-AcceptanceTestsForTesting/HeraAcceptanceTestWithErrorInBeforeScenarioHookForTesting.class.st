@@ -1,9 +1,6 @@
 Class {
 	#name : 'HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting',
 	#superclass : 'HeraAcceptanceTestForTesting',
-	#instVars : [
-		'afterScenarioWasTriggered'
-	],
 	#category : 'Hera-AcceptanceTestsForTesting',
 	#package : 'Hera-AcceptanceTestsForTesting'
 }
@@ -17,13 +14,13 @@ HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting class >> nameInBrowser
 { #category : 'hooks' }
 HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting >> afterScenario [
 
-	afterScenarioWasTriggered := true
+	self stateAt: #afterScenarioWasTriggered put: true
 ]
 
 { #category : 'accessing' }
 HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting >> afterScenarioWasTriggered [
 
-	^ afterScenarioWasTriggered
+	^ self stateAt: #afterScenarioWasTriggered
 ]
 
 { #category : 'hooks' }
@@ -47,5 +44,5 @@ HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting >> featureWithSingleSt
 HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting >> initialize [
 
 	super initialize.
-	afterScenarioWasTriggered := false
+	self stateAt: #afterScenarioWasTriggered put: false
 ]
