@@ -1214,7 +1214,9 @@ Feature: With scenario tags
 	title := secondScenarioNode title.
 	self assert: title class equals: HeraTitleAstNode.
 	self assert: title text equals: 'A second scenario'.
-	self assert: secondScenarioNode steps isEmpty
+	self assert: secondScenarioNode steps isEmpty.
+	self assert: secondScenarioNode start equals: 88.
+	self assert: secondScenarioNode end equals: 142
 ]
 
 { #category : 'tests' }
