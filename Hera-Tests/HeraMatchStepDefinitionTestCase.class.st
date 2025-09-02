@@ -200,6 +200,13 @@ HeraMatchStepDefinitionTestCase >> testMatchTime24hWithSeconds [
 ]
 
 { #category : 'tests - time' }
+HeraMatchStepDefinitionTestCase >> testMatchTimeWithColonAtTheEndOfTheStepDescription [
+
+	subject pattern: 'the following users exist at {time}:'.
+	self assert: (subject match: 'the following users exist at 23:59:') equals: { Time hour: 23 minute: 59 second: 0 }
+]
+
+{ #category : 'tests - time' }
 HeraMatchStepDefinitionTestCase >> testMatchTimeWithSeconds [
 
 	subject pattern: 'time is frozen at {time}'.

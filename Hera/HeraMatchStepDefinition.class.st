@@ -53,6 +53,7 @@ HeraMatchStepDefinition >> match: aStepDescription [
 	| matcher matches regex lastMatchEnd |
 	types := self argumentTypesIn: pattern.
 	regex := pattern format: self supportedArguments.
+	regex := regex copyReplaceAll: ':' with: '\:'.
 	matcher := RxMatcher forString: regex.
 	(matcher matches: aStepDescription) ifFalse: [ ^ nil ].
 	matcher subexpressionCount < 2 ifTrue: [ ^ nil ].
@@ -93,10 +94,11 @@ HeraMatchStepDefinition >> supportedArguments [
 		add: 'date:dmy' -> '(\d\d/\d\d/\d\d\d\d)';
 		add: 'date:mdy' -> '(\d\d/\d\d/\d\d\d\d)';
 		add: 'date:ymd' -> '(\d\d\d\d/\d\d/\d\d)';
-		add: 'time' -> '(\d\d\:\d\d(\:\d\d)?)';
-		add: 'time:24h' -> '(\d\d\:\d\d(\:\d\d)?)';
-		add: 'time:12h' -> '(\d?\d\:\d\d(\:\d\d)?\s?(AM|PM|am|pm))';
-		add: 'timestamp' -> '(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d(([+-]\d\d\:\d\d)|Z))';
+		"The regexes below are not valid. The colons will be escaped by #match:."
+		add: 'time' -> '(\d\d:\d\d(:\d\d)?)';
+		add: 'time:24h' -> '(\d\d:\d\d(:\d\d)?)';
+		add: 'time:12h' -> '(\d?\d:\d\d(:\d\d)?\s?(AM|PM|am|pm))';
+		add: 'timestamp' -> '(\d\d\d\d\-\d\d\-\d\dT\d\d:\d\d:\d\d(([+-]\d\d:\d\d)|Z))';
 		yourself
 ]
 
