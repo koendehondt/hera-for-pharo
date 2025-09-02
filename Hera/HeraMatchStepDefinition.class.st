@@ -93,7 +93,7 @@ HeraMatchStepDefinition >> supportedArguments [
 		add: 'date:dmy' -> '(\d\d/\d\d/\d\d\d\d)';
 		add: 'date:mdy' -> '(\d\d/\d\d/\d\d\d\d)';
 		add: 'date:ymd' -> '(\d\d\d\d/\d\d/\d\d)';
-		add: 'time' -> '(\d\d\:\d\d)';
+		add: 'time' -> '(\d\d\:\d\d(\:\d\d)?)';
 		add: 'time:24h' -> '(\d\d\:\d\d(\:\d\d)?)';
 		add: 'time:12h' -> '(\d?\d\:\d\d(\:\d\d)?\s?(AM|PM|am|pm))';
 		add: 'timestamp' -> '(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d(([+-]\d\d\:\d\d)|Z))';

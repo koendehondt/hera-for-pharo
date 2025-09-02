@@ -200,6 +200,13 @@ HeraMatchStepDefinitionTestCase >> testMatchTime24hWithSeconds [
 ]
 
 { #category : 'tests - word' }
+HeraMatchStepDefinitionTestCase >> testMatchTimeWithSeconds [
+
+	subject pattern: 'time is frozen at {time}'.
+	self assert: (subject match: 'time is frozen at 23:59:15') equals: { Time hour: 23 minute: 59 second: 15 }
+]
+
+{ #category : 'tests - word' }
 HeraMatchStepDefinitionTestCase >> testMatchTimestamp [
 
 	subject pattern: 'the creation time is {timestamp}'.
