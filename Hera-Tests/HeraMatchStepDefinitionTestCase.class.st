@@ -33,35 +33,35 @@ HeraMatchStepDefinitionTestCase >> testMatchAnythingAtTheMiddleOfTheLine [
 	self assert: (subject match: 'I send a POST request') equals: #('POST')
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - date' }
 HeraMatchStepDefinitionTestCase >> testMatchDate [
 
 	subject pattern: 'today is {date}'.
 	self assert: (subject match: 'today is 2025-08-16') equals: { Date year: 2025 month: 8 day: 16 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - date' }
 HeraMatchStepDefinitionTestCase >> testMatchDateDmy [
 
 	subject pattern: 'today is {date:dmy}'.
 	self assert: (subject match: 'today is 16/08/2025') equals: { Date year: 2025 month: 8 day: 16 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - date' }
 HeraMatchStepDefinitionTestCase >> testMatchDateIso [
 
 	subject pattern: 'today is {date:iso}'.
 	self assert: (subject match: 'today is 2025-08-16') equals: { Date year: 2025 month: 8 day: 16 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - date' }
 HeraMatchStepDefinitionTestCase >> testMatchDateMdy [
 
 	subject pattern: 'today is {date:mdy}'.
 	self assert: (subject match: 'today is 08/16/2025') equals: { Date year: 2025 month: 8 day: 16 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - date' }
 HeraMatchStepDefinitionTestCase >> testMatchDateYmd [
 
 	subject pattern: 'today is {date:ymd}'.
@@ -134,14 +134,14 @@ HeraMatchStepDefinitionTestCase >> testMatchStringSurroundedBySingleQuotes [
 	self assert: (subject match: 'I fill in the field labeled ''First name:''') equals: #('First name:')
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - time' }
 HeraMatchStepDefinitionTestCase >> testMatchTime [
 
 	subject pattern: 'time is frozen at {time}'.
 	self assert: (subject match: 'time is frozen at 23:59') equals: { Time hour: 23 minute: 59 second: 0 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - time' }
 HeraMatchStepDefinitionTestCase >> testMatchTime12h [
 
 	| expectedTime |
@@ -163,7 +163,7 @@ HeraMatchStepDefinitionTestCase >> testMatchTime12h [
 	self assert: (subject match: 'time is frozen at 9:59AM') equals: { expectedTime }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - time' }
 HeraMatchStepDefinitionTestCase >> testMatchTime12hWithSeconds [
 
 	| expectedTime |
@@ -185,28 +185,28 @@ HeraMatchStepDefinitionTestCase >> testMatchTime12hWithSeconds [
 	self assert: (subject match: 'time is frozen at 9:59:47AM') equals: { expectedTime }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - time' }
 HeraMatchStepDefinitionTestCase >> testMatchTime24h [
 
 	subject pattern: 'time is frozen at {time:24h}'.
 	self assert: (subject match: 'time is frozen at 23:59') equals: { Time hour: 23 minute: 59 second: 0 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - time' }
 HeraMatchStepDefinitionTestCase >> testMatchTime24hWithSeconds [
 
 	subject pattern: 'time is frozen at {time:24h}'.
 	self assert: (subject match: 'time is frozen at 23:59:15') equals: { Time hour: 23 minute: 59 second: 15 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - time' }
 HeraMatchStepDefinitionTestCase >> testMatchTimeWithSeconds [
 
 	subject pattern: 'time is frozen at {time}'.
 	self assert: (subject match: 'time is frozen at 23:59:15') equals: { Time hour: 23 minute: 59 second: 15 }
 ]
 
-{ #category : 'tests - word' }
+{ #category : 'tests - timestamp' }
 HeraMatchStepDefinitionTestCase >> testMatchTimestamp [
 
 	subject pattern: 'the creation time is {timestamp}'.
