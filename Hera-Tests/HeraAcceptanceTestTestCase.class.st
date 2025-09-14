@@ -13,6 +13,15 @@ HeraAcceptanceTestTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestTestCase >> testAsRunnerScope [
+
+	| runnerScope |
+	subject featureSelector: #featureSomething.
+	runnerScope := subject asRunnerScope.
+	self assert: runnerScope acceptanceTests equals: { subject }
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestTestCase >> testClassFeatureMethods [
 
 	| featureMethods |

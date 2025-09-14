@@ -100,6 +100,12 @@ HeraAcceptanceTest >> allAcceptanceTestClassesProvidingStepDefinitions [
 	^ classes reverse
 ]
 
+{ #category : 'converting' }
+HeraAcceptanceTest >> asRunnerScope [
+
+	^ HeraRunnerScope with: self
+]
+
 { #category : 'dsl' }
 HeraAcceptanceTest >> background [
 
