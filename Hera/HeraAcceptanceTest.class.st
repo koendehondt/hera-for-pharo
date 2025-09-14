@@ -71,6 +71,12 @@ HeraAcceptanceTest class >> stepMethods [
 	^ self methods select: [ :each | (each pragmaAt: #heraStepDefinition:) isNotNil ]
 ]
 
+{ #category : 'comparing' }
+HeraAcceptanceTest >> = other [
+
+	^ self class = other class and: [ featureSelector = other featureSelector ]
+]
+
 { #category : 'hooks' }
 HeraAcceptanceTest >> afterScenario [
 	"After scenario hook."
@@ -166,6 +172,12 @@ HeraAcceptanceTest >> featureSelector [
 HeraAcceptanceTest >> featureSelector: aSymbol [
 
 	featureSelector := aSymbol
+]
+
+{ #category : 'comparing' }
+HeraAcceptanceTest >> hash [ 
+
+	^ featureSelector hash
 ]
 
 { #category : 'initialization' }

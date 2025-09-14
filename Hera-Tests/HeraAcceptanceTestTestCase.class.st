@@ -110,6 +110,21 @@ HeraAcceptanceTestTestCase >> testFeatureMethods [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestTestCase >> testHash [
+
+	self assert: (HeraAcceptanceTestWithPassForTesting selector: #signingOut) hash equals:  (HeraAcceptanceTestWithPassForTesting selector: #signingOut) hash.
+	self deny: (HeraAcceptanceTestWithPassForTesting selector: #signingOut) hash equals:  (HeraAcceptanceTestWithPassForTesting selector: #signingIn) hash
+]
+
+{ #category : 'tests' }
+HeraAcceptanceTestTestCase >> testIsEqual [
+
+	self assert: (HeraAcceptanceTestWithPassForTesting selector: #signingOut) equals:  (HeraAcceptanceTestWithPassForTesting selector: #signingOut).
+	self deny: (HeraAcceptanceTestWithPassForTesting selector: #signingOut) equals:  (HeraAcceptanceTestWithPassForTesting selector: #signingIn).
+	self deny: (HeraAcceptanceTestWithFailureForTesting selector: #signingOut) equals:  (HeraAcceptanceTestWithPassForTesting selector: #signingIn)
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestTestCase >> testIsForTestingHera [
 
 	self deny: self describedClass isForTestingHera
