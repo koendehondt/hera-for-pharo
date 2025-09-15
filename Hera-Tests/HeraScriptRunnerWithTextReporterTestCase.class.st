@@ -630,7 +630,7 @@ HeraScriptRunnerWithTextReporterTestCase >> setUp [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testAfterScenarioHookIsNotTriggeredAfterErrorInBeforeScenarioHook [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject scope: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self deny: subject currentAcceptanceTest afterScenarioWasTriggered
@@ -639,7 +639,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testAfterScenarioHookIsNotTriggeredA
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testDebugRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDebugStep).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDebugStep) asRunnerScope.
 	subject reporter: reporter.
 	self should: [ subject run ] raise: Halt.
 	self assertText: reporter text equals: self expectedDebugRunReport
@@ -648,7 +648,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testDebugRun [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testDebugStepWithSuppressPauseAndDebugSteps [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDebugStep).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDebugStep) asRunnerScope.
 	subject reporter: reporter.
 	subject suppressPauseAndDebugSteps.
 	subject run.
@@ -658,7 +658,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testDebugStepWithSuppressPauseAndDeb
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testEmptyFeatureErrorRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #emptyFeature).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #emptyFeature) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedEmptyFeatureErrorRunReport
@@ -667,7 +667,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testEmptyFeatureErrorRun [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testEmptyScenarioErrorRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithEmptyScenario).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithEmptyScenario) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedEmptyScenarioErrorRunReport
@@ -676,7 +676,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testEmptyScenarioErrorRun [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testErrorDebug [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: reporter.
 	self should: [ subject debug ] raise: Error description: 'Button not found'.
 	self assertText: reporter text equals: self expectedErrorDebugReportWithTagsAndDescriptions
@@ -685,7 +685,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testErrorDebug [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testErrorInAfterScenarioHook [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject scope: (HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedErrorRunReportWithErrorInAfterScenarioHook
@@ -694,7 +694,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testErrorInAfterScenarioHook [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testErrorInBeforeScenarioHook [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject scope: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedErrorRunReportWithErrorInBeforeScenarioHook
@@ -703,7 +703,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testErrorInBeforeScenarioHook [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testErrorRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedErrorRunReportWithTagsAndDescriptions
@@ -712,7 +712,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testErrorRun [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testFailedDebug [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithFailureForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithFailureForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: reporter.
 	self should: [ subject debug ] raise: HeraFailure description: 'The current page is not the sign-in page.'.
 	self assertText: reporter text equals: self expectedFailedDebugReportWithTagsAndDescriptions
@@ -721,7 +721,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testFailedDebug [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testFailedRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithFailureForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithFailureForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedFailedRunReportWithTagsAndDescriptions
@@ -732,7 +732,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testHooks [
 
 	| test lastTest |
 	test := HeraAcceptanceTestWithHooksForTesting selector: #featureWithHooks.
-	subject acceptanceTest: test.
+	subject scope: test asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedHooksRunReport.
@@ -744,7 +744,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testHooks [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testPassedRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedPassedRunReportWithTagsAndDescriptions
@@ -753,7 +753,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testPassedRun [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testPauseStepWithSuppressPauseAndDebugSteps [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
 	subject reporter: reporter.
 	subject suppressPauseAndDebugSteps.
 	subject run.
@@ -764,7 +764,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testPauseStepWithSuppressPauseAndDeb
 HeraScriptRunnerWithTextReporterTestCase >> testPausedRun [
 
 	| allOutput |
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
 	subject reporter: reporter.
 	allOutput := self expectedPausedRunReportWithTagsAndDescriptions.
 	subject run.
@@ -779,7 +779,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testPausedRun [
 HeraScriptRunnerWithTextReporterTestCase >> testRunScenariosInIsolation [
 
 	| result |
-	subject acceptanceTest: (HeraRunnerAcceptanceTest selector: #featureScenariosRunInIsolation).
+	subject scope: (HeraRunnerAcceptanceTest selector: #featureScenariosRunInIsolation) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	result := subject result.
@@ -790,7 +790,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunScenariosInIsolation [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testRunWithBackground [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithBackground).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithBackground) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithBackground
@@ -799,7 +799,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithBackground [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testRunWithDataTable [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDataTable).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDataTable) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithDataTable
@@ -808,7 +808,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithDataTable [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testRunWithDescriptionInBackground [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDescriptionInBackground).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithDescriptionInBackground) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithDescriptionInBackground
@@ -817,7 +817,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithDescriptionInBackground [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testRunWithRules [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithRules).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithRules) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedRunReportWithRules
@@ -827,7 +827,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testRunWithRules [
 HeraScriptRunnerWithTextReporterTestCase >> testStepping [
 
 	| allOutput |
-	subject acceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: reporter.
 	allOutput := self expectedPassedRunReportWithTagsAndDescriptions.
 	subject runNext.
@@ -861,7 +861,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testStepping [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testSuppressResultSummary [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: reporter.
 	subject suppressResultSummary.
 	subject run.
@@ -871,7 +871,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testSuppressResultSummary [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testTerminateTriggersAfterScenarioHookOfAccepetanceTest [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithHooksForTesting selector: #featureWithHooks).
+	subject scope: (HeraAcceptanceTestWithHooksForTesting selector: #featureWithHooks) asRunnerScope.
 	subject reporter: reporter.
 	subject runNext. "Start feature"
 	subject runNext. "Start scenario"
@@ -883,7 +883,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testTerminateTriggersAfterScenarioHo
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testUndefineddStepErrorRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithScenarioWithUndefinedStep).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithScenarioWithUndefinedStep) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedUndefinedStepErrorRunReport
@@ -892,7 +892,7 @@ HeraScriptRunnerWithTextReporterTestCase >> testUndefineddStepErrorRun [
 { #category : 'tests' }
 HeraScriptRunnerWithTextReporterTestCase >> testUnimplementdStepErrorRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithScenarioWithUnimplementedStep).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithScenarioWithUnimplementedStep) asRunnerScope.
 	subject reporter: reporter.
 	subject run.
 	self assertText: reporter text equals: self expectedUnimplementedStepErrorRunReport

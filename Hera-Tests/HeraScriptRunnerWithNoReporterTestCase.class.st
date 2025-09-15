@@ -15,7 +15,7 @@ HeraScriptRunnerWithNoReporterTestCase >> describedClass [
 { #category : 'tests' }
 HeraScriptRunnerWithNoReporterTestCase >> testErrorInAfterScenarioHook [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject scope: (HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting) asRunnerScope.
 	subject reporter: HeraNoReporter new.
 	subject run
 ]
@@ -23,7 +23,7 @@ HeraScriptRunnerWithNoReporterTestCase >> testErrorInAfterScenarioHook [
 { #category : 'tests' }
 HeraScriptRunnerWithNoReporterTestCase >> testErrorInBeforeScenarioHook [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting).
+	subject scope: (HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting selector: #featureWithSingleStepScenarioForTesting) asRunnerScope.
 	subject reporter: HeraNoReporter new.
 	subject run
 ]
@@ -31,7 +31,7 @@ HeraScriptRunnerWithNoReporterTestCase >> testErrorInBeforeScenarioHook [
 { #category : 'tests' }
 HeraScriptRunnerWithNoReporterTestCase >> testErrorRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: HeraNoReporter new.
 	subject run
 ]
@@ -39,7 +39,7 @@ HeraScriptRunnerWithNoReporterTestCase >> testErrorRun [
 { #category : 'tests' }
 HeraScriptRunnerWithNoReporterTestCase >> testFailedRun [
 
-	subject acceptanceTest: (HeraAcceptanceTestWithFailureForTesting selector: #signingInFeature).
+	subject scope: (HeraAcceptanceTestWithFailureForTesting selector: #signingInFeature) asRunnerScope.
 	subject reporter: HeraNoReporter new.
 	subject run
 ]
@@ -47,7 +47,7 @@ HeraScriptRunnerWithNoReporterTestCase >> testFailedRun [
 { #category : 'tests' }
 HeraScriptRunnerWithNoReporterTestCase >> testRunWithRules [
 
-	subject acceptanceTest: (HeraAcceptanceTestExamplesForTesting selector: #featureWithRules).
+	subject scope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithRules) asRunnerScope.
 	subject reporter: HeraNoReporter new.
 	subject run
 ]

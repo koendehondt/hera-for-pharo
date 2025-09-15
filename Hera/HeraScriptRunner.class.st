@@ -17,7 +17,9 @@ Class {
 		'currentRule',
 		'beforeScenarioHookFailed',
 		'suppressResultSummary',
-		'suppressPauseAndDebugSteps'
+		'suppressPauseAndDebugSteps',
+		'scope',
+		'scopeIterator'
 	],
 	#category : 'Hera-Running',
 	#package : 'Hera',
@@ -28,8 +30,7 @@ Class {
 HeraScriptRunner >> acceptanceTest: anAcceptanceTest [
 
 	acceptanceTest := anAcceptanceTest.
-	runnableScript := HeraRunnableScript for: acceptanceTest feature.
-	self result: HeraResult new
+	runnableScript := HeraRunnableScript for: acceptanceTest feature
 ]
 
 { #category : 'instruction double dispatch' }
@@ -324,6 +325,21 @@ HeraScriptRunner >> runStep: aStep [
 		ifFalse: [
 			self basicRunStep: aStep ].
 	reporter reportEndOfStep: aStep
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> scope [
+
+	^ scope
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> scope: aHeraRunnerScope [
+
+	scope := aHeraRunnerScope.
+	scopeIterator := scope iterator.
+	self result: HeraResult new.
+	scopeIterator nextDo: [ :firstAcceptanceTest | self acceptanceTest: firstAcceptanceTest ]
 ]
 
 { #category : 'instruction double dispatch' }

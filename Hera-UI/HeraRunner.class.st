@@ -3,13 +3,13 @@ Class {
 	#superclass : 'HeraPresenter',
 	#instVars : [
 		'output',
-		'lastRunAcceptanceTest',
 		'scriptRunner',
 		'continueButton',
 		'stepOverButton',
 		'resultSummary',
 		'stepOverScenarioButton',
-		'restartButton'
+		'restartButton',
+		'afterOpenDebugRunnerBlock'
 	],
 	#category : 'Hera-UI-Runner',
 	#package : 'Hera-UI',
@@ -20,6 +20,12 @@ Class {
 HeraRunner class >> defaultPreferredExtent [
 
 	^ 800@400
+]
+
+{ #category : 'test api' }
+HeraRunner >> afterOpenDebugRunnerBlock: aBlock [
+
+	afterOpenDebugRunnerBlock := aBlock
 ]
 
 { #category : 'accessing' }
@@ -47,33 +53,32 @@ HeraRunner >> continue [
 ]
 
 { #category : 'running' }
-HeraRunner >> debugAcceptanceTest: anAcceptanceTest [
-
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
-	resultSummary model: scriptRunner result.
-	self updateButtons.
-	scriptRunner debug
-]
-
-{ #category : 'running' }
-HeraRunner >> debugAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
-
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
-	resultSummary model: scriptRunner result.
-	self updateButtons.
-	scriptRunner debug
-]
-
-{ #category : 'running' }
 HeraRunner >> debugScenario: aScenario [
 
 	| runner scenarioFilter |
 	runner := self instantiate: self class.
 	runner open.
+	afterOpenDebugRunnerBlock value: runner.
 	scenarioFilter := HeraScenarioFilter new title: aScenario title.
-	runner debugAcceptanceTest: lastRunAcceptanceTest filteredBy: scenarioFilter
+	runner debugScope: scriptRunner scope filteredBy: scenarioFilter
+]
+
+{ #category : 'running' }
+HeraRunner >> debugScope: aRunnerScope [
+
+	self initializeScriptRunnerFor: aRunnerScope.
+	resultSummary model: scriptRunner result.
+	self updateButtons.
+	scriptRunner debug
+]
+
+{ #category : 'running' }
+HeraRunner >> debugScope: aRunnerScope filteredBy: aFilter [
+
+	self initializeScriptRunnerFor: aRunnerScope filteredBy: aFilter.
+	resultSummary model: scriptRunner result.
+	self updateButtons.
+	scriptRunner debug
 ]
 
 { #category : 'layout' }
@@ -157,6 +162,13 @@ HeraRunner >> hasRunSteps [
 ]
 
 { #category : 'initialization' }
+HeraRunner >> initialize [
+
+	super initialize.
+	afterOpenDebugRunnerBlock := [ :ignore| ]
+]
+
+{ #category : 'initialization' }
 HeraRunner >> initializePresenters [
 
 	continueButton := self newButton
@@ -187,6 +199,23 @@ HeraRunner >> initializePresenters [
 		yourself
 ]
 
+{ #category : 'initialization' }
+HeraRunner >> initializeScriptRunnerFor: aRunnerScope [
+
+	scriptRunner := HeraScriptRunner new
+		scope: aRunnerScope;
+		reporter: (HeraRunnerReporter for: self)
+]
+
+{ #category : 'initialization' }
+HeraRunner >> initializeScriptRunnerFor: aRunnerScope filteredBy: aFilter [
+
+	scriptRunner := HeraScriptRunner new
+		scope: aRunnerScope;
+		filter: aFilter;
+		reporter: (HeraRunnerReporter for: self)
+]
+
 { #category : 'testing' }
 HeraRunner >> isRunningScenario [
 
@@ -211,18 +240,17 @@ HeraRunner >> requestWindowClose [
 HeraRunner >> restart [
 
 	self clear.
-	self restartAcceptanceTest: lastRunAcceptanceTest
+	self restartScope
 ]
 
 { #category : 'running' }
-HeraRunner >> restartAcceptanceTest: anAcceptanceTest [
+HeraRunner >> restartScope [
 
 	| wasDebugging filter |
 	scriptRunner terminate.
 	wasDebugging := scriptRunner isDebugging.
 	filter := scriptRunner filter.
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
+	self initializeScriptRunnerFor: scriptRunner scope.
 	resultSummary model: scriptRunner result.
 	scriptRunner isDebugging: wasDebugging.
 	scriptRunner filter: filter.
@@ -235,47 +263,28 @@ HeraRunner >> result [
 	^ scriptRunner result
 ]
 
-{ #category : 'running' }
-HeraRunner >> runAcceptanceTest: anAcceptanceTest [
-
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
-	resultSummary model: scriptRunner result.
-	self updateButtons.
-	scriptRunner run
-]
-
-{ #category : 'running' }
-HeraRunner >> runAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
-
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
-	resultSummary model: scriptRunner result.
-	self updateButtons.
-	scriptRunner run
-]
-
 { #category : 'test api' }
 HeraRunner >> runLog [
 
 	^ output text
 ]
 
-{ #category : 'private' }
-HeraRunner >> scriptRunnerFor: anAcceptanceTest [
+{ #category : 'running' }
+HeraRunner >> runScope: aRunnerScope [
 
-	^ HeraScriptRunner new
-		acceptanceTest: anAcceptanceTest;
-		reporter: (HeraRunnerReporter for: self)
+	self initializeScriptRunnerFor: aRunnerScope.
+	resultSummary model: scriptRunner result.
+	self updateButtons.
+	scriptRunner run
 ]
 
-{ #category : 'private' }
-HeraRunner >> scriptRunnerFor: anAcceptanceTest filteredBy: aFilter [
+{ #category : 'running' }
+HeraRunner >> runScope: aRunnerScope filteredBy: aFilter [
 
-	^ HeraScriptRunner new
-		acceptanceTest: anAcceptanceTest;
-		filter: aFilter;
-		reporter: (HeraRunnerReporter for: self)
+	self initializeScriptRunnerFor: aRunnerScope filteredBy: aFilter.
+	resultSummary model: scriptRunner result.
+	self updateButtons.
+	scriptRunner run
 ]
 
 { #category : 'private' }
@@ -284,24 +293,6 @@ HeraRunner >> scrollToEndOfOutput [
 	| atEnd |
 	atEnd := output text size + 1.
 	output selectionInterval: (atEnd to: atEnd)
-]
-
-{ #category : 'running' }
-HeraRunner >> stepAcceptanceTest: anAcceptanceTest [
-
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest.
-	resultSummary model: scriptRunner result.
-	self updateButtons
-]
-
-{ #category : 'running' }
-HeraRunner >> stepAcceptanceTest: anAcceptanceTest filteredBy: aFilter [
-
-	lastRunAcceptanceTest := anAcceptanceTest.
-	scriptRunner := self scriptRunnerFor: anAcceptanceTest filteredBy: aFilter.
-	resultSummary model: scriptRunner result.
-	self updateButtons
 ]
 
 { #category : 'actions' }
@@ -315,6 +306,22 @@ HeraRunner >> stepOver [
 HeraRunner >> stepOverScenario [
 
 	scriptRunner runOverScenario.
+	self updateButtons
+]
+
+{ #category : 'running' }
+HeraRunner >> stepScope: aRunnerScope [
+
+	self initializeScriptRunnerFor: aRunnerScope.
+	resultSummary model: scriptRunner result.
+	self updateButtons
+]
+
+{ #category : 'running' }
+HeraRunner >> stepScope: aRunnerScope filteredBy: aFilter [
+
+	self initializeScriptRunnerFor: aRunnerScope filteredBy: aFilter.
+	resultSummary model: scriptRunner result.
 	self updateButtons
 ]
 

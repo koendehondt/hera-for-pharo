@@ -142,7 +142,7 @@ HeraScriptEditor >> debugFeature [
 
 	(self instantiate: HeraRunner)
 		open;
-		debugAcceptanceTest: self acceptanceTest
+		debugScope: self acceptanceTest asRunnerScope
 ]
 
 { #category : 'actions' }
@@ -298,7 +298,7 @@ HeraScriptEditor >> runFeature [
 
 	(self instantiate: HeraRunner)
 		open;
-		runAcceptanceTest: self acceptanceTest
+		runScope: self acceptanceTest asRunnerScope
 ]
 
 { #category : 'actions' }
@@ -385,7 +385,7 @@ HeraScriptEditor >> stepFeature [
 
 	(self instantiate: HeraRunner)
 		open;
-		stepAcceptanceTest: self acceptanceTest
+		stepScope: self acceptanceTest asRunnerScope
 ]
 
 { #category : 'actions' }

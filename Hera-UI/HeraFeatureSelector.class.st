@@ -148,7 +148,7 @@ HeraFeatureSelector >> debugFeature [
 
 	(self instantiate: HeraRunner)
 		open;
-		debugAcceptanceTest: classesAndFeatures selectedItem acceptanceTest
+		debugScope: classesAndFeatures selectedItem acceptanceTest asRunnerScope
 ]
 
 { #category : 'layout' }
@@ -269,6 +269,10 @@ HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 
 { #category : 'actions' }
 HeraFeatureSelector >> runAllFeatures [
+
+	(self instantiate: HeraRunner)
+		open;
+		runScope: self scope
 ]
 
 { #category : 'actions' }
@@ -276,7 +280,7 @@ HeraFeatureSelector >> runFeature [
 
 	(self instantiate: HeraRunner)
 		open;
-		runAcceptanceTest: classesAndFeatures selectedItem acceptanceTest
+		runScope: classesAndFeatures selectedItem acceptanceTest asRunnerScope
 ]
 
 { #category : 'accessing' }
@@ -327,7 +331,7 @@ HeraFeatureSelector >> stepFeature [
 
 	(self instantiate: HeraRunner)
 		open;
-		stepAcceptanceTest: classesAndFeatures selectedItem acceptanceTest
+		stepScope: classesAndFeatures selectedItem acceptanceTest asRunnerScope
 ]
 
 { #category : 'layout' }

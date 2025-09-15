@@ -1,6 +1,9 @@
 Class {
 	#name : 'HeraRunnerTestCase',
 	#superclass : 'HeraUnitTestCase',
+	#instVars : [
+		'openedRunner'
+	],
 	#category : 'Hera-UI-Tests-Runner',
 	#package : 'Hera-UI-Tests',
 	#tag : 'Runner'
@@ -12,21 +15,39 @@ HeraRunnerTestCase >> describedClass [
 	^ HeraRunner
 ]
 
-{ #category : 'tests' }
-HeraRunnerTestCase >> testDebugAcceptanceTest [
+{ #category : 'running' }
+HeraRunnerTestCase >> tearDown [
 
-	subject debugAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	openedRunner ifNotNil: [ openedRunner window close ].
+	super tearDown
+]
+
+{ #category : 'tests' }
+HeraRunnerTestCase >> testDebugScenario [
+
+	| scenario acceptanceTest |
+	acceptanceTest := HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature.
+	subject runScope: acceptanceTest asRunnerScope.
+	subject afterOpenDebugRunnerBlock: [ :runner | openedRunner := runner ].
+	scenario := acceptanceTest feature scenarios first.
+	self should: [ subject debugScenario: scenario ] raise: Error
+]
+
+{ #category : 'tests' }
+HeraRunnerTestCase >> testDebugScope [
+
+	subject debugScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	self assert: subject hasRunAllScenarios
 ]
 
 { #category : 'tests' }
-HeraRunnerTestCase >> testDebugAcceptanceTestFilteredBy [
+HeraRunnerTestCase >> testDebugScopeFilteredBy [
 
 	| acceptanceTest |
 	acceptanceTest := HeraAcceptanceTestWithPassForTesting selector: #signingInFeature.
 	self assert: acceptanceTest feature scenarios size equals: 2.
 	subject
-		debugAcceptanceTest: acceptanceTest
+		debugScope: acceptanceTest asRunnerScope
 		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
 	self assert: subject hasRunAllScenarios.
 	self assert: subject result totalCount equals: 1.
@@ -53,7 +74,7 @@ HeraRunnerTestCase >> testRestart [
 
 Total: 2. Passed: 2. Failed: 0. Error: 0.
 '.
-	subject runAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	self assert: subject runLog equals: expectedRunLog.
 	subject restart.
 	self deny: subject hasRunSteps.
@@ -63,7 +84,7 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 ]
 
 { #category : 'tests' }
-HeraRunnerTestCase >> testRestartFilteredAcceptanceTest [
+HeraRunnerTestCase >> testRestartFilteredScope [
 
 	| expectedRunLog |
 	expectedRunLog := 'Feature: Signing in
@@ -78,7 +99,7 @@ HeraRunnerTestCase >> testRestartFilteredAcceptanceTest [
 Total: 1. Passed: 1. Failed: 0. Error: 0.
 '.
 	subject
-		runAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature)
+		runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope
 		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').	
 	self assert: subject runLog equals: expectedRunLog.
 	subject restart.
@@ -89,16 +110,16 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 ]
 
 { #category : 'tests' }
-HeraRunnerTestCase >> testRunAcceptanceTest [
+HeraRunnerTestCase >> testRunScope [
 
-	subject runAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	self assert: subject hasRunAllScenarios
 ]
 
 { #category : 'tests' }
-HeraRunnerTestCase >> testStepAcceptanceTest [
+HeraRunnerTestCase >> testStepScope [
 
-	subject stepAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature).
+	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	self deny: subject hasRunSteps
 ]
 
@@ -106,7 +127,7 @@ HeraRunnerTestCase >> testStepAcceptanceTest [
 HeraRunnerTestCase >> testStepping [
 
 	subject
-		stepAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature);
+		stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope;
 		stepOver;
 		stepOver;
 		stepOver;

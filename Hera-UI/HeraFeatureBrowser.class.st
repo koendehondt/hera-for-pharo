@@ -110,7 +110,7 @@ HeraFeatureBrowser >> debugScenario: scenarioAstNode [
 	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
 	(self instantiate: HeraRunner)
 		open;
-		debugAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
+		debugScope: self selectedMethodItem acceptanceTest asRunnerScope filteredBy: scenarioFilter
 ]
 
 { #category : 'layout' }
@@ -220,7 +220,7 @@ HeraFeatureBrowser >> runScenario: scenarioAstNode [
 	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
 	(self instantiate: HeraRunner)
 		open;
-		runAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
+		runScope: self selectedMethodItem acceptanceTest asRunnerScope filteredBy: scenarioFilter
 ]
 
 { #category : 'accessing' }
@@ -281,7 +281,7 @@ HeraFeatureBrowser >> stepScenario: scenarioAstNode [
 	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
 	(self instantiate: HeraRunner)
 		open;
-		stepAcceptanceTest: self selectedMethodItem acceptanceTest filteredBy: scenarioFilter
+		stepScope: self selectedMethodItem acceptanceTest asRunnerScope filteredBy: scenarioFilter
 ]
 
 { #category : 'private' }
