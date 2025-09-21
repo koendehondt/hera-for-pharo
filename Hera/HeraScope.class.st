@@ -64,7 +64,9 @@ HeraScope >> allStepMethods [
 { #category : 'converting' }
 HeraScope >> asRunnerScope [
 
-	^ HeraRunnerScope fromAcceptanceTestClasses: acceptanceTestClasses
+	| sortedAcceptanceTestClasses |
+	sortedAcceptanceTestClasses := acceptanceTestClasses asSortedCollection: [ :some :other | some name <= other name ].
+	^ HeraRunnerScope fromAcceptanceTestClasses: sortedAcceptanceTestClasses
 ]
 
 { #category : 'private' }

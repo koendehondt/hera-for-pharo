@@ -24,7 +24,8 @@ HeraAcceptanceTest class >> featureMethods [
 { #category : 'accessing' }
 HeraAcceptanceTest class >> features [
 
-	^ self featureMethods collect: [ :each | self selector: each selector ]
+	^ (self featureMethods collect: [ :each | self selector: each selector ])
+		asSortedCollection: [ :some :other | some featureSelector <= other featureSelector ]
 ]
 
 { #category : 'testing' }
