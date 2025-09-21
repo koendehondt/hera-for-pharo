@@ -19,7 +19,8 @@ HeraRunnerResultCount >> count: anInteger [
 HeraRunnerResultCount >> defaultLayout [
 
 	^ SpBoxLayout newHorizontal
-		add: countLabel expand: false fill: true padding: 5;
+		hAlignCenter;
+		add: countLabel;
 		yourself
 ]
 

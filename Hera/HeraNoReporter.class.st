@@ -37,6 +37,12 @@ HeraNoReporter >> reportEndOfFeature: aFeature [
 ]
 
 { #category : 'reporting' }
+HeraNoReporter >> reportEndOfFeatures [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraNoReporter >> reportEndOfRule: aRule [
 
 	"Do nothing."
@@ -92,6 +98,12 @@ HeraNoReporter >> reportStartOfBackgroundStep: aStep [
 
 { #category : 'reporting' }
 HeraNoReporter >> reportStartOfFeature: aFeature [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportStartOfFeatures: featureCount [
 
 	"Do nothing."
 ]

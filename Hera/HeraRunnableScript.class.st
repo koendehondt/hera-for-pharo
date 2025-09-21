@@ -2,10 +2,10 @@ Class {
 	#name : 'HeraRunnableScript',
 	#superclass : 'Object',
 	#instVars : [
-		'feature',
 		'instructions',
 		'instructionPointer',
-		'filter'
+		'filter',
+		'acceptanceTests'
 	],
 	#category : 'Hera-Instructions',
 	#package : 'Hera',
@@ -13,22 +13,22 @@ Class {
 }
 
 { #category : 'instance creation' }
-HeraRunnableScript class >> for: aFeature [
+HeraRunnableScript class >> forAll: acceptanceTests [
 
-	^ self new feature: aFeature
+	^ self new acceptanceTests: acceptanceTests
+]
+
+{ #category : 'initialization' }
+HeraRunnableScript >> acceptanceTests: acceptanceTestsCollection [
+
+	acceptanceTests := acceptanceTestsCollection.
+	instructionPointer := 0
 ]
 
 { #category : 'testing' }
 HeraRunnableScript >> atEndOfScenario [
 
 	^ self peekNextInstruction isScenarioEnd
-]
-
-{ #category : 'initialization' }
-HeraRunnableScript >> feature: aFeature [
-
-	feature := aFeature.
-	instructionPointer := 0
 ]
 
 { #category : 'accessing' }
@@ -61,42 +61,46 @@ HeraRunnableScript >> initializeInstructions [
 
 	| filteredScenarios |
 	instructions := OrderedCollection new.
-	instructions add: (HeraStartFeatureInstruction for: feature).
-	feature background ifNotNil: [ :background |
-		instructions add: (HeraBackgroundInstruction new background: background) ].
-	filteredScenarios := feature scenarios select: [ :each | filter selects: each ].
-	filteredScenarios do: [ :eachScenario |
-		instructions add: (HeraStartScenarioInstruction for: eachScenario).
-		instructions add: HeraBeforeScenarioHookInstruction new.
+	instructions add: (HeraStartFeaturesInstruction for: acceptanceTests size).
+	acceptanceTests do: [ :acceptanceTest | | feature |
+		feature := acceptanceTest feature.
+		instructions add: (HeraStartFeatureInstruction for: acceptanceTest).
 		feature background ifNotNil: [ :background |
-			background steps do: [ :eachStep | | stepInstruction backgroundStepInstruction |
-				stepInstruction := self instructionForStep: eachStep.
-				backgroundStepInstruction := HeraBackgroundStepInstruction new stepInstruction: stepInstruction.
-				instructions add: backgroundStepInstruction ] ].
-		eachScenario steps do: [ :eachStep |
-			instructions add: (self instructionForStep: eachStep) ].
-		instructions add: HeraAfterScenarioHookInstruction new.
-		instructions add: HeraEndScenarioInstruction new ].
-	feature rules do: [ :eachRule |
-		filteredScenarios := eachRule scenarios select: [ :each | filter selects: each ].
-		filteredScenarios ifNotEmpty: [
-			instructions add: (HeraStartRuleInstruction for: eachRule).
-			eachRule background ifNotNil: [ :background |
-				instructions add: (HeraBackgroundInstruction new background: background) ] ].
+			instructions add: (HeraBackgroundInstruction new background: background) ].
+		filteredScenarios := feature scenarios select: [ :each | filter selects: each ].
 		filteredScenarios do: [ :eachScenario |
 			instructions add: (HeraStartScenarioInstruction for: eachScenario).
 			instructions add: HeraBeforeScenarioHookInstruction new.
-			eachRule background ifNotNil: [ :background |
+			feature background ifNotNil: [ :background |
 				background steps do: [ :eachStep | | stepInstruction backgroundStepInstruction |
 					stepInstruction := self instructionForStep: eachStep.
-					backgroundStepInstruction := HeraBackgroundStepInstruction new stepInstruction: stepInstruction. self flag: 'This uses the feature background'.
+					backgroundStepInstruction := HeraBackgroundStepInstruction new stepInstruction: stepInstruction.
 					instructions add: backgroundStepInstruction ] ].
 			eachScenario steps do: [ :eachStep |
 				instructions add: (self instructionForStep: eachStep) ].
 			instructions add: HeraAfterScenarioHookInstruction new.
 			instructions add: HeraEndScenarioInstruction new ].
-		filteredScenarios ifNotEmpty: [ instructions add: HeraEndRuleInstruction new ] ].
-	instructions add: HeraEndFeatureInstruction new.
+		feature rules do: [ :eachRule |
+			filteredScenarios := eachRule scenarios select: [ :each | filter selects: each ].
+			filteredScenarios ifNotEmpty: [
+				instructions add: (HeraStartRuleInstruction for: eachRule).
+				eachRule background ifNotNil: [ :background |
+					instructions add: (HeraBackgroundInstruction new background: background) ] ].
+			filteredScenarios do: [ :eachScenario |
+				instructions add: (HeraStartScenarioInstruction for: eachScenario).
+				instructions add: HeraBeforeScenarioHookInstruction new.
+				eachRule background ifNotNil: [ :background |
+					background steps do: [ :eachStep | | stepInstruction backgroundStepInstruction |
+						stepInstruction := self instructionForStep: eachStep.
+						backgroundStepInstruction := HeraBackgroundStepInstruction new stepInstruction: stepInstruction. self flag: 'This uses the feature background'.
+						instructions add: backgroundStepInstruction ] ].
+				eachScenario steps do: [ :eachStep |
+					instructions add: (self instructionForStep: eachStep) ].
+				instructions add: HeraAfterScenarioHookInstruction new.
+				instructions add: HeraEndScenarioInstruction new ].
+			filteredScenarios ifNotEmpty: [ instructions add: HeraEndRuleInstruction new ] ].
+		instructions add: HeraEndFeatureInstruction new ].
+	instructions add: HeraEndFeaturesInstruction new.
 	instructions add: HeraResultSummaryInstruction new.
 	^ instructions
 ]

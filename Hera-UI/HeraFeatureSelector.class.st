@@ -272,7 +272,7 @@ HeraFeatureSelector >> runAllFeatures [
 
 	(self instantiate: HeraRunner)
 		open;
-		runScope: self scope
+		runScope: self scope asRunnerScope
 ]
 
 { #category : 'actions' }

@@ -26,10 +26,10 @@ HeraRunnerResultSummary >> defaultLayout [
 	^ SpBoxLayout newLeftToRight
 		spacing: 10;
 		vAlignCenter;
-		add: totalCount expand: false;
-		add: passedCount expand: false;
-		add: failedCount expand: false;
-		add: errorCount expand: false;
+		add: totalCount width: 50;
+		add: passedCount width: 50;
+		add: failedCount width: 50;
+		add: errorCount width: 50;
 		add: duration expand: false;
 		add: startTime expand: false;
 		yourself

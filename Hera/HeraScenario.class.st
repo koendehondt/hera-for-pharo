@@ -12,6 +12,15 @@ Class {
 	#tag : 'Script elements'
 }
 
+{ #category : 'comparing' }
+HeraScenario >> = other [
+
+	^ self title = other title
+		and: [ self steps = other steps
+		and: [ self tags = other tags
+		and: [ self description = other description ] ] ]
+]
+
 { #category : 'visiting' }
 HeraScenario >> accept: visitor [
 

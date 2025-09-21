@@ -18,14 +18,15 @@ HeraRunnableScriptTestCase >> testInstructions [
 	| acceptanceTest scenarios firstScenario secondScenario feature firstScenarioSteps secondScenarioSteps |
 	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithTwoScenarios.
 	feature := acceptanceTest feature.
-	subject feature: feature.
+	subject acceptanceTests: { acceptanceTest }.
 	scenarios := feature scenarios.
 	firstScenario := scenarios first.
 	secondScenario := scenarios second.
 	firstScenarioSteps := firstScenario steps.
 	secondScenarioSteps := secondScenario steps.
 	self assert: subject instructions equals: {
-		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
 		(HeraStartScenarioInstruction for: firstScenario) .
 		HeraBeforeScenarioHookInstruction new .
 		(HeraRunStepInstruction for: firstScenarioSteps first) .
@@ -44,6 +45,56 @@ HeraRunnableScriptTestCase >> testInstructions [
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
+		HeraResultSummaryInstruction new } asOrderedCollection
+]
+
+{ #category : 'tests' }
+HeraRunnableScriptTestCase >> testInstructionsForMultipleFeatures [
+
+	| acceptanceTest1 acceptanceTest2 scenarios2 firstScenario2 secondScenario2 firstScenarioSteps secondScenarioSteps feature1 feature2 scenarios1 firstScenario1 firstScenarioSteps1 |
+	acceptanceTest1 := HeraAcceptanceTestExamplesForTesting selector: #featureWithError.
+	acceptanceTest2 := HeraAcceptanceTestExamplesForTesting selector: #featureWithTwoScenarios.
+	feature1 := acceptanceTest1 feature.
+	feature2 := acceptanceTest2 feature.
+	subject acceptanceTests: { acceptanceTest1 . acceptanceTest2 }.
+	scenarios1 := feature1 scenarios.
+	scenarios2 := feature2 scenarios.
+	firstScenario1 := scenarios1 first.
+	firstScenarioSteps1 := firstScenario1 steps.
+	firstScenario2 := scenarios2 first.
+	secondScenario2 := scenarios2 second.
+	firstScenarioSteps := firstScenario2 steps.
+	secondScenarioSteps := secondScenario2 steps.
+	self assert: subject instructions equals: {
+		(HeraStartFeaturesInstruction for: 2) .
+		(HeraStartFeatureInstruction for: acceptanceTest1) .
+		(HeraStartScenarioInstruction for: firstScenario1) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: firstScenarioSteps1 first) .
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		HeraEndFeatureInstruction new .		
+		(HeraStartFeatureInstruction for: acceptanceTest2) .
+		(HeraStartScenarioInstruction for: firstScenario2) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: firstScenarioSteps first) .
+		(HeraRunStepInstruction for: firstScenarioSteps second) .
+		(HeraRunStepInstruction for: firstScenarioSteps third) .
+		(HeraRunStepInstruction for: firstScenarioSteps fourth) .
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		(HeraStartScenarioInstruction for: secondScenario2) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: secondScenarioSteps first) .
+		(HeraRunStepInstruction for: secondScenarioSteps second) .
+		(HeraRunStepInstruction for: secondScenarioSteps third) .
+		(HeraRunStepInstruction for: secondScenarioSteps fourth) .
+		(HeraRunStepInstruction for: secondScenarioSteps fifth) .
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]
 
@@ -53,14 +104,15 @@ HeraRunnableScriptTestCase >> testInstructionsWithBackground [
 	| acceptanceTest firstScenario secondScenario feature firstScenarioSteps secondScenarioSteps instructions backgroundStep backgroundInstruction |
 	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithBackground.
 	feature := acceptanceTest feature.
-	subject feature: feature.
+	subject acceptanceTests: { acceptanceTest }.
 	firstScenario := feature scenarios first.
 	secondScenario := feature scenarios second.
 	firstScenarioSteps := firstScenario steps.
 	secondScenarioSteps := secondScenario steps.
 	instructions := subject instructions.
 	self assert: instructions equals: {
-		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
 		(HeraBackgroundInstruction new background: feature background) .
 		(HeraStartScenarioInstruction for: firstScenario) .
 		HeraBeforeScenarioHookInstruction new .
@@ -84,11 +136,12 @@ HeraRunnableScriptTestCase >> testInstructionsWithBackground [
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection.
 	backgroundStep := feature background steps first.
-	backgroundInstruction := (instructions at: 5) stepInstruction.
+	backgroundInstruction := (instructions at: 6) stepInstruction.
 	self assert: backgroundInstruction equals: (HeraRunStepInstruction for: backgroundStep).
-	backgroundInstruction := (instructions at: 15) stepInstruction.
+	backgroundInstruction := (instructions at: 16) stepInstruction.
 	self assert: backgroundInstruction equals: (HeraRunStepInstruction for: backgroundStep)
 ]
 
@@ -98,11 +151,12 @@ HeraRunnableScriptTestCase >> testInstructionsWithDataTable [
 	| acceptanceTest scenario feature steps |
 	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithDataTable.
 	feature := acceptanceTest feature.
-	subject feature: feature.
+	subject acceptanceTests: { acceptanceTest }.
 	scenario := feature scenarios first.
 	steps := scenario steps.
 	self assert: subject instructions equals: {
-		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
 		(HeraStartScenarioInstruction for: scenario) .
 		HeraBeforeScenarioHookInstruction new .
 		(HeraRunStepInstruction for: steps first) .
@@ -113,6 +167,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithDataTable [
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]
 
@@ -124,12 +179,13 @@ HeraRunnableScriptTestCase >> testInstructionsWithFilter [
 	feature := acceptanceTest feature.
 	scenarios := feature scenarios.
 	self assert: scenarios size equals: 2.
-	subject feature: feature.
+	subject acceptanceTests: { acceptanceTest }.
 	subject filter: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
 	secondScenario := scenarios second.
 	secondScenarioSteps := secondScenario steps.
 	self assert: subject instructions equals: {
-		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
 		(HeraStartScenarioInstruction for: secondScenario) .
 		HeraBeforeScenarioHookInstruction new .
 		(HeraRunStepInstruction for: secondScenarioSteps first) .
@@ -140,6 +196,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithFilter [
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]
 
@@ -149,7 +206,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithRules [
 	| acceptanceTest scenarios feature scenario scenarioSteps rules firstRule secondRule firstScenarioInFirstRule stepsInFirstScenarioInFirstRule secondScenarioInFirstRule stepsInSecondScenarioInFirstRule scenarioInSecondRule stepsInScenarioInSecondRule |
 	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithRules.
 	feature := acceptanceTest feature.
-	subject feature: feature.
+	subject acceptanceTests: { acceptanceTest }.
 	scenarios := feature scenarios.
 	scenario := scenarios first.
 	scenarioSteps := scenario steps.
@@ -163,7 +220,8 @@ HeraRunnableScriptTestCase >> testInstructionsWithRules [
 	scenarioInSecondRule := secondRule scenarios first.
 	stepsInScenarioInSecondRule := scenarioInSecondRule steps.
 	self assert: subject instructions equals: {
-		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
 		(HeraBackgroundInstruction new background: feature background) .
 		(HeraStartScenarioInstruction for: scenario) .
 		HeraBeforeScenarioHookInstruction new .
@@ -203,6 +261,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithRules [
 		HeraEndRuleInstruction new .
 
 		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]
 
@@ -212,12 +271,13 @@ HeraRunnableScriptTestCase >> testInstructionsWithStarSteps [
 	| acceptanceTest scenarios feature scenario scenarioSteps |
 	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithStarSteps.
 	feature := acceptanceTest feature.
-	subject feature: feature.
+	subject acceptanceTests: { acceptanceTest }.
 	scenarios := feature scenarios.
 	scenario := scenarios first.
 	scenarioSteps := scenario steps.
 	self assert: subject instructions equals: {
-		(HeraStartFeatureInstruction for: feature) .
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
 		(HeraStartScenarioInstruction for: scenario) .
 		HeraBeforeScenarioHookInstruction new .
 		(HeraRunStepInstruction for: scenarioSteps first) .
@@ -229,5 +289,6 @@ HeraRunnableScriptTestCase >> testInstructionsWithStarSteps [
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]

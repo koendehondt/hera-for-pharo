@@ -57,7 +57,10 @@ HeraRunnerTestCase >> testDebugScopeFilteredBy [
 HeraRunnerTestCase >> testRestart [
 
 	| expectedRunLog |
-	expectedRunLog := 'Feature: Signing in
+	expectedRunLog := 'Running 1 feature.
+
+
+Feature: Signing in
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
@@ -72,7 +75,8 @@ HeraRunnerTestCase >> testRestart [
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-Total: 2. Passed: 2. Failed: 0. Error: 0.
+
+Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0.
 '.
 	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	self assert: subject runLog equals: expectedRunLog.
@@ -87,7 +91,10 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 HeraRunnerTestCase >> testRestartFilteredScope [
 
 	| expectedRunLog |
-	expectedRunLog := 'Feature: Signing in
+	expectedRunLog := 'Running 1 feature.
+
+
+Feature: Signing in
 
 	Scenario: Unsuccessful sign-in
 		Given I have credentials to sign in
@@ -96,7 +103,8 @@ HeraRunnerTestCase >> testRestartFilteredScope [
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '.
 	subject
 		runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope

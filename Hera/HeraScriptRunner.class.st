@@ -16,22 +16,13 @@ Class {
 		'currentAcceptanceTest',
 		'currentRule',
 		'beforeScenarioHookFailed',
-		'suppressResultSummary',
 		'suppressPauseAndDebugSteps',
-		'scope',
-		'scopeIterator'
+		'scope'
 	],
 	#category : 'Hera-Running',
 	#package : 'Hera',
 	#tag : 'Running'
 }
-
-{ #category : 'accessing' }
-HeraScriptRunner >> acceptanceTest: anAcceptanceTest [
-
-	acceptanceTest := anAcceptanceTest.
-	runnableScript := HeraRunnableScript for: acceptanceTest feature
-]
 
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> afterScenarioHook [
@@ -99,11 +90,17 @@ HeraScriptRunner >> debug [
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> endFeature [
 
-	result recordEndTime.
 	self hasRunScenarios ifFalse: [
 		result recordEmptyFeature: currentFeature.
 		reporter reportEmptyFeature: currentFeature ].
 	reporter reportEndOfFeature: currentFeature
+]
+
+{ #category : 'instruction double dispatch' }
+HeraScriptRunner >> endFeatures [
+
+	result recordEndTime.
+	reporter reportEndOfFeatures
 ]
 
 { #category : 'instruction double dispatch' }
@@ -177,7 +174,6 @@ HeraScriptRunner >> initialize [
 	hasRunSteps := false.
 	scenarioCount := 0.
 	self reporter: HeraNoReporter new.
-	suppressResultSummary := false.
 	suppressPauseAndDebugSteps := false
 ]
 
@@ -250,7 +246,6 @@ HeraScriptRunner >> result: aResult [
 { #category : 'instruction double dispatch' }
 HeraScriptRunner >> resultSummary [
 
-	suppressResultSummary ifTrue: [ ^ self ].
 	reporter reportResult: result
 ]
 
@@ -337,17 +332,23 @@ HeraScriptRunner >> scope [
 HeraScriptRunner >> scope: aHeraRunnerScope [
 
 	scope := aHeraRunnerScope.
-	scopeIterator := scope iterator.
 	self result: HeraResult new.
-	scopeIterator nextDo: [ :firstAcceptanceTest | self acceptanceTest: firstAcceptanceTest ]
+	runnableScript := HeraRunnableScript forAll: self scope acceptanceTests
 ]
 
 { #category : 'instruction double dispatch' }
-HeraScriptRunner >> startFeature: aFeature [
+HeraScriptRunner >> startFeature: aFeature in: anAcceptanceTest [
 
 	currentFeature := aFeature.
-	result recordStartTime.
+	acceptanceTest := anAcceptanceTest.
 	reporter reportStartOfFeature: aFeature
+]
+
+{ #category : 'instruction double dispatch' }
+HeraScriptRunner >> startFeatures: featureCount [
+
+	result recordStartTime.
+	reporter reportStartOfFeatures: featureCount
 ]
 
 { #category : 'instruction double dispatch' }
@@ -373,12 +374,6 @@ HeraScriptRunner >> startScenario: aScenario [
 HeraScriptRunner >> suppressPauseAndDebugSteps [
 
 	suppressPauseAndDebugSteps := true
-]
-
-{ #category : 'accessing' }
-HeraScriptRunner >> suppressResultSummary [
-
-	suppressResultSummary := true
 ]
 
 { #category : 'running' }

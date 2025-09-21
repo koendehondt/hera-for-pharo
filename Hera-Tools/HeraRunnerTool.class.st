@@ -14,10 +14,14 @@ HeraRunnerTool >> resultsFileReference [
 { #category : 'running' }
 HeraRunnerTool >> run: aScope [
 
-	| scriptRunner |
-	scriptRunner := HeraMultiScriptRunner new.
+	| reporter |
+	reporter := HeraTextReporter new.
+	HeraScriptRunner new
+		scope: aScope asRunnerScope;
+		reporter: reporter;
+		run.
 	self resultsFileReference writeStreamDo: [ :stream |
-		scriptRunner runScope: aScope reportOn: stream ]
+		stream nextPutAll: reporter text string ]
 ]
 
 { #category : 'running' }

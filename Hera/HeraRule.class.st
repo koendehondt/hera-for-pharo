@@ -12,6 +12,15 @@ Class {
 	#tag : 'Script elements'
 }
 
+{ #category : 'comparing' }
+HeraRule >> = other [
+
+	^ self title = other title
+		and: [ self scenarios = other scenarios
+		and: [ self background = other background
+		and: [ self description = other description ] ] ]
+]
+
 { #category : 'visiting' }
 HeraRule >> accept: visitor [
 

@@ -19,14 +19,17 @@ HeraScriptRunnerWithTextReporterTestCase >> describedClass [
 HeraScriptRunnerWithTextReporterTestCase >> expectedDebugRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With debug step
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With debug step
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
 		When I debug'.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 36.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 49 to: 57.
 	^ text
 ]
 
@@ -34,7 +37,10 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedDebugRunReport [
 HeraScriptRunnerWithTextReporterTestCase >> expectedDebugStepRunWithSuppressPauseAndDebugSteps [
 
 	| text |
-	text := Text fromString: 'Feature: With debug step
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With debug step
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
@@ -43,11 +49,12 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedDebugStepRunWithSuppressPaus
 		And I press the button to sign in
 		Then I see the home page
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 36.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 49 to: 57.
 	^ text
 ]
 
@@ -55,15 +62,19 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyFeatureErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: Empty
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: Empty
 	ERROR There are no scenarios.
 
-Total: 0. Passed: 0. Failed: 0. Error: 1.
+
+Total: 0 scenarios. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 17 to: 21;
-		addAttribute: (TextColor new color: Color red) from: 17 to: 21.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 38 to: 42;
+		addAttribute: (TextColor new color: Color red) from: 38 to: 42.
 	^ text
 ]
 
@@ -71,18 +82,22 @@ Total: 0. Passed: 0. Failed: 0. Error: 1.
 HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyScenarioErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With empty scenario
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With empty scenario
 
 	Scenario: Successful sign-in
 		ERROR There are no steps.
 
-Total: 1. Passed: 0. Failed: 0. Error: 1.
+
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 32 to: 40;
-		addAttribute: TextEmphasis bold from: 63 to: 67;
-		addAttribute: (TextColor new color: Color red) from: 63 to: 67.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 53 to: 61;
+		addAttribute: TextEmphasis bold from: 84 to: 88;
+		addAttribute: (TextColor new color: Color red) from: 84 to: 88.
 	^ text
 ]
 
@@ -90,7 +105,10 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorDebugReportWithTagsAndDescriptions [
 
 	| text |
-	text := Text fromString: '@accessing_the_system
+	text := Text fromString: 'Running 1 feature.
+
+
+@accessing_the_system
 @signing_in
 Feature: Signing in
 
@@ -107,8 +125,8 @@ Feature: Signing in
 		When I enter my credentials
 		And I press the button to sign in'.
 	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203.
+		addAttribute: TextEmphasis bold from: 56 to: 63;
+		addAttribute: TextEmphasis bold from: 216 to: 224.
 	^ text
 ]
 
@@ -116,19 +134,23 @@ Feature: Signing in
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithErrorInAfterScenarioHook [
 
 	| text |
-	text := Text fromString: 'Feature: With single step scenario for testing
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With single step scenario for testing
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
 		ERROR Some error in the after scenario hook.
 
-Total: 1. Passed: 0. Failed: 0. Error: 1.
+
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 50 to: 58;
-		addAttribute: TextEmphasis bold from: 119 to: 123;
-		addAttribute: (TextColor new color: Color red) from: 119 to: 123.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 71 to: 79;
+		addAttribute: TextEmphasis bold from: 140 to: 144;
+		addAttribute: (TextColor new color: Color red) from: 140 to: 144.
 	^ text
 ]
 
@@ -136,18 +158,22 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithErrorInBeforeScenarioHook [
 
 	| text |
-	text := Text fromString: 'Feature: With single step scenario for testing
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With single step scenario for testing
 
 	Scenario: Successful sign-in
 		ERROR Some error in the before scenario hook.
 
-Total: 1. Passed: 0. Failed: 0. Error: 1.
+
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 50 to: 58;
-		addAttribute: TextEmphasis bold from: 81 to: 85;
-		addAttribute: (TextColor new color: Color red) from: 81 to: 85.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 71 to: 79;
+		addAttribute: TextEmphasis bold from: 102 to: 106;
+		addAttribute: (TextColor new color: Color red) from: 102 to: 106.
 	^ text
 ]
 
@@ -155,7 +181,10 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithTagsAndDescriptions [
 
 	| text |
-	text := Text fromString: '@accessing_the_system
+	text := Text fromString: 'Running 1 feature.
+
+
+@accessing_the_system
 @signing_in
 Feature: Signing in
 
@@ -179,16 +208,17 @@ Feature: Signing in
 		And I press the button to sign in
 			ERROR Button not found
 
-Total: 2. Passed: 0. Failed: 0. Error: 2.
+
+Total: 2 scenarios. Passed: 0. Failed: 0. Error: 2.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 390 to: 394;
-		addAttribute: (TextColor new color: Color red) from: 390 to: 394;
-		addAttribute: TextEmphasis bold from: 415 to: 423;
-		addAttribute: TextEmphasis bold from: 560 to: 564;
-		addAttribute: (TextColor new color: Color red) from: 560 to: 564.
+		addAttribute: TextEmphasis bold from: 56 to: 63;
+		addAttribute: TextEmphasis bold from: 216 to: 224;
+		addAttribute: TextEmphasis bold from: 411 to: 415;
+		addAttribute: (TextColor new color: Color red) from: 411 to: 415;
+		addAttribute: TextEmphasis bold from: 436 to: 444;
+		addAttribute: TextEmphasis bold from: 581 to: 585;
+		addAttribute: (TextColor new color: Color red) from: 581 to: 585.
 	^ text
 ]
 
@@ -196,7 +226,10 @@ Total: 2. Passed: 0. Failed: 0. Error: 2.
 HeraScriptRunnerWithTextReporterTestCase >> expectedFailedDebugReportWithTagsAndDescriptions [
 
 	| text |
-	text := Text fromString: '@accessing_the_system
+	text := Text fromString: 'Running 1 feature.
+
+
+@accessing_the_system
 @signing_in
 Feature: Signing in
 
@@ -220,9 +253,9 @@ Feature: Signing in
 		And I press the button to sign in
 		Then I am still on the sign-in page'.
 	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 416 to: 424.
+		addAttribute: TextEmphasis bold from: 56 to: 63;
+		addAttribute: TextEmphasis bold from: 216 to: 224;
+		addAttribute: TextEmphasis bold from: 437 to: 445.
 	^ text
 ]
 
@@ -230,7 +263,10 @@ Feature: Signing in
 HeraScriptRunnerWithTextReporterTestCase >> expectedFailedRunReportWithTagsAndDescriptions [
 
 	| text |
-	text := Text fromString: '@accessing_the_system
+	text := Text fromString: 'Running 1 feature.
+
+
+@accessing_the_system
 @signing_in
 Feature: Signing in
 
@@ -255,14 +291,15 @@ Feature: Signing in
 		Then I am still on the sign-in page
 			FAILED The current page is not the sign-in page.
 
-Total: 2. Passed: 1. Failed: 1. Error: 0.
+
+Total: 2 scenarios. Passed: 1. Failed: 1. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 416 to: 424;
-		addAttribute: TextEmphasis bold from: 599 to: 604;
-		addAttribute: (TextColor new color: Color orange) from: 599 to: 604.
+		addAttribute: TextEmphasis bold from: 56 to: 63;
+		addAttribute: TextEmphasis bold from: 216 to: 224;
+		addAttribute: TextEmphasis bold from: 437 to: 445;
+		addAttribute: TextEmphasis bold from: 620 to: 625;
+		addAttribute: (TextColor new color: Color orange) from: 620 to: 625.
 	^ text
 ]
 
@@ -270,17 +307,21 @@ Total: 2. Passed: 1. Failed: 1. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedHooksRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With hooks for testing
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With hooks for testing
 
 	Scenario: Doing and seeing something
 		When I do something
 		Then I see something
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 35 to: 43.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 56 to: 64.
 	^ text
 ]
 
@@ -324,7 +365,10 @@ Feature: Signing in
 HeraScriptRunnerWithTextReporterTestCase >> expectedPassedRunReportWithTagsAndDescriptions [
 
 	| text |
-	text := Text fromString: '@accessing_the_system
+	text := Text fromString: 'Running 1 feature.
+
+
+@accessing_the_system
 @signing_in
 Feature: Signing in
 
@@ -349,12 +393,13 @@ Feature: Signing in
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-Total: 2. Passed: 2. Failed: 0. Error: 0.
+
+Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 416 to: 424.
+		addAttribute: TextEmphasis bold from: 56 to: 63;
+		addAttribute: TextEmphasis bold from: 216 to: 224;
+		addAttribute: TextEmphasis bold from: 437 to: 445.
 	^ text
 ]
 
@@ -362,7 +407,10 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunReportWithTagsAndDescriptions [
 
 	| text |
-	text := Text fromString: 'Feature: With pause step
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With pause step
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
@@ -371,11 +419,12 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunReportWithTagsAndDe
 		And I press the button to sign in
 		Then I see the home page
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 36.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 49 to: 57.
 	^ text
 ]
 
@@ -383,7 +432,10 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunWithSuppressPauseAndDebugSteps [
 
 	| text |
-	text := Text fromString: 'Feature: With pause step
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With pause step
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
@@ -392,11 +444,12 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunWithSuppressPauseAn
 		And I press the button to sign in
 		Then I see the home page
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 36.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 49 to: 57.
 	^ text
 ]
 
@@ -404,7 +457,10 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithBackground [
 
 	| text |
-	text := Text fromString: 'Feature: With background
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With background
 
 	Background:
 		Given I have a user name
@@ -428,13 +484,14 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithBackground [
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-Total: 2. Passed: 2. Failed: 0. Error: 0.
+
+Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 38;
-		addAttribute: TextEmphasis bold from: 101 to: 109;
-		addAttribute: TextEmphasis bold from: 323 to: 331.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 49 to: 59;
+		addAttribute: TextEmphasis bold from: 122 to: 130;
+		addAttribute: TextEmphasis bold from: 344 to: 352.
 	^ text
 ]
 
@@ -442,7 +499,10 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDataTable [
 
 	| text |
-	text := Text fromString: 'Feature: With data table
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With data table
 
 	Scenario: Listing users
 		Given the following users exist:
@@ -466,11 +526,12 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDataTable [
 			| Emma | emma@testing.org |
 			| Jill | jill@testing.org |
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 36.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 49 to: 57.
 	^ text
 ]
 
@@ -478,7 +539,10 @@ Total: 1. Passed: 1. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDescriptionInBackground [
 
 	| text |
-	text := Text fromString: 'Feature: With description in background
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With description in background
 
 	Background:
 
@@ -505,13 +569,14 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDescriptionInBa
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-Total: 2. Passed: 2. Failed: 0. Error: 0.
+
+Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 43 to: 53;
-		addAttribute: TextEmphasis bold from: 171 to: 179;
-		addAttribute: TextEmphasis bold from: 393 to: 401.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 64 to: 74;
+		addAttribute: TextEmphasis bold from: 192 to: 200;
+		addAttribute: TextEmphasis bold from: 414 to: 422.
 	^ text
 ]
 
@@ -519,7 +584,9 @@ Total: 2. Passed: 2. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithRules [
 
 	| text |
-	text := Text fromString: '
+	text := Text fromString: 'Running 1 feature.
+
+
 Feature: With rules
 
 	Managing users is essential to permit and revoke access to the system.
@@ -557,18 +624,19 @@ Feature: With rules
 			Given I am not an administrator
 			Then I cannot open the user management page
 
-Total: 4. Passed: 4. Failed: 0. Error: 0.
-' allButFirst.
+
+Total: 4 scenarios. Passed: 4. Failed: 0. Error: 0.
+'.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 96 to: 106;
-		addAttribute: TextEmphasis bold from: 175 to: 183;
-		addAttribute: TextEmphasis bold from: 374 to: 378;
-		addAttribute: TextEmphasis bold from: 508 to: 518;
-		addAttribute: TextEmphasis bold from: 554 to: 562;
-		addAttribute: TextEmphasis bold from: 722 to: 730;
-		addAttribute: TextEmphasis bold from: 905 to: 909;
-		addAttribute: TextEmphasis bold from: 967 to: 975.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 117 to: 127;
+		addAttribute: TextEmphasis bold from: 196 to: 204;
+		addAttribute: TextEmphasis bold from: 395 to: 399;
+		addAttribute: TextEmphasis bold from: 529 to: 539;
+		addAttribute: TextEmphasis bold from: 575 to: 583;
+		addAttribute: TextEmphasis bold from: 743 to: 751;
+		addAttribute: TextEmphasis bold from: 926 to: 930;
+		addAttribute: TextEmphasis bold from: 988 to: 996.
 	^ text
 ]
 
@@ -576,19 +644,23 @@ Total: 4. Passed: 4. Failed: 0. Error: 0.
 HeraScriptRunnerWithTextReporterTestCase >> expectedUndefinedStepErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With undefined step
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With undefined step
 
 	Scenario: Successful sign-in
 		Given this step has no definition
 			ERROR Step definition not found.
 
-Total: 1. Passed: 0. Failed: 0. Error: 1.
+
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 32 to: 40;
-		addAttribute: TextEmphasis bold from: 100 to: 104;
-		addAttribute: (TextColor new color: Color red) from: 100 to: 104.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 53 to: 61;
+		addAttribute: TextEmphasis bold from: 121 to: 125;
+		addAttribute: (TextColor new color: Color red) from: 121 to: 125.
 	^ text
 ]
 
@@ -596,19 +668,23 @@ Total: 1. Passed: 0. Failed: 0. Error: 1.
 HeraScriptRunnerWithTextReporterTestCase >> expectedUnimplementedStepErrorRunReport [
 
 	| text |
-	text := Text fromString: 'Feature: With unimplemented step
+	text := Text fromString: 'Running 1 feature.
+
+
+Feature: With unimplemented step
 
 	Scenario: Successful sign-in
 		Given this step is not implemeted
 			ERROR Step not implemented.
 
-Total: 1. Passed: 0. Failed: 0. Error: 1.
+
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
 '.
 	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 36 to: 44;
-		addAttribute: TextEmphasis bold from: 104 to: 108;
-		addAttribute: (TextColor new color: Color red) from: 104 to: 108.
+		addAttribute: TextEmphasis bold from: 22 to: 29;
+		addAttribute: TextEmphasis bold from: 57 to: 65;
+		addAttribute: TextEmphasis bold from: 125 to: 129;
+		addAttribute: (TextColor new color: Color red) from: 125 to: 129.
 	^ text
 ]
 
@@ -768,9 +844,9 @@ HeraScriptRunnerWithTextReporterTestCase >> testPausedRun [
 	subject reporter: reporter.
 	allOutput := self expectedPausedRunReportWithTagsAndDescriptions.
 	subject run.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 108). "When I pause"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 129). "When I pause"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 138). "When I enter my credentials"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 159). "When I enter my credentials"
 	subject continue.
 	self assertText: reporter text equals: allOutput "Result summary"
 ]
@@ -831,41 +907,31 @@ HeraScriptRunnerWithTextReporterTestCase >> testStepping [
 	subject reporter: reporter.
 	allOutput := self expectedPassedRunReportWithTagsAndDescriptions.
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 181). "Feature"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 202). "Feature"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 281). "First scenario"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 302). "First scenario"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 319). "Step 1"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 340). "Step 1"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 349). "Step 2"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 370). "Step 2"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 385). "Step 3"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 406). "Step 3"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 412). "Step 4"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 433). "Step 4"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 445). "Second scenario"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 466). "Second scenario"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 483). "Step 1"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 504). "Step 1"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 520). "Step 2"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 541). "Step 2"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 556). "Step 3"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 577). "Step 3"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 594). "Step 4"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 615). "Step 4"
 	subject runNext.
-	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 647). "Step 5"
+	self assertText: reporter text equals: (allOutput copyFrom: 1 to: 668). "Step 5"
 	subject runNext.
 	self assertText: reporter text equals: allOutput "Result summary"
-]
-
-{ #category : 'tests' }
-HeraScriptRunnerWithTextReporterTestCase >> testSuppressResultSummary [
-
-	subject scope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
-	subject reporter: reporter.
-	subject suppressResultSummary.
-	subject run.
-	self assertText: reporter text equals: self expectedPassedRunReportWithSuppressResultSummary
 ]
 
 { #category : 'tests' }

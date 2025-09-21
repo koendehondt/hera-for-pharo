@@ -10,6 +10,16 @@ Class {
 }
 
 { #category : 'instance creation' }
+HeraRunnerScope class >> fromAcceptanceTestClasses: classes [
+
+	| instance |
+	instance := self new.
+	classes do: [ :class |
+		class features do: [ :acceptanceTest | instance addAcceptanceTest: acceptanceTest ] ].
+	^ instance
+]
+
+{ #category : 'instance creation' }
 HeraRunnerScope class >> with: anAcceptanceTest [
 
 	^ self new addAcceptanceTest: anAcceptanceTest
@@ -32,10 +42,4 @@ HeraRunnerScope >> initialize [
 
 	super initialize.
 	acceptanceTests := OrderedCollection new
-]
-
-{ #category : 'enumerating' }
-HeraRunnerScope >> iterator [
-
-	^ HeraRunnerScopeIterator on: self
 ]

@@ -24,18 +24,6 @@ HeraRunnerScopeTestCase >> testAddAcceptanceTest [
 ]
 
 { #category : 'tests' }
-HeraRunnerScopeTestCase >> testIteratorIsImmutable [
-
-	| iterator |
-	iterator :=	subject iterator.
-	self deny: iterator hasNext.
-	subject addAcceptanceTest: (HeraAcceptanceTestWithPassForTesting selector: #signingIn).
-	self deny: iterator hasNext.
-	iterator :=	subject iterator.
-	self assert: iterator next equals: (HeraAcceptanceTestWithPassForTesting selector: #signingIn)
-]
-
-{ #category : 'tests' }
 HeraRunnerScopeTestCase >> testWithInstanceCreation [
 
 	| instance |

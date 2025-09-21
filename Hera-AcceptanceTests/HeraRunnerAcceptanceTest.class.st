@@ -280,7 +280,10 @@ HeraRunnerAcceptanceTest >> stepISeeTheExecutedSteps [
 
 	<heraStepDefinition: #(Then 'I see the executed steps')>
 
-	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+	self assert: self featureRunner runLog equals: 'Running 1 feature.
+
+
+Feature: With single step scenario
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in'
@@ -291,7 +294,10 @@ HeraRunnerAcceptanceTest >> stepISeeTheFeatureLineOfTheScriptInTheOutput [
 
 	<heraStepDefinition: #(Then 'I see the feature line of the script in the output')>
 
-	self assert: self featureRunner runLog equals: 'Feature: With single step scenario'
+	self assert: self featureRunner runLog equals: 'Running 1 feature.
+
+
+Feature: With single step scenario'
 ]
 
 { #category : 'steps' }
@@ -299,13 +305,17 @@ HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfTheErroredTestRun [
 
 	<heraStepDefinition: #(Then 'I see the full output of the errored test run')>
 
-	self assert: self featureRunner runLog equals: 'Feature: With error
+	self assert: self featureRunner runLog equals: 'Running 1 feature.
+
+
+Feature: With error
 
 	Scenario: Running this scenario in debug mode opens the debugger
 		When an error occurs
 			ERROR Zero divide
 
-Total: 1. Passed: 0. Failed: 0. Error: 1.
+
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
 '
 ]
 
@@ -314,12 +324,16 @@ HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfThePassedTestRun [
 
 	<heraStepDefinition: #(Then 'I see the full output of the passed test run')>
 
-	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+	self assert: self featureRunner runLog string equals: 'Running 1 feature.
+
+
+Feature: With single step scenario
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '
 ]
 
@@ -328,12 +342,16 @@ HeraRunnerAcceptanceTest >> stepISeeTheFullOutputOfTheTestRun [
 
 	<heraStepDefinition: #(Then 'I see the full output of the test run')>
 
-	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+	self assert: self featureRunner runLog equals: 'Running 1 feature.
+
+
+Feature: With single step scenario
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '
 ]
 
@@ -342,7 +360,10 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheFirstScenario [
 
 	<heraStepDefinition: #(Given 'I see the output of running the first scenario')>
 
-	self assert: self featureRunner runLog asString equals: 'Feature: Signing in
+	self assert: self featureRunner runLog asString equals: 'Running 1 feature.
+
+
+Feature: Signing in
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
@@ -350,7 +371,8 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheFirstScenario [
 		And I press the button to sign in
 		Then I see the home page
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '
 ]
 
@@ -359,7 +381,10 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheSecondScenario [
 
 	<heraStepDefinition: #(Then 'I see the output of running the second scenario')>
 
-	self assert: self featureRunner runLog asString equals: 'Feature: Signing in
+	self assert: self featureRunner runLog asString equals: 'Running 1 feature.
+
+
+Feature: Signing in
 
 	Scenario: Unsuccessful sign-in
 		Given I have credentials to sign in
@@ -368,7 +393,8 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheSecondScenario [
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-Total: 1. Passed: 1. Failed: 0. Error: 0.
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 '
 ]
 
@@ -377,7 +403,10 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfTheTestRunUptoTheFailingStep [
 
 	<heraStepDefinition: #(Then 'I see the output of the test run upto the failing step')>
 
-	self assert: self featureRunner runLog equals: 'Feature: With error
+	self assert: self featureRunner runLog equals: 'Running 1 feature.
+
+
+Feature: With error
 
 	Scenario: Running this scenario in debug mode opens the debugger
 		When an error occurs'
@@ -388,7 +417,10 @@ HeraRunnerAcceptanceTest >> stepISeeTheScenarioLineOfTheScriptInTheOutput [
 
 	<heraStepDefinition: #(Then 'I see the scenario line of the script in the output')>
 
-	self assert: self featureRunner runLog equals: 'Feature: With single step scenario
+	self assert: self featureRunner runLog equals: 'Running 1 feature.
+
+
+Feature: With single step scenario
 
 	Scenario: Successful sign-in'
 ]

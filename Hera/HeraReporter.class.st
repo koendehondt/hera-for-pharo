@@ -37,6 +37,12 @@ HeraReporter >> reportEndOfFeature: aFeature [
 ]
 
 { #category : 'reporting' }
+HeraReporter >> reportEndOfFeatures [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
 HeraReporter >> reportEndOfRule: aRule [
 
 	self subclassResponsibility
@@ -92,6 +98,12 @@ HeraReporter >> reportStartOfBackgroundStep: aStep [
 
 { #category : 'reporting' }
 HeraReporter >> reportStartOfFeature: aFeature [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
+HeraReporter >> reportStartOfFeatures: featureCount [
 
 	self subclassResponsibility
 ]

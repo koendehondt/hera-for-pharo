@@ -61,6 +61,12 @@ HeraScope >> allStepMethods [
 	^ classes asOrderedCollection flatCollect: [ :each | each stepMethods ]
 ]
 
+{ #category : 'converting' }
+HeraScope >> asRunnerScope [
+
+	^ HeraRunnerScope fromAcceptanceTestClasses: acceptanceTestClasses
+]
+
 { #category : 'private' }
 HeraScope >> collectAcceptanceTestSuperclassesOf: aClass in: aSet [
 

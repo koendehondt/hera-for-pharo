@@ -102,6 +102,12 @@ HeraTextReporter >> reportEndOfFeature: aScenario [
 ]
 
 { #category : 'reporting' }
+HeraTextReporter >> reportEndOfFeatures [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraTextReporter >> reportEndOfRule: aRule [
 
 	self decreaseIndentation
@@ -170,12 +176,14 @@ HeraTextReporter >> reportPassedStep: aStep [
 HeraTextReporter >> reportResult: result [
 
 	| resultMessage |
-	resultMessage := 'Total: {1}. Passed: {2}. Failed: {3}. Error: {4}.' format: {
+	resultMessage := 'Total: {1} {2}. Passed: {3}. Failed: {4}. Error: {5}.' format: {
 		result totalCount .
+		result totalCount = 1 ifTrue: [ 'scenario' ] ifFalse: [ 'scenarios' ] .
 		result passedCount .
 		result failedCount .
 		result errorCount }.
 	stream
+		cr;
 		cr;
 		nextPutAll: resultMessage;
 		cr
@@ -232,6 +240,7 @@ HeraTextReporter >> reportStartOfBackgroundStep: aStep [
 { #category : 'reporting' }
 HeraTextReporter >> reportStartOfFeature: aFeature [
 
+	stream cr; cr.
 	reportsTags ifTrue: [
 		aFeature tags do: [ :each | stream nextPut: $@; nextPutAll: each; cr ] ].
 	self reportFeature: aFeature.
@@ -243,6 +252,19 @@ HeraTextReporter >> reportStartOfFeature: aFeature [
 		stream cr.
 		each isEmpty ifFalse: [ stream tab: indentation ].
 		stream nextPutAll: each ]
+]
+
+{ #category : 'reporting' }
+HeraTextReporter >> reportStartOfFeatures: totalFeatureCount [
+
+	stream
+		nextPutAll: 'Running';
+		space;
+		print: totalFeatureCount;
+		space;
+		nextPutAll: (totalFeatureCount = 1 ifTrue: ['feature'] ifFalse: ['features']);
+		nextPut: $.;
+		cr
 ]
 
 { #category : 'reporting' }

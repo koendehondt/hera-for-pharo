@@ -2,7 +2,8 @@ Class {
 	#name : 'HeraStartFeatureInstruction',
 	#superclass : 'HeraRunInstruction',
 	#instVars : [
-		'feature'
+		'feature',
+		'acceptanceTest'
 	],
 	#category : 'Hera-Instructions',
 	#package : 'Hera',
@@ -10,31 +11,37 @@ Class {
 }
 
 { #category : 'instance creation' }
-HeraStartFeatureInstruction class >> for: aFeature [
+HeraStartFeatureInstruction class >> for: anAcceptanceTest [
 
-	^ self new feature: aFeature
+	^ self new acceptanceTest: anAcceptanceTest
 ]
 
 { #category : 'comparing' }
 HeraStartFeatureInstruction >> = other [
 
-	^ super = other and: [ self feature = other feature ]
+	^ super = other and: [ self acceptanceTest = other acceptanceTest ]
+]
+
+{ #category : 'accessing' }
+HeraStartFeatureInstruction >> acceptanceTest [
+
+	^ acceptanceTest
+]
+
+{ #category : 'accessing' }
+HeraStartFeatureInstruction >> acceptanceTest: anAcceptanceTest [
+
+	acceptanceTest := anAcceptanceTest
 ]
 
 { #category : 'accessing' }
 HeraStartFeatureInstruction >> feature [
 
-	^ feature
-]
-
-{ #category : 'accessing' }
-HeraStartFeatureInstruction >> feature: aFeature [
-
-	feature := aFeature
+	^ feature ifNil: [ feature := self acceptanceTest feature ]
 ]
 
 { #category : 'performing' }
 HeraStartFeatureInstruction >> performFor: aScriptRunner [
 
-	aScriptRunner startFeature: self feature
+	aScriptRunner startFeature: self feature in: self acceptanceTest
 ]

@@ -10,6 +10,12 @@ Class {
 	#tag : 'Script elements'
 }
 
+{ #category : 'comparing' }
+HeraBackground >> = other [
+
+	^ self steps = other steps and: [ self description = other description ]
+]
+
 { #category : 'visiting' }
 HeraBackground >> accept: visitor [
 

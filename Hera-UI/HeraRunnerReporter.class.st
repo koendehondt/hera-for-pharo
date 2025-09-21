@@ -66,6 +66,12 @@ HeraRunnerReporter >> reportEndOfFeature: aFeature [
 ]
 
 { #category : 'reporting' }
+HeraRunnerReporter >> reportEndOfFeatures [
+
+	self report: [ super reportEndOfFeatures ]
+]
+
+{ #category : 'reporting' }
 HeraRunnerReporter >> reportEndOfRule: aRule [
 
 	self report: [ super reportEndOfRule: aRule ]
@@ -118,6 +124,12 @@ HeraRunnerReporter >> reportStartOfBackgroundStep: aStep [
 HeraRunnerReporter >> reportStartOfFeature: aFeature [
 
 	self report: [ super reportStartOfFeature: aFeature ]
+]
+
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportStartOfFeatures: featureCount [
+
+	self report: [ super reportStartOfFeatures: featureCount ]
 ]
 
 { #category : 'reporting' }

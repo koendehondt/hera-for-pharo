@@ -17,6 +17,8 @@ HeraRunInstructionTestCase >> testCanBeStepped [
 
 	| stepableInstructionClasses unsteppableInstructionClasses |
 	unsteppableInstructionClasses := {
+		HeraStartFeaturesInstruction .
+		HeraEndFeaturesInstruction .
 		HeraEndFeatureInstruction .
 		HeraEndRuleInstruction .
 		HeraEndScenarioInstruction .
