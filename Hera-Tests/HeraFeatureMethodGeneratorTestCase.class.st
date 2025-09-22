@@ -565,6 +565,52 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFullFeature [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationWithSingleQuotesInTitlesAndDescriptions [
+
+	| document ast |
+	document := '
+	Feature: Single '' quote in feature title
+
+		Single '' quote in feature description.
+		
+		Rule: Single '' quote in rule title
+
+			Single '' quote in rule description.
+
+			Scenario: Single '' quote in scenario title
+
+				Single '' quote in scenario description.
+				
+				Given a step with aa single '' quote
+				When I do something with a single '' quote
+				And I do something else with a single '' quote
+				But I don''t do something else
+				Then I see a single '' quote'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Single '''' quote in feature title''>
+
+	^ (self feature: ''Single '''' quote in feature title'')
+		description: {
+			''Single '''' quote in feature description.'' };
+		rules: {
+			(self rule: ''Single '''' quote in rule title'')
+				description: {
+					''Single '''' quote in rule description.'' };
+				scenarios: {
+					(self scenario: ''Single '''' quote in scenario title'')
+						description: {
+							''Single '''' quote in scenario description.'' };
+						given: ''a step with aa single '''' quote'';
+						when: ''I do something with a single '''' quote'';
+						and: ''I do something else with a single '''' quote'';
+						but: ''I don''''t do something else'';
+						then: ''I see a single '''' quote'' } }'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testSuggestedFeatureMethodSelectorFor [
 
 	self assert: (subject suggestedFeatureMethodSelectorFor: 'Managing users') equals: #featureManagingUsers

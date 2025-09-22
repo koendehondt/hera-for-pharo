@@ -142,7 +142,7 @@ HeraFeatureMethodGenerator >> visitDescriptionAstNode: aDescriptionAstNode [
 	stream
 		crtab: indentation.
 	aDescriptionAstNode lines
-		do: [ :each | stream nextPut: $'; nextPutAll: each; nextPut: $' ]
+		do: [ :each | stream print: each ]
 		separatedBy: [ stream space; nextPut: $.; crtab: indentation ].
 	stream
 		space;
@@ -208,7 +208,7 @@ HeraFeatureMethodGenerator >> visitFeatureAstNode: aFeatureAstNode [
 	aFeatureAstNode description ifNotNil: [ :description |
 		self increaseIndentation.
 		self visit: description.
-		(aFeatureAstNode background isNotNil or: [ aFeatureAstNode scenarios isNotEmpty]) ifTrue: [ stream nextPut: $; ].
+		(aFeatureAstNode background isNotNil or: [ aFeatureAstNode scenarios isNotEmpty or: [ aFeatureAstNode rules isNotEmpty ]]) ifTrue: [ stream nextPut: $; ].
 		self decreaseIndentation ].
 	aFeatureAstNode background ifNotNil: [ :background |
 		self increaseIndentation.
@@ -297,9 +297,7 @@ HeraFeatureMethodGenerator >> visitScenarioAstNode: aScenarioAstNode [
 	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $( ].
 	stream
 		nextPutAll: 'self scenario: ';
-		nextPut: $';
-		nextPutAll: aScenarioAstNode title text;
-		nextPut: $'.
+		print: aScenarioAstNode title text.
 	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $) ].
 	aScenarioAstNode tags ifNotEmpty: [
 		self increaseIndentation.
@@ -344,9 +342,7 @@ HeraFeatureMethodGenerator >> visitStepAstNode: aStepAstNode named: aString [
 		nextPutAll: aString;
 		nextPut: $:;
 		space;
-		nextPut: $';
-		nextPutAll: aStepAstNode description;
-		nextPut: $'.
+		print: aStepAstNode description.
 	aStepAstNode argument ifNotNil: [ :argument | self visit: argument ]
 ]
 
