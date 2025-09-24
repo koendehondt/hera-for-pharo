@@ -34,5 +34,6 @@ BaselineOfHera >> initializeClasses [
 { #category : 'baselines' }
 BaselineOfHera >> postLoad [
 
-	self initializeClasses
+	self initializeClasses.
+	KMRepository reset. "Register the global keyboard shortcut to open the Hera Feature Browser."
 ]

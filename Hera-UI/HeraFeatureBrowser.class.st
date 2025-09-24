@@ -21,6 +21,8 @@ HeraFeatureBrowser class >> defaultPreferredExtent [
 { #category : 'world menu' }
 HeraFeatureBrowser class >> featureBrowserMenuItemOn: aBuilder [
 	<worldMenu>
+	
+	"See ToolShortcutsCategory>>#openHeraFeatureBrowser for the registration of the shortcut."
 
 	(aBuilder item: #Hera)
 		parent: #Testing;
