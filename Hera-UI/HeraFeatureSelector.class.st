@@ -8,7 +8,7 @@ Class {
 		'classesAndFeatures',
 		'scope',
 		'featureSelectionChangedBlock',
-		'runAllFeaturesButton'
+		'runSelectedFeaturesButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -48,7 +48,7 @@ HeraFeatureSelector >> addBrowseGroupTo: parentGroup [
 						name: 'Browse';
 						description: 'Browse the selected class or feature.';
 						shortcutKey: $b meta;
-						actionEnabled: [ self hasSelectedClassOrFeature ];
+						actionEnabled: [ self hasSingleSelection ];
 						action: [ self browseSelectionInClassesAndFeatures ] ] ]
 ]
 
@@ -81,12 +81,12 @@ HeraFeatureSelector >> addManagementMenuGroupTo: parentGroup [
 				description: 'Add a new feature.';
 				shortcutKey: $n meta shift;
 				action: [ self addFeature ];
-				actionEnabled: [ self hasSelectedClassOrFeature ] ];
+				actionEnabled: [ self hasSingleSelection ] ];
 		addActionWith: [ :action |
 			action		
 				name: 'Remove';
 				description: 'Remove the selected class or feature.';
-				actionEnabled: [ self hasSelectedClassOrFeature ];
+				actionEnabled: [ self hasSingleSelection ];
 				action: [ self removeSelectionInClassesAndFeatures ] ]
 ]
 
@@ -99,24 +99,24 @@ HeraFeatureSelector >> addRunMenuGroupTo: parentGroup [
 				addActionWith: [ :action |
 					action		
 						name: 'Run';
-						description: 'Run the selected feature';
+						description: 'Run selected features';
 						shortcutKey: $r meta;
-						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self runFeature ] ];
+						actionEnabled: [ self hasSelection ];
+						action: [ self runSelectedFeatures ] ];
 				addActionWith: [ :action |
 					action		
 						name: 'Step';
-						description: 'Run the selected feature step by step';
+						description: 'Run selected features step by step';
 						shortcutKey: $r meta shift;
-						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self stepFeature ] ];
+						actionEnabled: [ self hasSelection ];
+						action: [ self stepSelectedFeatures ] ];
 				addActionWith: [ :action |
 					action		
 						name: 'Debug';
-						description: 'Run the selected feature in debug mode';
+						description: 'Run selected features in debug mode';
 						shortcutKey: $d meta;
-						actionEnabled: [ self hasSelectedFeature ];
-						action: [ self debugFeature ] ] ]
+						actionEnabled: [ self hasSelection ];
+						action: [ self debugSelectedFeatures ] ] ]
 ]
 
 { #category : 'actions' }
@@ -144,11 +144,11 @@ HeraFeatureSelector >> connectPresenters [
 ]
 
 { #category : 'actions' }
-HeraFeatureSelector >> debugFeature [
+HeraFeatureSelector >> debugSelectedFeatures [
 
 	(self instantiate: HeraRunner)
 		open;
-		debugScope: classesAndFeatures selectedItem acceptanceTest asRunnerScope
+		debugScope: self runnerScopeForSelectedFeatures
 ]
 
 { #category : 'layout' }
@@ -184,15 +184,21 @@ HeraFeatureSelector >> hasNoFeatures [
 ]
 
 { #category : 'private' }
-HeraFeatureSelector >> hasSelectedClassOrFeature [
-
-	^ classesAndFeatures selectedItem isNotNil
-]
-
-{ #category : 'private' }
 HeraFeatureSelector >> hasSelectedFeature [
 
 	^ classesAndFeatures selectedItem isMemberOf: HeraFeatureMethodItem
+]
+
+{ #category : 'private' }
+HeraFeatureSelector >> hasSelection [
+
+	^ classesAndFeatures selectedItems isNotEmpty
+]
+
+{ #category : 'private' }
+HeraFeatureSelector >> hasSingleSelection [
+
+	^ classesAndFeatures selectedItems size = 1
 ]
 
 { #category : 'initialization' }
@@ -200,7 +206,7 @@ HeraFeatureSelector >> initializePresenters [
 
 	featureSelectionChangedBlock := [ :feaureMethodItem | ].
 	self initializeToolbarButtons.
-	classesAndFeatures := self newTree
+	classesAndFeatures := self newTree beMultipleSelection
 ]
 
 { #category : 'initialization' }
@@ -216,10 +222,10 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		icon: (Hera settings iconNamed: #addFeature);
 		action: [ self addFeature ];
 		yourself.
-	runAllFeaturesButton := self newButton
-		help: 'Run all features';
+	runSelectedFeaturesButton := self newButton
+		help: 'Run selected features';
 		icon: (Hera settings iconNamed: #runAll);
-		action: [ self runAllFeatures ];
+		action: [ self runSelectedFeatures ];
 		yourself.
 	browseStepsButton := self newButton
 		help: 'Browse steps';
@@ -268,19 +274,29 @@ HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 ]
 
 { #category : 'actions' }
-HeraFeatureSelector >> runAllFeatures [
-
-	(self instantiate: HeraRunner)
-		open;
-		runScope: self scope asRunnerScope
-]
-
-{ #category : 'actions' }
 HeraFeatureSelector >> runFeature [
 
 	(self instantiate: HeraRunner)
 		open;
 		runScope: classesAndFeatures selectedItem acceptanceTest asRunnerScope
+]
+
+{ #category : 'actions' }
+HeraFeatureSelector >> runSelectedFeatures [
+
+	(self instantiate: HeraRunner)
+		open;
+		runScope: self runnerScopeForSelectedFeatures
+]
+
+{ #category : 'private' }
+HeraFeatureSelector >> runnerScopeForSelectedFeatures [
+
+	| acceptanceTests selectedItems |
+	selectedItems := classesAndFeatures selection selectedItems.
+	selectedItems ifEmpty: [ ^ self scope asRunnerScope ].
+	acceptanceTests := selectedItems flatCollect: [ :each | each acceptanceTests ].
+	^ HeraRunnerScope withAll: acceptanceTests
 ]
 
 { #category : 'accessing' }
@@ -327,11 +343,11 @@ HeraFeatureSelector >> setupAfterOpening [
 ]
 
 { #category : 'actions' }
-HeraFeatureSelector >> stepFeature [
+HeraFeatureSelector >> stepSelectedFeatures [
 
 	(self instantiate: HeraRunner)
 		open;
-		stepScope: classesAndFeatures selectedItem acceptanceTest asRunnerScope
+		stepScope: self runnerScopeForSelectedFeatures
 ]
 
 { #category : 'layout' }
@@ -345,7 +361,7 @@ HeraFeatureSelector >> toolbar [
 		yourself.
 	runGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
-		add: runAllFeaturesButton width: 40;
+		add: runSelectedFeaturesButton width: 40;
 		yourself.
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
@@ -361,10 +377,7 @@ HeraFeatureSelector >> toolbar [
 { #category : 'private' }
 HeraFeatureSelector >> updateAfterSelectionChange [
 
-	| enabled selectedItem |
-	selectedItem := classesAndFeatures selectedItem.
-	enabled := selectedItem ifNil: [ false ] ifNotNil: [ :browserItem | browserItem isRunnable ].
-	addFeatureButton enabled: selectedItem isNotNil
+	addFeatureButton enabled: self hasSingleSelection
 ]
 
 { #category : 'private' }

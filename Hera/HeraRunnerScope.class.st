@@ -25,6 +25,12 @@ HeraRunnerScope class >> with: anAcceptanceTest [
 	^ self new addAcceptanceTest: anAcceptanceTest
 ]
 
+{ #category : 'instance creation' }
+HeraRunnerScope class >> withAll: acceptanceTests [
+
+	^ self new addAcceptanceTests: acceptanceTests
+]
+
 { #category : 'accessing' }
 HeraRunnerScope >> acceptanceTests [
 
@@ -35,6 +41,12 @@ HeraRunnerScope >> acceptanceTests [
 HeraRunnerScope >> addAcceptanceTest: anAcceptanceTest [
 
 	acceptanceTests add: anAcceptanceTest
+]
+
+{ #category : 'accessing' }
+HeraRunnerScope >> addAcceptanceTests: acceptanceTestCollection [
+
+	acceptanceTests addAll: acceptanceTestCollection
 ]
 
 { #category : 'initialization' }

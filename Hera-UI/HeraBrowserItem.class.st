@@ -27,6 +27,12 @@ HeraBrowserItem >> acceptanceTestClass: aClass [
 	acceptanceTestClass := aClass
 ]
 
+{ #category : 'accessing' }
+HeraBrowserItem >> acceptanceTests [
+
+	self subclassResponsibility
+]
+
 { #category : 'actions' }
 HeraBrowserItem >> addFeatureNamed: aString [
 

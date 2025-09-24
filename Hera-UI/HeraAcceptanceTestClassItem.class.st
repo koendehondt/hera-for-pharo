@@ -6,6 +6,12 @@ Class {
 	#tag : 'Feature Browser'
 }
 
+{ #category : 'accessing' }
+HeraAcceptanceTestClassItem >> acceptanceTests [
+
+	^ acceptanceTestClass features
+]
+
 { #category : 'actions' }
 HeraAcceptanceTestClassItem >> browse [
 

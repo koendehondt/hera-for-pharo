@@ -27,6 +27,12 @@ HeraFeatureMethodItem >> acceptanceTest [
 	^ acceptanceTestClass selector: featureMethodSelector
 ]
 
+{ #category : 'accessing' }
+HeraFeatureMethodItem >> acceptanceTests [
+
+	^ { self acceptanceTest }
+]
+
 { #category : 'actions' }
 HeraFeatureMethodItem >> browse [
 
