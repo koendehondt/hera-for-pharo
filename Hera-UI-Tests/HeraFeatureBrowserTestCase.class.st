@@ -22,7 +22,7 @@ HeraFeatureBrowserTestCase >> setUp [
 { #category : 'running' }
 HeraFeatureBrowserTestCase >> tearDown [
 
-	subject ifNotNil: [ :browser | browser window close].
+	subject ifNotNil: [ subject window close].
 	super tearDown
 ]
 

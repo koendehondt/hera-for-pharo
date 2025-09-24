@@ -109,24 +109,6 @@ HeraScriptEditor >> caretPositionForAltClick [
 	^ caretPosition
 ]
 
-{ #category : 'test api' }
-HeraScriptEditor >> clickDebugButton [
-
-	debugButton performAction
-]
-
-{ #category : 'test api' }
-HeraScriptEditor >> clickRunButton [
-
-	runButton performAction
-]
-
-{ #category : 'test api' }
-HeraScriptEditor >> clickStepByStepButton [
-
-	stepByStepButton performAction
-]
-
 { #category : 'initialization' }
 HeraScriptEditor >> connectPresenters [
 
@@ -135,14 +117,6 @@ HeraScriptEditor >> connectPresenters [
 	script eventHandler whenMouseUpDo: [ :event |
 		event altKeyPressed ifTrue: [ self altKeyClick: event ] ].
 	self installContextMenu
-]
-
-{ #category : 'actions' }
-HeraScriptEditor >> debugFeature [
-
-	(self instantiate: HeraRunner)
-		open;
-		debugScope: self acceptanceTest asRunnerScope
 ]
 
 { #category : 'actions' }
@@ -194,21 +168,6 @@ HeraScriptEditor >> initializeToolbarButtons [
 		help: 'Browse step method';
 		iconName: #nautilus;
 		action: [ self browseFeatureMethod ];
-		yourself.
-	runButton := self newButton
-		help: 'Run';
-		icon: (Hera settings iconNamed: #run);
-		action: [ self runFeature ];
-		yourself.
-	stepByStepButton := self newButton
-		help: 'Step';
-		icon: (Hera settings iconNamed: #runAndPause);
-		action: [ self stepFeature ];
-		yourself.
-	debugButton := self newButton
-		help: 'Debug';
-		iconName: #bug;
-		action: [ self debugFeature ];
 		yourself.
 	saveButton := self newButton
 		help: 'Save';
@@ -270,9 +229,6 @@ HeraScriptEditor >> modelChanged [
 	modelChangedInProgress := true.
 	hasModel := self model ifNil: [ false ] ifNotNil: [ :model | model isEditable ].
 	script enabled: hasModel.
-	runButton enabled: hasModel.
-	stepByStepButton enabled: hasModel.
-	debugButton enabled: hasModel.
 	saveButton enabled: false.
 	cancelButton enabled: false.
 	browseButton enabled: hasModel.
@@ -291,14 +247,6 @@ HeraScriptEditor >> modelChanged [
 HeraScriptEditor >> parser [
 
 	^ parser ifNil: [ parser := HeraParser new ]
-]
-
-{ #category : 'actions' }
-HeraScriptEditor >> runFeature [
-
-	(self instantiate: HeraRunner)
-		open;
-		runScope: self acceptanceTest asRunnerScope
 ]
 
 { #category : 'actions' }
@@ -381,14 +329,6 @@ HeraScriptEditor >> showWarnings [
 ]
 
 { #category : 'actions' }
-HeraScriptEditor >> stepFeature [
-
-	(self instantiate: HeraRunner)
-		open;
-		stepScope: self acceptanceTest asRunnerScope
-]
-
-{ #category : 'actions' }
 HeraScriptEditor >> stepScenario [
 
 	| caretPosition astNode |
@@ -434,16 +374,9 @@ HeraScriptEditor >> text: aText [
 { #category : 'layout' }
 HeraScriptEditor >> toolbar [
 
-	| browseGroup saveGroup runGroup spacer |
-	runGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: runButton width: 40;
-		add: stepByStepButton width: 40;
-		add: debugButton width: 40;
-		yourself.
+	| browseGroup saveGroup spacer |
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
-		hAlignEnd;
 		add: browseButton width: 40;
 		yourself.
 	saveGroup := SpBoxLayout newLeftToRight
@@ -454,7 +387,6 @@ HeraScriptEditor >> toolbar [
 		yourself.
 	spacer := SpPresenter new layout: SpBoxLayout newLeftToRight; yourself.
 	^ SpBoxLayout newLeftToRight
-		add: runGroup;
 		add: browseGroup;
 		add: saveGroup width: 140;
 		yourself

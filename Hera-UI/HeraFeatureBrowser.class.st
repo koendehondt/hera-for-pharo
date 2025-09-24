@@ -76,19 +76,19 @@ HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 { #category : 'test api' }
 HeraFeatureBrowser >> clickDebugButton [
 
-	scriptEditor clickDebugButton
+	featureSelector clickDebugButton
 ]
 
 { #category : 'test api' }
 HeraFeatureBrowser >> clickRunButton [
 
-	scriptEditor clickRunButton
+	featureSelector clickRunButton
 ]
 
 { #category : 'test api' }
 HeraFeatureBrowser >> clickStepByStepButton [
 
-	scriptEditor clickStepByStepButton
+	featureSelector clickStepByStepButton
 ]
 
 { #category : 'initialization' }
@@ -249,9 +249,9 @@ HeraFeatureBrowser >> selectFeature: featureTitle in: classNameInBrowser [
 ]
 
 { #category : 'test api' }
-HeraFeatureBrowser >> selectPath: anArray [
+HeraFeatureBrowser >> selectPaths: pathArray [
 
-	featureSelector selectPath: anArray
+	featureSelector selectPaths: pathArray
 ]
 
 { #category : 'private' }

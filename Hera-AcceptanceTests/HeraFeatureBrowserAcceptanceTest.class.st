@@ -113,7 +113,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISelectTheFirstFeature [
 
 	<heraStepDefinition: #(When 'I select the first feature')>
 
-	self featureBrowser selectPath: #(1 1)
+	self featureBrowser selectPaths: #(#(1 1))
 ]
 
 { #category : 'steps' }
@@ -121,7 +121,7 @@ HeraFeatureBrowserAcceptanceTest >> stepISelectTheSecondFeature [
 
 	<heraStepDefinition: #(When 'I select the second feature')>
 
-	self featureBrowser selectPath: #(1 2)
+	self featureBrowser selectPaths: #(#(1 2))
 ]
 
 { #category : 'steps' }

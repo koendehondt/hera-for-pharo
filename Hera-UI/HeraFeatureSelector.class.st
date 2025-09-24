@@ -8,7 +8,10 @@ Class {
 		'classesAndFeatures',
 		'scope',
 		'featureSelectionChangedBlock',
-		'runSelectedFeaturesButton'
+		'runSelectedFeaturesButton',
+		'runAllFeaturesButton',
+		'stepSelectedFeaturesButton',
+		'debugSelectedFeaturesButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -49,7 +52,14 @@ HeraFeatureSelector >> addBrowseGroupTo: parentGroup [
 						description: 'Browse the selected class or feature.';
 						shortcutKey: $b meta;
 						actionEnabled: [ self hasSingleSelection ];
-						action: [ self browseSelectionInClassesAndFeatures ] ] ]
+						action: [ self browseSelectionInClassesAndFeatures ] ];
+				addActionWith: [ :action |
+					action	
+						name: 'Open in Feature Browser';
+						description: 'Open the acceptance classes in another Feature Browser.';
+						shortcutKey: $f meta;
+						actionEnabled: [ self hasSelection ];
+						action: [ self openFeatureBrowserOnSelectedAcceptanceTestClasses ] ]]
 ]
 
 { #category : 'actions' }
@@ -131,6 +141,24 @@ HeraFeatureSelector >> browseSteps [
 	HeraStepBrowser new
 		scope: self scope;
 		open
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> clickDebugButton [
+
+	debugSelectedFeaturesButton performAction
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> clickRunButton [
+
+	runSelectedFeaturesButton performAction
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> clickStepByStepButton [
+
+	stepSelectedFeaturesButton performAction
 ]
 
 { #category : 'initialization' }
@@ -224,8 +252,23 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		yourself.
 	runSelectedFeaturesButton := self newButton
 		help: 'Run selected features';
-		icon: (Hera settings iconNamed: #runAll);
+		icon: (Hera settings iconNamed: #run);
 		action: [ self runSelectedFeatures ];
+		yourself.
+	stepSelectedFeaturesButton := self newButton
+		help: 'Step selected features';
+		icon: (Hera settings iconNamed: #runAndPause);
+		action: [ self stepSelectedFeatures ];
+		yourself.
+	debugSelectedFeaturesButton := self newButton
+		help: 'Debug selected features';
+		iconName: #bug;
+		action: [ self debugSelectedFeatures ];
+		yourself.
+	runAllFeaturesButton := self newButton
+		help: 'Run all features';
+		icon: (Hera settings iconNamed: #runAll);
+		action: [ self runAllFeatures ];
 		yourself.
 	browseStepsButton := self newButton
 		help: 'Browse steps';
@@ -262,6 +305,40 @@ HeraFeatureSelector >> isBrowseStepsButtonEnabled [
 	^ browseStepsButton isEnabled
 ]
 
+{ #category : 'test api' }
+HeraFeatureSelector >> isDebugSelectedFeaturesButtonEnabled [
+
+	^ debugSelectedFeaturesButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isRunAllFeaturesButtonEnabled [
+
+	^ runAllFeaturesButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isRunSelectedFeaturesButtonEnabled [
+
+	^ runSelectedFeaturesButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraFeatureSelector >> isStepSelectedFeaturesButtonEnabled [
+
+	^ stepSelectedFeaturesButton isEnabled
+]
+
+{ #category : 'actions' }
+HeraFeatureSelector >> openFeatureBrowserOnSelectedAcceptanceTestClasses [
+
+	| acceptanceTestClasses |
+	acceptanceTestClasses := (classesAndFeatures selectedItems collect: [ :each | each acceptanceTestClass ]) asSet.
+	HeraFeatureBrowser new
+		scope: (HeraScope new addClasses: acceptanceTestClasses);
+		open
+]
+
 { #category : 'actions' }
 HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 
@@ -274,11 +351,11 @@ HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 ]
 
 { #category : 'actions' }
-HeraFeatureSelector >> runFeature [
+HeraFeatureSelector >> runAllFeatures [
 
 	(self instantiate: HeraRunner)
 		open;
-		runScope: classesAndFeatures selectedItem acceptanceTest asRunnerScope
+		runScope: self scope asRunnerScope
 ]
 
 { #category : 'actions' }
@@ -318,13 +395,13 @@ HeraFeatureSelector >> selectFeature: featureTitle in: classNameInBrowser [
 	items := self displayedTreeItems.
 	classIndex := classesAndFeatures roots detectIndex: [ :classItem | classItem nameInBrowser = classNameInBrowser ].
 	featureIndex := (classesAndFeatures childrenFor: (classesAndFeatures roots at: classIndex)) detectIndex: [ :featureItem | featureItem nameInBrowser = featureTitle ].
-	self selectPath: { classIndex . featureIndex }
+	self selectPaths: { { classIndex . featureIndex } }
 ]
 
 { #category : 'test api' }
-HeraFeatureSelector >> selectPath: anArray [
+HeraFeatureSelector >> selectPaths: pathArray [
 
-	^ classesAndFeatures selectPath: anArray
+	^ classesAndFeatures selectPaths: pathArray
 ]
 
 { #category : 'accessing' }
@@ -362,6 +439,9 @@ HeraFeatureSelector >> toolbar [
 	runGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		add: runSelectedFeaturesButton width: 40;
+		add: stepSelectedFeaturesButton width: 40;
+		add: debugSelectedFeaturesButton width: 40;
+		add: runAllFeaturesButton width: 40;
 		yourself.
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
@@ -369,7 +449,7 @@ HeraFeatureSelector >> toolbar [
 		yourself.
 	^ SpBoxLayout newLeftToRight
 		add: manageGroup width: 120;
-		add: runGroup width: 70;
+		add: runGroup width: 220;
 		add: browseGroup;
 		yourself
 ]
@@ -377,7 +457,12 @@ HeraFeatureSelector >> toolbar [
 { #category : 'private' }
 HeraFeatureSelector >> updateAfterSelectionChange [
 
-	addFeatureButton enabled: self hasSingleSelection
+	| hasSelection |
+	addFeatureButton enabled: self hasSingleSelection.
+	hasSelection := self hasSelection.
+	runSelectedFeaturesButton enabled: hasSelection.
+	stepSelectedFeaturesButton enabled: hasSelection.
+	debugSelectedFeaturesButton enabled: hasSelection
 ]
 
 { #category : 'private' }

@@ -463,7 +463,7 @@ HeraRunnerAcceptanceTest >> stepISelectTheFeature [
 
 	<heraStepDefinition: #(When 'I select the feature')>
 
-	self featureBrowser selectPath: #(1 1)
+	self featureBrowser selectPaths: #(#(1 1))
 ]
 
 { #category : 'steps' }
