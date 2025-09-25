@@ -97,12 +97,19 @@ HeraFeatureBrowser >> clickStepByStepButton [
 HeraFeatureBrowser >> connectPresenters [
 
 	featureSelector whenFeatureSelectionChangedDo: [ :featureMethodItem |
-		scriptEditor model: featureMethodItem ].
+		scriptEditor model: featureMethodItem.
+		self updateWindowTitle ].
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
 	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ].
 	scriptEditor whenRunScenarioDo: [ :scenarioAstNode | self runScenario: scenarioAstNode ].
 	scriptEditor whenStepScenarioDo: [ :scenarioAstNode | self stepScenario: scenarioAstNode ].
 	scriptEditor whenDebugScenarioDo: [ :scenarioAstNode | self debugScenario: scenarioAstNode ]
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> currentWindowTitle [
+
+	^ self withWindowDo: [ :window | window title ]
 ]
 
 { #category : 'private' }
@@ -245,6 +252,12 @@ HeraFeatureBrowser >> script [
 ]
 
 { #category : 'test api' }
+HeraFeatureBrowser >> selectAcceptanceTestClassNamed: classNameInBrowser [
+
+	featureSelector selectAcceptanceTestClassNamed: classNameInBrowser
+]
+
+{ #category : 'test api' }
 HeraFeatureBrowser >> selectFeature: featureTitle in: classNameInBrowser [
 
 	featureSelector selectFeature: featureTitle in: classNameInBrowser
@@ -315,6 +328,16 @@ HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
 	stepMethod ifNil: [ ^ self ].
 	stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod).
 	scriptEditor updateWarnings
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> updateWindowTitle [
+
+	| title |
+	title := featureSelector hasSingleSelection
+		ifTrue: [ featureSelector selectedItem windowTitle ]
+		ifFalse: [ self windowTitle ].
+	self withWindowDo: [ :window | window title: title ]
 ]
 
 { #category : 'accessing' }

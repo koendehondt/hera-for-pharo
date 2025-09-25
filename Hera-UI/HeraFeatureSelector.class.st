@@ -389,6 +389,15 @@ HeraFeatureSelector >> scope: aScope [
 ]
 
 { #category : 'test api' }
+HeraFeatureSelector >> selectAcceptanceTestClassNamed: classNameInBrowser [
+
+	| items classIndex |
+	items := self displayedTreeItems.
+	classIndex := classesAndFeatures roots detectIndex: [ :classItem | classItem nameInBrowser = classNameInBrowser ].
+	self selectPaths: { { classIndex } }
+]
+
+{ #category : 'test api' }
 HeraFeatureSelector >> selectFeature: featureTitle in: classNameInBrowser [
 
 	| items classIndex featureIndex |

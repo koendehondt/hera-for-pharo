@@ -13,13 +13,6 @@ HeraFeatureBrowserTestCase >> describedClass [
 ]
 
 { #category : 'running' }
-HeraFeatureBrowserTestCase >> setUp [
-
-	super setUp.
-	subject open
-]
-
-{ #category : 'running' }
 HeraFeatureBrowserTestCase >> tearDown [
 
 	subject ifNotNil: [ subject window close].
@@ -29,7 +22,25 @@ HeraFeatureBrowserTestCase >> tearDown [
 { #category : 'tests' }
 HeraFeatureBrowserTestCase >> testInitialButtonEnablement [
 
+	subject open.
 	self assert: subject isAddAcceptanceTestClassButtonEnabled.
 	self deny: subject isAddFeatureButtonEnabled.
 	self assert: subject isBrowseStepsButtonEnabled
+]
+
+{ #category : 'tests' }
+HeraFeatureBrowserTestCase >> testWindowTitleDependsOnSelection [
+
+	subject scope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting).
+	subject open.
+	self assert: subject currentWindowTitle equals: 'Hera Feature Browser'.
+
+	subject selectFeature: 'With data table' in: 'Examples for testing'.
+	self assert: subject currentWindowTitle equals: 'With data table'.
+
+	subject selectAcceptanceTestClassNamed: 'Examples for testing'.
+	self assert: subject currentWindowTitle equals: 'Examples for testing'.
+
+	subject selectPaths: { { 1 } . { 1 . 1 } }.
+	self assert: subject currentWindowTitle equals: 'Hera Feature Browser'
 ]

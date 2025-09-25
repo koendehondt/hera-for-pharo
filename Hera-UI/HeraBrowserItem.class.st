@@ -141,3 +141,9 @@ HeraBrowserItem >> targetClassForNewFeature [
 
 	self subclassResponsibility
 ]
+
+{ #category : 'accessing' }
+HeraBrowserItem >> windowTitle [
+
+	^ self nameInBrowser
+]
