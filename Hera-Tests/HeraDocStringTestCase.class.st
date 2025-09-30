@@ -30,6 +30,18 @@ HeraDocStringTestCase >> initializeSubject [
 ]
 
 { #category : 'tests' }
+HeraDocStringTestCase >> testPrintFormattedOnIndentedWhenEmpty [
+
+	| actualOutput expectedOutput |
+	subject lines: #().
+	actualOutput := String streamContents: [ :stream | subject printFormattedOn: stream indentation: 2 ].
+	expectedOutput := '
+		"""
+		"""' allButFirst.
+	self assert: actualOutput equals: expectedOutput
+]
+
+{ #category : 'tests' }
 HeraDocStringTestCase >> testPrintFormattedOnIndentedWithIndentation [
 
 	| actualOutput expectedOutput |

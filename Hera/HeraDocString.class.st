@@ -32,9 +32,8 @@ HeraDocString >> printFormattedOn: aStream indentation: aNumberOfTabs [
 
 	aStream
 		tab: aNumberOfTabs;
-		nextPutAll: '"""';
-		cr.
-	lines do: [ :each | aStream tab: aNumberOfTabs; nextPutAll: each ] separatedBy: [ aStream cr ].
+		nextPutAll: '"""'.
+	lines do: [ :each | aStream crtab: aNumberOfTabs; nextPutAll: each ].
 	aStream
 		crtab: aNumberOfTabs;
 		nextPutAll: '"""'

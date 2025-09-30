@@ -137,6 +137,17 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDocString [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithEmptyDocString [
+
+	<heraFeature: 'With empty doc string'>
+
+	^ (self feature: 'With empty doc string')
+		scenarios: {
+			(self scenario: 'Empty doc strings are accepted')
+				given: 'the following empty doc string:' with: (self docString: { }) }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithEmptyScenario [
 
 	<heraFeature: 'With empty scenario'>

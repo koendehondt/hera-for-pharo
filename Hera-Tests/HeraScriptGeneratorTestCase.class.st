@@ -173,6 +173,22 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 ]
 
 { #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithEmptyDocString [
+
+	| text |
+	text := Text fromString:	'Feature: With empty doc string
+
+	Scenario: Empty doc strings are accepted
+		Given the following empty doc string:
+			"""
+			"""'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 34 to: 42.
+	^ text
+]
+
+{ #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithRules [
 
 	| text |
@@ -286,6 +302,15 @@ HeraScriptGeneratorTestCase >> testGeneratedScriptWithDocString [
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithDocString.
 	subject visit: feature.
 	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithDocString
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithEmptyDocString [
+
+	| feature |
+	feature := HeraAcceptanceTestExamplesForTesting new featureWithEmptyDocString.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithEmptyDocString
 ]
 
 { #category : 'tests' }

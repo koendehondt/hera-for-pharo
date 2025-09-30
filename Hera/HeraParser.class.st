@@ -339,8 +339,9 @@ HeraParser >> removeIndentation: docStringToken [
 		self parseError: 'Text after """ is not allowed' from: docStringToken start + 3 to: docStringToken start + 2 + lines first size ].
 	(scanner lineDoesNotStartWithThreeDoubleQuotes: lines last) ifTrue: [
 		self parseError: 'Doc string is not closed with """' from: docStringToken start to: docStringToken end ].
-	lines allButFirstDo: [ :eachLine |
-		(eachLine copyFrom: 1 to: indentation) = tabs ifFalse: [
+	lines allButFirstDo: [ :eachLine | | indentationPrefix |
+		indentationPrefix := eachLine ifEmpty: [ '' ] ifNotEmpty: [ eachLine copyFrom: 1 to: indentation ].
+		indentationPrefix = tabs ifFalse: [
 			self parseError: 'Inconsistent indentation of doc string' from: docStringToken start to: docStringToken end ].
 		unindentedLines add: (eachLine copyFrom: indentation + 1 to: eachLine size) ].
 	unindentedLines last size > 3 ifTrue: [

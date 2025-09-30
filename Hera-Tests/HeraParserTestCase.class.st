@@ -489,6 +489,31 @@ HeraParserTestCase >> testParseDocString [
 	self assert: butStepNode end equals: 604
 ]
 
+{ #category : 'tests' }
+HeraParserTestCase >> testParseDocStringWithEmptyLine [
+
+	| script ast scenarioNode stepNodes givenStepNode |
+	script := '
+Feature: With empty doc string
+Scenario: Empty doc strings are accepted
+Given the following empty doc string:
+"""
+
+"""'.
+	ast := self parseFeature: script.
+	scenarioNode := ast scenarios first.
+	stepNodes := scenarioNode steps.
+	self assert: stepNodes size equals: 1.
+
+	givenStepNode := stepNodes first.
+	self assert: givenStepNode class equals: HeraGivenAstNode.
+	self assert: givenStepNode description equals: 'the following empty doc string:'.
+	self assert: givenStepNode argument class equals: HeraDocStringStepArgumentAstNode.
+	self assert: givenStepNode argument docString equals: (HeraDocString new lines: { '' }).
+	self assert: givenStepNode start equals: 74.
+	self assert: givenStepNode end equals: 119
+]
+
 { #category : 'tests - parsing errors' }
 HeraParserTestCase >> testParseDocStringWithEmptyLineAfterClosingTripleQuotes [
 
@@ -555,6 +580,23 @@ HeraParserTestCase >> testParseDocStringWithEmptyLineBeforeOpeningTripleQuotes [
 		'Jane,jane@testing.org' }).
 	self assert: givenStepNode start equals: 57.
 	self assert: givenStepNode end equals: 151
+]
+
+{ #category : 'tests - parsing errors' }
+HeraParserTestCase >> testParseDocStringWithEmptyLineWithDifferentIndentationIsNotAllowed [
+
+	"The empty line does not have indentation."
+	self
+		assertError: 'Inconsistent indentation of doc string'
+		start: 118
+		end: 128
+		whenParsing: '
+Feature: With empty doc string
+	Scenario: Empty doc strings are accepted
+		Given the following empty doc string:
+			"""
+
+			"""'
 ]
 
 { #category : 'tests - parsing errors' }
@@ -676,6 +718,30 @@ HeraParserTestCase >> testParseDocStringWithTextBeforeOpeningTripleQuotes [
 					Then the API responds with:
 						something """
 						"""'
+]
+
+{ #category : 'tests' }
+HeraParserTestCase >> testParseEmptyDocString [
+
+	| script ast scenarioNode stepNodes givenStepNode |
+	script := '
+Feature: With empty doc string
+Scenario: Empty doc strings are accepted
+Given the following empty doc string:
+"""
+"""'.
+	ast := self parseFeature: script.
+	scenarioNode := ast scenarios first.
+	stepNodes := scenarioNode steps.
+	self assert: stepNodes size equals: 1.
+
+	givenStepNode := stepNodes first.
+	self assert: givenStepNode class equals: HeraGivenAstNode.
+	self assert: givenStepNode description equals: 'the following empty doc string:'.
+	self assert: givenStepNode argument class equals: HeraDocStringStepArgumentAstNode.
+	self assert: givenStepNode argument docString equals: (HeraDocString new lines: { }).
+	self assert: givenStepNode start equals: 74.
+	self assert: givenStepNode end equals: 118
 ]
 
 { #category : 'tests' }
