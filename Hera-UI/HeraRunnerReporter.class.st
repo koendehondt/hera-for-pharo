@@ -80,7 +80,8 @@ HeraRunnerReporter >> reportEndOfRule: aRule [
 { #category : 'reporting' }
 HeraRunnerReporter >> reportEndOfStep: aStep [
 
-	self report: [ super reportEndOfStep: aStep ]
+	self report: [ super reportEndOfStep: aStep ].
+	runner updateFromReporter
 ]
 
 { #category : 'reporting' }
@@ -102,9 +103,17 @@ HeraRunnerReporter >> reportPassedStep: aStep [
 ]
 
 { #category : 'reporting' }
+HeraRunnerReporter >> reportPauseStep: aStep asSuppressed: aBoolean [
+
+	super reportPauseStep: aStep asSuppressed: aBoolean.
+	runner updateFromReporter
+]
+
+{ #category : 'reporting' }
 HeraRunnerReporter >> reportResult: result [
 
 	self report: [ super reportResult: result ].
+	runner updateFromReporter.
 	runner finish
 ]
 
@@ -141,7 +150,8 @@ HeraRunnerReporter >> reportStartOfRule: aRule [
 { #category : 'reporting' }
 HeraRunnerReporter >> reportStartOfScenario: aScenario [
 
-	self report: [ super reportStartOfScenario: aScenario ]
+	self report: [ super reportStartOfScenario: aScenario ].
+	runner updateFromReporter
 ]
 
 { #category : 'reporting' }

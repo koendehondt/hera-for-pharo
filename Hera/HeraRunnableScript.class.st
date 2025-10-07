@@ -5,7 +5,8 @@ Class {
 		'instructions',
 		'instructionPointer',
 		'filter',
-		'acceptanceTests'
+		'acceptanceTests',
+		'totalScenarioCount'
 	],
 	#category : 'Hera-Instructions',
 	#package : 'Hera',
@@ -53,7 +54,8 @@ HeraRunnableScript >> hasMoreInstructions [
 HeraRunnableScript >> initialize [
 
 	super initialize.
-	filter := HeraNoFilter new
+	filter := HeraNoFilter new.
+	totalScenarioCount := 0
 ]
 
 { #category : 'initialization' }
@@ -62,6 +64,7 @@ HeraRunnableScript >> initializeInstructions [
 	| filteredScenarios |
 	instructions := OrderedCollection new.
 	instructions add: (HeraStartFeaturesInstruction for: acceptanceTests size).
+	totalScenarioCount := 0.
 	acceptanceTests do: [ :acceptanceTest | | feature |
 		feature := acceptanceTest feature.
 		instructions add: (HeraStartFeatureInstruction for: acceptanceTest).
@@ -69,6 +72,7 @@ HeraRunnableScript >> initializeInstructions [
 			instructions add: (HeraBackgroundInstruction new background: background) ].
 		filteredScenarios := feature scenarios select: [ :each | filter selects: each ].
 		filteredScenarios do: [ :eachScenario |
+			totalScenarioCount := totalScenarioCount + 1.
 			instructions add: (HeraStartScenarioInstruction for: eachScenario).
 			instructions add: HeraBeforeScenarioHookInstruction new.
 			feature background ifNotNil: [ :background |
@@ -141,4 +145,10 @@ HeraRunnableScript >> peekNextInstruction [
 HeraRunnableScript >> performNextFor: aRunner [
 
 	self nextInstruction performFor: aRunner
+]
+
+{ #category : 'accessing' }
+HeraRunnableScript >> totalScenarioCount [
+
+	^ totalScenarioCount
 ]

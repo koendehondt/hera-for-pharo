@@ -79,6 +79,15 @@ HeraReporter >> reportPassedStep: aStep [
 ]
 
 { #category : 'reporting' }
+HeraReporter >> reportPauseStep: aStep asSuppressed: aBoolean [
+
+
+	self reportStartOfStep: aStep.
+	aBoolean ifTrue: [ self reportSuppressed ].
+	self reportEndOfStep: aStep
+]
+
+{ #category : 'reporting' }
 HeraReporter >> reportResult: result [
 
 	self subclassResponsibility

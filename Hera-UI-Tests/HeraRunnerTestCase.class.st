@@ -19,7 +19,28 @@ HeraRunnerTestCase >> describedClass [
 HeraRunnerTestCase >> tearDown [
 
 	openedRunner ifNotNil: [ openedRunner window close ].
+	subject withWindowDo: [:window | window close ].
 	super tearDown
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testDebug [
+
+	subject open.
+	self should: [ subject debugScope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope ] raise: Error.
+	self assert: subject currentWindowTitle equals: 'Running 1/2'
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testDebugFiltered [
+
+	subject open.
+	self should: [
+		subject
+			debugScope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope
+			filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in')
+	] raise: Error.
+	self assert: subject currentWindowTitle equals: 'Running 1/1'
 ]
 
 { #category : 'tests' }
@@ -51,6 +72,13 @@ HeraRunnerTestCase >> testDebugScopeFilteredBy [
 		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
 	self assert: subject hasRunAllScenarios.
 	self assert: subject result totalCount equals: 1.
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testDefaultWindowTitleAfterOpening [
+
+	subject open.
+	self assert: subject currentWindowTitle equals: 'Hera Runner'
 ]
 
 { #category : 'tests' }
@@ -117,6 +145,14 @@ Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 	self assert: subject runLog equals: expectedRunLog
 ]
 
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testRunFilteredUntilFinished [
+
+	subject open.
+	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+	self assert: subject currentWindowTitle equals: 'Finished 1/1'
+]
+
 { #category : 'tests' }
 HeraRunnerTestCase >> testRunScope [
 
@@ -124,11 +160,123 @@ HeraRunnerTestCase >> testRunScope [
 	self assert: subject hasRunAllScenarios
 ]
 
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testRunUntilFinished [
+
+	subject open.
+	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
+	self assert: subject currentWindowTitle equals: 'Finished 2/2'
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testRunUntilFinishedAndRestart [
+
+	subject open.
+	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
+	self assert: (subject currentWindowTitle) equals: 'Finished 2/2'.
+	subject restart.
+	self assert: (subject currentWindowTitle) equals: 'Running 0/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 0/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/2 - Stepping'.
+	subject continue.
+	self assert: (subject currentWindowTitle) equals: 'Finished 2/2'
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testRunUntilPausedAndContinue [
+
+	subject open.
+	subject runScope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Paused'.
+	subject continue.
+	self assert: (subject currentWindowTitle) equals: 'Finished 1/1'
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testRunUntilPausedAndThenStepOver [
+
+	subject open.
+	subject runScope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Paused'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Stepping'.
+	subject continue.
+	self assert: (subject currentWindowTitle) equals: 'Finished 1/1'
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testRunUntilPausedAndThenStepOverScenario [
+
+	subject open.
+	subject runScope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Paused'.
+	subject continue.
+	self assert: (subject currentWindowTitle) equals: 'Finished 1/1'
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testStepFilteredUntilFinished [
+
+	subject open.
+	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 0/1 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/1 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Finished 1/1'
+]
+
 { #category : 'tests' }
 HeraRunnerTestCase >> testStepScope [
 
 	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	self deny: subject hasRunSteps
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testStepUntilFinished [
+
+	subject open.
+	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 0/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 1/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 2/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 2/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 2/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 2/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 2/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Running 2/2 - Stepping'.
+	subject stepOver.
+	self assert: (subject currentWindowTitle) equals: 'Finished 2/2'
 ]
 
 { #category : 'tests' }

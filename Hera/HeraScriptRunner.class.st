@@ -17,7 +17,8 @@ Class {
 		'currentRule',
 		'beforeScenarioHookFailed',
 		'suppressPauseAndDebugSteps',
-		'scope'
+		'scope',
+		'currentScenarioIndex'
 	],
 	#category : 'Hera-Running',
 	#package : 'Hera',
@@ -78,6 +79,12 @@ HeraScriptRunner >> continue [
 HeraScriptRunner >> currentAcceptanceTest [
 
 	^ currentAcceptanceTest
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> currentScenarioIndex [
+
+	^ currentScenarioIndex
 ]
 
 { #category : 'running' }
@@ -173,6 +180,8 @@ HeraScriptRunner >> initialize [
 	isDebugging := false.
 	hasRunSteps := false.
 	scenarioCount := 0.
+	currentScenarioIndex := 0.
+	paused := false.
 	self reporter: HeraNoReporter new.
 	suppressPauseAndDebugSteps := false
 ]
@@ -190,6 +199,12 @@ HeraScriptRunner >> isDebugging: aBoolean [
 ]
 
 { #category : 'testing' }
+HeraScriptRunner >> isPaused [
+
+	^ paused
+]
+
+{ #category : 'testing' }
 HeraScriptRunner >> isRunningScenario [
 
 	^ currentScenario isNotNil
@@ -198,10 +213,8 @@ HeraScriptRunner >> isRunningScenario [
 { #category : 'running' }
 HeraScriptRunner >> pause: aStep [
 
-	reporter reportStartOfStep: aStep.
-	suppressPauseAndDebugSteps ifTrue: [ reporter reportSuppressed ].
-	reporter reportEndOfStep: aStep.
-	paused := suppressPauseAndDebugSteps not
+	paused := suppressPauseAndDebugSteps not.
+	reporter reportPauseStep: aStep asSuppressed: suppressPauseAndDebugSteps
 ]
 
 { #category : 'private - running' }
@@ -367,6 +380,7 @@ HeraScriptRunner >> startScenario: aScenario [
 	hasRunSteps := false.
 	currentAcceptanceTest := acceptanceTest copyForRunning.
 	paused := false.
+	currentScenarioIndex := currentScenarioIndex + 1.
 	reporter reportStartOfScenario: aScenario
 ]
 
@@ -381,4 +395,10 @@ HeraScriptRunner >> terminate [
 
 	self isRunningScenario ifFalse: [ ^ self ].
 	self afterScenarioHook
+]
+
+{ #category : 'accessing' }
+HeraScriptRunner >> totalScenarioCount [
+
+	^ runnableScript totalScenarioCount
 ]

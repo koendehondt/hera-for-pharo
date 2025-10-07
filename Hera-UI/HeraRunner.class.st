@@ -9,7 +9,8 @@ Class {
 		'resultSummary',
 		'stepOverScenarioButton',
 		'restartButton',
-		'afterOpenDebugRunnerBlock'
+		'afterOpenDebugRunnerBlock',
+		'isStepping'
 	],
 	#category : 'Hera-UI-Runner',
 	#package : 'Hera-UI',
@@ -49,7 +50,15 @@ HeraRunner >> clickStepButton [
 { #category : 'actions' }
 HeraRunner >> continue [
 
-	scriptRunner continue
+	isStepping := false.
+	scriptRunner continue.
+	self updateWindowTitle
+]
+
+{ #category : 'test api' }
+HeraRunner >> currentWindowTitle [
+
+	^ self withWindowDo: [ :window | window title ]
 ]
 
 { #category : 'running' }
@@ -69,6 +78,7 @@ HeraRunner >> debugScope: aRunnerScope [
 	self initializeScriptRunnerFor: aRunnerScope.
 	resultSummary model: scriptRunner result.
 	self updateButtons.
+	self updateWindowTitle.
 	scriptRunner debug
 ]
 
@@ -78,6 +88,7 @@ HeraRunner >> debugScope: aRunnerScope filteredBy: aFilter [
 	self initializeScriptRunnerFor: aRunnerScope filteredBy: aFilter.
 	resultSummary model: scriptRunner result.
 	self updateButtons.
+	self updateWindowTitle.
 	scriptRunner debug
 ]
 
@@ -104,7 +115,9 @@ HeraRunner >> defaultLayout [
 { #category : 'actions' }
 HeraRunner >> finish [
 
-	self updateButtons
+	isStepping := false.
+	self updateButtons.
+	self updateWindowTitle
 ]
 
 { #category : 'test api' }
@@ -165,6 +178,7 @@ HeraRunner >> hasRunSteps [
 HeraRunner >> initialize [
 
 	super initialize.
+	isStepping := false.
 	afterOpenDebugRunnerBlock := [ :ignore| ]
 ]
 
@@ -248,13 +262,15 @@ HeraRunner >> restartScope [
 
 	| wasDebugging filter |
 	scriptRunner terminate.
+	isStepping := true.
 	wasDebugging := scriptRunner isDebugging.
 	filter := scriptRunner filter.
 	self initializeScriptRunnerFor: scriptRunner scope.
 	resultSummary model: scriptRunner result.
 	scriptRunner isDebugging: wasDebugging.
 	scriptRunner filter: filter.
-	self updateButtons
+	self updateButtons.
+	self updateWindowTitle
 ]
 
 { #category : 'test api' }
@@ -275,6 +291,7 @@ HeraRunner >> runScope: aRunnerScope [
 	self initializeScriptRunnerFor: aRunnerScope.
 	resultSummary model: scriptRunner result.
 	self updateButtons.
+	self updateWindowTitle.
 	scriptRunner run
 ]
 
@@ -284,6 +301,7 @@ HeraRunner >> runScope: aRunnerScope filteredBy: aFilter [
 	self initializeScriptRunnerFor: aRunnerScope filteredBy: aFilter.
 	resultSummary model: scriptRunner result.
 	self updateButtons.
+	self updateWindowTitle.
 	scriptRunner run
 ]
 
@@ -298,15 +316,19 @@ HeraRunner >> scrollToEndOfOutput [
 { #category : 'actions' }
 HeraRunner >> stepOver [
 
+	isStepping := true.
 	scriptRunner runNext.
-	self updateButtons
+	self updateButtons.
+	self updateWindowTitle
 ]
 
 { #category : 'actions' }
 HeraRunner >> stepOverScenario [
 
+	isStepping := true.
 	scriptRunner runOverScenario.
-	self updateButtons
+	self updateButtons.
+	self updateWindowTitle
 ]
 
 { #category : 'running' }
@@ -314,15 +336,17 @@ HeraRunner >> stepScope: aRunnerScope [
 
 	self initializeScriptRunnerFor: aRunnerScope.
 	resultSummary model: scriptRunner result.
-	self updateButtons
+	self updateButtons.
+	self updateWindowTitle
 ]
 
 { #category : 'running' }
 HeraRunner >> stepScope: aRunnerScope filteredBy: aFilter [
 
 	self initializeScriptRunnerFor: aRunnerScope filteredBy: aFilter.
-	resultSummary model: scriptRunner result.
-	self updateButtons
+	self updateButtons.
+	self updateWindowTitle.
+	resultSummary model: scriptRunner result
 ]
 
 { #category : 'private' }
@@ -333,6 +357,24 @@ HeraRunner >> updateButtons [
 	continueButton enabled: isFinished not.
 	stepOverButton enabled: isFinished not.
 	stepOverScenarioButton enabled: self isRunningScenario
+]
+
+{ #category : 'updating' }
+HeraRunner >> updateFromReporter [
+
+	self updateWindowTitle
+]
+
+{ #category : 'updating' }
+HeraRunner >> updateWindowTitle [
+
+	| title paused |
+	title := scriptRunner hasRunAllScenarios
+		ifTrue: [ 'Finished {1}/{2}' format: { scriptRunner currentScenarioIndex . scriptRunner totalScenarioCount } ]
+		ifFalse: [
+			paused := scriptRunner isPaused ifTrue: [ ' - Paused' ] ifFalse: [ isStepping ifTrue: [ ' - Stepping' ] ifFalse: [ '' ] ].
+			'Running {1}/{2}{3}' format: { scriptRunner currentScenarioIndex . scriptRunner totalScenarioCount . paused } ].
+	self withWindowDo: [ :window | window title: title ]
 ]
 
 { #category : 'accessing' }
