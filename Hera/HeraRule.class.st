@@ -28,6 +28,16 @@ HeraRule >> accept: visitor [
 ]
 
 { #category : 'accessing' }
+HeraRule >> allSteps [
+
+	| all |
+	all := OrderedCollection new.
+	background ifNotNil: [ all addAll: background steps ].
+	scenarios do: [ :each | all addAll: each steps ].
+	^ all
+]
+
+{ #category : 'accessing' }
 HeraRule >> background [
 
 	^ background

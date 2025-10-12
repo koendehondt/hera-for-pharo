@@ -28,6 +28,12 @@ HeraScope class >> default [
 ]
 
 { #category : 'accessing' }
+HeraScope >> acceptanceTestClasses [
+
+	^ acceptanceTestClasses
+]
+
+{ #category : 'accessing' }
 HeraScope >> addClass: aClass [
 
 	acceptanceTestClasses add: aClass

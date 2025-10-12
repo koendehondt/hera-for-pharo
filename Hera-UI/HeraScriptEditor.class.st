@@ -151,6 +151,20 @@ HeraScriptEditor >> hasChanged [
 	^ originalScript ~= self text asString
 ]
 
+{ #category : 'api' }
+HeraScriptEditor >> highlight: aString [
+
+	| ranges |
+	script removeAllTextSegmentDecorations.
+	ranges := script text string allRangesOfSubstring: aString.
+	ranges do: [ :range | | decorator |
+		decorator := SpTextPresenterDecorator new
+			highlightColor: Color yellow;
+			underlineColor: Color transparent;
+			interval: (range first to: range last + 1).
+		script addTextSegmentDecoration: decorator ]
+]
+
 { #category : 'initialization' }
 HeraScriptEditor >> initializePresenters [
 

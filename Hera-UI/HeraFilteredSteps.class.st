@@ -18,6 +18,12 @@ HeraFilteredSteps >> canCopyStepDescriptionToClipboard [
 	^ self selectedStepMethodItem isNotNil
 ]
 
+{ #category : 'actions' }
+HeraFilteredSteps >> canFindReferences [
+
+	^ self selectedStepMethodItem isNotNil
+]
+
 { #category : 'initialization' }
 HeraFilteredSteps >> connectPresenters [
 
@@ -49,6 +55,16 @@ HeraFilteredSteps >> filter: aStepFilter [
 	table items: self sortedStepMethodItems
 ]
 
+{ #category : 'actions' }
+HeraFilteredSteps >> findReferences [
+
+	HeraStepReferencesBrowser new
+		scope: scope;
+		browseReferencesTo: self selectedStepMethodItem;
+		open
+	
+]
+
 { #category : 'initialization' }
 HeraFilteredSteps >> initializePresenters [
 
@@ -68,13 +84,21 @@ HeraFilteredSteps >> installContextMenu [
 
 	table
 		actionsWith: [ :rootGroup |
-			rootGroup addActionWith: [ :action |
+			rootGroup
+				addActionWith: [ :action |
 					action		
 						name: 'Copy';
 						description: 'Copy the selected step description';
 						shortcutKey: $c meta;
 						actionEnabled: [ self canCopyStepDescriptionToClipboard ];
-						action: [ self copyStepDescriptionToClipboard ] ] ]
+						action: [ self copyStepDescriptionToClipboard ] ];
+				addActionWith: [ :action |
+					action		
+						name: 'References';
+						description: 'Copy the selected step description';
+						shortcutKey: $n meta;
+						actionEnabled: [ self canFindReferences ];
+						action: [ self findReferences ] ] ]
 ]
 
 { #category : 'accessing' }

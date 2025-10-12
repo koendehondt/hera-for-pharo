@@ -21,6 +21,17 @@ HeraFeature >> accept: visitor [
 ]
 
 { #category : 'accessing' }
+HeraFeature >> allSteps [
+
+	| all |
+	all := OrderedCollection new.
+	background ifNotNil: [ all addAll: background steps ].
+	scenarios do: [ :each | all addAll: each steps ].
+	rules do: [ :each | all addAll: each allSteps ].
+	^ all
+]
+
+{ #category : 'accessing' }
 HeraFeature >> background [
 
 	^ background
