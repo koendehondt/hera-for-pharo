@@ -2,10 +2,9 @@ Class {
 	#name : 'HeraStepReferencesBrowser',
 	#superclass : 'HeraPresenter',
 	#instVars : [
-		'scope',
 		'featureList',
-		'stepMethodItem',
-		'scriptEditor'
+		'scriptEditor',
+		'stepFinder'
 	],
 	#category : 'Hera-UI-Step References Browser',
 	#package : 'Hera-UI',
@@ -19,15 +18,9 @@ HeraStepReferencesBrowser class >> windowIcon [
 ]
 
 { #category : 'accessing' }
-HeraStepReferencesBrowser >> browseReferencesTo: aStepMethodItem [
+HeraStepReferencesBrowser >> browseReferences [
 
-	| references |
-	stepMethodItem := aStepMethodItem.
-	references := HeraStepFinder new
-		scope: scope;
-		stepMethodItem: aStepMethodItem;
-		findReferences.
-	featureList items: references valuesAndCounts associations
+	featureList items: stepFinder references valuesAndCounts associations
 ]
 
 { #category : 'initialization' }
@@ -36,7 +29,7 @@ HeraStepReferencesBrowser >> connectPresenters [
 	featureList whenSelectedItemChangedDo: [ :association |
 		scriptEditor
 			model: (association ifNotNil: [ association key ]);
-			highlight: stepMethodItem fullStepDescription ].
+			highlight: stepFinder stepMethodItem ].
 	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
 ]
 
@@ -66,16 +59,16 @@ HeraStepReferencesBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter whenOpenedDo: [ self updateWindowTitle ]
 ]
 
-{ #category : 'accessing' }
-HeraStepReferencesBrowser >> scope: aScope [
-
-	scope := aScope
-]
-
 { #category : 'private' }
 HeraStepReferencesBrowser >> selectedMethodItem [
 
 	^ featureList selectedItem
+]
+
+{ #category : 'accessing' }
+HeraStepReferencesBrowser >> stepFinder: aStepFinder [
+
+	stepFinder := aStepFinder
 ]
 
 { #category : 'updating' }
@@ -88,7 +81,7 @@ HeraStepReferencesBrowser >> updateSelectedFeature: aFeatureAstNode [
 HeraStepReferencesBrowser >> updateWindowTitle [
 
 	self withWindowDo: [ :window | | title |
-		title := 'References to "{1}"' format: { stepMethodItem fullStepDescription }.
+		title := 'References to "{1}"' format: { stepFinder stepMethodItem fullStepDescription }.
 		window title: title ]
 ]
 

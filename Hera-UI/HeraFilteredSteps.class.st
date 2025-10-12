@@ -58,11 +58,21 @@ HeraFilteredSteps >> filter: aStepFilter [
 { #category : 'actions' }
 HeraFilteredSteps >> findReferences [
 
-	HeraStepReferencesBrowser new
+	| stepMethodItem stepFinder |
+	stepMethodItem := self selectedStepMethodItem.
+	stepFinder := HeraStepFinder new
 		scope: scope;
-		browseReferencesTo: self selectedStepMethodItem;
-		open
-	
+		stepMethodItem: stepMethodItem;
+		findReferences;
+		yourself.
+	stepFinder hasReferences
+		ifTrue: [
+			HeraStepReferencesBrowser new
+				stepFinder: stepFinder;
+				browseReferences;
+				open ]
+		ifFalse: [ 
+			self inform: ('There are no references to "{1}".' format: { stepMethodItem fullStepDescription }) ]
 ]
 
 { #category : 'initialization' }
@@ -92,13 +102,16 @@ HeraFilteredSteps >> installContextMenu [
 						shortcutKey: $c meta;
 						actionEnabled: [ self canCopyStepDescriptionToClipboard ];
 						action: [ self copyStepDescriptionToClipboard ] ];
-				addActionWith: [ :action |
-					action		
-						name: 'References';
-						description: 'Copy the selected step description';
-						shortcutKey: $n meta;
-						actionEnabled: [ self canFindReferences ];
-						action: [ self findReferences ] ] ]
+				addGroupWith: [ :referencesGroup |
+					referencesGroup
+						beDisplayedAsGroup;
+						addActionWith: [ :action |
+							action	
+								name: 'References';
+								description: 'Copy the selected step description';
+								shortcutKey: $n meta;
+								actionEnabled: [ self canFindReferences ];
+								action: [ self findReferences ] ] ] ]
 ]
 
 { #category : 'accessing' }

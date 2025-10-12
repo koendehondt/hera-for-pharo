@@ -41,6 +41,12 @@ HeraStepMethodItem >> compileSourceWithoutPragma: stepMethodSource notifying: re
 ]
 
 { #category : 'accessing' }
+HeraStepMethodItem >> fullAndStepDescription [
+
+	^ 'And {1}' format: { self stepDescription }
+]
+
+{ #category : 'accessing' }
 HeraStepMethodItem >> fullStepDescription [
 
 	^ '{1} {2}' format: { self stepType . self stepDescription }

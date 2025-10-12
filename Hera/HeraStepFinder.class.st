@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'scope',
-		'stepMethodItem'
+		'stepMethodItem',
+		'references'
 	],
 	#category : 'Hera-Analysis',
 	#package : 'Hera',
@@ -30,7 +31,19 @@ HeraStepFinder >> collectReferencesTo: aStepDescription [
 { #category : 'finding/searching' }
 HeraStepFinder >> findReferences [
 
-	^ self collectReferencesTo: stepMethodItem stepDescription
+	references := self collectReferencesTo: stepMethodItem stepDescription
+]
+
+{ #category : 'testing' }
+HeraStepFinder >> hasReferences [
+
+	^ references isNotEmpty
+]
+
+{ #category : 'accessing' }
+HeraStepFinder >> references [
+
+	^ references
 ]
 
 { #category : 'accessing' }
@@ -43,6 +56,12 @@ HeraStepFinder >> scope [
 HeraStepFinder >> scope: aScope [
 
 	scope := aScope
+]
+
+{ #category : 'accessing' }
+HeraStepFinder >> stepMethodItem [
+
+	^ stepMethodItem
 ]
 
 { #category : 'accessing' }

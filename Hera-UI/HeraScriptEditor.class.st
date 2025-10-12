@@ -152,11 +152,13 @@ HeraScriptEditor >> hasChanged [
 ]
 
 { #category : 'api' }
-HeraScriptEditor >> highlight: aString [
-
-	| ranges |
+HeraScriptEditor >> highlight: aStepMethodItem [
+ 
+	| ranges scriptString |
 	script removeAllTextSegmentDecorations.
-	ranges := script text string allRangesOfSubstring: aString.
+	scriptString := script text string.
+	ranges := (scriptString allRangesOfSubstring: aStepMethodItem fullStepDescription) asOrderedCollection.
+	ranges addAll: (scriptString allRangesOfSubstring: aStepMethodItem fullAndStepDescription).
 	ranges do: [ :range | | decorator |
 		decorator := SpTextPresenterDecorator new
 			highlightColor: Color yellow;
