@@ -43,7 +43,8 @@ HeraStepReferencesBrowser >> connectPresenters [
 { #category : 'layout' }
 HeraStepReferencesBrowser >> defaultLayout [
 
-	^ SpBoxLayout newLeftToRight
+	^ SpPanedLayout newLeftToRight
+		positionOfSlider: 33 percent;
 		add: featureList;
 		add: scriptEditor;
 		yourself
