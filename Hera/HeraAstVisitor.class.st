@@ -22,7 +22,7 @@ HeraAstVisitor >> visit: anAstNode [
 { #category : 'visiting' }
 HeraAstVisitor >> visitAndAstNode: anAndAstNode [
 
-	^ self default: anAndAstNode
+	^ self visitStepAstNode: anAndAstNode
 ]
 
 { #category : 'visiting' }
@@ -34,7 +34,7 @@ HeraAstVisitor >> visitBackgroundAstNode: aBackgroundAstNode [
 { #category : 'visiting' }
 HeraAstVisitor >> visitButAstNode: aButAstNode [
 
-	^ self default: aButAstNode
+	^ self visitStepAstNode: aButAstNode
 ]
 
 { #category : 'visiting' }
@@ -64,7 +64,7 @@ HeraAstVisitor >> visitFeatureAstNode: aFeatureAstNode [
 { #category : 'visiting' }
 HeraAstVisitor >> visitGivenAstNode: aGivenAstNode [
 
-	^ self default: aGivenAstNode
+	^ self visitStepAstNode: aGivenAstNode
 ]
 
 { #category : 'visiting' }
@@ -82,7 +82,13 @@ HeraAstVisitor >> visitScenarioAstNode: aScenarioAstNode [
 { #category : 'visiting' }
 HeraAstVisitor >> visitStarAstNode: aStarAstNode [
 
-	^ self default: aStarAstNode
+	^ self visitStepAstNode: aStarAstNode
+]
+
+{ #category : 'visiting' }
+HeraAstVisitor >> visitStepAstNode: aStepAstNode [
+
+	^ self default: aStepAstNode
 ]
 
 { #category : 'visiting' }
@@ -94,7 +100,7 @@ HeraAstVisitor >> visitTagAstNode: aTagAstNode [
 { #category : 'visiting' }
 HeraAstVisitor >> visitThenAstNode: aThenAstNode [
 
-	^ self default: aThenAstNode
+	^ self visitStepAstNode: aThenAstNode
 ]
 
 { #category : 'visiting' }
@@ -106,5 +112,5 @@ HeraAstVisitor >> visitTitleAstNode: aTitleAstNode [
 { #category : 'visiting' }
 HeraAstVisitor >> visitWhenAstNode: aWhenAstNode [
 
-	^ self default: aWhenAstNode
+	^ self visitStepAstNode: aWhenAstNode
 ]

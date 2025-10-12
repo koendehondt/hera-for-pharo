@@ -58,21 +58,7 @@ HeraFilteredSteps >> filter: aStepFilter [
 { #category : 'actions' }
 HeraFilteredSteps >> findReferences [
 
-	| stepMethodItem stepFinder |
-	stepMethodItem := self selectedStepMethodItem.
-	stepFinder := HeraStepFinder new
-		scope: scope;
-		stepMethodItem: stepMethodItem;
-		findReferences;
-		yourself.
-	stepFinder hasReferences
-		ifTrue: [
-			HeraStepReferencesBrowser new
-				stepFinder: stepFinder;
-				browseReferences;
-				open ]
-		ifFalse: [ 
-			self inform: ('There are no references to "{1}".' format: { stepMethodItem fullStepDescription }) ]
+	Hera browseReferencesTo: self selectedStepMethodItem inScope: scope
 ]
 
 { #category : 'initialization' }

@@ -16,6 +16,12 @@ HeraTextBasedAstSearcher >> beForSearchingScenario [
 	searchTarget := #scenario
 ]
 
+{ #category : 'initialization' }
+HeraTextBasedAstSearcher >> beForSearchingStep [
+
+	searchTarget := #step
+]
+
 { #category : 'private - visiting' }
 HeraTextBasedAstSearcher >> default: anAstNode [
 
@@ -78,4 +84,11 @@ HeraTextBasedAstSearcher >> visitScenarioAstNode: aScenarioAstNode [
 	aScenarioAstNode steps do: [ :each |
 		(self visit: each) ifNotNil: [ :stepNode | ^ stepNode ] ].
 	^ super visitScenarioAstNode: aScenarioAstNode
+]
+
+{ #category : 'visiting' }
+HeraTextBasedAstSearcher >> visitStepAstNode: aStepAstNode [
+
+	(searchTarget = #step and: [ aStepAstNode isLocatedAtTextPosition: textPosition ]) ifTrue: [ ^ aStepAstNode ].
+	^ super visitStepAstNode: aStepAstNode
 ]

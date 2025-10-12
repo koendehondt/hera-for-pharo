@@ -17,7 +17,8 @@ Class {
 		'debugScenarioBlock',
 		'runButton',
 		'stepByStepButton',
-		'debugButton'
+		'debugButton',
+		'browseReferencesBlock'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -28,6 +29,20 @@ Class {
 HeraScriptEditor >> acceptanceTest [
 
 	^ self model acceptanceTest
+]
+
+{ #category : 'private - menus' }
+HeraScriptEditor >> addReferencesMenuGroupTo: parentGroup [
+
+		parentGroup addGroupWith: [ :group |
+			group
+				beDisplayedAsGroup;
+				addActionWith: [ :action |
+					action		
+						name: 'References';
+						description: 'Browse references to this step';
+						shortcutKey: $n meta;
+						action: [ self browseReferences ] ] ]
 ]
 
 { #category : 'private - menus' }
@@ -83,6 +98,22 @@ HeraScriptEditor >> astForScript: aString [
 HeraScriptEditor >> browseFeatureMethod [
 
 	self model featureMethod browse
+]
+
+{ #category : 'actions' }
+HeraScriptEditor >> browseReferences [
+
+	| caretPosition astNode |
+	self hasChanged ifTrue: [
+		self inform: 'Please save the script first.'.
+		^ self ].
+	caretPosition := script selectionInterval first.
+	astNode := HeraTextBasedAstSearcher new
+		textPosition: caretPosition;
+		beForSearchingStep;
+		visit: ast.
+	(astNode isNil or: [ astNode isStepNode not ]) ifTrue: [ ^ self ].
+	browseReferencesBlock value: astNode
 ]
 
 { #category : 'private' }
@@ -202,7 +233,9 @@ HeraScriptEditor >> installContextMenu [
 
 	script
 		actionsWith: [ :rootGroup |
-			self addRunMenuGroupTo: rootGroup ]
+			self
+				addRunMenuGroupTo: rootGroup;
+				addReferencesMenuGroupTo: rootGroup ]
 ]
 
 { #category : 'test api' }
@@ -428,6 +461,12 @@ HeraScriptEditor >> updatePresenter [
 HeraScriptEditor >> updateWarnings [
 
 	self showWarnings
+]
+
+{ #category : 'api' }
+HeraScriptEditor >> whenBrowseReferencesDo: aBlock [
+
+	browseReferencesBlock := aBlock
 ]
 
 { #category : 'api' }

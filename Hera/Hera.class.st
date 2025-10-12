@@ -22,6 +22,26 @@ Hera class >> aboutText [
 	^ 'Hera is a Behaviour Driven Development framework for Pharo. It allows for a better communication of acceptance criteria between technical and non-technical people. The Hera browser allows writing Given-When-Then scenarios in Gherkin and translating them to classes and methods.'
 ]
 
+{ #category : 'browsing' }
+Hera class >> browseReferencesTo: aStepMethod inScope: scope [
+
+	| stepMethodItem stepFinder |
+	stepMethodItem := aStepMethod.
+	stepFinder := HeraStepFinder new
+		scope: scope;
+		stepMethodItem: stepMethodItem;
+		findReferences;
+		yourself.
+	stepFinder hasReferences
+		ifTrue: [
+			HeraStepReferencesBrowser new
+				stepFinder: stepFinder;
+				browseReferences;
+				open ]
+		ifFalse: [ 
+			self inform: ('There are no references to "{1}".' format: { stepMethodItem fullStepDescription }) ]
+]
+
 { #category : 'accessing' }
 Hera class >> settings [
 

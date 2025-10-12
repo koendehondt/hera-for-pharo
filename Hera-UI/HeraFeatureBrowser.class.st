@@ -75,6 +75,17 @@ HeraFeatureBrowser >> allowedMethodSelectorCharacter: aCharacter [
 	^ aCharacter isLetter or: [ aCharacter isDigit or: [ aCharacter = $_ ] ]
 ]
 
+{ #category : 'private' }
+HeraFeatureBrowser >> browseReferences: aStepAstNode [
+
+	| stepMethodItem |
+	aStepAstNode description = 'I pause' ifTrue: [
+		self inform: 'This step is implemented by Hera. References cannot be browsed.'.
+		^ self ].
+	stepMethodItem := HeraStepMethodItem new stepMethod: (self methodFor: aStepAstNode).
+	Hera browseReferencesTo: stepMethodItem inScope: scope
+]
+
 { #category : 'test api' }
 HeraFeatureBrowser >> clickDebugButton [
 
@@ -99,11 +110,13 @@ HeraFeatureBrowser >> connectPresenters [
 	featureSelector whenFeatureSelectionChangedDo: [ :featureMethodItem |
 		scriptEditor model: featureMethodItem.
 		self updateWindowTitle ].
-	scriptEditor whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ].
-	scriptEditor whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ].
-	scriptEditor whenRunScenarioDo: [ :scenarioAstNode | self runScenario: scenarioAstNode ].
-	scriptEditor whenStepScenarioDo: [ :scenarioAstNode | self stepScenario: scenarioAstNode ].
-	scriptEditor whenDebugScenarioDo: [ :scenarioAstNode | self debugScenario: scenarioAstNode ]
+	scriptEditor
+		whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ];
+		whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ];
+		whenRunScenarioDo: [ :scenarioAstNode | self runScenario: scenarioAstNode ];
+		whenStepScenarioDo: [ :scenarioAstNode | self stepScenario: scenarioAstNode ];
+		whenDebugScenarioDo: [ :scenarioAstNode | self debugScenario: scenarioAstNode ];
+		whenBrowseReferencesDo: [ :stepAstNode | self browseReferences: stepAstNode ]
 ]
 
 { #category : 'test api' }
