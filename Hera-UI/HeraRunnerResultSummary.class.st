@@ -23,15 +23,21 @@ HeraRunnerResultSummary >> changed: aParameter [
 { #category : 'layout' }
 HeraRunnerResultSummary >> defaultLayout [
 
+	| timeBox |
+	timeBox := SpBoxLayout newHorizontal
+		hAlignStart;
+		vAlignCenter;
+		spacing: 10;
+		add: duration;
+		add: startTime;
+		yourself.
 	^ SpBoxLayout newLeftToRight
 		spacing: 10;
-		vAlignCenter;
 		add: totalCount width: 50;
 		add: passedCount width: 50;
 		add: failedCount width: 50;
 		add: errorCount width: 50;
-		add: duration expand: false;
-		add: startTime expand: false;
+		add: timeBox;
 		yourself
 ]
 

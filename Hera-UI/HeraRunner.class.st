@@ -98,12 +98,12 @@ HeraRunner >> defaultLayout [
 	| controls |
 	controls := SpBoxLayout newHorizontal
 		spacing: 10;
-		add: continueButton width: 40;
-		add: stepOverScenarioButton width: 40;
-		add: stepOverButton width: 40;
-		add: restartButton width: 40;
-		add: self newLabel width: 40;
-		add: resultSummary;
+		add: continueButton width: 30;
+		add: stepOverScenarioButton width: 30;
+		add: stepOverButton width: 30;
+		add: restartButton width: 30;
+		add: self newLabel width: 30;
+		add: resultSummary expand: true;
 		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;

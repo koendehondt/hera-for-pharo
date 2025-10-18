@@ -20,6 +20,7 @@ HeraRunnerResultCount >> defaultLayout [
 
 	^ SpBoxLayout newHorizontal
 		hAlignCenter;
+		vAlignCenter;
 		add: countLabel;
 		yourself
 ]
