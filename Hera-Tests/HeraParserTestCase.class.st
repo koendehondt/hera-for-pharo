@@ -106,7 +106,7 @@ HeraParserTestCase >> testParseBackgroundWithWhenStep [
 				Scenario: Successful sign-in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - data table' }
 HeraParserTestCase >> testParseDataTable [
 
 	| script ast scenarioNode stepNodes givenStepNode whenStepNode andStepNode thenStepNode butStepNode |
@@ -197,7 +197,7 @@ HeraParserTestCase >> testParseDataTable [
 	self assert: butStepNode end equals: 691
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - data table' }
 HeraParserTestCase >> testParseDataTableBeforeScenario [
 
 	| script ast firstScenarioNode stepNodes givenStepNode secondScenarioNode |
@@ -230,7 +230,7 @@ HeraParserTestCase >> testParseDataTableBeforeScenario [
 	self assert: secondScenarioNode end equals: 204
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - data table' }
 HeraParserTestCase >> testParseDataTableWithEmptyCell [
 
 	| script ast scenarioNode stepNodes givenStepNode |
@@ -350,7 +350,7 @@ HeraParserTestCase >> testParseDataTableWithMissingTerminatingBar [
 					Then I see them in the list of users'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - data table' }
 HeraParserTestCase >> testParseDataTableWithoutFormatting [
 
 	| script ast scenarioNode firstStepNode secondStepNode |
@@ -391,7 +391,7 @@ HeraParserTestCase >> testParseDataTableWithoutFormatting [
 	self assert: secondStepNode argument isNil
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - doc string' }
 HeraParserTestCase >> testParseDocString [
 
 	| script ast scenarioNode stepNodes thenStepNode givenStepNode whenStepNode andStepNode butStepNode |
@@ -489,7 +489,7 @@ HeraParserTestCase >> testParseDocString [
 	self assert: butStepNode end equals: 604
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - doc string' }
 HeraParserTestCase >> testParseDocStringWithEmptyLine [
 
 	| script ast scenarioNode stepNodes givenStepNode |
@@ -637,7 +637,7 @@ HeraParserTestCase >> testParseDocStringWithMissingClosingTripleQuotes [
 						'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - doc string' }
 HeraParserTestCase >> testParseDocStringWithMoreIndentationIsAllowed [
 
 	| script |
@@ -720,7 +720,7 @@ HeraParserTestCase >> testParseDocStringWithTextBeforeOpeningTripleQuotes [
 						"""'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - doc string' }
 HeraParserTestCase >> testParseEmptyDocString [
 
 	| script ast scenarioNode stepNodes givenStepNode |
@@ -744,7 +744,7 @@ Given the following empty doc string:
 	self assert: givenStepNode end equals: 118
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseEmptyFeature [
 
 	| script ast |
@@ -758,7 +758,7 @@ HeraParserTestCase >> testParseEmptyFeature [
 	self assert: ast description isNil
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithBackgroundAndTaggedScenario [
 
 	| script ast scenarioNode backgroundSteps backgroundStepNode |
@@ -789,7 +789,7 @@ HeraParserTestCase >> testParseFeatureWithBackgroundAndTaggedScenario [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithBackgroundDescription [
 
 	| script ast scenarioNode |
@@ -818,7 +818,7 @@ HeraParserTestCase >> testParseFeatureWithBackgroundDescription [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithDescription [
 
 	| script ast scenarioNode |
@@ -844,7 +844,7 @@ HeraParserTestCase >> testParseFeatureWithDescription [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithEmptyBackground [
 
 	| script ast |
@@ -865,7 +865,7 @@ HeraParserTestCase >> testParseFeatureWithEmptyBackground [
 	self assert: ast scenarios first steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithEmptyBackgroundAtTheEnd [
 
 	| script ast |
@@ -883,7 +883,7 @@ HeraParserTestCase >> testParseFeatureWithEmptyBackgroundAtTheEnd [
 	self assert: ast scenarios isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithEmptyLinesInBackground [
 
 	| script ast backgroundSteps |
@@ -912,7 +912,7 @@ HeraParserTestCase >> testParseFeatureWithEmptyLinesInBackground [
 	self assert: ast scenarios first steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithEmptyScenario [
 
 	| script ast scenarioNode |
@@ -933,7 +933,7 @@ HeraParserTestCase >> testParseFeatureWithEmptyScenario [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithKeywordAsFirstWordInName [
 
 	| script ast scenarioNode |
@@ -955,7 +955,7 @@ HeraParserTestCase >> testParseFeatureWithKeywordAsFirstWordInName [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithRules [
 
 	| script ast firstScenarioNode stepNode backgroundNode givenNode firstRule secondRule secondScenarioNode |
@@ -1049,7 +1049,7 @@ HeraParserTestCase >> testParseFeatureWithRules [
 	self assert: stepNode description equals: 'I cannot open the user management page'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithStarSteps [
 
 	| script ast scenarioNode stepNode |
@@ -1107,7 +1107,7 @@ HeraParserTestCase >> testParseFeatureWithStepButNoScenario [
 				Given I have credentials to sign in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithTags [
 
 	| script ast scenarioNode |
@@ -1133,7 +1133,7 @@ HeraParserTestCase >> testParseFeatureWithTags [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithTwoEmptyScenarios [
 
 	| script ast scenarioNode |
@@ -1184,7 +1184,7 @@ HeraParserTestCase >> testParseFeatureWithoutName [
 				Scenario: Successful sign-in'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFullFeature [
 
 	| script ast scenarioNode stepNode backgroundNode givenNode |
@@ -1237,7 +1237,7 @@ HeraParserTestCase >> testParseFullFeature [
 	self assert: stepNode description equals: 'I see the home page'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseMultipleScenariosWithTags [
 
 	| script ast firstScenarioNode title secondScenarioNode |
@@ -1285,7 +1285,7 @@ Feature: With scenario tags
 	self assert: secondScenarioNode end equals: 142
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
 
 	| script ast |
@@ -1297,7 +1297,7 @@ HeraParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
 	self assert: ast scenarios first title text equals: 'And is allowed at the beginning of a scenario title'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithButKeywordAsFirstWordInTitle [
 
 	| script ast |
@@ -1309,7 +1309,7 @@ HeraParserTestCase >> testParseScenarioWithButKeywordAsFirstWordInTitle [
 	self assert: ast scenarios first title text equals: 'But is allowed at the beginning of a scenario title'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithDescription [
 
 	| script ast scenarioNode |
@@ -1342,7 +1342,7 @@ HeraParserTestCase >> testParseScenarioWithDescription [
 		OrderedCollection with: 'Access is allowed when the credentials are recognized.')
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithGivenKeywordAsFirstWordInTitle [
 
 	| script ast title |
@@ -1356,7 +1356,7 @@ HeraParserTestCase >> testParseScenarioWithGivenKeywordAsFirstWordInTitle [
 	self assert: title text equals: 'Given is allowed at the beginning of a scenario title'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithTags [
 
 	| script ast scenarioNode title |
@@ -1385,7 +1385,7 @@ HeraParserTestCase >> testParseScenarioWithTags [
 	self assert: scenarioNode steps isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithThenKeywordAsFirstWordInTitle [
 
 	| script ast title |
@@ -1399,7 +1399,7 @@ HeraParserTestCase >> testParseScenarioWithThenKeywordAsFirstWordInTitle [
 	self assert: title text equals: 'Then is allowed at the beginning of a scenario title'.
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithWhenKeywordAsFirstWordInTitle [
 
 	| script ast title |
@@ -1413,7 +1413,7 @@ HeraParserTestCase >> testParseScenarioWithWhenKeywordAsFirstWordInTitle [
 	self assert: title text equals: 'When is allowed at the beginning of a scenario title'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithoutTags [
 
 	| script ast scenarioNode  |
