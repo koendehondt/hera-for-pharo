@@ -91,6 +91,12 @@ HeraScriptGenerator >> visitDataTableArgument: aDataTableArgument [
 ]
 
 { #category : 'visiting' }
+HeraScriptGenerator >> visitDataTreeArgument: aDataTreeArgument [
+
+	aDataTreeArgument printFormattedOn: stream indentation: indentation + 1
+]
+
+{ #category : 'visiting' }
 HeraScriptGenerator >> visitDocStringArgument: aDocStringArgument [
 
 	aDocStringArgument printFormattedOn: stream indentation: indentation + 1
@@ -123,7 +129,8 @@ HeraScriptGenerator >> visitFeature: aFeature [
 	aFeature scenarios do: [ :each | self visit: each ] separatedBy: [ stream cr ].
 	aFeature rules ifNotEmpty: [ stream cr ].
 	aFeature rules do: [ :each | self visit: each ] separatedBy: [ stream cr ].
-	self decreaseIndentation
+	self decreaseIndentation.
+	stream cr; cr
 ]
 
 { #category : 'visiting' }

@@ -74,7 +74,9 @@ Feature: Signing in
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
-		But I see a message that the credentials are wrong'
+		But I see a message that the credentials are wrong
+
+'
 ]
 
 { #category : 'steps' }
@@ -92,7 +94,9 @@ Feature: Signing out
 	Scenario: Signing out
 		Given I am logged in
 		When I sign out
-		Then I see the landing page'
+		Then I see the landing page
+
+'
 ]
 
 { #category : 'steps' }

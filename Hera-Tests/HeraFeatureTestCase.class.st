@@ -39,7 +39,9 @@ Feature: Signing in
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
-		But I see a message that the credentials are wrong'.
+		But I see a message that the credentials are wrong
+
+'.
 	text
 		addAttribute: TextEmphasis bold from: 35 to: 42;
 		addAttribute: TextEmphasis bold from: 195 to: 203;
@@ -67,7 +69,9 @@ HeraFeatureTestCase >> testScriptOfEmptyFeature [
 
 	| feature |
 	feature := HeraAcceptanceTestExamplesForTesting new emptyFeature.
-	self assert: feature script equals: 'Feature: Empty'
+	self assert: feature script equals: 'Feature: Empty
+
+'
 	
 ]
 
@@ -78,7 +82,9 @@ HeraFeatureTestCase >> testScriptWithEmptyScenario [
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithEmptyScenario.
 	self assert: feature script equals: 'Feature: With empty scenario
 
-	Scenario: Successful sign-in'
+	Scenario: Successful sign-in
+
+'
 	
 ]
 
@@ -98,7 +104,9 @@ HeraFeatureTestCase >> testScriptWithSingleStep [
 	self assert: feature script equals: 'Feature: With single step scenario
 
 	Scenario: Successful sign-in
-		Given I have credentials to sign in'
+		Given I have credentials to sign in
+
+'
 	
 ]
 
@@ -120,6 +128,8 @@ HeraFeatureTestCase >> testScriptWithTwoScenarios [
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
-		But I see a message that the credentials are wrong'
+		But I see a message that the credentials are wrong
+
+'
 	
 ]

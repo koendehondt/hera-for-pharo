@@ -24,7 +24,8 @@ HeraScope class >> default [
 	^ self all
 		removeClasses: testingClasses;
 		removeClass: HeraSpecAcceptanceTest;
-		removeClass: HeraWebAcceptanceTest 
+		removeClass: HeraWebAcceptanceTest;
+		removeClass: HeraSpecExamplesAcceptanceTest 
 ]
 
 { #category : 'accessing' }

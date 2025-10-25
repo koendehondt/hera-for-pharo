@@ -234,6 +234,38 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDataTable [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDataTree [
+
+	| script ast |
+	script := '
+	Feature: Family tree
+
+		Scenario: Reading a family tree
+			When I open the application
+			Then I see the following family tree:
+				>   John
+				>>    Jane
+				>>>     William
+				>>    Mary
+				'.
+	ast := self parse: script.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Family tree''>
+
+	^ (self feature: ''Family tree'')
+		scenarios: {
+			(self scenario: ''Reading a family tree'')
+				when: ''I open the application'';
+				then: ''I see the following family tree:'' with: (self dataTree: {
+					''John'' -> {
+						''Jane'' -> {
+							''William'' -> { } } .
+						''Mary'' -> { } } }) }'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfDocString [
 
 	| document ast |

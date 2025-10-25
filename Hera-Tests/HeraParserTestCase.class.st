@@ -58,6 +58,58 @@ HeraParserTestCase >> testAstContainsTextPositions [
 	self assert: ast end equals: 357
 ]
 
+{ #category : 'tests - data tree' }
+HeraParserTestCase >> testConvertTreeItemsWithMixedLevels [
+
+	| dataTreeItems data |
+	dataTreeItems := {
+		HeraDataTreeItem new level: 1; text: 'John' .
+		HeraDataTreeItem new level: 2; text: 'Jane' .
+		HeraDataTreeItem new level: 3; text: 'William' .
+		HeraDataTreeItem new level: 2; text: 'Mary' }.
+	data := subject convertTreeItems: dataTreeItems.
+	self assert: data equals: {
+		HeraDataTreeNode new
+			level: 1;
+			text: 'John';
+			children: {
+				HeraDataTreeNode new
+					level: 2;
+					text: 'Jane';
+					children: {
+						HeraDataTreeNode new level: 3; text: 'William' } .
+				HeraDataTreeNode new level: 2; text: 'Mary' } }
+]
+
+{ #category : 'tests - data tree' }
+HeraParserTestCase >> testConvertTreeItemsWithRootAndLevel1Node [
+
+	| dataTreeItems data |
+	dataTreeItems := {
+		HeraDataTreeItem new level: 1; text: 'Level 1 node' .
+		HeraDataTreeItem new level: 2; text: 'Level 2 node' }.
+	data := subject convertTreeItems: dataTreeItems.
+	self assert: data equals: {
+		HeraDataTreeNode new
+			level: 1;
+			text: 'Level 1 node';
+			children: {
+				HeraDataTreeNode new level: 2; text: 'Level 2 node' } }
+]
+
+{ #category : 'tests - data tree' }
+HeraParserTestCase >> testConvertTreeItemsWithRootsOnly [
+
+	| dataTreeItems data |
+	dataTreeItems := {
+		HeraDataTreeItem new level: 1; text: 'Root 1' .
+		HeraDataTreeItem new level: 1; text: 'Root 2' }.
+	data := subject convertTreeItems: dataTreeItems.
+	self assert: data equals: {
+		HeraDataTreeNode new level: 1; text: 'Root 1' .
+		HeraDataTreeNode new level: 1; text: 'Root 2' }
+]
+
 { #category : 'tests - parsing errors' }
 HeraParserTestCase >> testParseBackgroundWithText [
 
@@ -109,7 +161,7 @@ HeraParserTestCase >> testParseBackgroundWithWhenStep [
 { #category : 'tests - data table' }
 HeraParserTestCase >> testParseDataTable [
 
-	| script ast scenarioNode stepNodes givenStepNode whenStepNode andStepNode thenStepNode butStepNode |
+	| script ast scenarioNode stepNodes givenStepNode whenStepNode andStepNode butStepNode thenStepNode |
 	script := '
 	Feature: Employee management
 
@@ -1450,6 +1502,45 @@ HeraParserTestCase >> testParseScenarioWithoutTitle [
 			Feature: Signing in
 
 				Scenario:  '
+]
+
+{ #category : 'tests - data tree' }
+HeraParserTestCase >> testParseTree [
+
+	| script ast scenarioNode stepNodes whenStepNode thenStepNode |
+	script := '
+	Feature: Family tree
+
+		Scenario: Reading a family tree
+			When I open the application
+			Then I see the following family tree:
+				>   John
+				>>    Jane
+				>>>     William
+				>>    Mary
+				'.
+	ast := self parseFeature: script.
+	scenarioNode := ast scenarios first.
+	stepNodes := scenarioNode steps.
+	self assert: stepNodes size equals: 2.
+
+	whenStepNode := stepNodes first.
+	self assert: whenStepNode class equals: HeraWhenAstNode.
+	self assert: whenStepNode description equals: 'I open the application'.
+	self assert: whenStepNode start equals: 62.
+	self assert: whenStepNode end equals: 88.
+
+	thenStepNode := stepNodes second.
+	self assert: thenStepNode class equals: HeraThenAstNode.
+	self assert: thenStepNode description equals: 'I see the following family tree:'.
+	self assert: thenStepNode argument class equals: HeraDataTreeStepArgumentAstNode.
+	self assert: thenStepNode argument dataTree equals: (HeraDataTree new data: {
+		HeraDataTreeItem new level: 1; text: 'John' .
+		HeraDataTreeItem new level: 2; text: 'Jane' .
+		HeraDataTreeItem new level: 3; text: 'William' .
+		HeraDataTreeItem new level: 2; text: 'Mary' }).
+	self assert: thenStepNode start equals: 93.
+	self assert: thenStepNode end equals: 192
 ]
 
 { #category : 'tests - parsing errors' }

@@ -13,6 +13,46 @@ Class {
 }
 
 { #category : 'parsing' }
+HeraParser >> convertTreeItems: dataTreeItems [
+
+	| roots currentLevel stack parentNode currentNode node |
+	roots := HeraDataTreeNode new level: 0.
+	stack := Stack with: roots.
+	dataTreeItems do: [ :each |
+		node := HeraDataTreeNode new level: each level; text: each text.
+		currentLevel := stack top level.
+		[ each level < currentLevel ] whileTrue: [
+			stack pop.
+			currentLevel := currentLevel - 1 ].
+		each level = currentLevel ifTrue: [
+			stack pop.
+			parentNode := stack top.
+			parentNode addChild: node.
+			stack push: node ].
+		each level = (currentLevel + 1) ifTrue: [
+			currentNode := stack top.
+			currentNode addChild: node.
+			stack push: node ].
+		each level > (currentLevel + 1) ifTrue: [
+			self error: 'This indicates an error in the given data tree items.' ] ].
+	^ roots children
+]
+
+{ #category : 'parsing' }
+HeraParser >> dataTreeItemFrom: aDataTreeToken [
+
+	| matcher level text |
+	"The first > character is already read."
+	matcher := '(>*)(.*)' asRegex.
+	matcher matches: aDataTreeToken text.
+	level := (matcher subexpression: 2) size + 1.
+	text := (matcher subexpression: 3) trimBoth.
+	^ HeraDataTreeItem new
+		level: level;
+		text: text
+]
+
+{ #category : 'parsing' }
 HeraParser >> dataValuesFrom: aDataTableToken [
 
 	| concatenatedValues |
@@ -73,12 +113,35 @@ HeraParser >> parseDataTableStepArgument [
 		rows add: cellValues.
 		end := currentToken end.
 		self skipEndOfLineToken.
-		self skipEmptyLines].
+		self skipEmptyLines ].
 	rows ifEmpty: [ ^ nil ].
 	rowSizes size > 1 ifTrue: [
 		self parseError: 'Data table has missing cells' from: start to: end ].
 	^ HeraDataTableStepArgumentAstNode new
 		dataTable: (HeraDataTable new data: rows asArray);
+		start: start;
+		end: end
+]
+
+{ #category : 'parsing' }
+HeraParser >> parseDataTreeStepArgument [
+
+	"DataTreeToken has already been read."
+	| dataTreeItems end start firstToken lastToken |
+	firstToken := currentToken.
+	start := currentToken start.
+	dataTreeItems := OrderedCollection new.
+	[ currentToken isDataTreeToken ] whileTrue: [
+		dataTreeItems add: (self dataTreeItemFrom: currentToken).
+		end := currentToken end.
+		lastToken := currentToken.
+		self skipEndOfLineToken.
+		self skipEmptyLines ].
+	dataTreeItems ifEmpty: [ ^ nil ].
+	self validateDataTreeItems: dataTreeItems onErrorDo: [ :message |
+		self parseError: message from: firstToken start to: lastToken end ].
+	^ HeraDataTreeStepArgumentAstNode new
+		dataTree: (HeraDataTree new data: dataTreeItems asArray);
 		start: start;
 		end: end
 ]
@@ -293,6 +356,7 @@ HeraParser >> parseStepArgument [
 	"The first token has already been read."
 	currentToken isDataTableToken ifTrue: [ ^ self parseDataTableStepArgument ].
 	currentToken isDocStringToken ifTrue: [ ^ self parseDocStringStepArgument ].
+	currentToken isDataTreeToken ifTrue: [ ^ self parseDataTreeStepArgument ].
 	^ nil
 ]
 
@@ -379,4 +443,22 @@ HeraParser >> tryScanTextToken [
 	previousToken := currentToken.
 	currentToken := scanner tryScanTextToken.
 	^ currentToken
+]
+
+{ #category : 'parsing' }
+HeraParser >> validateDataTreeItems: dataTreeItems onErrorDo: aBlock [
+
+	| currentLevel message root |
+	root := dataTreeItems first.
+	root level = 1 ifFalse: [ 
+		message := 'Item 1 in the data tree has level {1} while level 1 is expected.' format: { root level }.
+		aBlock value: message.
+		^ self ].
+	currentLevel := 1.
+	dataTreeItems withIndexDo: [ :each :index |
+		each level <= (currentLevel + 1) ifFalse: [
+			message := 'Item {1} in the data tree has level {2} while maximum level {3} is expected.' format: { index . each level . currentLevel + 1 }.
+			aBlock value: message.
+			^ self ].
+		currentLevel := each level ]
 ]

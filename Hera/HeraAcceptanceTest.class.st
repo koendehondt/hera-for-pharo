@@ -133,6 +133,12 @@ HeraAcceptanceTest >> dataTable: anArrayOfArrays [
 ]
 
 { #category : 'dsl' }
+HeraAcceptanceTest >> dataTree: anArrayOfAssociations [
+
+	^ HeraDataTreeArgument new dataTree: (HeraDataTree from: anArrayOfAssociations)
+]
+
+{ #category : 'dsl' }
 HeraAcceptanceTest >> docString: anArrayOfStrings [
 
 	^ HeraDocStringArgument new docString: (HeraDocString new lines: anArrayOfStrings)

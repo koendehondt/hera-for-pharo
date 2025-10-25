@@ -44,6 +44,12 @@ HeraAstVisitor >> visitDataTableStepArgumentAstNode: aDataTableStepArgumentAstNo
 ]
 
 { #category : 'visiting' }
+HeraAstVisitor >> visitDataTreeStepArgumentAstNode: aDataTreeStepArgumentAstNode [
+
+	^ self default: aDataTreeStepArgumentAstNode
+]
+
+{ #category : 'visiting' }
 HeraAstVisitor >> visitDescriptionAstNode: aDescriptionAstNode [
 
 	^ self default: aDescriptionAstNode

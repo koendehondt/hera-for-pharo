@@ -42,6 +42,12 @@ HeraToken >> isDataTableToken [
 ]
 
 { #category : 'testing' }
+HeraToken >> isDataTreeToken [
+
+	^ false
+]
+
+{ #category : 'testing' }
 HeraToken >> isDocStringToken [
 
 	^ false

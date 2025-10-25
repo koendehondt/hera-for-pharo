@@ -39,7 +39,9 @@ Feature: Signing in
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
-		But I see a message that the credentials are wrong'.
+		But I see a message that the credentials are wrong
+
+'.
 	text
 		addAttribute: TextEmphasis bold from: 35 to: 42;
 		addAttribute: TextEmphasis bold from: 195 to: 203;
@@ -67,7 +69,9 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
-		But I see a message that the credentials are wrong'.
+		But I see a message that the credentials are wrong
+
+'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 28 to: 38;
@@ -102,7 +106,9 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 			| John | john@testing.org |
 			| Jane | jane@testing.org |
 			| Emma | emma@testing.org |
-			| Jill | jill@testing.org |'.
+			| Jill | jill@testing.org |
+
+'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 28 to: 36.
@@ -132,7 +138,9 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDescriptionInBackgroun
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
-		But I see a message that the credentials are wrong'.
+		But I see a message that the credentials are wrong
+
+'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 43 to: 53;
@@ -165,7 +173,9 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 					<email>jane@testing.org</email>
 				</user>
 			</users>
-			"""'.
+			"""
+
+'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 28 to: 36.
@@ -181,7 +191,9 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithEmptyDocString [
 	Scenario: Empty doc strings are accepted
 		Given the following empty doc string:
 			"""
-			"""'.
+			"""
+
+'.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 34 to: 42.
@@ -225,7 +237,9 @@ Feature: With rules
 
 		Scenario: No access to user management
 			Given I am not an administrator
-			Then I cannot open the user management page' allButFirst.
+			Then I cannot open the user management page
+
+' allButFirst.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 96 to: 106;
@@ -252,7 +266,9 @@ Feature: With * steps
 		* I fill in my user name
 		* I fill in my password
 		* I press the sign-in button
-		Then I see the home page' allButFirst.
+		Then I see the home page
+
+' allButFirst.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
 		addAttribute: TextEmphasis bold from: 25 to: 33.

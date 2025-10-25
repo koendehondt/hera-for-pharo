@@ -18,6 +18,32 @@ HeraFeatureMethodGenerator >> allowedMethodSelectorCharacter: aCharacter [
 ]
 
 { #category : 'private' }
+HeraFeatureMethodGenerator >> convertTreeItemsToTreeNodes: dataTreeItems [
+
+	| roots currentLevel stack parentNode currentNode node |
+	roots := HeraDataTreeNode new level: 0.
+	stack := Stack with: roots.
+	dataTreeItems do: [ :each |
+		node := HeraDataTreeNode new level: each level; text: each text.
+		currentLevel := stack top level.
+		[ each level < currentLevel ] whileTrue: [
+			stack pop.
+			currentLevel := currentLevel - 1 ].
+		each level = currentLevel ifTrue: [
+			stack pop.
+			parentNode := stack top.
+			parentNode addChild: node.
+			stack push: node ].
+		each level = (currentLevel + 1) ifTrue: [
+			currentNode := stack top.
+			currentNode addChild: node.
+			stack push: node ].
+		each level > (currentLevel + 1) ifTrue: [
+			self error: 'This indicates an error in the given data tree items.' ] ].
+	^ roots children
+]
+
+{ #category : 'private' }
 HeraFeatureMethodGenerator >> decreaseIndentation [
 
 	indentation := indentation - 1
@@ -130,6 +156,14 @@ HeraFeatureMethodGenerator >> visitDataTableStepArgumentAstNode: aDataTableStepA
 				nextPut: $. ].
 	stream nextPutAll: ' })'.
 	self decreaseIndentation
+]
+
+{ #category : 'visiting' }
+HeraFeatureMethodGenerator >> visitDataTreeStepArgumentAstNode: aDataTreeStepArgumentAstNode [
+
+	stream nextPutAll: ' with: (self dataTree: {'.
+	self writeDataTree: (self convertTreeItemsToTreeNodes: aDataTreeStepArgumentAstNode dataTree data).
+	stream nextPutAll: ' })'.
 ]
 
 { #category : 'visiting' }
@@ -362,4 +396,20 @@ HeraFeatureMethodGenerator >> visitThenAstNode: aGivenAstNode [
 HeraFeatureMethodGenerator >> visitWhenAstNode: aGivenAstNode [
 
 	self visitStepAstNode: aGivenAstNode named: 'when'
+]
+
+{ #category : 'private' }
+HeraFeatureMethodGenerator >> writeDataTree: arrayOfDataTreeNodes [
+
+	self increaseIndentation.
+	arrayOfDataTreeNodes
+		do: [ :each |
+			stream
+				crtab: indentation;
+				print: each text;
+				nextPutAll: ' -> {'.
+			self writeDataTree: each children.
+			stream nextPutAll: ' }' ]
+		separatedBy: [ stream nextPutAll: ' .' ].
+	self decreaseIndentation
 ]
