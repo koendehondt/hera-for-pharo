@@ -211,10 +211,11 @@ HeraStepEditor >> removeStepMethodIfNecessaryBeforeInstallingNewStepMethod: orig
 { #category : 'actions' }
 HeraStepEditor >> save [
 
-	| stepMethodSource stepMethod |
+	| stepMethodSource stepMethod originalProtocol |
 	self hasChanged ifFalse: [ ^ self ].
 	stepMethod := self model compileSourceWithoutPragma: self text notifying: self.
 	stepMethod ifNil: [ ^ self ].
+	originalProtocol := self model stepMethod protocol.
 	originalSelector = stepMethod selector ifFalse: [ self removeStepMethodIfNecessaryBeforeInstallingNewStepMethod: self model stepMethod ].
 	stepMethodSource := HeraStepMethodGenerator new
 		type: type selectedItem;
@@ -223,7 +224,7 @@ HeraStepEditor >> save [
 		source: code text;
 		acceptanceTestClass: self model acceptanceTestClass;
 		generatedCode.
-	stepMethod := self model saveSource: stepMethodSource.
+	stepMethod := self model saveSource: stepMethodSource inProtocol: originalProtocol.
 	self model: (HeraStepMethodItem new stepMethod: stepMethod)
 ]
 

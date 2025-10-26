@@ -71,12 +71,12 @@ HeraStepMethodItem >> pragmaArgument [
 ]
 
 { #category : 'actions' }
-HeraStepMethodItem >> saveSource: stepMethodSource [
+HeraStepMethodItem >> saveSource: stepMethodSource inProtocol: aProtocolName [
 
 	| targetSelector targetClass protocol |
 	targetClass := self acceptanceTestClass.
 	targetSelector := targetClass compile: stepMethodSource.
-	protocol := targetClass ensureProtocol: 'steps'.
+	protocol := targetClass ensureProtocol: aProtocolName.
 	targetClass classify: targetSelector under: protocol.
 	^ targetClass >> targetSelector
 ]

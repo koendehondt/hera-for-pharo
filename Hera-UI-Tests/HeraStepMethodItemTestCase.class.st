@@ -34,7 +34,7 @@ HeraStepMethodItemTestCase >> testFullStepDescriptionForThenStep [
 ]
 
 { #category : 'tests' }
-HeraStepMethodItemTestCase >> testSaveSourcePutsMethodInStepsProtocol [
+HeraStepMethodItemTestCase >> testSaveSourcePutsMethodInGivenProtocol [
 
 	subject stepMethod: HeraAcceptanceTestExamplesForTesting>>#stepNoEmail.
 	self deny: (HeraAcceptanceTestExamplesForTesting class includesSelector: #stepTest).
@@ -43,8 +43,8 @@ HeraStepMethodItemTestCase >> testSaveSourcePutsMethodInStepsProtocol [
 
 	<heraStepDefinition: #(When ''I test'')>
 
-	"Do something"'.
-		self assert: (HeraAcceptanceTestExamplesForTesting>>#stepTest) protocol name equals: #steps ]
+	"Do something"' inProtocol: 'just testing'.
+		self assert: (HeraAcceptanceTestExamplesForTesting>>#stepTest) protocol name equals: #'just testing' ]
 		ensure: [
 			(HeraAcceptanceTestExamplesForTesting includesSelector: #stepTest)
 				ifTrue: [ (HeraAcceptanceTestExamplesForTesting>>#stepTest) removeFromSystem ] ]
