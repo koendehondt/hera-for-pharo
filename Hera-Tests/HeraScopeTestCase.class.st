@@ -6,6 +6,13 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'asserting' }
+HeraScopeTestCase >> assertMethodCollection: methods includesAllMethods: expectedSubset [
+
+	"Convert to print strings because comparing collections of compiled methods does not work on CI. It is unclear why."
+	self assertCollection: (methods collect: [ :each | each printString] ) includesAll: (expectedSubset collect: [ :each | each printString])
+]
+
 { #category : 'running' }
 HeraScopeTestCase >> describedClass [
 
@@ -72,18 +79,18 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 { #category : 'tests' }
 HeraScopeTestCase >> testAllStepMethodsWhenOneClassInScope [
 
-	| stepMethods stepMethodsOfClass stepMethodsOfHeraSpecAcceptanceTest stepMethodsOfHeraAcceptanceTest stepSelectors stepSelectorsOfClass |
+	| stepMethods stepMethodsOfClass stepMethodsOfHeraSpecAcceptanceTest stepMethodsOfHeraAcceptanceTest |
 	subject := self describedClass new.
 	subject addClass: HeraAcceptanceTestWithStepArgumentsForTesting.
+
 	stepMethods := subject allStepMethods.
 	stepMethodsOfClass := HeraAcceptanceTestWithStepArgumentsForTesting stepMethods.
 	stepMethodsOfHeraSpecAcceptanceTest := HeraSpecAcceptanceTest stepMethods.
 	stepMethodsOfHeraAcceptanceTest := HeraAcceptanceTest stepMethods.
-	stepSelectors := stepMethods collect:[:each|each selector].
-	stepSelectorsOfClass := stepMethodsOfClass collect:[:each|each selector].
-	self assert: (stepSelectors includesAll: stepSelectorsOfClass) description: [ stepSelectors asString , ' does not include all in ' , stepSelectorsOfClass asString ].
-	self assert: (stepMethods includesAll: stepMethodsOfHeraSpecAcceptanceTest) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfHeraSpecAcceptanceTest asString ].
-	self assert: (stepMethods includesAll: stepMethodsOfHeraAcceptanceTest) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfHeraAcceptanceTest asString ].
+
+	self assertMethodCollection: stepMethods includesAllMethods: stepMethodsOfClass.
+	self assertMethodCollection: stepMethods includesAllMethods: stepMethodsOfHeraSpecAcceptanceTest.
+	self assertMethodCollection: stepMethods includesAllMethods: stepMethodsOfHeraAcceptanceTest.
 	self assert: stepMethods size equals: stepMethodsOfClass size + stepMethodsOfHeraSpecAcceptanceTest size + stepMethodsOfHeraAcceptanceTest size
 ]
 
@@ -102,15 +109,17 @@ HeraScopeTestCase >> testAllStepMethodsWhenTwoClassesInScope [
 	subject
 		addClass: HeraAcceptanceTestWithStepArgumentsForTesting;
 		addClass: HeraAcceptanceTestWithPassForTesting.
+
 	stepMethods := subject allStepMethods.
 	stepMethodsOfClassOne := HeraAcceptanceTestWithStepArgumentsForTesting stepMethods.
 	stepMethodsOfClassTwo := HeraAcceptanceTestWithPassForTesting stepMethods.
 	stepMethodsOfHeraSpecAcceptanceTest := HeraSpecAcceptanceTest stepMethods.
 	stepMethodsOfHeraAcceptanceTest := HeraAcceptanceTest stepMethods.
-	self assert: (stepMethods includesAll: stepMethodsOfClassOne).
-	self assert: (stepMethods includesAll: stepMethodsOfClassTwo).
-	self assert: (stepMethods includesAll: stepMethodsOfHeraSpecAcceptanceTest).
-	self assert: (stepMethods includesAll: stepMethodsOfHeraAcceptanceTest).
+
+	self assertMethodCollection: stepMethods includesAllMethods: stepMethodsOfClassOne.
+	self assertMethodCollection: stepMethods includesAllMethods: stepMethodsOfClassTwo.
+	self assertMethodCollection: stepMethods includesAllMethods: stepMethodsOfHeraSpecAcceptanceTest.
+	self assertMethodCollection: stepMethods includesAllMethods: stepMethodsOfHeraAcceptanceTest.
 	self assert: stepMethods size equals: stepMethodsOfClassOne size + stepMethodsOfClassTwo size + stepMethodsOfHeraSpecAcceptanceTest size + stepMethodsOfHeraAcceptanceTest size
 ]
 

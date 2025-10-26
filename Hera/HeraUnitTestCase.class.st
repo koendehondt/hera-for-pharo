@@ -10,6 +10,14 @@ Class {
 }
 
 { #category : 'asserting' }
+HeraUnitTestCase >> assertCollection: actualCollection includesAll: subcollection [
+
+	self
+		assert: (actualCollection includesAll: subcollection)
+		description: [ actualCollection asString , ' does not include all in ' , subcollection asString ]
+]
+
+{ #category : 'asserting' }
 HeraUnitTestCase >> assertText: actualText equals: expectedText [
 	"This assertion is needed because Text>>#= only compares the text, not the text attributes.
 	 On top of that, comparing TextAction instances is based on Object>>#=, which is undesired."
