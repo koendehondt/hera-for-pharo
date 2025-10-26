@@ -79,9 +79,9 @@ HeraScopeTestCase >> testAllStepMethodsWhenOneClassInScope [
 	stepMethodsOfClass := HeraAcceptanceTestWithStepArgumentsForTesting stepMethods.
 	stepMethodsOfHeraSpecAcceptanceTest := HeraSpecAcceptanceTest stepMethods.
 	stepMethodsOfHeraAcceptanceTest := HeraAcceptanceTest stepMethods.
-	self assert: (stepMethods includesAll: stepMethodsOfClass).
-	self assert: (stepMethods includesAll: stepMethodsOfHeraSpecAcceptanceTest).
-	self assert: (stepMethods includesAll: stepMethodsOfHeraAcceptanceTest).
+	self assert: (stepMethods includesAll: stepMethodsOfClass) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfClass asString ].
+	self assert: (stepMethods includesAll: stepMethodsOfHeraSpecAcceptanceTest) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfHeraSpecAcceptanceTest asString ].
+	self assert: (stepMethods includesAll: stepMethodsOfHeraAcceptanceTest) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfHeraAcceptanceTest asString ].
 	self assert: stepMethods size equals: stepMethodsOfClass size + stepMethodsOfHeraSpecAcceptanceTest size + stepMethodsOfHeraAcceptanceTest size
 ]
 
@@ -92,7 +92,7 @@ HeraScopeTestCase >> testAllStepMethodsWhenScopeIsEmpty [
 ]
 
 { #category : 'tests' }
-HeraScopeTestCase >> testAllStepMethodsWhenTwoClassInScope [
+HeraScopeTestCase >> testAllStepMethodsWhenTwoClassesInScope [
 	"Verify that superclasses are not considered twice."
 
 	| stepMethods stepMethodsOfClassOne stepMethodsOfHeraSpecAcceptanceTest stepMethodsOfHeraAcceptanceTest stepMethodsOfClassTwo |
