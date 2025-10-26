@@ -12,13 +12,19 @@ Class {
 }
 
 { #category : 'accessing' }
-HeraLintWarning >> color [
+HeraLintWarning >> highlightColor [
 
-	^ Color orange
+	^ nil
 ]
 
 { #category : 'accessing' }
 HeraLintWarning >> iconName [
 
 	^ #warning
+]
+
+{ #category : 'accessing' }
+HeraLintWarning >> underlineColor [
+
+	^ Color orange
 ]

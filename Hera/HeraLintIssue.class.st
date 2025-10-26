@@ -22,12 +22,6 @@ Class {
 }
 
 { #category : 'accessing' }
-HeraLintIssue >> color [
-
-	self subclassResponsibility
-]
-
-{ #category : 'accessing' }
 HeraLintIssue >> end [
 
 	^ end
@@ -37,6 +31,12 @@ HeraLintIssue >> end [
 HeraLintIssue >> end: anInteger [
 
 	end := anInteger
+]
+
+{ #category : 'accessing' }
+HeraLintIssue >> highlightColor [
+
+	self subclassResponsibility
 ]
 
 { #category : 'accessing' }
@@ -76,4 +76,10 @@ HeraLintIssue >> start [
 HeraLintIssue >> start: anInteger [
 
 	start := anInteger
+]
+
+{ #category : 'accessing' }
+HeraLintIssue >> underlineColor [
+
+	self subclassResponsibility
 ]

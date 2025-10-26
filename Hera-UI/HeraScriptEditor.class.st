@@ -369,7 +369,9 @@ HeraScriptEditor >> showWarnings [
 	warnings ifEmpty: [ ^ self ].
 	warnings do: [ :warning |
 		decorator := SpTextPresenterDecorator new.
-		decorator underlineColor: warning color.
+		"nil is not a valid underline color. A red underline will be displayed."
+		decorator underlineColor: (warning underlineColor ifNil: [ Color transparent ]).
+		decorator highlightColor: warning highlightColor.
 		decorator title: warning message.
 		decorator icon: (self iconNamed: warning iconName).
 		decorator iconBlock: [ :seg| seg ].

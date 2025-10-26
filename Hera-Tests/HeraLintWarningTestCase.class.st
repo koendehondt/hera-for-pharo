@@ -13,9 +13,9 @@ HeraLintWarningTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
-HeraLintWarningTestCase >> testColor [
+HeraLintWarningTestCase >> testHighlightColor [
 
-	self assert: subject color equals: Color orange
+	self assert: subject highlightColor isNil
 ]
 
 { #category : 'tests' }
@@ -29,4 +29,10 @@ HeraLintWarningTestCase >> testPrintString [
 
 	subject message: 'some message'.
 	self assert: subject printString equals: 'a HeraLintWarning : some message'
+]
+
+{ #category : 'tests' }
+HeraLintWarningTestCase >> testUnderlineColor [
+
+	self assert: subject underlineColor equals: Color orange
 ]

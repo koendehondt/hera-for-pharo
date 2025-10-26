@@ -12,13 +12,19 @@ Class {
 }
 
 { #category : 'accessing' }
-HeraLintMissingStepDefinitionWarning >> color [
+HeraLintMissingStepDefinitionWarning >> highlightColor [
 
-	^ Color blue
+	^ Color pink
 ]
 
 { #category : 'accessing' }
 HeraLintMissingStepDefinitionWarning >> iconName [
 
 	^ #uncommentedClass
+]
+
+{ #category : 'accessing' }
+HeraLintMissingStepDefinitionWarning >> underlineColor [
+
+	^ nil
 ]

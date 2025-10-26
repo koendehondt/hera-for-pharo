@@ -13,9 +13,9 @@ HeraLintMissingStepDefinitionWarningTestCase >> describedClass [
 ]
 
 { #category : 'tests' }
-HeraLintMissingStepDefinitionWarningTestCase >> testColor [
+HeraLintMissingStepDefinitionWarningTestCase >> testHighlightColorColor [
 
-	self assert: subject color equals: Color blue
+	self assert: subject highlightColor equals: Color pink
 ]
 
 { #category : 'tests' }
@@ -29,4 +29,10 @@ HeraLintMissingStepDefinitionWarningTestCase >> testPrintString [
 
 	subject message: 'some message'.
 	self assert: subject printString equals: 'a HeraLintMissingStepDefinitionWarning : some message'
+]
+
+{ #category : 'tests' }
+HeraLintMissingStepDefinitionWarningTestCase >> testUnderlineColor [
+
+	self assert: subject underlineColor isNil
 ]
