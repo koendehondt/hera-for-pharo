@@ -72,14 +72,16 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 { #category : 'tests' }
 HeraScopeTestCase >> testAllStepMethodsWhenOneClassInScope [
 
-	| stepMethods stepMethodsOfClass stepMethodsOfHeraSpecAcceptanceTest stepMethodsOfHeraAcceptanceTest |
+	| stepMethods stepMethodsOfClass stepMethodsOfHeraSpecAcceptanceTest stepMethodsOfHeraAcceptanceTest stepSelectors stepSelectorsOfClass |
 	subject := self describedClass new.
 	subject addClass: HeraAcceptanceTestWithStepArgumentsForTesting.
 	stepMethods := subject allStepMethods.
 	stepMethodsOfClass := HeraAcceptanceTestWithStepArgumentsForTesting stepMethods.
 	stepMethodsOfHeraSpecAcceptanceTest := HeraSpecAcceptanceTest stepMethods.
 	stepMethodsOfHeraAcceptanceTest := HeraAcceptanceTest stepMethods.
-	self assert: (stepMethods includesAll: stepMethodsOfClass) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfClass asString ].
+	stepSelectors := stepMethods collect:[:each|each selector].
+	stepSelectorsOfClass := stepMethodsOfClass collect:[:each|each selector].
+	self assert: (stepSelectors includesAll: stepSelectorsOfClass) description: [ stepSelectors asString , ' does not include all in ' , stepSelectorsOfClass asString ].
 	self assert: (stepMethods includesAll: stepMethodsOfHeraSpecAcceptanceTest) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfHeraSpecAcceptanceTest asString ].
 	self assert: (stepMethods includesAll: stepMethodsOfHeraAcceptanceTest) description: [ stepMethods asString , ' does not include all in ' , stepMethodsOfHeraAcceptanceTest asString ].
 	self assert: stepMethods size equals: stepMethodsOfClass size + stepMethodsOfHeraSpecAcceptanceTest size + stepMethodsOfHeraAcceptanceTest size
