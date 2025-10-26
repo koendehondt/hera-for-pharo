@@ -17,8 +17,8 @@ BaselineOfHera >> baseline: spec [
 			package: 'Hera-UI' with: [ spec requires: #('Hera') ];
 			package: 'Hera-AcceptanceTestsForTesting' with: [ spec requires: #('Hera') ];
 			package: 'Hera-AcceptanceTests' with: [ spec requires: #('Hera') ];
-			package: 'Hera-Pharo-AcceptanceTests' with: [ spec requires: #('Hera') ];
 			package: 'Hera-Documentation' with: [ spec requires: #('Hera') ];
+			package: 'Hera-Pharo-AcceptanceTests' with: [ spec requires: #('Hera') ];
 			package: 'Hera-Tests' with: [ spec requires: #('Hera' 'Hera-AcceptanceTestsForTesting') ];
 			package: 'Hera-UI-Tests' with: [ spec requires: #('Hera-UI' 'Hera-AcceptanceTestsForTesting') ];
 			package: 'Hera-Tools';
