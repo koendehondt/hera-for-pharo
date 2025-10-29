@@ -13,13 +13,31 @@ HeraSpecExamplesAcceptanceTest class >> nameInBrowser [
 ]
 
 { #category : 'features' }
+HeraSpecExamplesAcceptanceTest >> featureLists [
+
+	<heraFeature: 'Lists'>
+
+	^ (self feature: 'Lists')
+		scenarios: {
+			(self scenario: 'Empty list')
+				when: 'I open the Family Tree application';
+				then: 'I see an empty "Children" list' .
+			(self scenario: 'Non-empty list')
+				when: 'I open the Family Tree application';
+				when: 'I select "John" in the "Family" tree';
+				then: 'I see exactly the following items in the "Children" list:' with: (self dataTable: {
+					{ 'Jane' } .
+					{ 'Mary' } }) }
+]
+
+{ #category : 'features' }
 HeraSpecExamplesAcceptanceTest >> featureTrees [
 
 	<heraFeature: 'Trees'>
 
 	^ (self feature: 'Trees')
 		scenarios: {
-			(self scenario: 'Describing a tree')
+			(self scenario: 'Tree with one root')
 				when: 'I open the Family Tree application';
 				then: 'I see the following "Family" tree:' with: (self dataTree: {
 					'John' -> { } }) .
@@ -88,4 +106,37 @@ HeraSpecExamplesAcceptanceTest >> stepIOpenTheFamilyTreeApplication [
 	<heraStepDefinition: #(When 'I open the Family Tree application')>
 
 	self openPresenter: HeraExampleSpecApplication new as: #familyTree
+]
+
+{ #category : 'steps' }
+HeraSpecExamplesAcceptanceTest >> stepISeeAnEmptyListNamed: aListPresenterName [
+
+	<heraStepDefinition: #(Then match 'I see an empty {string} list')>
+
+	| list |
+	list := self activePresenter
+		heraWidgetAt: aListPresenterName
+		ifAbsent: [ self error: 'The list cannot be found.' ].
+	self assert: list items isEmpty description: [ 'The list has {1}.' format: { 'item' heraPluralizeFor: list listSize } ]
+]
+
+{ #category : 'steps' }
+HeraSpecExamplesAcceptanceTest >> stepISeeTheListNamed: aListPresenterName withTheFollowingItems: aDataTable [
+
+	<heraStepDefinition: #(Then match 'I see exactly the following items in the {string} list:')>
+
+	| list actualItems expectedItems |
+	list := self activePresenter
+		heraWidgetAt: aListPresenterName
+		ifAbsent: [ self error: 'The list cannot be found.' ].
+	actualItems := list items.
+	expectedItems := aDataTable asArray.
+	self
+		assert: actualItems size = expectedItems size
+		description: [ 'The list has {1}, but the data table has {2}.' format: { 'item' heraPluralizeFor: actualItems size . 'item' heraPluralizeFor: expectedItems size } ].
+	expectedItems withIndexDo: [ :expectedItem :index | | actualItem |
+		actualItem := list display value: (actualItems at: index).
+		self
+			assert: expectedItem = actualItem
+			description: [ 'Row {1}: Expected {2}, but found {3}.' format: { index . expectedItem . actualItem } ] ]
 ]
