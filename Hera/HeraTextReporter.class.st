@@ -234,7 +234,7 @@ HeraTextReporter >> reportStartOfBackgroundStep: aStep [
 		nextPutAll: ' [Background]'.
 	aStep argument ifNotNil: [ :stepArgument |
 		stream cr.
-		stepArgument printFormattedOn: stream indentation: indentation ]
+		stepArgument printFormattedOn: stream indentation: indentation + 1 ]
 ]
 
 { #category : 'reporting' }
