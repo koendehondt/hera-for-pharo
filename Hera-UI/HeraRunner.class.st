@@ -362,7 +362,8 @@ HeraRunner >> updateButtons [
 { #category : 'updating' }
 HeraRunner >> updateFromReporter [
 
-	self updateWindowTitle
+	self updateWindowTitle.
+	self currentWorld doOneCycle "Otherwise the runner does not update and the described application does not update either."
 ]
 
 { #category : 'updating' }
