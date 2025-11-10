@@ -120,6 +120,12 @@ HeraAcceptanceTest >> beforeScenario [
 	"Default is to do nothing."
 ]
 
+{ #category : 'utilities' }
+HeraAcceptanceTest >> commaSeparated: aCollectionOfStrings [
+
+	^ ', ' join: (aCollectionOfStrings collect: [ :each | '"{1}"' format: { each } ])
+]
+
 { #category : 'copying' }
 HeraAcceptanceTest >> copyForRunning [
 
@@ -142,6 +148,15 @@ HeraAcceptanceTest >> dataTree: anArrayOfAssociations [
 HeraAcceptanceTest >> docString: anArrayOfStrings [
 
 	^ HeraDocStringArgument new docString: (HeraDocString new lines: anArrayOfStrings)
+]
+
+{ #category : 'errors' }
+HeraAcceptanceTest >> errorIf: aBoolean description: aStringOrBlock [
+
+	<debuggerCompleteToSender>
+	
+	aBoolean ifFalse: [ ^ self ].
+	self error: aStringOrBlock value
 ]
 
 { #category : 'private' }

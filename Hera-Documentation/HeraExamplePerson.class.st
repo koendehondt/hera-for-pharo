@@ -3,7 +3,9 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'name',
-		'children'
+		'children',
+		'isDisabled',
+		'sex'
 	],
 	#category : 'Hera-Documentation-Example domain',
 	#package : 'Hera-Documentation',
@@ -17,6 +19,24 @@ HeraExamplePerson >> addChild: aPerson [
 ]
 
 { #category : 'accessing' }
+HeraExamplePerson >> beFemale [
+
+	sex := #female
+]
+
+{ #category : 'accessing' }
+HeraExamplePerson >> beMale [
+
+	sex := #male
+]
+
+{ #category : 'accessing' }
+HeraExamplePerson >> beOther [
+
+	sex := #other
+]
+
+{ #category : 'accessing' }
 HeraExamplePerson >> children [
 
 	^ children
@@ -26,7 +46,39 @@ HeraExamplePerson >> children [
 HeraExamplePerson >> initialize [
 
 	super initialize.
+	name := 'Unknown'.
+	isDisabled := false.
 	children := OrderedCollection new
+]
+
+{ #category : 'accessing' }
+HeraExamplePerson >> isDisabled [
+
+	^ isDisabled
+]
+
+{ #category : 'accessing' }
+HeraExamplePerson >> isDisabled: aBoolean [
+
+	isDisabled := aBoolean
+]
+
+{ #category : 'testing' }
+HeraExamplePerson >> isFemale [
+
+	^ sex = #female
+]
+
+{ #category : 'testing' }
+HeraExamplePerson >> isMale [
+
+	^ sex = #male
+]
+
+{ #category : 'testing' }
+HeraExamplePerson >> isOther [
+
+	^ sex = #other
 ]
 
 { #category : 'accessing' }
