@@ -38,8 +38,8 @@ HeraExamplePersonDetailsPresenter >> defaultLayout [
 		spacing: 10;
 		add: nameLabel expand: false;
 		add: nameField expand: false;
-		add: disabledCheckbox expand: false;
 		add: sexLayout expand: false;
+		add: disabledCheckbox expand: false;
 		add: childrenLabel expand: false;
 		add: childrenList;
 		yourself
