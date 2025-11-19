@@ -11,7 +11,8 @@ Class {
 		'runSelectedFeaturesButton',
 		'runAllFeaturesButton',
 		'stepSelectedFeaturesButton',
-		'debugSelectedFeaturesButton'
+		'debugSelectedFeaturesButton',
+		'saveFeaturesButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -274,6 +275,11 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		help: 'Browse steps';
 		icon: (Hera settings iconNamed: #book);
 		action: [ self browseSteps ];
+		yourself.
+	saveFeaturesButton := self newButton
+		help: 'Save features';
+		icon: (Hera settings iconNamed: #saveFeatures);
+		action: [ self saveFeatures ];
 		yourself
 ]
 
@@ -376,6 +382,21 @@ HeraFeatureSelector >> runnerScopeForSelectedFeatures [
 	^ HeraRunnerScope withAll: acceptanceTests
 ]
 
+{ #category : 'actions' }
+HeraFeatureSelector >> saveFeatures [
+	"Let the user select a root folder and save all features in separate .feature files, organized in folders per acceptance test class."
+
+	| folderReference |
+	folderReference := self application newOpenFile 
+		title: 'Choose a folder to save the features';
+		beOpenDirectory;
+		openModal.
+	folderReference ifNil: [ ^ self ].
+	HeraFeatureExporter new
+		scope: self scope;
+		exportFeaturesTo: folderReference
+]
+
 { #category : 'accessing' }
 HeraFeatureSelector >> scope [
 
@@ -455,6 +476,7 @@ HeraFeatureSelector >> toolbar [
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
 		add: browseStepsButton width: 40;
+		add: saveFeaturesButton width: 40;
 		yourself.
 	^ SpBoxLayout newLeftToRight
 		add: manageGroup width: 120;
