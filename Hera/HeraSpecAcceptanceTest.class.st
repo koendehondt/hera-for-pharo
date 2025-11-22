@@ -286,7 +286,7 @@ HeraSpecAcceptanceTest >> stepIDoNotSeeTheWindowTitled: aWindowTitle [
 { #category : 'steps - trees' }
 HeraSpecAcceptanceTest >> stepIDoubleClick: aTreeItemPath inTheTreeNamed: aTreePresenterName [
 
-	<heraStepDefinition: #(Given match 'I double click {string} in the {string} tree')>
+	<heraStepDefinition: #(When match 'I double click {string} in the {string} tree')>
 
 	self
 		findTreePathFor: aTreeItemPath
@@ -320,7 +320,7 @@ HeraSpecAcceptanceTest >> stepIExpand: aTreeItemPath inTreeNamed: aTreePresenter
 { #category : 'steps - fields' }
 HeraSpecAcceptanceTest >> stepIFillIn: aString inTheFieldNamed: aFieldPresenterName [
 
-	<heraStepDefinition: #(Given match 'I fill in {string} in the {string} field')>
+	<heraStepDefinition: #(When match 'I fill in {string} in the {string} field')>
 
 	| field |
 	field := self fieldPresenterAt: aFieldPresenterName.

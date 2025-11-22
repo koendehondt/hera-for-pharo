@@ -4,8 +4,8 @@ Class {
 	#instVars : [
 		'table',
 		'editor',
-		'filter',
-		'scope'
+		'scope',
+		'stepFilterCriteria'
 	],
 	#category : 'Hera-UI-Step Browser',
 	#package : 'Hera-UI',
@@ -48,11 +48,16 @@ HeraFilteredSteps >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'initialization' }
-HeraFilteredSteps >> filter: aStepFilter [
+{ #category : 'private' }
+HeraFilteredSteps >> filterSteps [
 
-	filter := aStepFilter.
 	table items: self sortedStepMethodItems
+]
+
+{ #category : 'test api' }
+HeraFilteredSteps >> filteredSteps [
+
+	^ table items
 ]
 
 { #category : 'actions' }
@@ -67,7 +72,7 @@ HeraFilteredSteps >> initializePresenters [
 	| descriptionColumn |
 	descriptionColumn := SpStringTableColumn
 		title: 'Step'
-		evaluated: [ :stepMethod | stepMethod stepDescription ].
+		evaluated: [ :stepMethod | stepMethod fullStepDescription ].
 	descriptionColumn compareFunction: [ :some : other | some < other ].
 	table := self newTable
 		addColumn: descriptionColumn;
@@ -118,10 +123,24 @@ HeraFilteredSteps >> selectedStepMethodItem [
 	^ table selectedItem
 ]
 
+{ #category : 'initialization' }
+HeraFilteredSteps >> setupAfterOpening [
+
+	self filterSteps
+]
+
 { #category : 'private' }
 HeraFilteredSteps >> sortedStepMethodItems [
 
-	^ self stepMethodItems sort: [ :some :other | some stepDescription caseInsensitiveLessOrEqual: other stepDescription ]
+	^ self stepMethodItems sort: [ :some :other | some fullStepDescription caseInsensitiveLessOrEqual: other fullStepDescription ]
+]
+
+{ #category : 'accessing' }
+HeraFilteredSteps >> stepFilterCriteria: someStepFilterCriteria [
+
+	stepFilterCriteria ifNotNil: [ stepFilterCriteria removeDependent: self ].
+	stepFilterCriteria := someStepFilterCriteria.
+	stepFilterCriteria addDependent: self
 ]
 
 { #category : 'private' }
@@ -129,7 +148,7 @@ HeraFilteredSteps >> stepMethodItems [
 
 	^ self stepMethods
 		collect: [ :each | HeraStepMethodItem new stepMethod: each ]
-		thenSelect: [ :each | filter select: each ]
+		thenSelect: [ :each | stepFilterCriteria satisfiedBy: each ]
 ]
 
 { #category : 'private' }
@@ -138,8 +157,8 @@ HeraFilteredSteps >> stepMethods [
 	^ scope allStepMethods
 ]
 
-{ #category : 'test api' }
-HeraFilteredSteps >> tableItems [
+{ #category : 'updating' }
+HeraFilteredSteps >> update: anAspect [
 
-	^ table items
+	self filterSteps
 ]

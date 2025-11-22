@@ -358,7 +358,7 @@ Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
 { #category : 'steps' }
 HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheFirstScenario [
 
-	<heraStepDefinition: #(Given 'I see the output of running the first scenario')>
+	<heraStepDefinition: #(Then 'I see the output of running the first scenario')>
 
 	self assert: self featureRunner runLog asString equals: 'Running 1 feature.
 

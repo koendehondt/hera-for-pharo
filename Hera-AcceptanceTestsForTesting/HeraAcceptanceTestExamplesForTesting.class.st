@@ -87,6 +87,17 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDebugStep [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithDeprecatedStep [
+
+	<heraFeature: 'With deprecated step'>
+
+	^ (self feature: 'With deprecated step')
+		scenarios: {
+			(self scenario: 'Deprecated steps are marked in the script editor and the log of the Hera Runner')
+				when: 'I touch the button to sign in' }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithDescriptionInBackground [
 
 	<heraFeature: 'With description in background'>
@@ -326,6 +337,13 @@ HeraAcceptanceTestExamplesForTesting >> stepAnErrorOccurs [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepDeprecated [
+	<heraDeprecated: 'Use "When I click the button to sign in" instead.'>
+
+	<heraStepDefinition: #(When 'I touch the button to sign in')>
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIAddANewUser [
 	
 	<heraStepDefinition: #(When 'I add a new user')>
@@ -414,7 +432,7 @@ HeraAcceptanceTestExamplesForTesting >> stepIRemoveAUser [
 { #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIRemoveTheFollowingUsers: aDataTable [
 
-	<heraStepDefinition: #(Given 'I remove the following users:')>
+	<heraStepDefinition: #(When 'I remove the following users:')>
 
 	(self stateAt: #users) removeAll: aDataTable asDictionaries
 ]

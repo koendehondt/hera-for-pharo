@@ -2,40 +2,48 @@ Class {
 	#name : 'HeraStepBrowser',
 	#superclass : 'HeraPresenter',
 	#instVars : [
-		'notebook',
-		'scope'
+		'scope',
+		'stepFilterCriteriaPanel',
+		'filteredStepsPanel'
 	],
 	#category : 'Hera-UI-Step Browser',
 	#package : 'Hera-UI',
 	#tag : 'Step Browser'
 }
 
+{ #category : 'initialization' }
+HeraStepBrowser >> connectPresenters [
+
+	filteredStepsPanel stepFilterCriteria: stepFilterCriteriaPanel stepFilterCriteria
+]
+
 { #category : 'test api' }
 HeraStepBrowser >> copyStepDescriptionToClipboard [
 
-	notebook selectedPage activePresenter copyStepDescriptionToClipboard
+	filteredStepsPanel copyStepDescriptionToClipboard
 ]
 
 { #category : 'layout' }
 HeraStepBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
-		add: notebook;
+		add: stepFilterCriteriaPanel expand: false fill: true padding: 15;
+		add: filteredStepsPanel;
 		yourself
 ]
 
 { #category : 'initialization' }
 HeraStepBrowser >> initializePresenters [
 
-	notebook := self newNotebook
-		addPageTitle: 'All' provider: [ HeraFilteredSteps new scope: self scope; filter: HeraAllStepsFilter new ];
-		addPageTitle: 'Given' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #Given) ];
-		addPageTitle: 'When' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #When) ];
-		addPageTitle: 'Then' provider: [ HeraFilteredSteps new scope: self scope; filter: (HeraTypeBasedStepFilter new stepType: #Then) ];
-		addPageTitle: 'Duplicates' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
-		addPageTitle: 'Empty' provider: [ HeraFilteredSteps new scope: self scope; filter: HeraEmptyStepFilter new ];
-		addPageTitle: 'Unused' provider: [ SpLabelPresenter new label: 'Not implemented yet' ];
-		yourself
+	stepFilterCriteriaPanel := self instantiate: HeraStepFilterCriteriaPresenter on: HeraStepFilterCriteria new.
+	filteredStepsPanel := (self instantiate: HeraFilteredSteps) scope: self scope
+]
+
+{ #category : 'initialization' }
+HeraStepBrowser >> initializeWindow: aWindowPresenter [
+
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter whenOpenedDo: [ filteredStepsPanel setupAfterOpening ]
 ]
 
 { #category : 'accessing' }
@@ -47,13 +55,14 @@ HeraStepBrowser >> scope [
 { #category : 'accessing' }
 HeraStepBrowser >> scope: aScope [
 
-	scope := aScope
+	scope := aScope.
+	filteredStepsPanel scope: scope
 ]
 
 { #category : 'test api' }
 HeraStepBrowser >> selectStepMethodItem: aStepMethodItem [
 
-	notebook selectedPage activePresenter selectStepMethodItem: aStepMethodItem
+	filteredStepsPanel selectStepMethodItem: aStepMethodItem
 ]
 
 { #category : 'accessing' }

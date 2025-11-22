@@ -69,7 +69,7 @@ PharoFinderAcceptanceTest >> indexOf: scope in: searchModeDropList [
 { #category : 'steps' }
 PharoFinderAcceptanceTest >> stepICheckCase [
 
-	<heraStepDefinition: #(Given 'I check "Case"')>
+	<heraStepDefinition: #(When 'I check "Case"')>
 
 	self check: { #finder . #searchOptions . #caseCheckBox }
 ]
@@ -77,7 +77,7 @@ PharoFinderAcceptanceTest >> stepICheckCase [
 { #category : 'steps' }
 PharoFinderAcceptanceTest >> stepICheckExact [
 
-	<heraStepDefinition: #(Given 'I check "Exact"')>
+	<heraStepDefinition: #(When 'I check "Exact"')>
 
 	self check: { #finder . #searchOptions . #exactCheckBox }
 ]

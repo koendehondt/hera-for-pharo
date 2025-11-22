@@ -34,6 +34,26 @@ HeraStepMethodItemTestCase >> testFullStepDescriptionForThenStep [
 ]
 
 { #category : 'tests' }
+HeraStepMethodItemTestCase >> testIsDeprecated [
+
+	subject stepMethod: HeraAcceptanceTestExamplesForTesting >> #stepDeprecated.
+	self assert: subject isDeprecated.
+
+	subject stepMethod: HeraAcceptanceTestExamplesForTesting >> #stepIPressTheButtonToSignIn.
+	self deny: subject isDeprecated
+]
+
+{ #category : 'tests' }
+HeraStepMethodItemTestCase >> testIsEmpty [
+
+	subject stepMethod: HeraAcceptanceTestExamplesForTesting >> #stepAPassword.
+	self assert: subject isEmpty.
+
+	subject stepMethod: HeraAcceptanceTestExamplesForTesting >> #stepTheFollowingUsersExist:.
+	self deny: subject isEmpty
+]
+
+{ #category : 'tests' }
 HeraStepMethodItemTestCase >> testSaveSourcePutsMethodInGivenProtocol [
 
 	subject stepMethod: HeraAcceptanceTestExamplesForTesting>>#stepNoEmail.

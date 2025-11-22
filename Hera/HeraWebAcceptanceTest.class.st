@@ -125,7 +125,7 @@ HeraWebAcceptanceTest >> stepIPress: aKey [
 { #category : 'steps' }
 HeraWebAcceptanceTest >> stepIPressButton: aButtonLabel [
 
-	<heraStepDefinition: #(Given match 'I press the {string} button')>
+	<heraStepDefinition: #(When match 'I press the {string} button')>
 
 	self clickButtonLabeled: aButtonLabel
 ]

@@ -58,6 +58,18 @@ HeraStepMethodItem >> hash [
 	^ stepMethod hash
 ]
 
+{ #category : 'testing' }
+HeraStepMethodItem >> isDeprecated [
+
+	^ self stepMethod hasPragmaNamed: 'heraDeprecated:'
+]
+
+{ #category : 'testing' }
+HeraStepMethodItem >> isEmpty [
+
+	^ self stepMethod isReturnSelf
+]
+
 { #category : 'private' }
 HeraStepMethodItem >> pragma [
 
