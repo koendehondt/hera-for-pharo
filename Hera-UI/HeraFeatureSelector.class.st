@@ -12,7 +12,9 @@ Class {
 		'runAllFeaturesButton',
 		'stepSelectedFeaturesButton',
 		'debugSelectedFeaturesButton',
-		'saveFeaturesButton'
+		'saveFeaturesButton',
+		'documentationButton',
+		'browseButton'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -184,8 +186,6 @@ HeraFeatureSelector >> debugSelectedFeatures [
 HeraFeatureSelector >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
-		spacing: 5;
-		add: self toolbar expand: false;
 		add: classesAndFeatures;
 		yourself
 ]
@@ -251,6 +251,16 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		icon: (Hera settings iconNamed: #addFeature);
 		action: [ self addFeature ];
 		yourself.
+	browseStepsButton := self newButton
+		help: 'Browse steps';
+		icon: (Hera settings iconNamed: #book);
+		action: [ self browseSteps ];
+		yourself.
+	browseButton := self newButton
+		help: 'Browse selected class or feature';
+		iconName: #nautilus;
+		action: [ self browseSelectionInClassesAndFeatures ];
+		yourself.
 	runSelectedFeaturesButton := self newButton
 		help: 'Run selected features';
 		icon: (Hera settings iconNamed: #run);
@@ -271,15 +281,15 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		icon: (Hera settings iconNamed: #runAll);
 		action: [ self runAllFeatures ];
 		yourself.
-	browseStepsButton := self newButton
-		help: 'Browse steps';
-		icon: (Hera settings iconNamed: #book);
-		action: [ self browseSteps ];
-		yourself.
 	saveFeaturesButton := self newButton
 		help: 'Save features';
 		icon: (Hera settings iconNamed: #saveFeatures);
 		action: [ self saveFeatures ];
+		yourself.
+	documentationButton := self newButton
+		help: 'Domentation & examples';
+		icon: (Hera settings iconNamed: #help);
+		action: [ self openDocumentation ];
 		yourself
 ]
 
@@ -333,6 +343,15 @@ HeraFeatureSelector >> isRunSelectedFeaturesButtonEnabled [
 HeraFeatureSelector >> isStepSelectedFeaturesButtonEnabled [
 
 	^ stepSelectedFeaturesButton isEnabled
+]
+
+{ #category : 'actions' }
+HeraFeatureSelector >> openDocumentation [
+
+	HeraFeatureBrowser new
+		scope: (HeraScope new addClass: HeraSpecExamplesAcceptanceTest);
+		open;
+		windowTitle: 'Documentation & examples'
 ]
 
 { #category : 'actions' }
@@ -465,6 +484,8 @@ HeraFeatureSelector >> toolbar [
 		spacing: 10;
 		add: addAcceptanceTestClassButton width: 40;
 		add: addFeatureButton width: 40;
+		add: browseStepsButton width: 40;
+		add: browseButton width: 40;
 		yourself.
 	runGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
@@ -475,11 +496,11 @@ HeraFeatureSelector >> toolbar [
 		yourself.
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
-		add: browseStepsButton width: 40;
 		add: saveFeaturesButton width: 40;
+		add: documentationButton width: 40;
 		yourself.
 	^ SpBoxLayout newLeftToRight
-		add: manageGroup width: 120;
+		add: manageGroup width: 220;
 		add: runGroup width: 220;
 		add: browseGroup;
 		yourself
@@ -491,6 +512,7 @@ HeraFeatureSelector >> updateAfterSelectionChange [
 	| hasSelection |
 	addFeatureButton enabled: self hasSingleSelection.
 	hasSelection := self hasSelection.
+	browseButton enabled: hasSelection.
 	runSelectedFeaturesButton enabled: hasSelection.
 	stepSelectedFeaturesButton enabled: hasSelection.
 	debugSelectedFeaturesButton enabled: hasSelection

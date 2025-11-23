@@ -138,15 +138,20 @@ HeraFeatureBrowser >> debugScenario: scenarioAstNode [
 { #category : 'layout' }
 HeraFeatureBrowser >> defaultLayout [
 
-	| leftPanes |
-	leftPanes := SpPanedLayout newLeftToRight
-		add: featureSelector;
+	| rightPanes allPanes |
+	rightPanes := SpPanedLayout newLeftToRight
 		add: scriptEditor;
-		yourself.
-	^ SpPanedLayout newLeftToRight
-		positionOfSlider: 66 percent;
-		add: leftPanes;
 		add: stepEditor;
+		yourself.
+	allPanes := SpPanedLayout newLeftToRight
+		positionOfSlider: 33 percent;
+		add: featureSelector;
+		add: rightPanes;
+		yourself.
+	^ SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: featureSelector toolbar expand: false;
+		add: allPanes;
 		yourself
 ]
 
@@ -350,7 +355,7 @@ HeraFeatureBrowser >> updateWindowTitle [
 	title := featureSelector hasSingleSelection
 		ifTrue: [ featureSelector selectedItem windowTitle ]
 		ifFalse: [ self windowTitle ].
-	self withWindowDo: [ :window | window title: title ]
+	self windowTitle: title
 ]
 
 { #category : 'accessing' }
@@ -363,4 +368,10 @@ HeraFeatureBrowser >> windowIcon [
 HeraFeatureBrowser >> windowTitle [
 
 	^ self class windowTitle
+]
+
+{ #category : 'accessing' }
+HeraFeatureBrowser >> windowTitle: aString [
+
+	self withWindowDo: [ :window | window title: aString ]
 ]

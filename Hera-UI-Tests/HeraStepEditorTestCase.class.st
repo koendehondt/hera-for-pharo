@@ -22,26 +22,26 @@ HeraStepEditorTestCase >> testDefaultMethodInfo [
 HeraStepEditorTestCase >> testMethodInfoForMethodOnAcceptanceClass [
 
 	subject model: (HeraStepMethodItem new stepMethod: HeraAcceptanceTestExamplesForTesting>>#stepIHaveAUserName).
-	self assert: subject methodInfoText equals: 'Defined in HeraAcceptanceTestExamplesForTesting'
+	self assert: subject methodInfoText equals: 'Defined in HeraAcceptanceTestExamplesForTesting (steps)'
 ]
 
 { #category : 'tests' }
 HeraStepEditorTestCase >> testMethodInfoForMethodOnHelperClass [
 
 	subject model: (HeraStepMethodItem new stepMethod: HeraHelperForTesting>>#stepISeeTheHomePage).
-	self assert: subject methodInfoText equals: 'Defined in HeraHelperForTesting'
+	self assert: subject methodInfoText equals: 'Defined in HeraHelperForTesting (steps)'
 ]
 
 { #category : 'tests' }
 HeraStepEditorTestCase >> testMethodInfoForMethodOnHeraAcceptanceClass [
 
 	subject model: (HeraStepMethodItem new stepMethod: HeraAcceptanceTest>>#stepDebug).
-	self assert: subject methodInfoText equals: 'Defined in HeraAcceptanceTest'
+	self assert: subject methodInfoText equals: 'Defined in HeraAcceptanceTest (steps)'
 ]
 
 { #category : 'tests' }
 HeraStepEditorTestCase >> testMethodInfoForMethodOnTrait [
 
 	subject model: (HeraStepMethodItem new stepMethod: HeraWidgetHelperTraitForTesting>>#stepISeeTheHomePage).
-	self assert: subject methodInfoText equals: 'Defined in HeraWidgetHelperTraitForTesting'
+	self assert: subject methodInfoText equals: 'Defined in HeraWidgetHelperTraitForTesting (steps)'
 ]

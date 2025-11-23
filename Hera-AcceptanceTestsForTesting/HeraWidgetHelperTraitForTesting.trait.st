@@ -22,7 +22,7 @@ HeraWidgetHelperTraitForTesting >> seenTheHomePage [
 	^ self stateAt: #seenTheHomePage
 ]
 
-{ #category : 'accessing' }
+{ #category : 'steps' }
 HeraWidgetHelperTraitForTesting >> stepIFillInTheFieldLabeled: fieldLabel [
 
 	<heraStepDefinition: #(When match 'I fill in the field labeled {string}')>
@@ -30,7 +30,7 @@ HeraWidgetHelperTraitForTesting >> stepIFillInTheFieldLabeled: fieldLabel [
 	self stateAt: #givenFieldLabelArgument put: fieldLabel
 ]
 
-{ #category : 'accessing' }
+{ #category : 'steps' }
 HeraWidgetHelperTraitForTesting >> stepIPressTheButtonLabeled: buttonLabel [
 
 	<heraStepDefinition: #(When regex 'I press the button labeled "([^"]+)"')>
@@ -38,7 +38,7 @@ HeraWidgetHelperTraitForTesting >> stepIPressTheButtonLabeled: buttonLabel [
 	self stateAt: #givenButtonLabelArgument put: buttonLabel
 ]
 
-{ #category : 'accessing' }
+{ #category : 'steps' }
 HeraWidgetHelperTraitForTesting >> stepISeeTheHomePage [
 
 	<heraStepDefinition: #(Then 'I see the home page')>

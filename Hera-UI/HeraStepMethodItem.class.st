@@ -82,6 +82,12 @@ HeraStepMethodItem >> pragmaArgument [
 	^ self pragma argumentAt: 1
 ]
 
+{ #category : 'accessing' }
+HeraStepMethodItem >> protocolName [
+
+	^ self stepMethod protocol name
+]
+
 { #category : 'actions' }
 HeraStepMethodItem >> saveSource: stepMethodSource inProtocol: aProtocolName [
 

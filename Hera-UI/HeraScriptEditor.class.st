@@ -11,7 +11,6 @@ Class {
 		'cancelButton',
 		'modelChangedInProgress',
 		'originalScript',
-		'browseButton',
 		'runScenarioBlock',
 		'stepScenarioBlock',
 		'debugScenarioBlock',
@@ -211,11 +210,6 @@ HeraScriptEditor >> initializePresenters [
 { #category : 'initialization' }
 HeraScriptEditor >> initializeToolbarButtons [
 
-	browseButton := self newButton
-		help: 'Browse step method';
-		iconName: #nautilus;
-		action: [ self browseFeatureMethod ];
-		yourself.
 	saveButton := self newButton
 		help: 'Save';
 		iconName: #accept;
@@ -239,9 +233,9 @@ HeraScriptEditor >> installContextMenu [
 ]
 
 { #category : 'test api' }
-HeraScriptEditor >> isBrowseButtonEnabled [
+HeraScriptEditor >> isCancelButtonEnabled [
 
-	^ browseButton isEnabled
+	^ cancelButton isEnabled
 ]
 
 { #category : 'test api' }
@@ -254,6 +248,12 @@ HeraScriptEditor >> isDebugButtonEnabled [
 HeraScriptEditor >> isRunButtonEnabled [
 
 	^ runButton isEnabled
+]
+
+{ #category : 'test api' }
+HeraScriptEditor >> isSaveButtonEnabled [
+
+	^ saveButton isEnabled
 ]
 
 { #category : 'test api' }
@@ -280,7 +280,6 @@ HeraScriptEditor >> modelChanged [
 	script enabled: hasModel.
 	saveButton enabled: false.
 	cancelButton enabled: false.
-	browseButton enabled: hasModel.
 	self model
 		ifNil: [ self text: '' ]
 		ifNotNil: [
@@ -365,6 +364,7 @@ HeraScriptEditor >> showWarnings [
 
 	| decorator warnings |
 	script removeAllTextSegmentDecorations.
+	ast ifNil: [ ^ self ].
 	warnings := self lintWarnings.
 	warnings ifEmpty: [ ^ self ].
 	warnings do: [ :warning |
@@ -425,21 +425,11 @@ HeraScriptEditor >> text: aText [
 { #category : 'layout' }
 HeraScriptEditor >> toolbar [
 
-	| browseGroup saveGroup spacer |
-	browseGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: browseButton width: 40;
-		yourself.
-	saveGroup := SpBoxLayout newLeftToRight
+	^ SpBoxLayout newLeftToRight
 		spacing: 10;
 		hAlignEnd;
 		add: saveButton width: 40;
 		add: cancelButton width: 40;
-		yourself.
-	spacer := SpPresenter new layout: SpBoxLayout newLeftToRight; yourself.
-	^ SpBoxLayout newLeftToRight
-		add: browseGroup;
-		add: saveGroup width: 140;
 		yourself
 ]
 

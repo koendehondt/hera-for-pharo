@@ -129,7 +129,11 @@ HeraStepEditor >> methodInfoFor: aStepMethodItem [
 	^ String streamContents: [ :stream |
 		stream
 			nextPutAll: 'Defined in ';
-			print: aStepMethodItem acceptanceTestClass ]
+			print: aStepMethodItem acceptanceTestClass;
+			space;
+			nextPut: $(;
+			nextPutAll: aStepMethodItem protocolName;
+			nextPut: $) ]
 ]
 
 { #category : 'test api' }
