@@ -17,7 +17,8 @@ Class {
 		'runButton',
 		'stepByStepButton',
 		'debugButton',
-		'browseReferencesBlock'
+		'browseReferencesBlock',
+		'toolbar'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -170,7 +171,7 @@ HeraScriptEditor >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		spacing: 5;
-		add: self toolbar expand: false;
+		add: toolbar height: 24;
 		add: script;
 		yourself
 ]
@@ -201,14 +202,14 @@ HeraScriptEditor >> highlight: aStepMethodItem [
 HeraScriptEditor >> initializePresenters [
 
 	modelChangedInProgress := false.
-	self initializeToolbarButtons.
+	self initializeToolbar.
 	script := self newText
 		addStyle: 'featureText';
 		yourself
 ]
 
 { #category : 'initialization' }
-HeraScriptEditor >> initializeToolbarButtons [
+HeraScriptEditor >> initializeToolbar [
 
 	saveButton := self newButton
 		help: 'Save';
@@ -219,7 +220,11 @@ HeraScriptEditor >> initializeToolbarButtons [
 		help: 'Cancel';
 		iconName: #cancel;
 		action: [ self cancel ];
-		yourself
+		yourself.
+	toolbar := (self instantiate: HeraToolbar)
+		beAlignedAtEnd;
+		addButton: saveButton;
+		addButton: cancelButton
 ]
 
 { #category : 'private - menus' }
@@ -420,17 +425,6 @@ HeraScriptEditor >> text: aText [
 	aText ifEmpty: [ ^ self ].
 	self buildAst: aText string.
 	self showWarnings
-]
-
-{ #category : 'layout' }
-HeraScriptEditor >> toolbar [
-
-	^ SpBoxLayout newLeftToRight
-		spacing: 10;
-		hAlignEnd;
-		add: saveButton width: 40;
-		add: cancelButton width: 40;
-		yourself
 ]
 
 { #category : 'private' }

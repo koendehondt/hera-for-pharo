@@ -150,7 +150,7 @@ HeraFeatureBrowser >> defaultLayout [
 		yourself.
 	^ SpBoxLayout newTopToBottom
 		spacing: 5;
-		add: featureSelector toolbar expand: false;
+		add: featureSelector globalToolbar expand: false;
 		add: allPanes;
 		yourself
 ]

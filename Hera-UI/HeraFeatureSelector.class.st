@@ -14,7 +14,8 @@ Class {
 		'debugSelectedFeaturesButton',
 		'saveFeaturesButton',
 		'documentationButton',
-		'browseButton'
+		'browseButton',
+		'toolbar'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -186,6 +187,8 @@ HeraFeatureSelector >> debugSelectedFeatures [
 HeraFeatureSelector >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: toolbar height: 24;
 		add: classesAndFeatures;
 		yourself
 ]
@@ -204,6 +207,36 @@ HeraFeatureSelector >> featureSelectionChanged [
 
 	featureSelectionChangedBlock value: classesAndFeatures selectedItem.
 	self updateAfterSelectionChange
+]
+
+{ #category : 'layout' }
+HeraFeatureSelector >> globalToolbar [
+
+	| manageGroup browseGroup runGroup |
+	manageGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: addAcceptanceTestClassButton width: 40;
+		add: addFeatureButton width: 40;
+		add: browseStepsButton width: 40;
+		add: browseButton width: 40;
+		yourself.
+	runGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: runSelectedFeaturesButton width: 40;
+		add: stepSelectedFeaturesButton width: 40;
+		add: debugSelectedFeaturesButton width: 40;
+		add: runAllFeaturesButton width: 40;
+		yourself.
+	browseGroup := SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: saveFeaturesButton width: 40;
+		add: documentationButton width: 40;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		add: manageGroup width: 220;
+		add: runGroup width: 220;
+		add: browseGroup;
+		yourself
 ]
 
 { #category : 'test api' }
@@ -231,15 +264,7 @@ HeraFeatureSelector >> hasSingleSelection [
 ]
 
 { #category : 'initialization' }
-HeraFeatureSelector >> initializePresenters [
-
-	featureSelectionChangedBlock := [ :feaureMethodItem | ].
-	self initializeToolbarButtons.
-	classesAndFeatures := self newTree beMultipleSelection
-]
-
-{ #category : 'initialization' }
-HeraFeatureSelector >> initializeToolbarButtons [
+HeraFeatureSelector >> initializeGlobalToolbarButtons [
 
 	addAcceptanceTestClassButton := self newButton
 		help: 'Add acceptance test class';
@@ -291,6 +316,21 @@ HeraFeatureSelector >> initializeToolbarButtons [
 		icon: (Hera settings iconNamed: #help);
 		action: [ self openDocumentation ];
 		yourself
+]
+
+{ #category : 'initialization' }
+HeraFeatureSelector >> initializePresenters [
+
+	featureSelectionChangedBlock := [ :feaureMethodItem | ].
+	self initializeGlobalToolbarButtons.
+	self initializeToolbar.
+	classesAndFeatures := self newTree beMultipleSelection
+]
+
+{ #category : 'initialization' }
+HeraFeatureSelector >> initializeToolbar [
+
+	toolbar := self instantiate: HeraToolbar
 ]
 
 { #category : 'private - menus' }
@@ -474,36 +514,6 @@ HeraFeatureSelector >> stepSelectedFeatures [
 	(self instantiate: HeraRunner)
 		open;
 		stepScope: self runnerScopeForSelectedFeatures
-]
-
-{ #category : 'layout' }
-HeraFeatureSelector >> toolbar [
-
-	| manageGroup browseGroup runGroup |
-	manageGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: addAcceptanceTestClassButton width: 40;
-		add: addFeatureButton width: 40;
-		add: browseStepsButton width: 40;
-		add: browseButton width: 40;
-		yourself.
-	runGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: runSelectedFeaturesButton width: 40;
-		add: stepSelectedFeaturesButton width: 40;
-		add: debugSelectedFeaturesButton width: 40;
-		add: runAllFeaturesButton width: 40;
-		yourself.
-	browseGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		add: saveFeaturesButton width: 40;
-		add: documentationButton width: 40;
-		yourself.
-	^ SpBoxLayout newLeftToRight
-		add: manageGroup width: 220;
-		add: runGroup width: 220;
-		add: browseGroup;
-		yourself
 ]
 
 { #category : 'private' }

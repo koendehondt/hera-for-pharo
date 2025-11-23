@@ -13,7 +13,8 @@ Class {
 		'pattern',
 		'browseButton',
 		'methodInfo',
-		'originalSelector'
+		'originalSelector',
+		'toolbar'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -60,7 +61,7 @@ HeraStepEditor >> defaultLayout [
 		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;
-		add: self toolbar expand: false;
+		add: toolbar height: 24;
 		add: definition expand: false;
 		add: code;
 		add: methodInfo expand: false;
@@ -81,7 +82,7 @@ HeraStepEditor >> initializePresenters [
 
 	modelChangedInProgress := false.
 	self model: nil. "Otherwise the announcing object is not set."
-	self initializeToolbarButtons.
+	self initializeToolbar.
 	type := self newDropList
 		items: { 'Given' . 'When' . 'Then' };
 		startWithoutSelection;
@@ -96,7 +97,7 @@ HeraStepEditor >> initializePresenters [
 ]
 
 { #category : 'initialization' }
-HeraStepEditor >> initializeToolbarButtons [
+HeraStepEditor >> initializeToolbar [
 
 	browseButton := self newButton
 		help: 'Browse step method';
@@ -112,7 +113,13 @@ HeraStepEditor >> initializeToolbarButtons [
 		help: 'Cancel';
 		iconName: #cancel;
 		action: [ self cancel ];
-		yourself
+		yourself.
+	toolbar := (self instantiate: HeraToolbar)
+		beAlignedAtEnd;
+		addButton: browseButton;
+		addSpacer;
+		addButton: saveButton;
+		addButton: cancelButton
 ]
 
 { #category : 'private' }
@@ -263,27 +270,6 @@ HeraStepEditor >> sourceFor: aStepMethodItem [
 HeraStepEditor >> text [
 
 	^ code text
-]
-
-{ #category : 'layout' }
-HeraStepEditor >> toolbar [
-
-	| browseGroup saveGroup |
-	browseGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		hAlignEnd;
-		add: browseButton width: 40;
-		yourself.
-	saveGroup := SpBoxLayout newLeftToRight
-		spacing: 10;
-		hAlignEnd;
-		add: saveButton width: 40;
-		add: cancelButton width: 40;
-		yourself.
-	^ SpBoxLayout newLeftToRight
-		add: browseGroup;
-		add: saveGroup width: 140;
-		yourself
 ]
 
 { #category : 'private' }
