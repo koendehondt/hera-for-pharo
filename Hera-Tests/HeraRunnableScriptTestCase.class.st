@@ -276,39 +276,38 @@ HeraRunnableScriptTestCase >> testInstructionsWithFilter [
 { #category : 'tests' }
 HeraRunnableScriptTestCase >> testInstructionsWithRules [
 
-	| acceptanceTest scenarios feature scenario scenarioSteps rules firstRule secondRule firstScenarioInFirstRule stepsInFirstScenarioInFirstRule secondScenarioInFirstRule stepsInSecondScenarioInFirstRule scenarioInSecondRule stepsInScenarioInSecondRule |
-	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithRules.
-	feature := acceptanceTest feature.
-	subject acceptanceTests: { acceptanceTest }.
-	scenarios := feature scenarios.
-	scenario := scenarios first.
-	scenarioSteps := scenario steps.
-	rules := feature rules.
-	firstRule := rules first.
-	secondRule := rules second.
-	firstScenarioInFirstRule := firstRule scenarios first.
-	stepsInFirstScenarioInFirstRule := firstScenarioInFirstRule steps.
-	secondScenarioInFirstRule := firstRule scenarios second.
-	stepsInSecondScenarioInFirstRule := secondScenarioInFirstRule steps.
-	scenarioInSecondRule := secondRule scenarios first.
-	stepsInScenarioInSecondRule := scenarioInSecondRule steps.
+	"Avoid many temporaries and nested expressions in a dynamic array. There is a maximum of 15 temporaries. That is why a dictionary is used in this method.
+	 See https://github.com/pharo-project/pharo/issues/19058"
+
+	| feature scenario stepsInFirstScenarioInFirstRule secondScenarioInFirstRule scenarioInSecondRule vars |
+	vars := Dictionary new.
+	vars at: #acceptanceTest put: (HeraAcceptanceTestExamplesForTesting selector: #featureWithRules).
+	feature := (vars at: #acceptanceTest) feature.
+	subject acceptanceTests: { vars at: #acceptanceTest }.
+	scenario := feature scenarios first.
+	vars at: #scenarioSteps put: scenario steps.
+	vars at: #firstRule put: feature rules first.
+	vars at: #secondRule put: feature rules second.
+	stepsInFirstScenarioInFirstRule := (vars at: #firstRule) scenarios first steps.
+	secondScenarioInFirstRule := (vars at: #firstRule) scenarios second.
+	scenarioInSecondRule := (vars at: #secondRule) scenarios first.
 	self assert: subject instructions equals: {
 		(HeraStartFeaturesInstruction for: 1) .
-		(HeraStartFeatureInstruction for: acceptanceTest) .
+		(HeraStartFeatureInstruction for: (vars at: #acceptanceTest)) .
 		(HeraBackgroundInstruction new background: feature background) .
 		(HeraStartScenarioInstruction for: scenario) .
 		HeraBeforeScenarioHookInstruction new .
 		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: feature background steps first)).
-		(HeraRunStepInstruction for: scenarioSteps first) .
-		(HeraRunStepInstruction for: scenarioSteps second) .
+		(HeraRunStepInstruction for: (vars at: #scenarioSteps) first) .
+		(HeraRunStepInstruction for: (vars at: #scenarioSteps) second) .
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 
-		(HeraStartRuleInstruction for: firstRule) .
-		(HeraBackgroundInstruction new background: firstRule background) .
-		(HeraStartScenarioInstruction for: firstScenarioInFirstRule) .
+		(HeraStartRuleInstruction for: (vars at: #firstRule)) .
+		(HeraBackgroundInstruction new background: (vars at: #firstRule) background) .
+		(HeraStartScenarioInstruction for: (vars at: #firstRule) scenarios first) .
 		HeraBeforeScenarioHookInstruction new .
-		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: firstRule background steps first)).
+		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: (vars at: #firstRule) background steps first)).
 		(HeraRunStepInstruction for: stepsInFirstScenarioInFirstRule first) .
 		(HeraRunStepInstruction for: stepsInFirstScenarioInFirstRule second) .
 		(HeraRunStepInstruction for: stepsInFirstScenarioInFirstRule third) .
@@ -316,19 +315,19 @@ HeraRunnableScriptTestCase >> testInstructionsWithRules [
 		HeraEndScenarioInstruction new .
 		(HeraStartScenarioInstruction for: secondScenarioInFirstRule) .
 		HeraBeforeScenarioHookInstruction new .
-		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: firstRule background steps first)).
-		(HeraRunStepInstruction for: stepsInSecondScenarioInFirstRule first) .
-		(HeraRunStepInstruction for: stepsInSecondScenarioInFirstRule second) .
-		(HeraRunStepInstruction for: stepsInSecondScenarioInFirstRule third) .
+		(HeraBackgroundStepInstruction new stepInstruction: (HeraRunStepInstruction for: (vars at: #firstRule) background steps first)).
+		(HeraRunStepInstruction for: secondScenarioInFirstRule steps first) .
+		(HeraRunStepInstruction for: secondScenarioInFirstRule steps second) .
+		(HeraRunStepInstruction for: secondScenarioInFirstRule steps third) .
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndRuleInstruction new .
 
-		(HeraStartRuleInstruction for: secondRule) .
+		(HeraStartRuleInstruction for: (vars at: #secondRule)) .
 		(HeraStartScenarioInstruction for: scenarioInSecondRule) .
 		HeraBeforeScenarioHookInstruction new .
-		(HeraRunStepInstruction for: stepsInScenarioInSecondRule first) .
-		(HeraRunStepInstruction for: stepsInScenarioInSecondRule second) .
+		(HeraRunStepInstruction for: scenarioInSecondRule steps first) .
+		(HeraRunStepInstruction for: scenarioInSecondRule steps second) .
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndRuleInstruction new .
