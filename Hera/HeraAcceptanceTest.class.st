@@ -120,12 +120,6 @@ HeraAcceptanceTest >> beforeScenario [
 	"Default is to do nothing."
 ]
 
-{ #category : 'utilities' }
-HeraAcceptanceTest >> commaSeparated: aCollectionOfStrings [
-
-	^ ', ' join: (aCollectionOfStrings collect: [ :each | '"{1}"' format: { each } ])
-]
-
 { #category : 'copying' }
 HeraAcceptanceTest >> copyForRunning [
 
@@ -135,19 +129,19 @@ HeraAcceptanceTest >> copyForRunning [
 { #category : 'dsl' }
 HeraAcceptanceTest >> dataTable: anArrayOfArrays [
 
-	^ HeraDataTableArgument new dataTable: (HeraDataTable new data: anArrayOfArrays)
+	^ HeraDataTable new data: anArrayOfArrays
 ]
 
 { #category : 'dsl' }
 HeraAcceptanceTest >> dataTree: anArrayOfAssociations [
 
-	^ HeraDataTreeArgument new dataTree: (HeraDataTree from: anArrayOfAssociations)
+	^ HeraDataTree from: anArrayOfAssociations
 ]
 
 { #category : 'dsl' }
 HeraAcceptanceTest >> docString: anArrayOfStrings [
 
-	^ HeraDocStringArgument new docString: (HeraDocString new lines: anArrayOfStrings)
+	^ HeraDocString new lines: anArrayOfStrings
 ]
 
 { #category : 'errors' }
@@ -179,9 +173,9 @@ HeraAcceptanceTest >> feature [
 ]
 
 { #category : 'dsl' }
-HeraAcceptanceTest >> feature: aString [
+HeraAcceptanceTest >> feature: aTitleString [
 
-	^ HeraFeature new title: aString
+	^ HeraFeature new title: aTitleString
 ]
 
 { #category : 'accessing' }
@@ -236,6 +230,20 @@ HeraAcceptanceTest >> initializeStepDefinitions [
 				helper: eachHelper;
 				stepMethod: eachStepMethod.
 						self registerExecutableStep: executableStep forStepMethod: eachStepMethod ] ].
+]
+
+{ #category : 'accessing' }
+HeraAcceptanceTest >> methodFor: aStepAstNode in: aScenarioOutlineAstNode [
+
+	| dataTable dataTableAstNode resolvedStepDescription |
+	aScenarioOutlineAstNode ifNil: [ ^ self methodForStepDescription: aStepAstNode description ].
+	dataTableAstNode := aScenarioOutlineAstNode examples ifNil: [ ^ nil ] ifNotNil: [ :examples| examples examplesDataTable].
+	dataTable := dataTableAstNode dataTable ifNil: [ ^ nil ].
+	dataTable isEmpty ifTrue: [ ^ nil ].
+	dataTable asDictionaries do: [ :parametersAndValues |
+		resolvedStepDescription := aStepAstNode description heraParameterFormat: parametersAndValues.
+		(self methodForStepDescription: resolvedStepDescription) ifNotNil: [ :stepMethod | ^ stepMethod ] ].
+	^ nil
 ]
 
 { #category : 'accessing' }
@@ -304,9 +312,9 @@ HeraAcceptanceTest >> registerHelpers [
 ]
 
 { #category : 'dsl' }
-HeraAcceptanceTest >> rule: aString [
+HeraAcceptanceTest >> rule: aTitleString [
 
-	^ HeraRule new title: aString
+	^ HeraRule new title: aTitleString
 ]
 
 { #category : 'running' }
@@ -319,9 +327,15 @@ HeraAcceptanceTest >> runStep: aStep [
 ]
 
 { #category : 'dsl' }
-HeraAcceptanceTest >> scenario: aString [
+HeraAcceptanceTest >> scenario: aTitleString [
 
-	^ HeraScenario new title: aString
+	^ HeraScenario new title: aTitleString
+]
+
+{ #category : 'dsl' }
+HeraAcceptanceTest >> scenarioOutline: aTitleString [
+
+	^ HeraScenarioOutline new title: aTitleString
 ]
 
 { #category : 'failures' }

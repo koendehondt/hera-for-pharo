@@ -22,6 +22,14 @@ HeraTextBasedAstSearcherTestCase >> astForRule [
 		parseFeature
 ]
 
+{ #category : 'private' }
+HeraTextBasedAstSearcherTestCase >> astForScenarioOutline [
+
+	^ HeraParser new
+		initializeParserWith: self scriptWithScenarioOutline;
+		parseFeature
+]
+
 { #category : 'running' }
 HeraTextBasedAstSearcherTestCase >> describedClass [
 
@@ -80,6 +88,26 @@ HeraTextBasedAstSearcherTestCase >> scriptWithRule [
 Feature: Signing in
 
 	Rule: There is only one administrator'
+]
+
+{ #category : 'private' }
+HeraTextBasedAstSearcherTestCase >> scriptWithScenarioOutline [
+
+	^ 'Feature: With scenario outline
+
+	@counting_fruit
+	Scenario Outline: Counting <fruit>
+
+		Adding is easy.
+
+		Given I have <number> <fruit>
+		When I buy <additional> <fruit>
+		Then I have <sum> <fruit>
+
+		Examples:
+			| fruit   | number | additional | sum |
+			| apples  | 5      | 2          | 7   |
+			| oranges | 8      | 1          | 9   |'
 ]
 
 { #category : 'helpers' }
@@ -342,6 +370,114 @@ HeraTextBasedAstSearcherTestCase >> testSearchScenarioFromTag [
 		visit: self ast.
 	self assert: astNode class equals: HeraScenarioAstNode.
 	self assert: astNode title text equals: 'Successful sign-in'
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineDescriptionFromEndPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self endPositionOf: 'Adding is easy.' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraDescriptionAstNode.
+	self
+		assert: astNode lines
+		equals: (OrderedCollection with: 'Adding is easy.')
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineDescriptionFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'Adding is easy.' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraDescriptionAstNode.
+	self
+		assert: astNode lines
+		equals: (OrderedCollection with: 'Adding is easy.')
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineExamplesDataTableFromEndPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self endPositionOf: '| fruit' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraExamplesDataTableAstNode.
+	self assert: astNode dataTable equals: (HeraDataTable new data: {
+		{ 'fruit' . 'number' . 'additional' . 'sum' } .
+		{ 'apples' . '5' . '2' . '7' } .
+		{ 'oranges' . '8' . '1' . '9' } })
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineExamplesDataTableFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: '| fruit' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraExamplesDataTableAstNode.
+	self assert: astNode dataTable equals: (HeraDataTable new data: {
+		{ 'fruit' . 'number' . 'additional' . 'sum' } .
+		{ 'apples' . '5' . '2' . '7' } .
+		{ 'oranges' . '8' . '1' . '9' } })
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineExamplesFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'Examples:' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraExamplesAstNode
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'Scenario Outline: Counting <fruit>' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraScenarioOutlineAstNode.
+	self assert: astNode title text equals: 'Counting <fruit>'
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineTagFromEndPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self endPositionOf: '@counting_fruit' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraTagAstNode.
+	self assert: astNode name equals: 'counting_fruit'
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineTagFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: '@counting_fruit' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraTagAstNode.
+	self assert: astNode name equals: 'counting_fruit'
+]
+
+{ #category : 'tests - searching deepest node' }
+HeraTextBasedAstSearcherTestCase >> testSearchScenarioOutlineTitleFromStartPosition [
+
+	| astNode |
+	astNode := subject
+		textPosition: (self startPositionOf: 'Counting <fruit>' in: self scriptWithScenarioOutline);
+		visit: self astForScenarioOutline.
+	self assert: astNode class equals: HeraTitleAstNode.
+	self assert: astNode text equals: 'Counting <fruit>'
 ]
 
 { #category : 'tests - searching deepest node' }

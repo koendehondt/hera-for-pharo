@@ -12,6 +12,13 @@ HeraDataTreeArgument >> accept: visitor [
 	visitor visitDataTreeArgument: self
 ]
 
+{ #category : 'converting' }
+HeraDataTreeArgument >> asArgumentWithResolvedParameters: parametersAndValues [
+
+	^ self copy
+		dataTree: (argumentValue asDataTreeWithResolvedParameters: parametersAndValues)
+]
+
 { #category : 'accessing' }
 HeraDataTreeArgument >> dataTree: aDataTree [
 

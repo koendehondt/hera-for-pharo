@@ -38,3 +38,12 @@ HeraRegexStepDefinitionTestCase >> testMatchSingleArgument [
 	actualArguments := subject match: 'I press the button labeled Increase 5 times'.
 	self assert: actualArguments equals: #('Increase')
 ]
+
+{ #category : 'tests - with parameters' }
+HeraRegexStepDefinitionTestCase >> testMatchWithParameter [
+
+	| actualArguments |
+	subject pattern: 'I press the <field> labeled "(.+)" (\d+) times'.
+	actualArguments := subject match: 'I press the button labeled "Increase the value" 5 times'.
+	self assert: actualArguments equals: #('Increase the value' '5')
+]

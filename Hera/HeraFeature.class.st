@@ -104,6 +104,12 @@ HeraFeature >> scenarios: anArray [
 ]
 
 { #category : 'accessing' }
+HeraFeature >> scenariosWithResolvedParameters [
+
+	^ self scenarios flatCollect: [ :scenario | scenario asScenariosWithResolvedParameters ]
+]
+
+{ #category : 'accessing' }
 HeraFeature >> script [
 
 	^ self richScript string

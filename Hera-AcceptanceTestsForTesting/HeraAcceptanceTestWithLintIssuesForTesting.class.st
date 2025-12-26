@@ -33,5 +33,18 @@ HeraAcceptanceTestWithLintIssuesForTesting >> featureWithLintIssues [
 			(self scenario: 'a title should start with an uppercase letter')
 				given: 'I have credentials to sign in' .
 			(self scenario: 'A colon after a step keyword is not necessary')
-				given: ': I have credentials to sign in' }
+				given: ': I have credentials to sign in' .
+			(self scenarioOutline: 'Outline without examples')
+				given: 'I own <number> "<fruit>"' .
+			(self scenarioOutline: 'Outline with empty examples')
+				given: 'I own <number> "<fruit>"';
+				examples: (self dataTable: { }) .
+			(self scenarioOutline: 'Unused parameters in data table')
+				given: 'I own <number> "<fruit>"';
+				examples: (self dataTable: {
+					{ 'Unknown' . 'Unused' } .
+					{ '1' . 'apples' } }) .
+			(self scenario: 'Parameters  are not allowed in a data table')
+				given: 'I have:' with: (self dataTable: {
+					{ '<count>' . '<fruit>' } }) }
 ]

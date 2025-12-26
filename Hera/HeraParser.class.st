@@ -100,7 +100,7 @@ HeraParser >> parseBackground [
 ]
 
 { #category : 'parsing' }
-HeraParser >> parseDataTableStepArgument [
+HeraParser >> parseDataTableAs: dataTableAstNodeClass [
 
 	"DataTableToken has already been read."
 	| rows rowSizes end start |
@@ -117,10 +117,16 @@ HeraParser >> parseDataTableStepArgument [
 	rows ifEmpty: [ ^ nil ].
 	rowSizes size > 1 ifTrue: [
 		self parseError: 'Data table has missing cells' from: start to: end ].
-	^ HeraDataTableStepArgumentAstNode new
+	^ dataTableAstNodeClass new
 		dataTable: (HeraDataTable new data: rows asArray);
 		start: start;
 		end: end
+]
+
+{ #category : 'parsing' }
+HeraParser >> parseDataTableStepArgument [
+
+	^ self parseDataTableAs: HeraDataTableStepArgumentAstNode
 ]
 
 { #category : 'parsing' }
@@ -198,6 +204,29 @@ HeraParser >> parseError: aString from: sourceStartIndex to: sourceEndIndex [
 		start: sourceStartIndex;
 		end: sourceEndIndex.
 	parseError signal: aString
+]
+
+{ #category : 'parsing' }
+HeraParser >> parseExamples [
+
+	| start end |
+	currentToken isExamplesToken ifFalse: [ ^ nil ].
+	start := currentToken start.
+	end := currentToken end.
+	self skipEndOfLineToken.
+	scanner skipWhiteSpace.
+	self skipEmptyLines.
+	^ (self parseDataTableAs: HeraExamplesDataTableAstNode)
+		ifNil: [
+			HeraExamplesAstNode new
+				examplesDataTable: (HeraExamplesDataTableAstNode new dataTable: HeraDataTable new; start: end; end: end);
+				start: start;
+				end: end ]
+		ifNotNil: [ :examplesDataTable |
+			HeraExamplesAstNode new
+				examplesDataTable: examplesDataTable;
+				start: start;
+				end: examplesDataTable end ]
 ]
 
 { #category : 'parsing' }
@@ -283,11 +312,15 @@ HeraParser >> parseRules [
 { #category : 'parsing' }
 HeraParser >> parseScenario [
 
-	| scenarioNode tags description steps titleToken scenarioToken title start end |
-	"scenarioToken or tagToken has already been read."
+	| scenarioNode tags description steps titleToken scenarioToken title start end isParsingScenarioOutline |
+	"scenarioToken or scenarioOutlineToken or tagToken has already been read."
 	tags := self parseTags.
-	currentToken isScenarioToken 
-		ifFalse: [ self parseError: 'Scenario keyword expected' from: currentToken start to: currentToken end ].
+	isParsingScenarioOutline := currentToken isScenarioOutlineToken.
+	scenarioNode := currentToken isScenarioToken
+		ifTrue: [ HeraScenarioAstNode new ]
+		ifFalse: [ isParsingScenarioOutline
+			ifTrue: [ HeraScenarioOutlineAstNode new ]
+			ifFalse: [ self parseError: 'Scenario or Scenario Outline keyword expected' from: currentToken start to: currentToken end ] ].
 	scenarioToken := currentToken.
 	titleToken := self tryScanTextToken.
 	titleToken isTextToken ifFalse: [
@@ -300,9 +333,7 @@ HeraParser >> parseScenario [
 	description := nil.
 	steps := OrderedCollection new.
 	currentToken isEndOfFileToken ifFalse: [ description := self parseDescription ].
-	currentToken isEndOfFileToken ifFalse: [
-		steps := self parseStepsRestricted: [ :ignore | ] ].
-	scenarioNode := HeraScenarioAstNode new.
+	currentToken isEndOfFileToken ifFalse: [ steps := self parseStepsRestricted: [ :ignore | ] ].
 	start := tags ifEmpty: [ scenarioToken start ] ifNotEmpty: [ tags first start ].
 	end := steps ifEmpty: [ title end ] ifNotEmpty: [ steps last end ].
 	scenarioNode
@@ -312,6 +343,11 @@ HeraParser >> parseScenario [
 		steps: steps;
 		start: start;
 		end: end.
+	isParsingScenarioOutline ifFalse: [ ^ scenarioNode ].
+	self parseExamples ifNotNil: [ :examples |
+		scenarioNode
+			examples: examples;
+			end: examples end ].
 	^ scenarioNode
 ]
 
@@ -320,7 +356,7 @@ HeraParser >> parseScenarios [
 
 	| scenarioNodes |
 	scenarioNodes := OrderedCollection new.
-	[ currentToken isScenarioToken or: [ currentToken isTagToken ] ] whileTrue: [
+	[ currentToken isScenarioToken or: [ currentToken isScenarioOutlineToken or: [ currentToken isTagToken ] ] ] whileTrue: [
 		scenarioNodes add: self parseScenario ].
 	^ scenarioNodes
 ]
@@ -371,7 +407,7 @@ HeraParser >> parseStepsRestricted: aBlock [
 		stepNode := self parseStep.
 		stepNodes add: stepNode.
 		currentToken isEndOfLineToken ifTrue: [ self skipEmptyLines ] ].
-	(currentToken isEndOfFileToken or: [ currentToken isRuleToken or: [ currentToken isTagToken or: [ currentToken isScenarioToken ] ] ])
+	(currentToken isEndOfFileToken or: [ currentToken isRuleToken or: [ currentToken isTagToken or: [ currentToken isScenarioToken or: [ currentToken isScenarioOutlineToken or: [ currentToken isExamplesToken ] ] ] ] ])
 		ifFalse: [ self parseError: 'Step, step argument, or scenario expected' from: currentToken start to: currentToken end ].
 	^ stepNodes
 ]

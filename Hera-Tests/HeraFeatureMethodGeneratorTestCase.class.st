@@ -597,6 +597,117 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfFullFeature [
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfScenarioOutline [
+
+	| document ast |
+	document := '
+	Feature: Counting
+
+		@counting_fruit
+		Scenario Outline: Counting <fruit>
+
+			Adding is easy.
+			
+			Given I have <number> <fruit>
+			When I buy <additional> <fruit>
+			Then I have <sum> <fruit>
+			
+			Examples:
+				| fruit   | number | additional | sum |
+				| apples  | 5      | 2          | 7   |
+				| oranges | 8      | 1          | 9   |'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Counting''>
+
+	^ (self feature: ''Counting'')
+		scenarios: {
+			(self scenarioOutline: ''Counting <fruit>'')
+				tags: {
+					#counting_fruit };
+				description: {
+					''Adding is easy.'' };
+				given: ''I have <number> <fruit>'';
+				when: ''I buy <additional> <fruit>'';
+				then: ''I have <sum> <fruit>'';
+				examples: (self dataTable: {
+					{ ''fruit'' . ''number'' . ''additional'' . ''sum'' } .
+					{ ''apples'' . ''5'' . ''2'' . ''7'' } .
+					{ ''oranges'' . ''8'' . ''1'' . ''9'' } }) }'
+]
+
+{ #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfScenarioOutlineWithEmptyExamples [
+
+	| document ast |
+	document := '
+	Feature: Counting
+
+		@counting_fruit
+		Scenario Outline: Counting <fruit>
+
+			Adding is easy.
+			
+			Given I have <number> <fruit>
+			When I buy <additional> <fruit>
+			Then I have <sum> <fruit>
+			
+			Examples:'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Counting''>
+
+	^ (self feature: ''Counting'')
+		scenarios: {
+			(self scenarioOutline: ''Counting <fruit>'')
+				tags: {
+					#counting_fruit };
+				description: {
+					''Adding is easy.'' };
+				given: ''I have <number> <fruit>'';
+				when: ''I buy <additional> <fruit>'';
+				then: ''I have <sum> <fruit>'';
+				examples: (self dataTable: { }) }'
+]
+
+{ #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfScenarioOutlineWithoutExamples [
+
+	| document ast |
+	document := '
+	Feature: Counting
+
+		@counting_fruit
+		Scenario Outline: Counting <fruit>
+
+			Adding is easy.
+			
+			Given I have <number> <fruit>
+			When I buy <additional> <fruit>
+			Then I have <sum> <fruit>'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Counting''>
+
+	^ (self feature: ''Counting'')
+		scenarios: {
+			(self scenarioOutline: ''Counting <fruit>'')
+				tags: {
+					#counting_fruit };
+				description: {
+					''Adding is easy.'' };
+				given: ''I have <number> <fruit>'';
+				when: ''I buy <additional> <fruit>'';
+				then: ''I have <sum> <fruit>'' }'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationWithSingleQuotesInTitlesAndDescriptions [
 
 	| document ast |

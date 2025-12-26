@@ -29,12 +29,12 @@ HeraBackground >> and: aString [
 ]
 
 { #category : 'dsl' }
-HeraBackground >> and: aString with: aStepArgument [
+HeraBackground >> and: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraAndStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
 ]
 
@@ -45,12 +45,12 @@ HeraBackground >> but: aString [
 ]
 
 { #category : 'dsl' }
-HeraBackground >> but: aString with: aStepArgument [
+HeraBackground >> but: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraButStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
 ]
 
@@ -73,12 +73,12 @@ HeraBackground >> given: aString [
 ]
 
 { #category : 'dsl' }
-HeraBackground >> given: aString with: aStepArgument [
+HeraBackground >> given: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraGivenStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
 ]
 

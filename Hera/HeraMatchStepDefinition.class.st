@@ -53,6 +53,7 @@ HeraMatchStepDefinition >> match: aStepDescription [
 	| matcher matches regex lastMatchEnd |
 	types := self argumentTypesIn: pattern.
 	regex := pattern format: self supportedArguments.
+	regex := (RxMatcher forString: '<[^>]+>') copy: regex replacingMatchesWith: '.+'.
 	regex := regex copyReplaceAll: ':' with: '\:'.
 	matcher := RxMatcher forString: regex.
 	(matcher matches: aStepDescription) ifFalse: [ ^ nil ].

@@ -99,6 +99,79 @@ HeraRunnableScriptTestCase >> testInstructionsForMultipleFeatures [
 ]
 
 { #category : 'tests' }
+HeraRunnableScriptTestCase >> testInstructionsForScenarioOutline [
+
+	| acceptanceTest scenarios firstScenario secondScenario feature firstScenarioSteps secondScenarioSteps |
+	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithScenarioOutline.
+	feature := acceptanceTest feature.
+	subject acceptanceTests: { acceptanceTest }.
+	scenarios := feature scenariosWithResolvedParameters.
+	firstScenario := scenarios first.
+	self assert: firstScenario title equals: 'Counting apples'.
+	firstScenarioSteps := firstScenario steps.
+	self assert: firstScenarioSteps first description equals: 'I own 5 "apples"'.
+	self assert: firstScenarioSteps second description equals: 'I buy 2 "apples"'.
+	self assert: firstScenarioSteps third description equals: 'I have:'.
+	self assert: firstScenarioSteps third argumentValue equals: (HeraDataTable new data: {
+		{ '7' . 'apples' } } ).
+	self assert: firstScenarioSteps fourth argumentValue equals: (HeraDocString new lines: {
+		'Your purchase at the Fruit Shop.' .
+		'' .
+		'2 apples: 1.5 €' .
+		'--------------------------------' .
+		'Total: 1.5 €' .
+		'' .
+		'Thank you for your visit!' } ).
+	self assert: firstScenarioSteps fifth argumentValue equals: (HeraDataTree new data: {
+		HeraDataTreeItem new level: 1; text: 'Today' .
+		HeraDataTreeItem new level: 2; text: 'Fruit Shop: 1.5 €' }).
+	secondScenario := scenarios second.
+	self assert: secondScenario title equals: 'Counting oranges'.
+	secondScenarioSteps := secondScenario steps.
+	self assert: secondScenarioSteps first description equals: 'I own 8 "oranges"'.
+	self assert: secondScenarioSteps second description equals: 'I buy 1 "oranges"'.
+	self assert: secondScenarioSteps third description equals: 'I have:'.
+	self assert: secondScenarioSteps third argumentValue equals: (HeraDataTable new data: {
+		{ '9' . 'oranges' } } ).
+	self assert: secondScenarioSteps fourth argumentValue equals: (HeraDocString new lines: {
+		'Your purchase at the Fruit Shop.' .
+		'' .
+		'1 oranges: 0.8 €' .
+		'--------------------------------' .
+		'Total: 0.8 €' .
+		'' .
+		'Thank you for your visit!' } ).
+	self assert: secondScenarioSteps fifth argumentValue equals: (HeraDataTree new data: {
+		HeraDataTreeItem new level: 1; text: 'Today' .
+		HeraDataTreeItem new level: 2; text: 'Fruit Shop: 0.8 €' }).
+	self assert: subject instructions equals: {
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
+		(HeraStartScenarioInstruction for: firstScenario) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: firstScenarioSteps first) .
+		(HeraRunStepInstruction for: firstScenarioSteps second) .
+		(HeraRunStepInstruction for: firstScenarioSteps third) .
+		(HeraRunStepInstruction for: firstScenarioSteps fourth) .
+		(HeraRunStepInstruction for: firstScenarioSteps fifth) .
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		(HeraStartScenarioInstruction for: secondScenario) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: secondScenarioSteps first) .
+		(HeraRunStepInstruction for: secondScenarioSteps second) .
+		(HeraRunStepInstruction for: secondScenarioSteps third) .
+		(HeraRunStepInstruction for: secondScenarioSteps fourth) .
+		(HeraRunStepInstruction for: secondScenarioSteps fifth) .
+		
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
+		HeraResultSummaryInstruction new } asOrderedCollection
+]
+
+{ #category : 'tests' }
 HeraRunnableScriptTestCase >> testInstructionsWithBackground [
 
 	| acceptanceTest firstScenario secondScenario feature firstScenarioSteps secondScenarioSteps instructions backgroundStep backgroundInstruction |

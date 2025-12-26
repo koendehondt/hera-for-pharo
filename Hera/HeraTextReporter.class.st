@@ -29,8 +29,8 @@ HeraTextReporter >> initialize [
 
 	super initialize.
 	stream := TextStream on: (Text new: 1000).
-	reportsTags := false.
-	reportsDescriptions := false.
+	reportsTags := true.
+	reportsDescriptions := true.
 	indentation := 0
 ]
 

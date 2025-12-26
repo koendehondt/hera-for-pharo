@@ -29,6 +29,10 @@ HeraRunnerToolTestCase >> testRunAllSelfAcceptanceTests [
 
 Feature: Basic browsing
 
+	In order to read features
+	As a test author
+	I want to browse the available features
+
 	Scenario: Browsing when no features exist
 		Given no features exist
 		When I open the Feature Browser

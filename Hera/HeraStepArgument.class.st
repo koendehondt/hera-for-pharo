@@ -21,6 +21,12 @@ HeraStepArgument >> argumentValue [
 	^ argumentValue
 ]
 
+{ #category : 'converting' }
+HeraStepArgument >> asArgumentWithResolvedParameters: parametersAndValues [
+
+	self subclassResponsibility
+]
+
 { #category : 'printing' }
 HeraStepArgument >> printFormattedOn: aStream indentation: aNumberOfTabs [
 

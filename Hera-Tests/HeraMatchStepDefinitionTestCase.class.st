@@ -228,6 +228,16 @@ HeraMatchStepDefinitionTestCase >> testMatchTimestamp [
 		equals: { DateAndTime year: 2025 month: 8 day: 16 hour: 21 minute: 5 second: 34 offset: 0 hours }
 ]
 
+{ #category : 'tests - with parameters' }
+HeraMatchStepDefinitionTestCase >> testMatchWithParameter [
+
+	subject pattern: 'I see {word} in the <parameter>'.
+	self assert: (subject match: 'I see something in the field') equals: #('something').
+
+	subject pattern: 'I see {word} in the "<parameter>"'.
+	self assert: (subject match: 'I see something in the "field"') equals: #('something')
+]
+
 { #category : 'tests - word' }
 HeraMatchStepDefinitionTestCase >> testMatchWord [
 

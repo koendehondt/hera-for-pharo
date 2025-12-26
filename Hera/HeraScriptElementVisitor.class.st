@@ -55,6 +55,12 @@ HeraScriptElementVisitor >> visitScenario: aScenario [
 ]
 
 { #category : 'visiting' }
+HeraScriptElementVisitor >> visitScenarioOutline: aScenarioOutline [
+
+	self subclassResponsibility
+]
+
+{ #category : 'visiting' }
 HeraScriptElementVisitor >> visitStarStep: aStarStep [
 
 	self subclassResponsibility

@@ -16,6 +16,13 @@ HeraDataTreeItem >> = other [
 	^ self class = other class and: [ self level = other level and: [ self text = other text ] ]
 ]
 
+{ #category : 'converting' }
+HeraDataTreeItem >> asTreeItemWithResolvedParameters: parametersAndValues [
+
+	^ self copy
+		text: (self text heraParameterFormat: parametersAndValues)
+]
+
 { #category : 'accessing' }
 HeraDataTreeItem >> level [
 

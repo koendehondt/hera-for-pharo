@@ -82,7 +82,8 @@ HeraFeatureBrowser >> browseReferences: aStepAstNode [
 	aStepAstNode description = 'I pause' ifTrue: [
 		self inform: 'This step is implemented by Hera. References cannot be browsed.'.
 		^ self ].
-	stepMethodItem := HeraStepMethodItem new stepMethod: (self methodFor: aStepAstNode).
+	self flag: 'It is impossible to find references of a step with parameters.'.
+	stepMethodItem := HeraStepMethodItem new stepMethod: (self methodFor: aStepAstNode in: nil).
 	Hera browseReferencesTo: stepMethodItem inScope: scope
 ]
 
@@ -112,7 +113,7 @@ HeraFeatureBrowser >> connectPresenters [
 		self updateWindowTitle ].
 	scriptEditor
 		whenSubmitDo: [ :featureAstNode | self updateSelectedFeature: featureAstNode ];
-		whenOpenStepDo: [ :stepAstNode | self updateStepEditor: stepAstNode ];
+		whenOpenStepDo: [ :stepAstNode :scenarioOutlineAstNode | self updateStepEditorFor: stepAstNode in: scenarioOutlineAstNode ];
 		whenRunScenarioDo: [ :scenarioAstNode | self runScenario: scenarioAstNode ];
 		whenStepScenarioDo: [ :scenarioAstNode | self stepScenario: scenarioAstNode ];
 		whenDebugScenarioDo: [ :scenarioAstNode | self debugScenario: scenarioAstNode ];
@@ -234,9 +235,9 @@ HeraFeatureBrowser >> isBrowseStepsButtonEnabled [
 ]
 
 { #category : 'private' }
-HeraFeatureBrowser >> methodFor: aStepAstNode [
+HeraFeatureBrowser >> methodFor: aStepAstNode in: aScenarioOutlineAstNode [
 
-	^ self selectedMethodItem acceptanceTest methodForStepDescription: aStepAstNode description
+	^ self selectedMethodItem acceptanceTest methodFor: aStepAstNode in: aScenarioOutlineAstNode
 ]
 
 { #category : 'private' }
@@ -320,10 +321,11 @@ HeraFeatureBrowser >> stepScenario: scenarioAstNode [
 { #category : 'private' }
 HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 
-	| colonOrNothing suggestion |
+	| colonOrNothing suggestion descriptionWithoutParameters |
 	self flag: 'Take step arguments into account'.
 	colonOrNothing := aStepAstNode argument ifNil: [ '' ] ifNotNil: [ ':' ].
-	suggestion := aStepAstNode description asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
+	descriptionWithoutParameters := aStepAstNode description reject: [ :char | char = $< or: [ char = $> ] ].
+	suggestion := descriptionWithoutParameters asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
 	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
 ]
 
@@ -335,13 +337,13 @@ HeraFeatureBrowser >> updateSelectedFeature: aFeatureAstNode [
 ]
 
 { #category : 'private' }
-HeraFeatureBrowser >> updateStepEditor: aStepAstNode [
+HeraFeatureBrowser >> updateStepEditorFor: aStepAstNode in: aScenarioOutlineAstNode [
 
 	| stepMethod |
 	aStepAstNode description = 'I pause' ifTrue: [
 		self inform: 'This step is implemented by Hera. There is no step implementation.'.
 		^ self ].
-	stepMethod := self methodFor: aStepAstNode.
+	stepMethod := self methodFor: aStepAstNode in: aScenarioOutlineAstNode.
 	stepMethod ifNil: [ stepMethod := self addStepDefinitionMethodFor: aStepAstNode ].
 	stepMethod ifNil: [ ^ self ].
 	stepEditor model: (HeraStepMethodItem new stepMethod: stepMethod).

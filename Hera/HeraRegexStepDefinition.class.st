@@ -9,8 +9,9 @@ Class {
 { #category : 'matching' }
 HeraRegexStepDefinition >> match: aStepDescription [
 
-	| matcher |
-	matcher := RxMatcher forString: pattern.
+	| matcher patternWithoutParameters |
+	patternWithoutParameters := (RxMatcher forString: '<[^>]+>') copy: pattern replacingMatchesWith: '.+'.
+	matcher := RxMatcher forString: patternWithoutParameters.
 	(matcher matches: aStepDescription) ifFalse: [ ^ nil ].
 	matcher subexpressionCount = 1 ifTrue: [ ^ #() ].
 	^ (2 to: matcher subexpressionCount) collect: [ :subexpressionIndex | matcher subexpression: subexpressionIndex ]

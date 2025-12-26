@@ -7,6 +7,12 @@ Class {
 }
 
 { #category : 'accessing' }
+HeraStepArgumentAstNode >> parameters [
+
+	self subclassResponsibility
+]
+
+{ #category : 'accessing' }
 HeraStepArgumentAstNode >> stepMethodArgumentName [
 
 	self subclassResponsibility

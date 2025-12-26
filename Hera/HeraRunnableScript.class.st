@@ -70,7 +70,7 @@ HeraRunnableScript >> initializeInstructions [
 		instructions add: (HeraStartFeatureInstruction for: acceptanceTest).
 		feature background ifNotNil: [ :background |
 			instructions add: (HeraBackgroundInstruction new background: background) ].
-		filteredScenarios := feature scenarios select: [ :each | filter selects: each ].
+		filteredScenarios := feature scenariosWithResolvedParameters select: [ :each | filter selects: each ].
 		filteredScenarios do: [ :eachScenario |
 			totalScenarioCount := totalScenarioCount + 1.
 			instructions add: (HeraStartScenarioInstruction for: eachScenario).

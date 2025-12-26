@@ -27,6 +27,18 @@ HeraDocStringStepArgumentAstNode >> docString: aDocString [
 	docString := aDocString
 ]
 
+{ #category : 'testing' }
+HeraDocStringStepArgumentAstNode >> hasParameters [
+
+	^ self docString hasParameters
+]
+
+{ #category : 'accessing' }
+HeraDocStringStepArgumentAstNode >> parameters [
+
+	^ self docString parameters
+]
+
 { #category : 'accessing' }
 HeraDocStringStepArgumentAstNode >> stepMethodArgumentName [
 

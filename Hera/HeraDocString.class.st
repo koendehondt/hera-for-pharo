@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraDocString',
-	#superclass : 'Object',
+	#superclass : 'HeraStructuredData',
 	#instVars : [
 		'lines'
 	],
@@ -15,6 +15,26 @@ HeraDocString >> = other [
 	^ self class = other class and: [ self lines = other lines ]
 ]
 
+{ #category : 'converting' }
+HeraDocString >> asDocStringWithResolvedParameters: parametersAndValues [
+
+	| resolvedLines |
+	resolvedLines := self lines collect: [ :line | line heraParameterFormat: parametersAndValues ].
+	^ self copy lines: resolvedLines
+]
+
+{ #category : 'converting' }
+HeraDocString >> asStepArgument [
+
+	^ HeraDocStringArgument new docString: self
+]
+
+{ #category : 'comparing' }
+HeraDocString >> hash [
+
+	^ self lines hash
+]
+
 { #category : 'accessing' }
 HeraDocString >> lines [
 
@@ -25,6 +45,14 @@ HeraDocString >> lines [
 HeraDocString >> lines: anArrayOfStrings [
 
 	lines := anArrayOfStrings
+]
+
+{ #category : 'accessing' }
+HeraDocString >> parameters [
+
+	self lines ifNil: [ ^ Set new ].
+	^ self lines inject: Set new into: [ :accu :line |
+		accu addAll: (HeraParameterizedString new string: line) parameters; yourself ]
 ]
 
 { #category : 'printing' }

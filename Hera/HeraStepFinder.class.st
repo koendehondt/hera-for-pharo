@@ -14,8 +14,8 @@ Class {
 { #category : 'finding/searching' }
 HeraStepFinder >> collectReferencesTo: aStepDescription [
 
-	| references |
-	references := Bag new.
+	| bag |
+	bag := Bag new.
 	self scope acceptanceTestClasses do: [ :eachClass |
 		eachClass features do: [ :eachAcceptanceTest |
 			(eachAcceptanceTest methodForStepDescription: aStepDescription) ifNotNil: [ :stepMethod |
@@ -24,8 +24,8 @@ HeraStepFinder >> collectReferencesTo: aStepDescription [
 						foundStepMethodItem := HeraFeatureMethodItem new
 							acceptanceTestClass: eachClass;
 							featureMethodSelector: eachAcceptanceTest featureSelector.
-						references add: foundStepMethodItem ] ] ] ] ].
-	^ references
+						bag add: foundStepMethodItem ] ] ] ] ].
+	^ bag
 ]
 
 { #category : 'finding/searching' }

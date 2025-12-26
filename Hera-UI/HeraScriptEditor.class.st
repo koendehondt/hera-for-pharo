@@ -77,13 +77,14 @@ HeraScriptEditor >> addRunMenuGroupTo: parentGroup [
 { #category : 'private' }
 HeraScriptEditor >> altKeyClick: event [
 
-	| astNode |
+	| astNode searcher |
 	ast ifNil: [ ^ self ].
-	astNode := HeraTextBasedAstSearcher new
+	searcher := HeraTextBasedAstSearcher new.
+	astNode := searcher
 		textPosition: self caretPositionForAltClick;
 		visit: ast.
 	(astNode isNil or: [ astNode isStepNode not ]) ifTrue: [ ^ self ].
-	openStepBlock value: astNode
+	openStepBlock value: astNode value: searcher lastScenarioOutlineAstNode
 ]
 
 { #category : 'private' }

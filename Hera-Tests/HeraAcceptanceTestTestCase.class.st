@@ -68,8 +68,7 @@ HeraAcceptanceTestTestCase >> testDslDataTable [
 
 	| dataTableArgument |
 	dataTableArgument := subject dataTable: { { 'x' . 'y' } . { '10' . '20' } }.
-	self assert: (dataTableArgument isMemberOf: HeraDataTableArgument).
-	self assert: dataTableArgument argumentValue equals: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } })
+	self assert: dataTableArgument equals: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } })
 ]
 
 { #category : 'tests - dsl' }
@@ -77,8 +76,7 @@ HeraAcceptanceTestTestCase >> testDslDocString [
 
 	| dataTableArgument |
 	dataTableArgument := subject docString: { 'Line 1' . 'Line 2' }.
-	self assert: (dataTableArgument isMemberOf: HeraDocStringArgument).
-	self assert: dataTableArgument argumentValue equals: (HeraDocString new lines: { 'Line 1' . 'Line 2' })
+	self assert: dataTableArgument equals: (HeraDocString new lines: { 'Line 1' . 'Line 2' })
 ]
 
 { #category : 'tests - dsl' }

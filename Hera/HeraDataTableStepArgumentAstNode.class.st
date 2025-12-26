@@ -27,6 +27,18 @@ HeraDataTableStepArgumentAstNode >> dataTable: aDataTable [
 	dataTable := aDataTable
 ]
 
+{ #category : 'testing' }
+HeraDataTableStepArgumentAstNode >> hasParameters [
+
+	^ self dataTable hasParameters
+]
+
+{ #category : 'accessing' }
+HeraDataTableStepArgumentAstNode >> parameters [
+
+	^ self dataTable parameters
+]
+
 { #category : 'accessing' }
 HeraDataTableStepArgumentAstNode >> stepMethodArgumentName [
 

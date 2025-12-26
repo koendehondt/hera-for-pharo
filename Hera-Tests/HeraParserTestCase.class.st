@@ -1337,6 +1337,147 @@ Feature: With scenario tags
 	self assert: secondScenarioNode end equals: 142
 ]
 
+{ #category : 'tests - scenario outline' }
+HeraParserTestCase >> testParseScenarioOutlineWithEmptyExamples [
+
+	| script ast scenarioOutlineNode steps examplesDataTable |
+	script := '
+	Feature: Counting
+
+		@counting_fruit
+		Scenario Outline: Counting <fruit>
+
+			Adding is easy.
+
+			Given I have <number> <fruit>
+			When I buy <additional> <fruit>
+			Then I have <sum> <fruit>
+
+			Examples:'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Counting'.
+	self assert: ast scenarios size equals: 1.
+	scenarioOutlineNode := ast scenarios first.
+	self assert: scenarioOutlineNode class equals: HeraScenarioOutlineAstNode.
+	self assert: scenarioOutlineNode tags size equals: 1.
+	self assert: scenarioOutlineNode tags first class equals: HeraTagAstNode.
+	self assert: scenarioOutlineNode tags first name equals: 'counting_fruit'.
+	self assert: scenarioOutlineNode title class equals: HeraTitleAstNode.
+	self assert: scenarioOutlineNode title text equals: 'Counting <fruit>'.
+	self assert: scenarioOutlineNode description class equals: HeraDescriptionAstNode.
+	self assert: scenarioOutlineNode description lines equals: (OrderedCollection with: 'Adding is easy.').
+	steps := scenarioOutlineNode steps.
+	self assert: steps size equals: 3.
+	self assert: steps first class equals: HeraGivenAstNode.
+	self assert: steps first description equals: 'I have <number> <fruit>'.
+	self assert: steps second class equals: HeraWhenAstNode.
+	self assert: steps second description equals: 'I buy <additional> <fruit>'.
+	self assert: steps third class equals: HeraThenAstNode.
+	self assert: steps third description equals: 'I have <sum> <fruit>'.
+	self assert: scenarioOutlineNode examples class equals: HeraExamplesAstNode.
+	examplesDataTable := scenarioOutlineNode examples examplesDataTable.
+	self assert: examplesDataTable class equals: HeraExamplesDataTableAstNode.
+	self assert: examplesDataTable start equals: script size.
+	self assert: examplesDataTable end equals: script size.
+	self assert: examplesDataTable dataTable equals: HeraDataTable new
+]
+
+{ #category : 'tests - scenario outline' }
+HeraParserTestCase >> testParseScenarioOutlineWithParametersInDescriptionAndSteps [
+
+	| script ast scenarioOutlineNode steps examplesDataTable |
+	script := '
+	Feature: Counting
+
+		@counting_fruit
+		Scenario Outline: Counting <fruit>
+
+			Adding is easy.
+
+			Given I have <number> <fruit>
+			When I buy <additional> <fruit>
+			Then I have <sum> <fruit>
+
+			Examples:
+				| fruit   | number | additional | sum |
+				| apples  | 5      | 2          | 7   |
+				| oranges | 8      | 1          | 9   |'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Counting'.
+	self assert: ast scenarios size equals: 1.
+	scenarioOutlineNode := ast scenarios first.
+	self assert: scenarioOutlineNode class equals: HeraScenarioOutlineAstNode.
+	self assert: scenarioOutlineNode tags size equals: 1.
+	self assert: scenarioOutlineNode tags first class equals: HeraTagAstNode.
+	self assert: scenarioOutlineNode tags first name equals: 'counting_fruit'.
+	self assert: scenarioOutlineNode title class equals: HeraTitleAstNode.
+	self assert: scenarioOutlineNode title text equals: 'Counting <fruit>'.
+	self assert: scenarioOutlineNode description class equals: HeraDescriptionAstNode.
+	self assert: scenarioOutlineNode description lines equals: (OrderedCollection with: 'Adding is easy.').
+	steps := scenarioOutlineNode steps.
+	self assert: steps size equals: 3.
+	self assert: steps first class equals: HeraGivenAstNode.
+	self assert: steps first description equals: 'I have <number> <fruit>'.
+	self assert: steps second class equals: HeraWhenAstNode.
+	self assert: steps second description equals: 'I buy <additional> <fruit>'.
+	self assert: steps third class equals: HeraThenAstNode.
+	self assert: steps third description equals: 'I have <sum> <fruit>'.
+	self assert: scenarioOutlineNode examples class equals: HeraExamplesAstNode.
+	examplesDataTable := scenarioOutlineNode examples examplesDataTable.
+	self assert: examplesDataTable class equals: HeraExamplesDataTableAstNode.
+	self assert: examplesDataTable dataTable equals: (HeraDataTable new data: {
+		{ 'fruit' . 'number' . 'additional' . 'sum' } .
+		{ 'apples' . '5' . '2' . '7' } .
+		{ 'oranges' . '8' . '1' . '9' } })
+]
+
+{ #category : 'tests - scenario outline' }
+HeraParserTestCase >> testParseScenarioOutlineWithoutExamples [
+
+	| script ast scenarioOutlineNode steps |
+	script := '
+	Feature: Counting
+
+		@counting_fruit
+		Scenario Outline: Counting <fruit>
+
+			Adding is easy.
+
+			Given I have <number> <fruit>
+			When I buy <additional> <fruit>
+			Then I have <sum> <fruit>'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast title class equals: HeraTitleAstNode.
+	self assert: ast title text equals: 'Counting'.
+	self assert: ast scenarios size equals: 1.
+	scenarioOutlineNode := ast scenarios first.
+	self assert: scenarioOutlineNode class equals: HeraScenarioOutlineAstNode.
+	self assert: scenarioOutlineNode tags size equals: 1.
+	self assert: scenarioOutlineNode tags first class equals: HeraTagAstNode.
+	self assert: scenarioOutlineNode tags first name equals: 'counting_fruit'.
+	self assert: scenarioOutlineNode title class equals: HeraTitleAstNode.
+	self assert: scenarioOutlineNode title text equals: 'Counting <fruit>'.
+	self assert: scenarioOutlineNode description class equals: HeraDescriptionAstNode.
+	self assert: scenarioOutlineNode description lines equals: (OrderedCollection with: 'Adding is easy.').
+	steps := scenarioOutlineNode steps.
+	self assert: steps size equals: 3.
+	self assert: steps first class equals: HeraGivenAstNode.
+	self assert: steps first description equals: 'I have <number> <fruit>'.
+	self assert: steps second class equals: HeraWhenAstNode.
+	self assert: steps second description equals: 'I buy <additional> <fruit>'.
+	self assert: steps third class equals: HeraThenAstNode.
+	self assert: steps third description equals: 'I have <sum> <fruit>'.
+	self assert: scenarioOutlineNode examples isNil
+]
+
 { #category : 'tests - scenario' }
 HeraParserTestCase >> testParseScenarioWithAndKeywordAsFirstWordInTitle [
 
@@ -1495,13 +1636,15 @@ HeraParserTestCase >> testParseScenarioWithoutTags [
 HeraParserTestCase >> testParseScenarioWithoutTitle [
 
 	self
-		assertError: 'Scenario title expected after scenario keyword'
-		start: 30
-		end: 38
+		assertError: 'Scenario keyword expected'
+		start: 85
+		end: 93
 		whenParsing: '
-			Feature: Signing in
+			Feature: Counting
 
-				Scenario:  '
+				Scenario: Counting fruit
+					Given I have 5 apples
+					Examples:'
 ]
 
 { #category : 'tests - data tree' }
@@ -1559,7 +1702,7 @@ HeraParserTestCase >> testParseWrongFeatureKeywordAfterTag [
 HeraParserTestCase >> testParseWrongScenarioKeywordAfterTag [
 
 	self
-		assertError: 'Scenario keyword expected'
+		assertError: 'Scenario or Scenario Outline keyword expected'
 		start: 43
 		end: 75
 		whenParsing: '

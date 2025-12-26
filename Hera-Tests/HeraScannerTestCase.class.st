@@ -82,6 +82,13 @@ HeraScannerTestCase >> testScanEndOfFileToken [
 	self assert: subject scanToken equals: (HeraEndOfFileToken new start: 0)
 ]
 
+{ #category : 'tests - scanning tokens' }
+HeraScannerTestCase >> testScanExamplesToken [
+
+	subject on: 'Examples:' readStream.
+	self assert: subject scanToken equals: (HeraExamplesToken new start: 1; end: 9)
+]
+
 { #category : 'tests - scanning lines' }
 HeraScannerTestCase >> testScanFeatureLine [
 
@@ -193,6 +200,13 @@ HeraScannerTestCase >> testScanRuleLine [
 	token := subject scanToken.
 	self assert: token equals: (HeraTextToken new start: 7; end: 42).
 	self assert: token text equals: 'Only administrators can manage users'
+]
+
+{ #category : 'tests - scanning tokens' }
+HeraScannerTestCase >> testScanScenarioOutlineToken [
+
+	subject on: 'Scenario Outline:' readStream.
+	self assert: subject scanToken equals: (HeraScenarioOutlineToken new start: 1; end: 17)
 ]
 
 { #category : 'tests - scanning tokens' }

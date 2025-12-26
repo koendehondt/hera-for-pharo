@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraDataTree',
-	#superclass : 'Object',
+	#superclass : 'HeraStructuredData',
 	#instVars : [
 		'data'
 	],
@@ -21,13 +21,28 @@ HeraDataTree >> = other [
 	^ self class = other class and: [ self data = other data ]
 ]
 
+{ #category : 'converting' }
+HeraDataTree >> asDataTreeWithResolvedParameters: parametersAndValues [
+
+	| resolvedData |
+	resolvedData := self data collect: [ :treeItem | treeItem asTreeItemWithResolvedParameters: parametersAndValues ].
+	^ self copy data: resolvedData
+
+]
+
+{ #category : 'converting' }
+HeraDataTree >> asStepArgument [
+
+	^ HeraDataTreeArgument new dataTree: self
+]
+
 { #category : 'private' }
 HeraDataTree >> collectDataTreeItemsFrom: anArrayOfAssociations [
 
 	| accu |
 	accu := OrderedCollection new.
 	self collectDataTreeItemsFrom: anArrayOfAssociations level: 1 in: accu.
-	^ accu
+	^ accu asArray
 ]
 
 { #category : 'private' }
@@ -73,10 +88,24 @@ HeraDataTree >> deepestLevelIn: arrayOfDataTreeNodes [
 		(self deepestLevelIn: each children) max: (each level max: accu) ]
 ]
 
+{ #category : 'comparing' }
+HeraDataTree >> hash [
+
+	^ self data hash
+]
+
 { #category : 'initialization' }
 HeraDataTree >> initializeDataFrom: anArrayOfAssociations [
 
 	self data: (self collectDataTreeItemsFrom: anArrayOfAssociations)
+]
+
+{ #category : 'accessing' }
+HeraDataTree >> parameters [
+
+	self data ifNil: [ ^ Set new ].
+	^ self data inject: Set new into: [ :accu :dataTreeItem |
+		accu addAll: (HeraParameterizedString new string: dataTreeItem text) parameters; yourself ]
 ]
 
 { #category : 'printing' }

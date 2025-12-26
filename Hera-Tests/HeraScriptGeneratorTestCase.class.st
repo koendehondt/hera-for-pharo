@@ -254,6 +254,95 @@ Feature: With rules
 ]
 
 { #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutline [
+
+	| text |
+	text := Text fromString:	'Feature: With scenario outline
+
+	@counting_<fruit>
+	Scenario Outline: Counting <fruit>
+
+		Adding <fruit> is easy.
+
+		Given I own <number> "<fruit>"
+		When I buy <additional> "<fruit>"
+		Then I have:
+			| <sum> | <fruit> |
+		And I receive a ticket:
+			"""
+			Your purchase at the Fruit Shop.
+			
+			<additional> <fruit>: <price>
+			--------------------------------
+			Total: <price>
+			
+			Thank you for your visit!
+			"""
+		And I see an overview of my purchases in the app:
+			>  Today
+			>>   Fruit Shop: <price>
+
+		Examples:
+			| fruit   | number | additional | sum | price |
+			| apples  | 5      | 2          | 7   | 1.5 € |
+			| oranges | 8      | 1          | 9   | 0.8 € |
+
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 53 to: 69;
+		addAttribute: TextEmphasis bold from: 518 to: 526.
+	^ text
+]
+
+{ #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutlineWithEmptyExamples [
+
+	| text |
+	text := Text fromString:	'Feature: With scenario outline with empty examples
+
+	@counting_fruit
+	Scenario Outline: Counting <fruit>
+
+		Adding is easy.
+
+		Given I have <number> <fruit>
+		When I buy <additional> <fruit>
+		Then I have <sum> <fruit>
+
+		Examples:
+
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 71 to: 87;
+		addAttribute: TextEmphasis bold from: 223 to: 231.
+	^ text
+]
+
+{ #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutlineWithoutExamples [
+
+	| text |
+	text := Text fromString:	'Feature: With scenario outline without examples
+
+	@counting_fruit
+	Scenario Outline: Counting <fruit>
+
+		Adding is easy.
+
+		Given I have <number> <fruit>
+		When I buy <additional> <fruit>
+		Then I have <sum> <fruit>
+
+'.
+	text
+		addAttribute: TextEmphasis bold from: 1 to: 8;
+		addAttribute: TextEmphasis bold from: 68 to: 84.
+	^ text
+]
+
+{ #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithStarSteps [
 
 	| text |
@@ -336,6 +425,33 @@ HeraScriptGeneratorTestCase >> testGeneratedScriptWithRules [
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithRules.
 	subject visit: feature.
 	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithRules
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithScenarioOutline [
+
+	| feature |
+	feature := HeraAcceptanceTestExamplesForTesting new featureWithScenarioOutline.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithScenarioOutline
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithScenarioOutlineWithEmptyExamples [
+
+	| feature |
+	feature := HeraAcceptanceTestExamplesForTesting new featureWithScenarioOutlineWithEmptyExamples.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithScenarioOutlineWithEmptyExamples
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithScenarioOutlineWithoutExamples [
+
+	| feature |
+	feature := HeraAcceptanceTestExamplesForTesting new featureWithScenarioOutlineWithoutExamples.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithScenarioOutlineWithoutExamples
 ]
 
 { #category : 'tests' }

@@ -363,9 +363,19 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheFirstScenario [
 	self assert: self featureRunner runLog asString equals: 'Running 1 feature.
 
 
+@accessing_the_system
+@signing_in
 Feature: Signing in
 
+	Signing in is required to have access to the application.
+
+	Signing in requires credentials: an email address and a password.
+
+	@sign_in
 	Scenario: Successful sign-in
+
+		Access is allowed when the credentials are recognized.
+
 		Given I have credentials to sign in
 		When I enter my credentials
 		And I press the button to sign in
@@ -384,7 +394,13 @@ HeraRunnerAcceptanceTest >> stepISeeTheOutputOfRunningTheSecondScenario [
 	self assert: self featureRunner runLog asString equals: 'Running 1 feature.
 
 
+@accessing_the_system
+@signing_in
 Feature: Signing in
+
+	Signing in is required to have access to the application.
+
+	Signing in requires credentials: an email address and a password.
 
 	Scenario: Unsuccessful sign-in
 		Given I have credentials to sign in

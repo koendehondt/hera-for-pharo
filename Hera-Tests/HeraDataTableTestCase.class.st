@@ -77,6 +77,64 @@ HeraDataTableTestCase >> testAsDictionary [
 ]
 
 { #category : 'tests' }
+HeraDataTableTestCase >> testAsStepArgument [
+
+	self assert: subject asStepArgument equals: (HeraDataTableArgument new dataTable: subject)
+]
+
+{ #category : 'tests' }
+HeraDataTableTestCase >> testAssociationsDo [
+
+	| headersAndValues |
+	subject data: {
+		{ 'Name' . 'John' } .
+		{ 'Email' . 'john@testing.org' } }.
+	headersAndValues := Dictionary new.
+	subject associationsDo: [ :header :value | headersAndValues at: header put: value ].
+	self assert: headersAndValues equals: (Dictionary
+		with: 'Name' -> 'John'
+		with: 'Email' -> 'john@testing.org')
+]
+
+{ #category : 'tests' }
+HeraDataTableTestCase >> testColumnHeaders [
+
+	self assert: subject columnHeaders equals: { 'Name' . 'Email' }
+]
+
+{ #category : 'tests' }
+HeraDataTableTestCase >> testEmptyInstance [
+
+	self assert: self describedClass new data equals: #()
+]
+
+{ #category : 'tests' }
+HeraDataTableTestCase >> testHasParameters [
+
+	self deny: subject hasParameters.
+	subject data: {
+		{ 'Name field' . '<name>' } .
+		{ 'Email field' . '<email>' } }.
+	self assert: subject hasParameters
+]
+
+{ #category : 'tests' }
+HeraDataTableTestCase >> testIsEmpty [
+
+	self assert: self describedClass new isEmpty
+]
+
+{ #category : 'tests' }
+HeraDataTableTestCase >> testParameters [
+
+	self assert: subject parameters equals: Set new.
+	subject data: {
+		{ 'Name field' . '<name>' } .
+		{ 'Email field' . '<email>' } }.
+	self assert: subject parameters equals: (Set with: 'name' with: 'email')
+]
+
+{ #category : 'tests' }
 HeraDataTableTestCase >> testPrintFormattedOnIndentedWithIndentation [
 
 	| actualOutput expectedOutput |
@@ -86,6 +144,14 @@ HeraDataTableTestCase >> testPrintFormattedOnIndentedWithIndentation [
 		| John | john@testing.org |
 		| Jane | jane@testing.org |' allButFirst.
 	self assert: actualOutput equals: expectedOutput
+]
+
+{ #category : 'tests' }
+HeraDataTableTestCase >> testPrintFormattedOnIndentedWithoutData [
+
+	| actualOutput |
+	actualOutput := String streamContents: [ :stream | self describedClass new printFormattedOn: stream indentation: 2 ].
+	self assert: actualOutput equals: ''
 ]
 
 { #category : 'tests' }

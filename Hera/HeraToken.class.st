@@ -66,6 +66,12 @@ HeraToken >> isEndOfLineToken [
 ]
 
 { #category : 'testing' }
+HeraToken >> isExamplesToken [
+
+	^ false
+]
+
+{ #category : 'testing' }
 HeraToken >> isFeatureToken [
 
 	^ false
@@ -73,6 +79,12 @@ HeraToken >> isFeatureToken [
 
 { #category : 'testing' }
 HeraToken >> isRuleToken [
+
+	^ false
+]
+
+{ #category : 'testing' }
+HeraToken >> isScenarioOutlineToken [
 
 	^ false
 ]

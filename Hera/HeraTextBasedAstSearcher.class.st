@@ -3,7 +3,8 @@ Class {
 	#superclass : 'HeraAstVisitor',
 	#instVars : [
 		'textPosition',
-		'searchTarget'
+		'searchTarget',
+		'lastScenarioOutlineAstNode'
 	],
 	#category : 'Hera-AST',
 	#package : 'Hera',
@@ -29,6 +30,12 @@ HeraTextBasedAstSearcher >> default: anAstNode [
 	^ nil
 ]
 
+{ #category : 'accessing' }
+HeraTextBasedAstSearcher >> lastScenarioOutlineAstNode [
+
+	^ lastScenarioOutlineAstNode
+]
+
 { #category : 'initialization' }
 HeraTextBasedAstSearcher >> textPosition: anInteger [
 
@@ -41,6 +48,14 @@ HeraTextBasedAstSearcher >> visitBackgroundAstNode: aBackgroundAstNode [
 	aBackgroundAstNode steps do: [ :each |
 		(self visit: each) ifNotNil: [ :stepNode | ^ stepNode ] ].
 	^ super visitBackgroundAstNode: aBackgroundAstNode
+]
+
+{ #category : 'visiting' }
+HeraTextBasedAstSearcher >> visitExamplesAstNode: anExamplesAstNode [
+
+	anExamplesAstNode examplesDataTable ifNotNil: [ :examplesDataTable|
+		(self visit: examplesDataTable) ifNotNil: [ :dataTable | ^ dataTable ] ].
+	^ super visitScenarioAstNode: anExamplesAstNode
 ]
 
 { #category : 'visiting' }
@@ -84,6 +99,23 @@ HeraTextBasedAstSearcher >> visitScenarioAstNode: aScenarioAstNode [
 	aScenarioAstNode steps do: [ :each |
 		(self visit: each) ifNotNil: [ :stepNode | ^ stepNode ] ].
 	^ super visitScenarioAstNode: aScenarioAstNode
+]
+
+{ #category : 'visiting' }
+HeraTextBasedAstSearcher >> visitScenarioOutlineAstNode: aScenarioOutlineAstNode [
+
+	lastScenarioOutlineAstNode := aScenarioOutlineAstNode.
+	(searchTarget = #scenario and: [ aScenarioOutlineAstNode isLocatedAtTextPosition: textPosition ]) ifTrue: [ ^ aScenarioOutlineAstNode ].
+	aScenarioOutlineAstNode tags do: [ :each |
+		(self visit: each) ifNotNil: [ :tagNode | ^ searchTarget = #scenario ifTrue: [ aScenarioOutlineAstNode ] ifFalse: [ tagNode ] ] ].
+	(self visit: aScenarioOutlineAstNode title) ifNotNil: [ :titleNode | ^ titleNode ].
+	aScenarioOutlineAstNode description ifNotNil: [ :description |
+		(self visit: description) ifNotNil: [ :descriptionNode | ^ descriptionNode ] ].
+	aScenarioOutlineAstNode steps do: [ :each |
+		(self visit: each) ifNotNil: [ :stepNode | ^ stepNode ] ].
+	aScenarioOutlineAstNode examples ifNotNil: [ :examples |
+		(self visit: examples) ifNotNil: [ :nestedNode | ^ nestedNode ] ].
+	^ super visitScenarioOutlineAstNode: aScenarioOutlineAstNode
 ]
 
 { #category : 'visiting' }

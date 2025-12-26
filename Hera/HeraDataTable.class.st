@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraDataTable',
-	#superclass : 'Object',
+	#superclass : 'HeraStructuredData',
 	#instVars : [
 		'data'
 	],
@@ -32,6 +32,15 @@ HeraDataTable >> asAssociations [
 ]
 
 { #category : 'converting' }
+HeraDataTable >> asDataTableWithResolvedParameters: parametersAndValues [
+
+	| resolvedData |
+	resolvedData := self data collect: [ :row |
+		row collect: [ :cell | cell heraParameterFormat: parametersAndValues ] ].
+	^ self copy data: resolvedData
+]
+
+{ #category : 'converting' }
 HeraDataTable >> asDictionaries [
 	"Assume that the first row is a header row. The cell values will be used as string keys in the dictionaries.
 	 Answer an Array of Dictionary instances with the data from the rows below the header row."
@@ -55,6 +64,29 @@ HeraDataTable >> asDictionary [
 	^ Dictionary newFrom: self asAssociations
 ]
 
+{ #category : 'converting' }
+HeraDataTable >> asStepArgument [
+
+	^ HeraDataTableArgument new dataTable: self
+]
+
+{ #category : 'enumerating' }
+HeraDataTable >> associationsDo: aBlock [
+	"Assume that the first column is a header column and the second column holds the values.
+	 Evaluate aBlock for every header and value."
+
+	self asAssociations do: [ :association|
+		aBlock value: association key value: association value ]
+]
+
+{ #category : 'accessing' }
+HeraDataTable >> columnHeaders [
+	"Assume that the first row is a header row.
+	 Answer an Array with the headers."
+
+	^ data first
+]
+
 { #category : 'private - accessing' }
 HeraDataTable >> data [
 	"Private because the receiver is immutable."
@@ -62,16 +94,45 @@ HeraDataTable >> data [
 	^ data
 ]
 
-{ #category : 'intialization' }
+{ #category : 'accessing' }
 HeraDataTable >> data: anArrayOfArrayOfStrings [
 
 	data := anArrayOfArrayOfStrings
+]
+
+{ #category : 'comparing' }
+HeraDataTable >> hash [
+
+	^ self data hash
+]
+
+{ #category : 'initialization' }
+HeraDataTable >> initialize [
+
+	super initialize.
+	data := #()
+]
+
+{ #category : 'testing' }
+HeraDataTable >> isEmpty [
+
+	^ self data isEmpty
+]
+
+{ #category : 'accessing' }
+HeraDataTable >> parameters [
+
+	^ self data inject: Set new into: [ :accu :row |
+		row do: [ :cellValue |
+			accu addAll: (HeraParameterizedString new string: cellValue) parameters ].
+		accu ]
 ]
 
 { #category : 'printing' }
 HeraDataTable >> printFormattedOn: aStream indentation: aNumberOfTabs [
 
 	| columnWidths |
+	data ifEmpty: [ ^ self ].
 	columnWidths := Array new: data first size withAll: 0.
 	data do: [ :eachRow |
 		eachRow withIndexDo: [ :eachDatum :index |

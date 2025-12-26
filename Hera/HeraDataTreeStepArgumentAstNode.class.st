@@ -27,6 +27,18 @@ HeraDataTreeStepArgumentAstNode >> dataTree: aDataTree [
 	dataTree := aDataTree
 ]
 
+{ #category : 'testing' }
+HeraDataTreeStepArgumentAstNode >> hasParameters [
+
+	^ self dataTree hasParameters
+]
+
+{ #category : 'accessing' }
+HeraDataTreeStepArgumentAstNode >> parameters [
+
+	^ self dataTree parameters
+]
+
 { #category : 'accessing' }
 HeraDataTreeStepArgumentAstNode >> stepMethodArgumentName [
 

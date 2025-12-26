@@ -231,6 +231,74 @@ HeraAcceptanceTestExamplesForTesting >> featureWithRules [
 ]
 
 { #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithScenarioOutline [
+
+	<heraFeature: 'With scenario outline'>
+
+	^ (self feature: 'With scenario outline')
+		scenarios: {
+			(self scenarioOutline: 'Counting <fruit>')
+				tags: {
+					#'counting_<fruit>' };
+				description: {
+					'Adding <fruit> is easy.' };
+				given: 'I own <number> "<fruit>"';
+				when: 'I buy <additional> "<fruit>"';
+				then: 'I have:' with: (self dataTable: {
+					{ '<sum>' . '<fruit>' } });
+				and: 'I receive a ticket:' with: (self docString: {
+					'Your purchase at the Fruit Shop.' .
+					'' .
+					'<additional> <fruit>: <price>' .
+					'--------------------------------' .
+					'Total: <price>' .
+					'' .
+					'Thank you for your visit!' });
+				and: 'I see an overview of my purchases in the app:' with: (self dataTree: {
+					'Today' -> {
+						'Fruit Shop: <price>' -> { } } });
+				examples: (self dataTable: {
+					{ 'fruit' . 'number' . 'additional' . 'sum' . 'price' } .
+					{ 'apples' . '5' . '2' . '7' . '1.5 €' } .
+					{ 'oranges' . '8' . '1' . '9' . '0.8 €' } }) }
+]
+
+{ #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithScenarioOutlineWithEmptyExamples [
+
+	<heraFeature: 'With scenario outline with empty examples'>
+
+	^ (self feature: 'With scenario outline with empty examples')
+		scenarios: {
+			(self scenarioOutline: 'Counting <fruit>')
+				tags: {
+					#counting_fruit };
+				description: {
+					'Adding is easy.' };
+				given: 'I have <number> <fruit>';
+				when: 'I buy <additional> <fruit>';
+				then: 'I have <sum> <fruit>';
+				examples: (self dataTable: { }) }
+]
+
+{ #category : 'features' }
+HeraAcceptanceTestExamplesForTesting >> featureWithScenarioOutlineWithoutExamples [
+
+	<heraFeature: 'With scenario outline without examples'>
+
+	^ (self feature: 'With scenario outline without examples')
+		scenarios: {
+			(self scenarioOutline: 'Counting <fruit>')
+				tags: {
+					#counting_fruit };
+				description: {
+					'Adding is easy.' };
+				given: 'I have <number> <fruit>';
+				when: 'I buy <additional> <fruit>';
+				then: 'I have <sum> <fruit>' }
+]
+
+{ #category : 'features' }
 HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithSingleStep [
 
 	<heraFeature: 'With single step scenario'>
@@ -376,6 +444,14 @@ HeraAcceptanceTestExamplesForTesting >> stepIAmStillOnTheSignInPage [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIBuy: anInteger fruit: fruitName [
+
+	<heraStepDefinition: #(When match 'I buy {int} {string}')>
+
+	self stateAt: fruitName put: (self stateAt: fruitName) + anInteger
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepICanSignIn [
 	
 	<heraStepDefinition: #(Then 'I can sign in')>
@@ -400,6 +476,23 @@ HeraAcceptanceTestExamplesForTesting >> stepIEnterTheWrongCredentials [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIHave: aDataTable [
+
+	<heraStepDefinition: #(Then 'I have:')>
+
+	aDataTable associationsDo: [ :count :fruitName |
+		self assert: (self stateAt: fruitName) asString equals: count ]
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIHave: anInteger fruit: fruitName [
+
+	<heraStepDefinition: #(Then match 'I have {int} {string}')>
+
+	self assert: (self stateAt: fruitName) equals: anInteger
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIHaveAUserName [
 
 	<heraStepDefinition: #(Given 'I have a user name')>
@@ -418,9 +511,25 @@ HeraAcceptanceTestExamplesForTesting >> stepIOpenTheUserManagementPage [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIOwn: anInteger fruit: fruitName [
+
+	<heraStepDefinition: #(Then match 'I own {int} {string}')>
+
+	self stateAt: fruitName put: anInteger
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepIPressTheButtonToSignIn [
 	
 	<heraStepDefinition: #(When 'I press the button to sign in')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepIReceiveATicket: aDocString [
+
+	"Do not verify the Doc string."
+
+	<heraStepDefinition: #(Then 'I receive a ticket:')>
 ]
 
 { #category : 'steps' }
@@ -441,6 +550,14 @@ HeraAcceptanceTestExamplesForTesting >> stepIRemoveTheFollowingUsers: aDataTable
 HeraAcceptanceTestExamplesForTesting >> stepISeeAMessageThatTheCredentialsAreWrong [
 	
 	<heraStepDefinition: #(Then 'I see a message that the credentials are wrong')>
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepISeeAnOverviewOfMyPurchasesInTheApp: aDataTree [
+
+	"Do not verify the data tree."
+
+	<heraStepDefinition: #(Given 'I see an overview of my purchases in the app:')>
 ]
 
 { #category : 'steps' }

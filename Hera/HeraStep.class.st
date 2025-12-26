@@ -36,6 +36,14 @@ HeraStep >> argumentValue [
 	^ argument ifNotNil: [ argument argumentValue ]
 ]
 
+{ #category : 'converting' }
+HeraStep >> asStepWithResolvedParameters: parametersAndValues [
+
+	^ self copy
+		description: (self description heraParameterFormat: parametersAndValues);
+		argument: (self argument ifNotNil: [ :argumentWithParameters | argumentWithParameters asArgumentWithResolvedParameters: parametersAndValues ])
+]
+
 { #category : 'accessing' }
 HeraStep >> description [
 

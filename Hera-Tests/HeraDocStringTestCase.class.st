@@ -30,6 +30,42 @@ HeraDocStringTestCase >> initializeSubject [
 ]
 
 { #category : 'tests' }
+HeraDocStringTestCase >> testAsStepArgument [
+
+	self assert: subject asStepArgument equals: (HeraDocStringArgument new docString: subject)
+]
+
+{ #category : 'tests' }
+HeraDocStringTestCase >> testHasParameters [
+
+	subject lines: #().
+	self deny: subject hasParameters.
+	subject lines: {
+		'apples: 3€'.
+		'Total: 3€' }.
+	self deny: subject hasParameters.
+	subject lines: {
+		'<product>: <price>'.
+		'Total: <total_amount>' }.
+	self assert: subject hasParameters.
+]
+
+{ #category : 'tests' }
+HeraDocStringTestCase >> testParameters [
+
+	subject lines: #().
+	self assert: subject parameters equals: Set new.
+	subject lines: {
+		'apples: 3€'.
+		'Total: 3€' }.
+	self assert: subject parameters equals: Set new.
+	subject lines: {
+		'<product>: <price>'.
+		'Total: <total_amount>' }.
+	self assert: subject parameters equals: (Set with: 'price' with: 'product' with: 'total_amount')
+]
+
+{ #category : 'tests' }
 HeraDocStringTestCase >> testPrintFormattedOnIndentedWhenEmpty [
 
 	| actualOutput expectedOutput |

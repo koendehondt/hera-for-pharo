@@ -34,13 +34,19 @@ HeraScenario >> and: aString [
 ]
 
 { #category : 'dsl' }
-HeraScenario >> and: aString with: aStepArgument [
+HeraScenario >> and: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraAndStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
+]
+
+{ #category : 'converting' }
+HeraScenario >> asScenariosWithResolvedParameters [
+
+	^ { self }
 ]
 
 { #category : 'dsl' }
@@ -50,12 +56,12 @@ HeraScenario >> but: aString [
 ]
 
 { #category : 'dsl' }
-HeraScenario >> but: aString with: aStepArgument [
+HeraScenario >> but: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraButStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
 ]
 
@@ -71,6 +77,12 @@ HeraScenario >> description: anArrayOfStrings [
 	description := anArrayOfStrings
 ]
 
+{ #category : 'accessing' }
+HeraScenario >> descriptionWithResolvedParameters: parametersAndValues [
+
+	^ self description collect: [ :each | each heraParameterFormat: parametersAndValues ]
+]
+
 { #category : 'dsl' }
 HeraScenario >> given: aString [
 
@@ -78,12 +90,12 @@ HeraScenario >> given: aString [
 ]
 
 { #category : 'dsl' }
-HeraScenario >> given: aString with: aStepArgument [
+HeraScenario >> given: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraGivenStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
 ]
 
@@ -117,6 +129,12 @@ HeraScenario >> steps [
 ]
 
 { #category : 'accessing' }
+HeraScenario >> steps: anOrderedCollectionOfSteps [
+
+	steps := anOrderedCollectionOfSteps
+]
+
+{ #category : 'accessing' }
 HeraScenario >> tags [
 
 	^ tags
@@ -128,6 +146,12 @@ HeraScenario >> tags: anArrayOfSymbols [
 	tags := anArrayOfSymbols
 ]
 
+{ #category : 'accessing' }
+HeraScenario >> tagsWithResolvedParameters: parametersAndValues [
+
+	^ self tags collect: [ :each | (each heraParameterFormat: parametersAndValues) asSymbol ]
+]
+
 { #category : 'dsl' }
 HeraScenario >> then: aString [
 
@@ -135,12 +159,12 @@ HeraScenario >> then: aString [
 ]
 
 { #category : 'dsl' }
-HeraScenario >> then: aString with: aStepArgument [
+HeraScenario >> then: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraThenStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
 ]
 
@@ -163,11 +187,11 @@ HeraScenario >> when: aString [
 ]
 
 { #category : 'dsl' }
-HeraScenario >> when: aString with: aStepArgument [
+HeraScenario >> when: aString with: aStructuredArgument [
 
 	| step |
 	step := HeraWhenStep new
 		description: aString;
-		argument: aStepArgument.
+		argument: aStructuredArgument asStepArgument.
 	steps add: step
 ]

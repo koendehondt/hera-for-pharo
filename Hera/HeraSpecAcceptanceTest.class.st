@@ -492,13 +492,13 @@ HeraSpecAcceptanceTest >> stepInTheListNamed: aListPresenterName iSeeTheFollowin
 			notSelected := expectedSelectedItems difference: actualSelectedItems.
 			unexpectedSelected := actualSelectedItems difference: expectedSelectedItems.
 			'{1}{2}' format: {
-				notSelected ifEmpty: [ '' ] ifNotEmpty: [ 'Not selected: {1}.' format: { self commaSeparated: notSelected asArray } ] .
+				notSelected ifEmpty: [ '' ] ifNotEmpty: [ 'Not selected: {1}.' format: { notSelected asArray asCommaSeparatedDoubleQuotedStrings } ] .
 				unexpectedSelected
 					ifEmpty: [ '' ]
 					ifNotEmpty: [ '{1}Selected: {2}.'
 						format: {
 							notSelected ifEmpty: [ '' ] ifNotEmpty: [ ' ' ] .
-							self commaSeparated: unexpectedSelected asArray } ] } ]
+							unexpectedSelected asArray asCommaSeparatedDoubleQuotedStrings } ] } ]
 ]
 
 { #category : 'steps - trees' }

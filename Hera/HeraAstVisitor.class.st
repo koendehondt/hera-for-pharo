@@ -62,6 +62,18 @@ HeraAstVisitor >> visitDocStringStepArgumentAstNode: aDocStringStepArgumentAstNo
 ]
 
 { #category : 'visiting' }
+HeraAstVisitor >> visitExamplesAstNode: anExamplesAstNode [
+
+	^ self default: anExamplesAstNode
+]
+
+{ #category : 'visiting' }
+HeraAstVisitor >> visitExamplesDataTableAstNode: anExamplesDataTableAstNode [
+
+	^ self default: anExamplesDataTableAstNode
+]
+
+{ #category : 'visiting' }
 HeraAstVisitor >> visitFeatureAstNode: aFeatureAstNode [
 
 	^ self default: aFeatureAstNode
@@ -83,6 +95,12 @@ HeraAstVisitor >> visitRuleAstNode: aRuleAstNode [
 HeraAstVisitor >> visitScenarioAstNode: aScenarioAstNode [
 
 	^ self default: aScenarioAstNode
+]
+
+{ #category : 'visiting' }
+HeraAstVisitor >> visitScenarioOutlineAstNode: aScenarioOutlineAstNode [
+
+	^ self default: aScenarioOutlineAstNode
 ]
 
 { #category : 'visiting' }

@@ -49,6 +49,46 @@ HeraFeatureMethodGenerator >> decreaseIndentation [
 	indentation := indentation - 1
 ]
 
+{ #category : 'private' }
+HeraFeatureMethodGenerator >> generate: aSelector forAstNode: aScenarioAstNode [
+
+	stream crtab: indentation.
+	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $( ].
+	stream
+		nextPutAll: 'self ';
+		nextPutAll: aSelector;
+		nextPutAll: ': ';
+		print: aScenarioAstNode title text.
+	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $) ].
+	aScenarioAstNode tags ifNotEmpty: [
+		self increaseIndentation.
+		stream
+			crtab: indentation;
+			nextPutAll: 'tags: {'.
+		self increaseIndentation.
+		stream crtab: indentation.
+		aScenarioAstNode tags
+			do: [ :each | each accept: self ]
+			separatedBy: [ stream space; nextPut: $.; crtab: indentation ].
+		stream
+			space;
+			nextPut: $}.
+		self decreaseIndentation.
+		(aScenarioAstNode description isNotNil or: [ aScenarioAstNode steps isNotEmpty]) ifTrue: [ stream nextPut: $; ].
+		self decreaseIndentation ].
+	aScenarioAstNode description ifNotNil: [ :description |
+		self increaseIndentation.
+		self visit: description .
+		aScenarioAstNode steps ifNotEmpty: [ stream nextPut: $; ].
+		self decreaseIndentation ].
+	aScenarioAstNode steps
+		do: [ :each |
+			self increaseIndentation.
+			self visit: each.
+			self decreaseIndentation ]
+		separatedBy: [ stream nextPut: $; ]
+]
+
 { #category : 'accessing' }
 HeraFeatureMethodGenerator >> generatedCode [
 
@@ -81,6 +121,34 @@ HeraFeatureMethodGenerator >> initialize [
 	indentation := 0
 ]
 
+{ #category : 'visiting' }
+HeraFeatureMethodGenerator >> nextPutDataTable: dataTable [
+
+	stream nextPutAll: '(self dataTable: {'.
+	self increaseIndentation.
+	dataTable rows
+		do: [ :eachRow |
+			stream
+				crtab: indentation;
+				nextPut: ${.
+			eachRow
+				do: [ :eachValue |
+					stream
+						space;
+						nextPut: $';
+						nextPutAll: eachValue;
+						nextPut: $';
+						space ]
+				separatedBy: [ stream nextPut: $. ].
+			stream nextPut: $}. ]
+		separatedBy: [
+			stream
+				space;
+				nextPut: $. ].
+	stream nextPutAll: ' })'.
+	self decreaseIndentation
+]
+
 { #category : 'accessing' }
 HeraFeatureMethodGenerator >> suggestedFeatureMethodSelectorFor: featureTitleString [
 
@@ -99,6 +167,13 @@ HeraFeatureMethodGenerator >> useSuggestedFeatureMethodSelectorFor: featureTitle
 HeraFeatureMethodGenerator >> visitAndAstNode: aGivenAstNode [
 
 	self visitStepAstNode: aGivenAstNode named: 'and'
+]
+
+{ #category : 'visiting' }
+HeraFeatureMethodGenerator >> visitAstNodeWithDataTable: aDataTableStepArgumentAstNode [
+
+	stream nextPutAll: ' with: '.
+	self nextPutDataTable: aDataTableStepArgumentAstNode dataTable
 ]
 
 { #category : 'visiting' }
@@ -133,29 +208,8 @@ HeraFeatureMethodGenerator >> visitButAstNode: aGivenAstNode [
 { #category : 'visiting' }
 HeraFeatureMethodGenerator >> visitDataTableStepArgumentAstNode: aDataTableStepArgumentAstNode [
 
-	stream nextPutAll: ' with: (self dataTable: {'.
-	self increaseIndentation.
-	aDataTableStepArgumentAstNode dataTable rows
-		do: [ :eachRow |
-			stream
-				crtab: indentation;
-				nextPut: ${.
-			eachRow
-				do: [ :eachValue |
-					stream
-						space;
-						nextPut: $';
-						nextPutAll: eachValue;
-						nextPut: $';
-						space ]
-				separatedBy: [ stream nextPut: $. ].
-			stream nextPut: $}. ]
-		separatedBy: [
-			stream
-				space;
-				nextPut: $. ].
-	stream nextPutAll: ' })'.
-	self decreaseIndentation
+	stream nextPutAll: ' with: '.
+	self nextPutDataTable: aDataTableStepArgumentAstNode dataTable
 ]
 
 { #category : 'visiting' }
@@ -199,6 +253,19 @@ HeraFeatureMethodGenerator >> visitDocStringStepArgumentAstNode: aDocStringStepA
 		separatedBy: [ stream nextPutAll: ' .' ].
 	stream nextPutAll: ' })'.
 	self decreaseIndentation.
+]
+
+{ #category : 'visiting' }
+HeraFeatureMethodGenerator >> visitExamplesAstNode: anExamplesAstNode [
+
+	stream nextPutAll: 'examples: '.
+	self visit: anExamplesAstNode examplesDataTable
+]
+
+{ #category : 'visiting' }
+HeraFeatureMethodGenerator >> visitExamplesDataTableAstNode: anExamplesDataTableAstNode [
+
+	self nextPutDataTable: anExamplesDataTableAstNode dataTable
 ]
 
 { #category : 'visiting' }
@@ -327,39 +394,19 @@ HeraFeatureMethodGenerator >> visitRuleAstNode: aRuleAstNode [
 { #category : 'visiting' }
 HeraFeatureMethodGenerator >> visitScenarioAstNode: aScenarioAstNode [
 
-	stream crtab: indentation.
-	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $( ].
-	stream
-		nextPutAll: 'self scenario: ';
-		print: aScenarioAstNode title text.
-	aScenarioAstNode isEmpty ifFalse: [ stream nextPut: $) ].
-	aScenarioAstNode tags ifNotEmpty: [
+	self generate: 'scenario' forAstNode: aScenarioAstNode
+]
+
+{ #category : 'visiting' }
+HeraFeatureMethodGenerator >> visitScenarioOutlineAstNode: aScenarioOutlineAstNode [
+
+
+	self generate: 'scenarioOutline' forAstNode: aScenarioOutlineAstNode.
+	aScenarioOutlineAstNode examples ifNotNil: [ :examplesAstNode |
 		self increaseIndentation.
-		stream
-			crtab: indentation;
-			nextPutAll: 'tags: {'.
-		self increaseIndentation.
-		stream crtab: indentation.
-		aScenarioAstNode tags
-			do: [ :each | each accept: self ]
-			separatedBy: [ stream space; nextPut: $.; crtab: indentation ].
-		stream
-			space;
-			nextPut: $}.
-		self decreaseIndentation.
-		(aScenarioAstNode description isNotNil or: [ aScenarioAstNode steps isNotEmpty]) ifTrue: [ stream nextPut: $; ].
-		self decreaseIndentation ].
-	aScenarioAstNode description ifNotNil: [ :description |
-		self increaseIndentation.
-		self visit: description .
-		aScenarioAstNode steps ifNotEmpty: [ stream nextPut: $; ].
-		self decreaseIndentation ].
-	aScenarioAstNode steps
-		do: [ :each |
-			self increaseIndentation.
-			self visit: each.
-			self decreaseIndentation ]
-		separatedBy: [ stream nextPut: $; ]
+		stream nextPut: $;; crtab: indentation.
+		self visit: examplesAstNode.
+		self decreaseIndentation ]
 ]
 
 { #category : 'visiting' }

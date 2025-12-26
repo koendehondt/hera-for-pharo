@@ -195,6 +195,36 @@ HeraScriptGenerator >> visitScenario: aScenario [
 ]
 
 { #category : 'visiting' }
+HeraScriptGenerator >> visitScenarioOutline: aScenarioOutline [
+
+	aScenarioOutline tags do: [ :each |
+		stream
+			crtab: indentation;
+			nextPut: $@;
+			nextPutAll: each].
+	stream crtab: indentation.
+	self nextPutKeyword: 'Scenario Outline:'.
+	stream
+		space;
+		nextPutAll: aScenarioOutline title.
+	self increaseIndentation.
+	aScenarioOutline description ifNotEmpty: [ stream cr ].
+	aScenarioOutline description do: [ :each |
+		stream cr.
+		each ifNotEmpty: [ stream tab: indentation ].
+		stream nextPutAll: each ].
+	aScenarioOutline description ifNotEmpty: [ stream cr ].
+	aScenarioOutline steps do: [ :each | self visit: each ].
+	 aScenarioOutline examples ifNotNil: [ :dataTable |
+		stream cr; crtab: indentation.
+		self nextPutKeyword: 'Examples:'.
+		dataTable isEmpty ifFalse: [
+			stream cr.
+			dataTable printFormattedOn: stream indentation: indentation + 1 ] ].
+	self decreaseIndentation
+]
+
+{ #category : 'visiting' }
 HeraScriptGenerator >> visitStarStep: aStarStep [
 
 	stream

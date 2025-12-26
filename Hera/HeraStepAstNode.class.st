@@ -91,6 +91,15 @@ HeraStepAstNode >> methodSignaturePartsFor: aStepMethodSelector [
 ]
 
 { #category : 'accessing' }
+HeraStepAstNode >> parameters [
+
+	| params |
+	params := (HeraParameterizedString new string: self description) parameters asSet.
+	self argument ifNotNil: [ :arg | params addAll: arg parameters ].
+	^ params
+]
+
+{ #category : 'accessing' }
 HeraStepAstNode >> typeForDefinition [
 
 	self subclassResponsibility

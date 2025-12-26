@@ -25,14 +25,19 @@ HeraScenarioTestCase >> testAnd [
 { #category : 'tests - dsl' }
 HeraScenarioTestCase >> testAndWithDataTable [
 
-	| expectedStep argument expectedArgument |
-	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
-	subject and: 'these points are connected' with: argument.
+	| expectedStep expectedArgument |
+	subject and: 'these points are connected' with: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraAndStep new
 		description: 'these points are connected';
 		argument: expectedArgument.
 	self assert: subject steps equals: (OrderedCollection with: expectedStep)
+]
+
+{ #category : 'tests - dsl' }
+HeraScenarioTestCase >> testAsScenariosWithResolvedParameters [
+
+	self assert: subject asScenariosWithResolvedParameters equals: { subject }
 ]
 
 { #category : 'tests - dsl' }
@@ -48,9 +53,8 @@ HeraScenarioTestCase >> testBut [
 { #category : 'tests - dsl' }
 HeraScenarioTestCase >> testButWithDataTable [
 
-	| expectedStep argument expectedArgument |
-	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
-	subject but: 'these points are not connected' with: argument.
+	| expectedStep expectedArgument |
+	subject but: 'these points are not connected' with: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraButStep new
 		description: 'these points are not connected';
@@ -71,9 +75,8 @@ HeraScenarioTestCase >> testGiven [
 { #category : 'tests - dsl' }
 HeraScenarioTestCase >> testGivenWithDataTable [
 
-	| expectedStep argument expectedArgument |
-	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } }).
-	subject given: 'the following coordinates' with: argument.
+	| expectedStep expectedArgument |
+	subject given: 'the following coordinates' with: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } }).
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } }).
 	expectedStep := HeraGivenStep new
 		description: 'the following coordinates';
@@ -111,9 +114,8 @@ HeraScenarioTestCase >> testThen [
 { #category : 'tests - dsl' }
 HeraScenarioTestCase >> testThenWithDataTable [
 
-	| expectedStep argument expectedArgument |
-	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
-	subject then: 'these points are connected' with: argument.
+	| expectedStep expectedArgument |
+	subject then: 'these points are connected' with: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraThenStep new
 		description: 'these points are connected';
@@ -134,9 +136,8 @@ HeraScenarioTestCase >> testWhen [
 { #category : 'tests - dsl' }
 HeraScenarioTestCase >> testWhenWithDataTable [
 
-	| expectedStep argument expectedArgument |
-	argument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
-	subject when: 'drawing a figure with these points' with: argument.
+	| expectedStep expectedArgument |
+	subject when: 'drawing a figure with these points' with: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedArgument := HeraDataTableArgument new dataTable: (HeraDataTable new data: { { 'x' . 'y' } . { '10' . '20' } . { '100' . '200' } }).
 	expectedStep := HeraWhenStep new
 		description: 'drawing a figure with these points';

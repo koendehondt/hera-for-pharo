@@ -75,6 +75,8 @@ HeraScanner >> scanToken [
 	self tryScanToken: HeraRuleToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraBackgroundToken ifFound: [ :token | ^ token ].
 	self tryScanToken: HeraScenarioToken ifFound: [ :token | ^ token ].
+	self tryScanToken: HeraScenarioOutlineToken ifFound: [ :token | ^ token ].
+	self tryScanToken: HeraExamplesToken ifFound: [ :token | ^ token ].
 	self tryScanStepToken: HeraGivenToken ifFound: [ :token | ^ token ].
 	self tryScanStepToken: HeraWhenToken ifFound: [ :token | ^ token ].
 	self tryScanStepToken: HeraThenToken ifFound: [ :token | ^ token ].
