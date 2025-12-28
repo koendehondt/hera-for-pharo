@@ -88,6 +88,96 @@ HeraLinterTestCase >> testButCannotBeTheFirstStep [
 ]
 
 { #category : 'tests' }
+HeraLinterTestCase >> testDuplicateRuleTitle [
+
+	self
+		assertWarning: 'This rule has the same title as a previous one.'
+		start: 100
+		end: 146
+		whenLinting: '
+			Feature: User management
+
+				Rule: Only administrators are allowed to manage users
+
+				Rule: Only administrators are allowed to manage users'
+]
+
+{ #category : 'tests' }
+HeraLinterTestCase >> testDuplicateScenarioAndScenarioOutlineTitle [
+
+	| noWarnings |
+	noWarnings := self lintFeature: '
+			Feature: Eating fruit
+
+				Scenario: Buying fruit
+
+				Scenario Outline: Buying fruit
+					Given I buy 5 <fruit>
+					Examples:
+						| fruit |'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'This scenario has the same title as a previous one.' start: 78 end: 89.
+	self assertWarning: 'This step has no definition' start: 96 end: 116
+]
+
+{ #category : 'tests' }
+HeraLinterTestCase >> testDuplicateScenarioOutlineAndScenarioTitle [
+
+	| noWarnings |
+	noWarnings := self lintFeature: '
+			Feature: Eating fruit
+
+				Scenario Outline: Buying fruit
+					Given I buy 5 <fruit>
+					Examples:
+						| fruit |
+
+				Scenario: Buying fruit'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 2.
+	self assertWarning: 'This scenario has the same title as a previous one.' start: 136 end: 147.
+	self assertWarning: 'This step has no definition' start: 68 end: 88
+]
+
+{ #category : 'tests' }
+HeraLinterTestCase >> testDuplicateScenarioOutlineTitle [
+
+	| noWarnings |
+	noWarnings := self lintFeature: '
+			Feature: Eating fruit
+
+				Scenario Outline: Buying fruit
+					Given I buy 5 <fruit>
+					Examples:
+						| fruit |
+
+				Scenario Outline: Buying fruit
+					Given I eat 5 <fruit>
+					Examples:
+						| fruit |'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 3.
+	self assertWarning: 'This scenario has the same title as a previous one.' start: 144 end: 155.
+	self assertWarning: 'This step has no definition' start: 68 end: 88.
+	self assertWarning: 'This step has no definition' start: 162 end: 182
+]
+
+{ #category : 'tests' }
+HeraLinterTestCase >> testDuplicateScenarioTitle [
+
+	self
+		assertWarning: 'This scenario has the same title as a previous one.'
+		start: 62
+		end: 68
+		whenLinting: '
+			Feature: Signing in
+
+				Scenario: Sign in
+				Scenario: Sign in'
+]
+
+{ #category : 'tests' }
 HeraLinterTestCase >> testFeatureTitleStartsWithUppercaseLetter [
 
 	self
@@ -230,7 +320,7 @@ HeraLinterTestCase >> testNoColonAfterWhenStepKeyword [
 HeraLinterTestCase >> testRuleTitleStartsWithUppercaseLetter [
 
 	self
-		assertWarning: 'A rule title should start with an uppercase letter'
+		assertWarning: 'A title should start with an uppercase letter'
 		start: 36
 		end: 82
 		whenLinting: '

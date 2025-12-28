@@ -10,7 +10,10 @@ Class {
 		'acceptanceTest',
 		'currentAstNodeWithSteps',
 		'currentScenarioOutlineAstNode',
-		'currentScenarioAstNode'
+		'currentScenarioAstNode',
+		'scenarioTitles',
+		'currentRuleAstNode',
+		'ruleTitles'
 	],
 	#category : 'Hera-Linter',
 	#package : 'Hera',
@@ -67,6 +70,8 @@ HeraLinter >> isImplicitlyDefinedStep: stepDescription [
 HeraLinter >> lint: anAstNode [
 
 	warnings := OrderedCollection new.
+	scenarioTitles := Set new.
+	ruleTitles := Set new.
 	self visit: anAstNode.
 	^ warnings isEmpty
 ]
@@ -185,12 +190,11 @@ HeraLinter >> visitGivenAstNode: aGivenAstNode [
 { #category : 'visiting' }
 HeraLinter >> visitRuleAstNode: aRuleAstNode [
 
-	| titleNode |
-	aRuleAstNode title text first isUppercase ifFalse: [
-		titleNode := aRuleAstNode title.
-		self warn: 'A rule title should start with an uppercase letter' from: titleNode start to: titleNode end ].
+	currentRuleAstNode := aRuleAstNode.
+	self visitTitleAstNode: aRuleAstNode title.
 	aRuleAstNode background ifNotNil: [ :background | self visit: background ].
-	aRuleAstNode scenarios do: [ :each | self visit: each ]
+	aRuleAstNode scenarios do: [ :each | self visit: each ].
+	currentRuleAstNode := nil
 ]
 
 { #category : 'visiting' }
@@ -244,10 +248,21 @@ HeraLinter >> visitThenAstNode: aThenAstNode [
 { #category : 'visiting' }
 HeraLinter >> visitTitleAstNode: aTitleAstNode [
 
-	aTitleAstNode text first isUppercase ifFalse: [
+	| title |
+	title := aTitleAstNode text.
+	title first isUppercase ifFalse: [
 		self warn: 'A title should start with an uppercase letter' from: aTitleAstNode start to: aTitleAstNode end ].
-	(currentScenarioAstNode isNotNil and: [ (HeraParameterizedString new string: aTitleAstNode text) hasParameters ]) ifTrue: [
-		self warn: 'Parameters are only allowed in the title of a scenario outline' from: aTitleAstNode start to: aTitleAstNode end ]
+	currentScenarioAstNode ifNotNil: [
+		(HeraParameterizedString new string: title) hasParameters ifTrue: [
+			self warn: 'Parameters are only allowed in the title of a scenario outline' from: aTitleAstNode start to: aTitleAstNode end ] ].
+	(currentScenarioAstNode isNotNil or: [ currentScenarioOutlineAstNode isNotNil ]) ifTrue: [
+		(scenarioTitles includes: title) ifTrue: [
+			self warn: 'This scenario has the same title as a previous one.' from: aTitleAstNode start to: aTitleAstNode end ].
+		scenarioTitles add: title ].
+	currentRuleAstNode ifNotNil: [
+		(ruleTitles includes: title) ifTrue: [
+			self warn: 'This rule has the same title as a previous one.' from: aTitleAstNode start to: aTitleAstNode end ].
+		ruleTitles add: title ]
 ]
 
 { #category : 'visiting' }
