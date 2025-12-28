@@ -42,6 +42,8 @@ HeraScriptEditor >> addReferencesMenuGroupTo: parentGroup [
 						name: 'References';
 						description: 'Browse references to this step';
 						shortcutKey: $n meta;
+						iconProvider: Hera settings;
+						iconName: 'references';
 						action: [ self browseReferences ] ] ]
 ]
 

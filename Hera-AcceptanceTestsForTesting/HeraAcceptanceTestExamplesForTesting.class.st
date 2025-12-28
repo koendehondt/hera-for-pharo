@@ -316,7 +316,7 @@ HeraAcceptanceTestExamplesForTesting >> featureWithScenarioWithUndefinedStep [
 
 	^ (self feature: 'With undefined step')
 		scenarios: {
-			(self scenario: 'Successful sign-in')
+			(self scenario: 'Undefined steps have a pink background')
 				given: 'this step has no definition' }
 ]
 

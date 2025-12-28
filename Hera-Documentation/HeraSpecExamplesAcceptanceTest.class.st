@@ -77,7 +77,7 @@ HeraSpecExamplesAcceptanceTest >> featureLists [
 			(self scenario: 'Empty list')
 				when: 'I open the Family Tree application';
 				then: 'I see the "Family tree of John" window';
-				then: 'I see an empty "Children" list' .
+				and: 'I see an empty "Children" list' .
 			(self scenario: 'Non-empty list')
 				when: 'I open the Family Tree application';
 				then: 'I see the "Family tree of John" window';

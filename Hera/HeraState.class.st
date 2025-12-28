@@ -10,15 +10,15 @@ Class {
 }
 
 { #category : 'accessing' }
-HeraState >> at: aSymbol [
+HeraState >> at: keyObject [
 
-	^ state at: aSymbol ifAbsent: [ nil ]
+	^ state at: keyObject ifAbsent: [ nil ]
 ]
 
 { #category : 'accessing' }
-HeraState >> at: aSymbol put: anObject [
+HeraState >> at: keyObject put: valueObject [
 
-	^ state at: aSymbol put: anObject
+	^ state at: keyObject put: valueObject
 ]
 
 { #category : 'accessing' }

@@ -99,8 +99,10 @@ HeraFilteredSteps >> installContextMenu [
 						addActionWith: [ :action |
 							action	
 								name: 'References';
-								description: 'Copy the selected step description';
+								description: 'Browse references to the selected step';
 								shortcutKey: $n meta;
+								iconProvider: Hera settings;
+								iconName: 'references';
 								actionEnabled: [ self canFindReferences ];
 								action: [ self findReferences ] ] ] ]
 ]

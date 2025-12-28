@@ -347,15 +347,15 @@ HeraAcceptanceTest >> signalFailure: aString [
 ]
 
 { #category : 'accessing state' }
-HeraAcceptanceTest >> stateAt: aSymbol [
+HeraAcceptanceTest >> stateAt: keyObject [
 
-	^ state at: aSymbol
+	^ state at: keyObject
 ]
 
 { #category : 'accessing state' }
-HeraAcceptanceTest >> stateAt: aSymbol put: anObject [
+HeraAcceptanceTest >> stateAt: keyObject put: valueObject [
 
-	^ state at: aSymbol put: anObject
+	^ state at: keyObject put: valueObject
 ]
 
 { #category : 'steps' }

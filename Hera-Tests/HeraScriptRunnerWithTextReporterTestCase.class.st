@@ -649,7 +649,7 @@ HeraScriptRunnerWithTextReporterTestCase >> expectedUndefinedStepErrorRunReport 
 
 Feature: With undefined step
 
-	Scenario: Successful sign-in
+	Scenario: Undefined steps have a pink background
 		Given this step has no definition
 			ERROR Step definition not found.
 
@@ -659,8 +659,8 @@ Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
 		addAttribute: TextEmphasis bold from: 53 to: 61;
-		addAttribute: TextEmphasis bold from: 121 to: 125;
-		addAttribute: (TextColor new color: Color red) from: 121 to: 125.
+		addAttribute: TextEmphasis bold from: 141 to: 145;
+		addAttribute: (TextColor new color: Color red) from: 141 to: 145.
 	^ text
 ]
 
