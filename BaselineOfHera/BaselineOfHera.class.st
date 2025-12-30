@@ -29,7 +29,8 @@ BaselineOfHera >> baseline: spec [
 { #category : 'baselines' }
 BaselineOfHera >> initializeClasses [
 
-	HeraSettings initialize
+	HeraSettings initialize.
+	HeraResultStatus initialize
 ]
 
 { #category : 'baselines' }
