@@ -60,6 +60,12 @@ HeraUnitTestCase >> assertTextRun: actualRun equals: expectedRun [
 		self assertTextAttribute: actualAttribute equals: expectedAttribute ]
 ]
 
+{ #category : 'accessing' }
+HeraUnitTestCase >> defaultTimeLimit [
+
+	^ 30 seconds
+]
+
 { #category : 'running' }
 HeraUnitTestCase >> describedClass [
 
