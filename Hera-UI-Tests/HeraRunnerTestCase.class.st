@@ -353,7 +353,7 @@ HeraRunnerTestCase >> testResultsWhenSteppingThroughScenario [
 	"Step through 2 features with 2 scenarios each. 2 signal an error, 1 fail, and 1 passes.
 	Verify everything that is visible in the runner after each step during the run."
 
-	| expectedOutput |
+	| expectedOutput expectedOutputRegex |
 	subject stepScope: (HeraRunnerScope
 	withAll: {
 		HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature .
@@ -1448,28 +1448,28 @@ Feature: Signing in
 		nil .
 		#passedResult .
 		#failedResult }.
-	expectedOutput := 'Running 2 features.
+	expectedOutputRegex := 'Running 2 features\.
 
 
 @accessing_the_system
 @signing_in
-Feature: Signing in
+Feature\: Signing in
 
-	Signing in is required to have access to the application.
+	Signing in is required to have access to the application\.
 
-	Signing in requires credentials: an email address and a password.
+	Signing in requires credentials\: an email address and a password\.
 
 	@sign_in
-	Scenario: Successful sign-in
+	Scenario\: Successful sign-in
 
-		Access is allowed when the credentials are recognized.
+		Access is allowed when the credentials are recognized\.
 
 		Given I have credentials to sign in
 		When I enter my credentials
 		And I press the button to sign in
 			ERROR Button not found
 
-	Scenario: Unsuccessful sign-in
+	Scenario\: Unsuccessful sign-in
 		Given I have credentials to sign in
 		When I enter the wrong credentials
 		And I press the button to sign in
@@ -1478,33 +1478,33 @@ Feature: Signing in
 
 @accessing_the_system
 @signing_in
-Feature: Signing in
+Feature\: Signing in
 
-	Signing in is required to have access to the application.
+	Signing in is required to have access to the application\.
 
-	Signing in requires credentials: an email address and a password.
+	Signing in requires credentials\: an email address and a password\.
 
 	@sign_in
-	Scenario: Successful sign-in
+	Scenario\: Successful sign-in
 
-		Access is allowed when the credentials are recognized.
+		Access is allowed when the credentials are recognized\.
 
 		Given I have credentials to sign in
 		When I enter my credentials
 		And I press the button to sign in
 		Then I see the home page
 
-	Scenario: Unsuccessful sign-in
+	Scenario\: Unsuccessful sign-in
 		Given I have credentials to sign in
 		When I enter the wrong credentials
 		And I press the button to sign in
 		Then I am still on the sign-in page
-			FAILED The current page is not the sign-in page.
+			FAILED The current page is not the sign-in page\.
 
 
-Total: 4 scenarios. Passed: 1. Failed: 1. Error: 2. Duration: 0 seconds.
+Total\: 4 scenarios. Passed\: 1. Failed\: 1. Error\: 2. Duration\: (1 second|\d+ seconds).
 '.
-	self assert: subject runLog asString equals: expectedOutput
+	self assert: subject runLog asString matches: expectedOutputRegex
 ]
 
 { #category : 'tests - progress in window label' }
