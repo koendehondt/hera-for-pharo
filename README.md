@@ -18,14 +18,16 @@ Metacello new
 
 **Beware:** Hera is under continuous development, so it changes a lot.
 
-Open a Feature Browser with all features in the image:
+You can open a feature browser from the `Browse` menu in the Pharo menu bar.
+
+You can also do it by hand. Open a Feature Browser on your own acceptance tests (so without all the features used for testing Hera):
 ```smalltalk
-(HeraFeatureBrowser new scope: HeraScope all) open
+    HeraApplication new openFeatureBrowser
 ```
 
-Open a Feature Browser without all the features used for testing Hera:
+Open a Feature Browser with all features in the image:
 ```smalltalk
-HeraFeatureBrowser new open
+    HeraApplication new openFeatureBrowserOnAll
 ```
 ## Blog
 
