@@ -241,29 +241,29 @@ HeraRunnerTestCase >> testRerunScenario [
 { #category : 'tests' }
 HeraRunnerTestCase >> testRestart [
 
-	| expectedRunLog |
-	expectedRunLog := 'Running 1 feature.
+	| expectedRunLogRegex |
+	expectedRunLogRegex := 'Running 1 feature.
 
 
 @accessing_the_system
 @signing_in
-Feature: Signing in
+Feature\: Signing in
 
-	Signing in is required to have access to the application.
+	Signing in is required to have access to the application\.
 
-	Signing in requires credentials: an email address and a password.
+	Signing in requires credentials\: an email address and a password\.
 
 	@sign_in
-	Scenario: Successful sign-in
+	Scenario\: Successful sign-in
 
-		Access is allowed when the credentials are recognized.
+		Access is allowed when the credentials are recognized\.
 
 		Given I have credentials to sign in
 		When I enter my credentials
 		And I press the button to sign in
 		Then I see the home page
 
-	Scenario: Unsuccessful sign-in
+	Scenario\: Unsuccessful sign-in
 		Given I have credentials to sign in
 		When I enter the wrong credentials
 		And I press the button to sign in
@@ -271,15 +271,15 @@ Feature: Signing in
 		But I see a message that the credentials are wrong
 
 
-Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0. Duration: 0 seconds.
+Total\: 2 scenarios. Passed\: 2. Failed\: 0. Error\: 0. Duration\: (1 second|\d+ seconds)\.
 '.
 	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
-	self assert: subject runLog equals: expectedRunLog.
+	self assert: subject runLog matches: expectedRunLogRegex.
 	subject restart.
 	self deny: subject hasRunSteps.
 	self deny: subject isRunningScenario.
 	subject continue.
-	self assert: subject runLog equals: expectedRunLog
+	self assert: subject runLog matches: expectedRunLogRegex
 ]
 
 { #category : 'tests - rerunning' }
@@ -1502,7 +1502,7 @@ Feature\: Signing in
 			FAILED The current page is not the sign-in page\.
 
 
-Total\: 4 scenarios. Passed\: 1. Failed\: 1. Error\: 2. Duration\: (1 second|\d+ seconds).
+Total\: 4 scenarios. Passed\: 1. Failed\: 1. Error\: 2. Duration\: (1 second|\d+ seconds)\.
 '.
 	self assert: subject runLog asString matches: expectedOutputRegex
 ]
