@@ -50,7 +50,7 @@ Feature: With debug step
 		Then I see the home page
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -69,7 +69,7 @@ Feature: Empty
 	ERROR There are no scenarios.
 
 
-Total: 0 scenarios. Passed: 0. Failed: 0. Error: 1.
+Total: 0 scenarios. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -91,7 +91,7 @@ Feature: With empty scenario
 		ERROR There are no steps.
 
 
-Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -144,7 +144,7 @@ Feature: With single step scenario for testing
 		ERROR Some error in the after scenario hook.
 
 
-Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -167,7 +167,7 @@ Feature: With single step scenario for testing
 		ERROR Some error in the before scenario hook.
 
 
-Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -209,7 +209,7 @@ Feature: Signing in
 			ERROR Button not found
 
 
-Total: 2 scenarios. Passed: 0. Failed: 0. Error: 2.
+Total: 2 scenarios. Passed: 0. Failed: 0. Error: 2. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 56 to: 63;
@@ -292,7 +292,7 @@ Feature: Signing in
 			FAILED The current page is not the sign-in page.
 
 
-Total: 2 scenarios. Passed: 1. Failed: 1. Error: 0.
+Total: 2 scenarios. Passed: 1. Failed: 1. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 56 to: 63;
@@ -317,7 +317,7 @@ Feature: With hooks for testing
 		Then I see something
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -394,7 +394,7 @@ Feature: Signing in
 		But I see a message that the credentials are wrong
 
 
-Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0.
+Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 56 to: 63;
@@ -420,7 +420,7 @@ Feature: With pause step
 		Then I see the home page
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -445,7 +445,7 @@ Feature: With pause step
 		Then I see the home page
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -485,7 +485,7 @@ Feature: With background
 		But I see a message that the credentials are wrong
 
 
-Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0.
+Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -527,7 +527,7 @@ Feature: With data table
 			| Jill | jill@testing.org |
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -570,7 +570,7 @@ Feature: With description in background
 		But I see a message that the credentials are wrong
 
 
-Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0.
+Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -625,7 +625,7 @@ Feature: With rules
 			Then I cannot open the user management page
 
 
-Total: 4 scenarios. Passed: 4. Failed: 0. Error: 0.
+Total: 4 scenarios. Passed: 4. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -654,7 +654,7 @@ Feature: With undefined step
 			ERROR Step definition not found.
 
 
-Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;
@@ -678,7 +678,7 @@ Feature: With unimplemented step
 			ERROR Step not implemented.
 
 
-Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
 '.
 	text
 		addAttribute: TextEmphasis bold from: 22 to: 29;

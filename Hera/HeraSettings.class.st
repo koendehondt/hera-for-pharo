@@ -29,7 +29,7 @@ HeraSettings class >> installIcon: aForm as: nameSymbol [
 { #category : 'class initialization' }
 HeraSettings class >> installIcons [
 
-	| heraRepo iconFolder iconProvider checkedCircle crown book addFeature run runAll runAndPause references saveFeatures help |
+	| heraRepo iconFolder iconProvider checkedCircle crown book addFeature run runAll runAndPause references saveFeatures help passedResult failedResult errorResult runningResult |
 	Icons := Dictionary new.
 
 	heraRepo := IceRepository repositories detect: [ :repo | repo name = 'hera-for-pharo' ].
@@ -47,6 +47,10 @@ HeraSettings class >> installIcons [
 	references := iconProvider iconNamed: #references ifAbsent: [ nil ].
 	saveFeatures := iconProvider iconNamed: #saveFeatures ifAbsent: [ nil ].
 	help := iconProvider iconNamed: #help ifAbsent: [ nil ].
+	passedResult := iconProvider iconNamed: #passedResult ifAbsent: [ nil ].
+	failedResult := iconProvider iconNamed: #failedResult ifAbsent: [ nil ].
+	errorResult := iconProvider iconNamed: #errorResult ifAbsent: [ nil ].
+	runningResult := iconProvider iconNamed: #runningResult ifAbsent: [ nil ].
 	self installIcon: addFeature as: #addFeature.
 	self installIcon: crown as: #crown.
 	self installIcon: checkedCircle as: #checkedCircle.
@@ -56,13 +60,43 @@ HeraSettings class >> installIcons [
 	self installIcon: runAndPause as: #runAndPause.
 	self installIcon: references as: #references.
 	self installIcon: saveFeatures as: #saveFeatures.
-	self installIcon: help as: #help
+	self installIcon: help as: #help.
+	self installIcon: passedResult as: #passedResult.
+	self installIcon: failedResult as: #failedResult.
+	self installIcon: errorResult as: #errorResult.
+	self installIcon: runningResult as: #runningResult
 ]
 
 { #category : 'accessing' }
 HeraSettings class >> uniqueInstance [
 
 	^ uniqueInstance
+]
+
+{ #category : 'accessing' }
+HeraSettings >> errorResultColor [
+
+	^ Color fromHexString: 'FE0000'
+]
+
+{ #category : 'accessing' }
+HeraSettings >> failedResultColor [
+
+	^ Color fromHexString: 'FE9900'
+]
+
+{ #category : 'accessing' }
+HeraSettings >> humanReadableDuration: aDuration [
+
+	aDuration isZero ifTrue: [ ^ 'Less than a nanosecond' ].
+	aDuration < (Duration seconds: 1) ifTrue: [ ^ 'Less than a second' ].
+	^ (aDuration truncateTo: (Duration seconds: 1)) humanReadablePrintString
+]
+
+{ #category : 'test api' }
+HeraSettings >> iconCount [
+
+	^ Icons size
 ]
 
 { #category : 'accessing' }

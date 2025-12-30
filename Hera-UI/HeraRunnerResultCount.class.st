@@ -2,18 +2,14 @@ Class {
 	#name : 'HeraRunnerResultCount',
 	#superclass : 'SpPresenter',
 	#instVars : [
-		'countLabel'
+		'countLabel',
+		'textColor',
+		'value'
 	],
 	#category : 'Hera-UI-Runner',
 	#package : 'Hera-UI',
 	#tag : 'Runner'
 }
-
-{ #category : 'accessing' }
-HeraRunnerResultCount >> count: anInteger [
-
-	countLabel label: anInteger asString
-]
 
 { #category : 'layout' }
 HeraRunnerResultCount >> defaultLayout [
@@ -29,6 +25,33 @@ HeraRunnerResultCount >> defaultLayout [
 HeraRunnerResultCount >> initializePresenters [
 
 	countLabel := self newLabel
-		addStyle: 'resultCount';
+		"addStyle: 'resultCount';
+		does not work, so let's do it this way:"
+		displayColor: [ self textColor ];
 		yourself
+]
+
+{ #category : 'accessing' }
+HeraRunnerResultCount >> textColor [
+
+	^ textColor ifNil: [ Color white ]
+]
+
+{ #category : 'accessing' }
+HeraRunnerResultCount >> textColor: aColor [
+
+	textColor := aColor
+]
+
+{ #category : 'test api' }
+HeraRunnerResultCount >> value [
+
+	^ value
+]
+
+{ #category : 'accessing' }
+HeraRunnerResultCount >> value: anInteger [
+
+	value := anInteger.
+	countLabel label: value asString
 ]

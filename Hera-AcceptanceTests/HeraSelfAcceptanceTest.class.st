@@ -37,5 +37,7 @@ HeraSelfAcceptanceTest >> stepIOpenTheFeatureBrowser [
 
 	<heraStepDefinition: #(When 'I open the Feature Browser')>
 
-	self openFeatureBrowser: (HeraFeatureBrowser new scope: browsingScope)
+	| browser |
+	browser := HeraApplication new newFeatureBrowserOnScope: browsingScope.
+	self openFeatureBrowser: browser
 ]

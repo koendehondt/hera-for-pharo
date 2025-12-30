@@ -20,10 +20,16 @@ HeraRunnerResultSummary >> changed: aParameter [
 	self modelChanged
 ]
 
+{ #category : 'test api' }
+HeraRunnerResultSummary >> counts [
+
+	^ { totalCount value . passedCount value . failedCount value . errorCount value }
+]
+
 { #category : 'layout' }
 HeraRunnerResultSummary >> defaultLayout [
 
-	| timeBox |
+	| timeBox countsBox |
 	timeBox := SpBoxLayout newHorizontal
 		hAlignStart;
 		vAlignCenter;
@@ -31,12 +37,15 @@ HeraRunnerResultSummary >> defaultLayout [
 		add: duration;
 		add: startTime;
 		yourself.
-	^ SpBoxLayout newLeftToRight
-		spacing: 10;
+	countsBox := SpBoxLayout newLeftToRight
 		add: totalCount width: 50;
 		add: passedCount width: 50;
 		add: failedCount width: 50;
 		add: errorCount width: 50;
+		yourself.
+	^ SpBoxLayout newLeftToRight
+		spacing: 10;
+		add: countsBox expand: false;
 		add: timeBox;
 		yourself
 ]
@@ -47,9 +56,7 @@ HeraRunnerResultSummary >> humanReadableDuration [
 	| testDuration |
 	testDuration  := self model duration.
 	self model totalCount isZero ifTrue: [ ^ '' ].
-	testDuration isZero ifTrue: [ ^ 'Less than a nanosecond' ].
-	testDuration < (Duration seconds: 1) ifTrue: [ ^ 'Less than a second' ].
-	^ (testDuration truncateTo: (Duration seconds: 1)) humanReadablePrintString
+	^ Hera settings humanReadableDuration: testDuration
 ]
 
 { #category : 'private' }
@@ -66,16 +73,17 @@ HeraRunnerResultSummary >> initializePresenters [
 
 	totalCount := (self instantiate: HeraRunnerResultCount)
 		addStyle: 'total';
-		count: 0.
+		textColor: Color black;
+		value: 0.
 	passedCount := (self instantiate: HeraRunnerResultCount)
 		addStyle: 'passed';
-		count: 0.
+		value: 0.
 	failedCount := (self instantiate: HeraRunnerResultCount)
 		addStyle: 'failed';
-		count: 0.
+		value: 0.
 	errorCount := (self instantiate: HeraRunnerResultCount)
 		addStyle: 'error';
-		count: 0.
+		value: 0.
 	duration := self newLabel.
 	startTime := self newLabel
 ]
@@ -96,8 +104,8 @@ HeraRunnerResultSummary >> modelChanged [
 	result := self model.
 	duration label: self humanReadableDuration.
 	startTime label: self humanReadableStartTime.
-	totalCount count: result totalCount.
-	passedCount count: result passedCount.
-	failedCount count: result failedCount.
-	errorCount count: result errorCount
+	totalCount value: result totalCount.
+	passedCount value: result passedCount.
+	failedCount value: result failedCount.
+	errorCount value: result errorCount
 ]

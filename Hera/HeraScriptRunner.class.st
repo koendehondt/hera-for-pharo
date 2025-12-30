@@ -122,7 +122,9 @@ HeraScriptRunner >> endScenario [
 	beforeScenarioHookFailed ifFalse: [
 		self hasRunSteps
 			ifTrue: [
-				currentScenarioPassed ifTrue: [ result recordPassedScenario: currentScenario ] ]
+				currentScenarioPassed ifTrue: [
+					result recordPassedScenario: currentScenario.
+					reporter reportPassedScenario: currentScenario ] ]
 			ifFalse: [
 				result recordEmptyScenario: currentScenario.
 				reporter reportEmptyScenario: currentScenario ] ].
@@ -228,6 +230,7 @@ HeraScriptRunner >> performUnsteppableInstructions [
 HeraScriptRunner >> recordErrorScenario [
 
 	result recordErrorScenario: currentScenario.
+	reporter reportErrorScenario: currentScenario.
 	currentScenarioPassed := false
 ]
 
@@ -235,6 +238,7 @@ HeraScriptRunner >> recordErrorScenario [
 HeraScriptRunner >> recordFailedScenario [
 
 	result recordFailedScenario: currentScenario.
+	reporter reportFailedScenario: currentScenario.
 	currentScenarioPassed := false
 ]
 
@@ -354,7 +358,7 @@ HeraScriptRunner >> startFeature: aFeature in: anAcceptanceTest [
 
 	currentFeature := aFeature.
 	acceptanceTest := anAcceptanceTest.
-	reporter reportStartOfFeature: aFeature
+	reporter reportStartOfFeature: aFeature in: anAcceptanceTest
 ]
 
 { #category : 'instruction double dispatch' }

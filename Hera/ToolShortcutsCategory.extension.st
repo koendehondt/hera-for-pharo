@@ -6,5 +6,5 @@ ToolShortcutsCategory >> openHeraFeatureBrowser [
 	<shortcut>
 	^ KMKeymap
 		  shortcut: $o meta , $f meta
-		  action: [ HeraFeatureBrowser new open ]
+		  action: [ HeraApplication new openFeatureBrowser ]
 ]

@@ -126,6 +126,12 @@ HeraTextReporter >> reportEndOfStep: aStep [
 ]
 
 { #category : 'reporting' }
+HeraTextReporter >> reportErrorScenario: aScenario [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraTextReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 
 	stream crtab: indentation + 1.
@@ -135,6 +141,12 @@ HeraTextReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 	stream
 		space;
 		nextPutAll: anError messageText
+]
+
+{ #category : 'reporting' }
+HeraTextReporter >> reportFailedScenario: aScenario [
+
+	"Do nothing."
 ]
 
 { #category : 'reporting' }
@@ -167,6 +179,12 @@ HeraTextReporter >> reportKeyword: aString [
 ]
 
 { #category : 'reporting' }
+HeraTextReporter >> reportPassedScenario: aScenario [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraTextReporter >> reportPassedStep: aStep [
 
 	"Do nothing."
@@ -175,13 +193,20 @@ HeraTextReporter >> reportPassedStep: aStep [
 { #category : 'reporting' }
 HeraTextReporter >> reportResult: result [
 
-	| resultMessage |
-	resultMessage := 'Total: {1} {2}. Passed: {3}. Failed: {4}. Error: {5}.' format: {
+	| resultMessage durationInSeconds humanreadableDuration duration |
+	duration := result duration.
+	durationInSeconds := result duration asSeconds.
+	humanreadableDuration := durationInSeconds < 60
+		ifTrue: [ '' ]
+		ifFalse: [ '({1})' format: { Hera settings humanReadableDuration: duration } ].
+	resultMessage := 'Total: {1} {2}. Passed: {3}. Failed: {4}. Error: {5}. Duration: {6}{7}.' format: {
 		result totalCount .
 		result totalCount = 1 ifTrue: [ 'scenario' ] ifFalse: [ 'scenarios' ] .
 		result passedCount .
 		result failedCount .
-		result errorCount }.
+		result errorCount .
+		('second' heraPluralizeFor: durationInSeconds) .
+		humanreadableDuration}.
 	stream
 		cr;
 		cr;
@@ -238,7 +263,7 @@ HeraTextReporter >> reportStartOfBackgroundStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraTextReporter >> reportStartOfFeature: aFeature [
+HeraTextReporter >> reportStartOfFeature: aFeature in: anAcceptanceTest [
 
 	stream cr; cr.
 	reportsTags ifTrue: [
@@ -349,7 +374,7 @@ HeraTextReporter >> textAttributesForError [
 
 	^ {
 		TextEmphasis bold .
-		TextColor new color: Color red }
+		TextColor new color: Hera settings errorResultColor }
 ]
 
 { #category : 'private - reporting' }
@@ -363,5 +388,5 @@ HeraTextReporter >> textAttributesForFailureFor: aStep of: aScenario [
 
 	^ {
 		TextEmphasis bold .
-		TextColor new color: Color orange }
+		TextColor new color: Hera settings failedResultColor }
 ]

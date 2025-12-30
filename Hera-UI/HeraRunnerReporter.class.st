@@ -2,7 +2,11 @@ Class {
 	#name : 'HeraRunnerReporter',
 	#superclass : 'HeraTextReporter',
 	#instVars : [
-		'runner'
+		'runner',
+		'rootResultItem',
+		'currentFeatureResultItem',
+		'currentScenarioResultItem',
+		'currentAcceptanceTest'
 	],
 	#category : 'Hera-UI-Runner',
 	#package : 'Hera-UI',
@@ -15,12 +19,20 @@ HeraRunnerReporter class >> for: aRunner [
 	^ self new runner: aRunner
 ]
 
+{ #category : 'recording' }
+HeraRunnerReporter >> record: aResultItem [
+
+	runner record: aResultItem
+]
+
 { #category : 'reporting' }
 HeraRunnerReporter >> report: aBlock [
 
-	stream reset.
+	| startPosition endPosition |
+	startPosition := stream position + 1.
 	aBlock value.
-	runner report: stream contents
+	endPosition := stream position.
+	runner report: (stream originalContents copyFrom: startPosition to: endPosition)
 ]
 
 { #category : 'reporting' }
@@ -44,7 +56,8 @@ HeraRunnerReporter >> reportEmptyFeature: aFeature [
 { #category : 'reporting' }
 HeraRunnerReporter >> reportEmptyScenario: aScenario [
 
-	self report: [ super reportEmptyScenario: aScenario ]
+	self report: [ super reportEmptyScenario: aScenario ].
+	currentScenarioResultItem status: HeraResultStatus errorStatus
 ]
 
 { #category : 'reporting' }
@@ -62,12 +75,17 @@ HeraRunnerReporter >> reportEndOfBackgroundStep: aStep [
 { #category : 'reporting' }
 HeraRunnerReporter >> reportEndOfFeature: aFeature [
 
-	self report: [ super reportEndOfFeature: aFeature ]
+	currentFeatureResultItem endTime: DateAndTime now.
+	self report: [ super reportEndOfFeature: aFeature ].
+	currentFeatureResultItem logEndPosition: stream position.
+	currentFeatureResultItem := nil.
+	currentAcceptanceTest := nil
 ]
 
 { #category : 'reporting' }
 HeraRunnerReporter >> reportEndOfFeatures [
 
+	rootResultItem endTime: DateAndTime now.
 	self report: [ super reportEndOfFeatures ]
 ]
 
@@ -78,10 +96,26 @@ HeraRunnerReporter >> reportEndOfRule: aRule [
 ]
 
 { #category : 'reporting' }
+HeraRunnerReporter >> reportEndOfScenario: aScenario [
+
+	currentScenarioResultItem endTime: DateAndTime now.
+	self report: [ super reportEndOfScenario: aScenario ].
+	currentScenarioResultItem logEndPosition: stream position.
+	currentScenarioResultItem := nil
+]
+
+{ #category : 'reporting' }
 HeraRunnerReporter >> reportEndOfStep: aStep [
 
 	self report: [ super reportEndOfStep: aStep ].
 	runner updateFromReporter
+]
+
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportErrorScenario: aScenario [
+
+	self report: [ super reportErrorScenario: aScenario ].
+	currentScenarioResultItem status: HeraResultStatus errorStatus
 ]
 
 { #category : 'reporting' }
@@ -91,9 +125,23 @@ HeraRunnerReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 ]
 
 { #category : 'reporting' }
+HeraRunnerReporter >> reportFailedScenario: aScenario [
+
+	self report: [ super reportFailedScenario: aScenario ].
+	currentScenarioResultItem status: HeraResultStatus failedStatus
+]
+
+{ #category : 'reporting' }
 HeraRunnerReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
 
 	self report: [ super reportFailedStep: aStep of: aScenario withFailure: aFailure ]
+]
+
+{ #category : 'reporting' }
+HeraRunnerReporter >> reportPassedScenario: aScenario [
+
+	self report: [ super reportPassedScenario: aScenario ].
+	currentScenarioResultItem status: HeraResultStatus passedStatus
 ]
 
 { #category : 'reporting' }
@@ -113,6 +161,7 @@ HeraRunnerReporter >> reportPauseStep: aStep asSuppressed: aBoolean [
 HeraRunnerReporter >> reportResult: result [
 
 	self report: [ super reportResult: result ].
+	rootResultItem logEndPosition: stream position.
 	runner updateFromReporter.
 	runner finish
 ]
@@ -130,15 +179,28 @@ HeraRunnerReporter >> reportStartOfBackgroundStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraRunnerReporter >> reportStartOfFeature: aFeature [
+HeraRunnerReporter >> reportStartOfFeature: aFeature in: anAcceptanceTest [
 
-	self report: [ super reportStartOfFeature: aFeature ]
+	currentAcceptanceTest := anAcceptanceTest.
+	currentFeatureResultItem := HeraFeatureResultItem new
+		feature: aFeature;
+		acceptanceTest: currentAcceptanceTest;
+		logStartPosition: stream position + 1.
+	rootResultItem add: currentFeatureResultItem.
+	self record: currentFeatureResultItem.
+	self report: [ super reportStartOfFeature: aFeature in: currentAcceptanceTest ].
+	currentFeatureResultItem startTime: DateAndTime now
 ]
 
 { #category : 'reporting' }
-HeraRunnerReporter >> reportStartOfFeatures: featureCount [
+HeraRunnerReporter >> reportStartOfFeatures: totalFeatureCount [
 
-	self report: [ super reportStartOfFeatures: featureCount ]
+	rootResultItem := HeraRootResultItem new
+		featureCount: totalFeatureCount;
+		logStartPosition: stream position + 1.
+	self record: rootResultItem.
+	self report: [ super reportStartOfFeatures: totalFeatureCount ].
+	rootResultItem startTime: DateAndTime now
 ]
 
 { #category : 'reporting' }
@@ -150,8 +212,15 @@ HeraRunnerReporter >> reportStartOfRule: aRule [
 { #category : 'reporting' }
 HeraRunnerReporter >> reportStartOfScenario: aScenario [
 
+	currentScenarioResultItem := HeraScenarioResultItem new
+		scenario: aScenario;
+		acceptanceTest: currentAcceptanceTest;
+		logStartPosition: stream position + 1.
+	currentFeatureResultItem add: currentScenarioResultItem.
+	self record: currentScenarioResultItem.
 	self report: [ super reportStartOfScenario: aScenario ].
-	runner updateFromReporter
+	runner updateFromReporter.
+	currentScenarioResultItem startTime: DateAndTime now
 ]
 
 { #category : 'reporting' }

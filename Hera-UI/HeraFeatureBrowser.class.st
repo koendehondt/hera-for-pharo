@@ -30,7 +30,21 @@ HeraFeatureBrowser class >> featureBrowserMenuItemOn: aBuilder [
 		keyText: 'o, f';
 		label: self windowTitle;
 		icon: self windowIcon;
-		action: [ self new open ];
+		action: [ HeraApplication new openFeatureBrowser ]
+]
+
+{ #category : 'world menu' }
+HeraFeatureBrowser class >> featureBrowserOnAllMenuItemOn: aBuilder [
+	<worldMenu>
+	
+	"See ToolShortcutsCategory>>#openHeraFeatureBrowserOnAll for the registration of the shortcut."
+
+	(aBuilder item: #Hera)
+		parent: #Testing;
+		order: 100;
+		label: self windowTitle , ' on all';
+		icon: self windowIcon;
+		action: [ HeraApplication new openFeatureBrowserOnAll ];
 		withSeparatorAfter
 ]
 
@@ -172,30 +186,6 @@ HeraFeatureBrowser >> featureSelectionChanged [
 HeraFeatureBrowser >> hasNoFeatures [
 
 	^ featureSelector hasNoFeatures
-]
-
-{ #category : 'private' }
-HeraFeatureBrowser >> heraApplication [
-
-	^ HeraApplication new
-		addStyleSheetFromString: '.application [
-			.resultCount [ Draw { #color: #black } ],
-			.total [ Draw { #backgroundColor: #white} ],
-			.passed [ Draw { #backgroundColor: #green } ],
-			.failed [ Draw { #backgroundColor: #yellow } ],
-			.error [ Draw { #backgroundColor: #red } ],
-			.runButton [ Geometry { #hResizing: false }, Container { #borderColor: #transparent, #borderWidth: 1 } ],
-			.activeButton [ Container { #borderColor: #darkGray } ],
-			.featureText [ Font { #name: EnvironmentFont(#code) } ]
-		]';
-		yourself
-]
-
-{ #category : 'initialization' }
-HeraFeatureBrowser >> initialize [
-
-	super initialize.
-	self application: self heraApplication
 ]
 
 { #category : 'initialization' }

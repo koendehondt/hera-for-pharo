@@ -176,7 +176,8 @@ HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToDebugAFeatu
 	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to debug a feature')>
 
 	| browser errorSignaled |
-	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting)).
+	browser := HeraApplication new newFeatureBrowserOnScope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting).
+	self openFeatureBrowser: browser.
 	browser selectFeature: 'With error' in: 'Examples for testing'.
 	"This test runs a test that raises an error, but this test captures the error unless we catch it here and resume it."
 	errorSignaled := false.
@@ -191,7 +192,8 @@ HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToRunAFeature
 	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to run a feature with an error')>
 
 	| browser |
-	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting)).
+	browser := HeraApplication new newFeatureBrowserOnScope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting).
+	self openFeatureBrowser: browser.
 	browser selectFeature: 'With error' in: 'Examples for testing'.
 	browser clickRunButton.
 	self detectPresenterInTopWindowAs: #featureRunner
@@ -203,7 +205,8 @@ HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToRunAPassing
 	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to run a passing feature')>
 
 	| browser |
-	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting)).
+	browser := HeraApplication new newFeatureBrowserOnScope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting).
+	self openFeatureBrowser: browser.
 	browser selectFeature: 'With single step scenario' in: 'Examples for testing'.
 	browser clickRunButton.
 	self detectPresenterInTopWindowAs: #featureRunner
@@ -215,7 +218,8 @@ HeraRunnerAcceptanceTest >> stepIOpenTheRunnerFromTheFeatureBrowserToStepThrough
 	<heraStepDefinition: #(When 'I open the Runner from the Feature Browser to step through a feature')>
 
 	| browser |
-	browser := self openFeatureBrowser: (HeraFeatureBrowser new scope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting)).
+	browser := HeraApplication new newFeatureBrowserOnScope: (HeraScope new addClass: HeraAcceptanceTestExamplesForTesting).
+	self openFeatureBrowser: browser.
 	browser selectFeature: 'With single step scenario' in: 'Examples for testing'.
 	browser clickStepByStepButton.
 	self detectPresenterInTopWindowAs: #featureRunner
@@ -315,7 +319,7 @@ Feature: With error
 			ERROR Zero divide
 
 
-Total: 1 scenario. Passed: 0. Failed: 0. Error: 1.
+Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
 '
 ]
 
@@ -333,7 +337,7 @@ Feature: With single step scenario
 		Given I have credentials to sign in
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '
 ]
 
@@ -351,7 +355,7 @@ Feature: With single step scenario
 		Given I have credentials to sign in
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '
 ]
 
@@ -382,7 +386,7 @@ Feature: Signing in
 		Then I see the home page
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '
 ]
 
@@ -410,7 +414,7 @@ Feature: Signing in
 		But I see a message that the credentials are wrong
 
 
-Total: 1 scenario. Passed: 1. Failed: 0. Error: 0.
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '
 ]
 

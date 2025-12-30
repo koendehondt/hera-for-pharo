@@ -388,10 +388,9 @@ HeraFeatureSelector >> isStepSelectedFeaturesButtonEnabled [
 { #category : 'actions' }
 HeraFeatureSelector >> openDocumentation [
 
-	HeraFeatureBrowser new
-		scope: (HeraScope new addClass: HeraSpecExamplesAcceptanceTest);
-		open;
-		windowTitle: 'Documentation & examples'
+	| documentationBrowser |
+	documentationBrowser := self application openFeatureBrowserOnScope: (HeraScope new addClass: HeraSpecExamplesAcceptanceTest).
+	documentationBrowser windowTitle: 'Documentation & examples'
 ]
 
 { #category : 'actions' }
@@ -399,9 +398,7 @@ HeraFeatureSelector >> openFeatureBrowserOnSelectedAcceptanceTestClasses [
 
 	| acceptanceTestClasses |
 	acceptanceTestClasses := (classesAndFeatures selectedItems collect: [ :each | each acceptanceTestClass ]) asSet.
-	HeraFeatureBrowser new
-		scope: (HeraScope new addClasses: acceptanceTestClasses);
-		open
+	self application openFeatureBrowserOnScope: (HeraScope new addClasses: acceptanceTestClasses)
 ]
 
 { #category : 'actions' }

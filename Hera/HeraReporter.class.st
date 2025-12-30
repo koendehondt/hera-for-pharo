@@ -61,13 +61,31 @@ HeraReporter >> reportEndOfStep: aStep [
 ]
 
 { #category : 'reporting' }
+HeraReporter >> reportErrorScenario: aScenario [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
 HeraReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 
 	self subclassResponsibility
 ]
 
 { #category : 'reporting' }
+HeraReporter >> reportFailedScenario: aScenario [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
 HeraReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
+HeraReporter >> reportPassedScenario: aScenario [
 
 	self subclassResponsibility
 ]
@@ -106,7 +124,7 @@ HeraReporter >> reportStartOfBackgroundStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraReporter >> reportStartOfFeature: aFeature [
+HeraReporter >> reportStartOfFeature: aFeature in: anAcceptanceTest [
 
 	self subclassResponsibility
 ]

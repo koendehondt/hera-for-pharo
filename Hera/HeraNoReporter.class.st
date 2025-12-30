@@ -61,13 +61,31 @@ HeraNoReporter >> reportEndOfStep: aStep [
 ]
 
 { #category : 'reporting' }
+HeraNoReporter >> reportErrorScenario: aScenario [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraNoReporter >> reportErrorStep: aStep of: aScenario withError: anError [
 
 	"Do nothing."
 ]
 
 { #category : 'reporting' }
+HeraNoReporter >> reportFailedScenario: aScenario [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraNoReporter >> reportFailedStep: aStep of: aScenario withFailure: aFailure [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
+HeraNoReporter >> reportPassedScenario: aScenario [
 
 	"Do nothing."
 ]
@@ -97,7 +115,7 @@ HeraNoReporter >> reportStartOfBackgroundStep: aStep [
 ]
 
 { #category : 'reporting' }
-HeraNoReporter >> reportStartOfFeature: aFeature [
+HeraNoReporter >> reportStartOfFeature: aFeature in: anAcceptanceTest [
 
 	"Do nothing."
 ]

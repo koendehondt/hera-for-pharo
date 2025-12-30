@@ -10,6 +10,22 @@ Class {
 }
 
 { #category : 'asserting' }
+HeraUnitTestCase >> assert: actualObject isIdenticalTo: expectedObject [
+
+	self
+		assert: actualObject = expectedObject
+		description: [ actualObject asString , ' is not identical to ' , expectedObject asString ]
+]
+
+{ #category : 'asserting' }
+HeraUnitTestCase >> assert: aString matches: aRegexString [
+
+	self
+		assert: ((RxMatcher forString: aRegexString) matches: aString)
+		description: [ aString , ' does not match the regular expression' ]
+]
+
+{ #category : 'asserting' }
 HeraUnitTestCase >> assertCollection: actualCollection includesAll: subcollection [
 
 	self
