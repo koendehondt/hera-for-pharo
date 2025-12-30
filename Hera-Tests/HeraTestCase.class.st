@@ -16,7 +16,7 @@ HeraTestCase >> describedClass [
 HeraTestCase >> testAbout [
 
 	| expectedAbout |
-	expectedAbout := Text fromString: 'Hera 1.0.0
+	expectedAbout := Text fromString: 'Hera 1.1.0
 
 Hera is a Behaviour Driven Development framework for Pharo. It allows for a better communication of acceptance criteria between technical and non-technical people. The Hera browser allows writing Given-When-Then scenarios in Gherkin and translating them to classes and methods.'.
 	expectedAbout addAttribute: TextEmphasis bold from: 1 to: 10.
@@ -32,5 +32,5 @@ HeraTestCase >> testSettings [
 { #category : 'tests' }
 HeraTestCase >> testVersion [
 
-	self assert: self describedClass version equals: (HeraVersion major: 1 minor: 0 patch: 0)
+	self assert: self describedClass version equals: (HeraVersion major: 1 minor: 1 patch: 0)
 ]
