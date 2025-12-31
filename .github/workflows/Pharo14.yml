@@ -1,4 +1,4 @@
-name: Tests
+name: Pharo 14
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        smalltalk: [Pharo64-13, Pharo64-14, Pharo64-alpha]
+        smalltalk: [Pharo64-14]
     name: ${{ matrix.smalltalk }}
     steps:
       - name: Checkout code
