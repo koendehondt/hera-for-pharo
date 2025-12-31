@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraResultItem',
-	#superclass : 'Model',
+	#superclass : 'Object',
 	#instVars : [
 		'startTime',
 		'endTime',

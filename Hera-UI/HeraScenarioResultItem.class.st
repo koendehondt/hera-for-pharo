@@ -87,8 +87,7 @@ HeraScenarioResultItem >> status [
 { #category : 'accessing' }
 HeraScenarioResultItem >> status: aResultStatus [
 
-	status := aResultStatus.
-	self changed: #status
+	status := aResultStatus
 ]
 
 { #category : 'accessing' }
