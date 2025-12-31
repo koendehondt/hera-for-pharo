@@ -31,7 +31,7 @@ Open a Feature Browser with all features in the image:
 ```
 ## Blog
 
-Read the [introduction](https://all-objects-all-the-time.st/#/blog/posts/13).
+Read the [introduction](https://all-objects-all-the-time.st/#/blog/posts/13) and the [release of version 1.1](https://all-objects-all-the-time.st/#/blog/posts/18).
 
 ## Documentation
 
