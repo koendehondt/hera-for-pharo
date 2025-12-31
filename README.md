@@ -18,7 +18,7 @@ Metacello new
 
 **Beware:** Hera is under continuous development, so it changes a lot.
 
-**Important:** The current version is tested against Pharo 13. There is no guarantee that Hera works in Pharo 14.
+**Important:** The current version is tested against Pharo 13. There is no guarantee that Hera works in the development version of Pharo 14.
 
 ## Opening a Hera Feature Browser
 
