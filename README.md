@@ -18,6 +18,10 @@ Metacello new
 
 **Beware:** Hera is under continuous development, so it changes a lot.
 
+**Important:** The current version is tested against Pharo 13. There is no guarantee that Hera works in Pharo 14.
+
+## Opening a Hera Feature Browser
+
 You can open a feature browser from the `Browse` menu in the Pharo menu bar.
 
 You can also do it by hand. Open a Feature Browser on your own acceptance tests (so without all the features used for testing Hera):
@@ -31,7 +35,7 @@ Open a Feature Browser with all features in the image:
 ```
 ## Blog
 
-Read the [introduction](https://all-objects-all-the-time.st/#/blog/posts/13).
+Read the [introduction](https://all-objects-all-the-time.st/#/blog/posts/13) and the [release of version 1.1](https://all-objects-all-the-time.st/#/blog/posts/18).
 
 ## Documentation
 
