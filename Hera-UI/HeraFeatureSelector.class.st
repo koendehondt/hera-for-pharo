@@ -312,7 +312,7 @@ HeraFeatureSelector >> initializeGlobalToolbarButtons [
 		action: [ self saveFeatures ];
 		yourself.
 	documentationButton := self newButton
-		help: 'Domentation & examples';
+		help: 'Documentation & examples';
 		icon: (Hera settings iconNamed: #help);
 		action: [ self openDocumentation ];
 		yourself
