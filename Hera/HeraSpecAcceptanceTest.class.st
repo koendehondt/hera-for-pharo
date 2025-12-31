@@ -36,7 +36,6 @@ HeraSpecAcceptanceTest >> check: aTogglePresenterPathArray [
 	| presenter |
 	presenter := self presenterAtPath: aTogglePresenterPathArray.
 	self assert: presenter isEnabled description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is not enabled.' ] .
-	self assert: presenter state not description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is already checked.' ] .
 	presenter click
 ]
 

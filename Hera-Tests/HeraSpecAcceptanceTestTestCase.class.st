@@ -24,19 +24,6 @@ HeraSpecAcceptanceTestTestCase >> testCheck [
 ]
 
 { #category : 'tests - helpers - presenters' }
-HeraSpecAcceptanceTestTestCase >> testCheckingCheckedPresenterSignalsFailure [
-
-	| finder |
-	finder := StFinderPresenter newApplication: StPresenter currentApplication model: StFinderModel new.
-	subject openPresenterAs: #finder with: [ finder ].
-	self
-		should: [ subject check: { #finder . #searchOptions . #substringBox } ]
-		raise: HeraFailure
-		withExceptionDo: [ :anException |
-			self assert: anException messageText equals: 'The presenter at #(#finder #searchOptions #substringBox) is already checked.']
-]
-
-{ #category : 'tests - helpers - presenters' }
 HeraSpecAcceptanceTestTestCase >> testClick [
 
 	| finder |
