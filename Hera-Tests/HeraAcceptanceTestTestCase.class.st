@@ -180,6 +180,7 @@ HeraAcceptanceTestTestCase >> testStepMethods [
 HeraAcceptanceTestTestCase >> testStoringAndRetrievingState [
 
 	self assert: (subject stateAt: #something) isNil.
+	self assert: (subject stateAt: #something ifAbsent: [ #notFound ]) equals: #notFound.
 	subject stateAt: #something put: 'value'.
 	self assert: (subject stateAt: #something) equals: 'value'
 ]

@@ -40,8 +40,8 @@ PharoFinderAcceptanceTest >> featureFindingInSelectors [
 				when: 'I search for "indexOf:startingAt:ifAbsent:"';
 				then: 'I see the following matching methods:' with: (self dataTable: {
 					{ 'indexOf:startingAt:ifAbsent:' } .
-					{ 'indexOf:startingAt:ifAbsent:using:' } .
-					{ 'lastIndexOf:startingAt:ifAbsent:' } }) .
+					{ 'lastIndexOf:startingAt:ifAbsent:' } .
+					{ 'indexOf:startingAt:ifAbsent:using:' } }) .
 			(self scenario: 'Exact search')
 				when: 'I uncheck "Substring"';
 				and: 'I check "Exact"';
@@ -57,21 +57,12 @@ PharoFinderAcceptanceTest >> featureFindingInSelectors [
 					{ 'indexOf:startingAt:ifAbsent:using:' } }) }
 ]
 
-{ #category : 'private' }
-PharoFinderAcceptanceTest >> indexOf: scope in: searchModeDropList [
-
-	| index |
-	index := searchModeDropList getList detectIndex: [ :each | each model name = scope ] ifNone: [ 0 ].
-	self assert: index > 0 description: 'Search mode not found: ' , scope.
-	^ index
-]
-
 { #category : 'steps' }
 PharoFinderAcceptanceTest >> stepICheckCase [
 
 	<heraStepDefinition: #(When 'I check "Case"')>
 
-	self check: { #finder . #searchOptions . #caseCheckBox }
+	self check: 'Case'
 ]
 
 { #category : 'steps' }
@@ -79,7 +70,7 @@ PharoFinderAcceptanceTest >> stepICheckExact [
 
 	<heraStepDefinition: #(When 'I check "Exact"')>
 
-	self check: { #finder . #searchOptions . #exactCheckBox }
+	self check: 'Exact'
 ]
 
 { #category : 'steps' }
@@ -87,11 +78,8 @@ PharoFinderAcceptanceTest >> stepISearchFor: aSearchString [
 
 	<heraStepDefinition: #(When match 'I search for {string}')>
 
-	self
-		presenterAtPath: { #finder . #searchBar }
-		do: [ :searchBar |
-			searchBar searchInput text: aSearchString.
-			searchBar searchButton click ]
+	self enter: aSearchString in: 'Query'.
+	self click: 'Search'
 ]
 
 { #category : 'steps' }
@@ -99,12 +87,9 @@ PharoFinderAcceptanceTest >> stepISearchIn: scope for: aSearchString [
 
 	<heraStepDefinition: #(When match 'I search in {word} for {string}')>
 
-	| searchBar index |
-	searchBar := (self presenterAt: #finder) searchBar.
-	index := self indexOf: scope in: searchBar searchModeDropList.
-	searchBar searchModeDropList selectIndex: index.
-	searchBar searchInput text: aSearchString.
-	searchBar searchButton click
+	self select: scope inDropList: 'Search mode'.
+	self enter: aSearchString in: 'Query'.
+	self click: 'Search'
 ]
 
 { #category : 'steps' }
@@ -114,7 +99,7 @@ PharoFinderAcceptanceTest >> stepISeeTheMatchingMethods: aDataTable [
 
 	| expectedSelectors resultTree roots |
 	expectedSelectors := aDataTable asArray.
-	resultTree := self presenterAtPath: { #finder . #resultTree }.
+	resultTree := self presenterAt: 'Results'.
 	roots := resultTree roots.
 	self assert: roots size equals: expectedSelectors size.
 	expectedSelectors withIndexDo: [ :each :index |
@@ -126,7 +111,7 @@ PharoFinderAcceptanceTest >> stepIUncheckSubstring [
 
 	<heraStepDefinition: #(When 'I uncheck "Substring"')>
 
-	self uncheck: { #finder . #searchOptions . #substringBox }	
+	self uncheck: 'Substring'
 ]
 
 { #category : 'steps' }
@@ -134,7 +119,7 @@ PharoFinderAcceptanceTest >> stepTheFinderIsOpen [
 
 	<heraStepDefinition: #(Given 'the Finder is open')>
 
-	self openPresenterAs: #finder with: [ StFinderPresenter open ]
+	self openPresenterAs: 'Finder' with: [ StFinderPresenter open ]
 ]
 
 { #category : 'steps' }
@@ -142,9 +127,5 @@ PharoFinderAcceptanceTest >> stepTheSearchModeIs: aSearchModeName [
 
 	<heraStepDefinition: #(Given match 'the search mode is {string}')>
 
-	self
-		presenterAtPath: { #finder . #searchBar . #searchModeDropList }
-		do: [ :searchModeDropList | | index |
-			index := self indexOf: aSearchModeName in: searchModeDropList.
-			searchModeDropList selectIndex: index ]
+	self select: aSearchModeName inDropList: 'Search mode'
 ]

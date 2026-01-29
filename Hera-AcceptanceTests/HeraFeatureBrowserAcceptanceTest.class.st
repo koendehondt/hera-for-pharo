@@ -22,18 +22,67 @@ HeraFeatureBrowserAcceptanceTest >> featureBasicBrowsing [
 			'As a test author' .
 			'I want to browse the available features' };
 		scenarios: {
-			(self scenario: 'Browsing when no features exist')
-				given: 'no features exist';
-				when: 'I open the Feature Browser';
+			(self scenario: 'Opening the Feature Browser from the Pharo menu bar')
+				when: 'I select the "Browse >> Hera Feature Browser" menu item from the Pharo menu bar';
+				then: 'the "Hera Feature Browser" window opens';
 				then: 'I see an empty list of features' .
 			(self scenario: 'Browsing features')
-				given: 'two features exist';
-				when: 'I open the Feature Browser';
-				then: 'I see two features in the list';
-				when: 'I select the first feature';
-				then: 'I see the script of the first feature in the browser';
-				when: 'I select the second feature';
-				then: 'I see the script of the second feature in the browser' }
+				when: 'I select the "Browse >> Hera Documentation & Examples" menu item from the Pharo menu bar';
+				then: 'the "Documentation & Examples" window opens';
+				then: 'I see the following "Features" tree:' with: (self dataTree: {
+					'Spec documentation and examples' -> {
+						'Checkboxes' -> { } .
+						'Fields' -> { } .
+						'Lists' -> { } .
+						'Menus' -> { } .
+						'Radio buttons' -> { } .
+						'Trees' -> { } .
+						'Windows' -> { } } });
+				when: 'I select "Spec documentation and examples >> Checkboxes" in the "Features" tree';
+				then: 'I see this script:' with: (self docString: {
+					'Feature: Checkboxes' .
+					'' .
+					'	Background:' .
+					'		Given a family tree:' .
+					'			> John' .
+					'' .
+					'	Scenario: Checked state, unchecked state, checking and unchecking' .
+					'		When I start the Family Tree application on "John"' .
+					'		Then the "Family tree of John" window opens' .
+					'		And I select "John" in the "Family" tree' .
+					'		Then the "Disabled" checkbox is unchecked' .
+					'		When I check the "Disabled" checkbox' .
+					'		Then the "Disabled" checkbox is checked' .
+					'		When I uncheck the "Disabled" checkbox' .
+					'		Then the "Disabled" checkbox is unchecked' .
+					'' .
+					'' });
+				when: 'I select "Spec documentation and examples >> Fields" in the "Features" tree';
+				then: 'I see this script:' with: (self docString: {
+					'Feature: Fields' .
+					'' .
+					'	Background:' .
+					'		Given a family tree:' .
+					'			>   John' .
+					'			>>    Jane' .
+					'			>>>     William' .
+					'			>>    Mary' .
+					'			>>    Charles' .
+					'' .
+					'	Scenario: Reading' .
+					'		When I start the Family Tree application on "John"' .
+					'		Then the "Family tree of John" window opens' .
+					'		And I select "John" in the "Family" tree' .
+					'		Then I see "John" in the "Name" field' .
+					'' .
+					'	Scenario: Filling in' .
+					'		When I start the Family Tree application on "John"' .
+					'		Then the "Family tree of John" window opens' .
+					'		And I select "John" in the "Family" tree' .
+					'		And I fill in "John" in the "Name" field' .
+					'		Then I see "John" in the "Name" field' .
+					'' .
+					'' }) }
 ]
 
 { #category : 'steps' }
@@ -41,105 +90,13 @@ HeraFeatureBrowserAcceptanceTest >> stepISeeAnEmptyListOfFeatures [
 
 	<heraStepDefinition: #(Then 'I see an empty list of features')>
 
-	self expect: self featureBrowser hasNoFeatures
+	self assertEmptyTree: 'Features'
 ]
 
 { #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepISeeTheScriptOfTheFirstFeatureInTheBrowser [
+HeraFeatureBrowserAcceptanceTest >> stepISeeThisScript: aDocString [
 
-	<heraStepDefinition: #(Then 'I see the script of the first feature in the browser')>
+	<heraStepDefinition: #(Then 'I see this script:')>
 
-	self
-		expect: self featureBrowser script
-		toEqual: '@accessing_the_system
-@signing_in
-Feature: Signing in
-
-	Signing in is required to have access to the application.
-
-	Signing in requires credentials: an email address and a password.
-
-	@sign_in
-	Scenario: Successful sign-in
-
-		Access is allowed when the credentials are recognized.
-
-		Given I have credentials to sign in
-		When I enter my credentials
-		And I press the button to sign in
-		Then I see the home page
-
-	Scenario: Unsuccessful sign-in
-		Given I have credentials to sign in
-		When I enter the wrong credentials
-		And I press the button to sign in
-		Then I am still on the sign-in page
-		But I see a message that the credentials are wrong
-
-'
-]
-
-{ #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepISeeTheScriptOfTheSecondFeatureInTheBrowser [
-
-	<heraStepDefinition: #(Then 'I see the script of the second feature in the browser')>
-
-	self
-		expect: self featureBrowser script
-		toEqual: '@accessing_the_system
-@signing_out
-Feature: Signing out
-
-	@sign_out
-	Scenario: Signing out
-		Given I am logged in
-		When I sign out
-		Then I see the landing page
-
-'
-]
-
-{ #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepISeeTwoFeaturesInTheList [
-
-	<heraStepDefinition: #(Then 'I see two features in the list')>
-
-	self
-		expect: self featureBrowser displayedTreeItems
-		toEqual: {
-			'Example with pass and unimplemented step' -> {
-				'Signing in' .
-				'Signing out' } }
-]
-
-{ #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepISelectTheFirstFeature [
-
-	<heraStepDefinition: #(When 'I select the first feature')>
-
-	self featureBrowser selectPaths: #(#(1 1))
-]
-
-{ #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepISelectTheSecondFeature [
-
-	<heraStepDefinition: #(When 'I select the second feature')>
-
-	self featureBrowser selectPaths: #(#(1 2))
-]
-
-{ #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepNoFeaturesExist [
-
-	<heraStepDefinition: #(Given 'no features exist')>
-
-	browsingScope := HeraScope default
-]
-
-{ #category : 'steps' }
-HeraFeatureBrowserAcceptanceTest >> stepTwoFeaturesExist [
-
-	<heraStepDefinition: #(Given 'two features exist')>
-
-	browsingScope := HeraScope default addClass: HeraAcceptanceTestWithPassForTesting
+	self assertStringContentsOf: 'Script' equals: aDocString asString
 ]

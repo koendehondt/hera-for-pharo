@@ -48,14 +48,16 @@ HeraExampleFamilyTreePresenter >> focusPerson [
 { #category : 'accessing' }
 HeraExampleFamilyTreePresenter >> focusPerson: aPerson [
 
+	focusPerson ifNotNil: [ (focusPerson observablePropertyNamed: #name) unsubscribe: self ].
 	focusPerson := aPerson.
+	focusPerson property: #name whenChangedDo: [ self updateWindowTitle ].
 	familyTree roots: { aPerson }
 ]
 
-{ #category : 'hera' }
+{ #category : 'hera - accessing presenters' }
 HeraExampleFamilyTreePresenter >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
-	^ personDetails heraPresenterAt: aPresenterName ifAbsent: [ | mapping |
+	^ self layout children second heraPresenterAt: aPresenterName ifAbsent: [ | mapping |
 		mapping := Dictionary new
 			add: 'Family' -> familyTree;
 			yourself.
@@ -88,7 +90,7 @@ HeraExampleFamilyTreePresenter >> selectedPerson [
 	^ familyTree selectedItem
 ]
 
-{ #category : 'initialization' }
+{ #category : 'updating' }
 HeraExampleFamilyTreePresenter >> updatePersonDetails: selectedPerson [
 
 	| noDetailsBefore noDetailsAfter |
@@ -99,6 +101,12 @@ HeraExampleFamilyTreePresenter >> updatePersonDetails: selectedPerson [
 	noDetailsBefore
 		ifTrue: [ self layout replaceSecond: personDetails ]
 		ifFalse: [ self layout replaceSecond: noPersonDetails ]
+]
+
+{ #category : 'updating' }
+HeraExampleFamilyTreePresenter >> updateWindowTitle [
+
+	self withWindowDo: [ :window | window title: self windowTitle ]
 ]
 
 { #category : 'accessing' }

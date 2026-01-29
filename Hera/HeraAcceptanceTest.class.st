@@ -347,9 +347,15 @@ HeraAcceptanceTest >> signalFailure: aString [
 ]
 
 { #category : 'accessing state' }
-HeraAcceptanceTest >> stateAt: keyObject [
+HeraAcceptanceTest >> stateAt: aKeyObject [
 
-	^ state at: keyObject
+	^ state at: aKeyObject
+]
+
+{ #category : 'accessing state' }
+HeraAcceptanceTest >> stateAt: aKeyObject ifAbsent: aBlock [
+
+	^ state at: aKeyObject ifAbsent: aBlock
 ]
 
 { #category : 'accessing state' }

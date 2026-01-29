@@ -12,7 +12,13 @@ Class {
 { #category : 'accessing' }
 HeraState >> at: keyObject [
 
-	^ state at: keyObject ifAbsent: [ nil ]
+	^ self at: keyObject ifAbsent: [ nil ]
+]
+
+{ #category : 'accessing' }
+HeraState >> at: keyObject ifAbsent: aBlock [
+
+	^ state at: keyObject ifAbsent: aBlock
 ]
 
 { #category : 'accessing' }

@@ -87,6 +87,12 @@ HeraScriptRunner >> currentScenarioIndex [
 	^ currentScenarioIndex
 ]
 
+{ #category : 'accessing' }
+HeraScriptRunner >> currentScenarioTitle [
+
+	^ currentScenario ifNotNil: [ :scenario | scenario title ]
+]
+
 { #category : 'running' }
 HeraScriptRunner >> debug [
 

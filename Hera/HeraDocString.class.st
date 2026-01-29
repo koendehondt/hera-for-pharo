@@ -29,6 +29,12 @@ HeraDocString >> asStepArgument [
 	^ HeraDocStringArgument new docString: self
 ]
 
+{ #category : 'converting' }
+HeraDocString >> asString [
+
+	^ Character cr join: self lines
+]
+
 { #category : 'comparing' }
 HeraDocString >> hash [
 

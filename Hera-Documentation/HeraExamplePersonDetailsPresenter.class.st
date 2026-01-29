@@ -19,6 +19,7 @@ Class {
 { #category : 'initialization' }
 HeraExamplePersonDetailsPresenter >> connectPresenters [
 
+	nameField whenTextChangedDo: [ :name | self person ifNotNil: [ self person name: name ] ].
 	disabledCheckbox whenChangedDo: [ :isDisabled | self person isDisabled: isDisabled ].
 	femaleRadio whenChangedDo: [ :isFemale | isFemale ifTrue: [ self person beFemale ] ].
 	maleRadio whenChangedDo: [ :isMale | isMale ifTrue: [ self person beMale ] ].
@@ -45,7 +46,7 @@ HeraExamplePersonDetailsPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'hera' }
+{ #category : 'hera - accessing presenters' }
 HeraExamplePersonDetailsPresenter >> heraPresenterAt: aWidgetName ifAbsent: absentBlock [
 
 	| mapping |
@@ -82,7 +83,7 @@ HeraExamplePersonDetailsPresenter >> initializePresenters [
 
 { #category : 'initialization' }
 HeraExamplePersonDetailsPresenter >> modelChanged [
-	
+
 	self person
 		ifNil: [
 			nameField text: ''.

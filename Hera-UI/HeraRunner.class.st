@@ -2,7 +2,6 @@ Class {
 	#name : 'HeraRunner',
 	#superclass : 'HeraPresenter',
 	#instVars : [
-		'output',
 		'scriptRunner',
 		'continueButton',
 		'stepOverButton',
@@ -11,7 +10,8 @@ Class {
 		'restartButton',
 		'isStepping',
 		'results',
-		'reporter'
+		'reporter',
+		'runLog'
 	],
 	#category : 'Hera-UI-Runner',
 	#package : 'Hera-UI',
@@ -63,7 +63,7 @@ HeraRunner >> canRerun [
 HeraRunner >> clear [
 
 	results items: OrderedCollection new.
-	output text: Text new
+	runLog text: Text new
 ]
 
 { #category : 'test api' }
@@ -145,7 +145,7 @@ HeraRunner >> defaultLayout [
 	feedback := SpPanedLayout newLeftToRight
 		positionOfSlider: 33 percent;
 		add: results;
-		add: output;
+		add: runLog;
 		yourself.
 	^ SpBoxLayout newVertical
 		spacing: 5;
@@ -216,6 +216,20 @@ HeraRunner >> hasRunSteps [
 	^ scriptRunner hasRunSteps
 ]
 
+{ #category : 'hera - accessing presenters' }
+HeraRunner >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
+
+	| mapping |
+	mapping := Dictionary new
+		add: 'Run log' -> runLog;
+		add: continueButton help -> continueButton;
+		add: stepOverScenarioButton help -> stepOverScenarioButton;
+		add: stepOverButton help -> stepOverButton;
+		add: restartButton help -> restartButton;
+		yourself.
+	^ mapping at: aPresenterName ifAbsent: absentBlock
+]
+
 { #category : 'initialization' }
 HeraRunner >> initialize [
 
@@ -244,7 +258,7 @@ HeraRunner >> initializeButtonPresenters [
 	restartButton := self newButton
 		iconName: #restart;
 		action: [ self restart ];
-		help: 'Restart from the beginning';
+		help: 'Restart';
 		yourself
 ]
 
@@ -254,7 +268,7 @@ HeraRunner >> initializePresenters [
 	self initializeButtonPresenters.
 	resultSummary := HeraRunnerResultSummary on: HeraResult new.
 	self initializeResultsPresenter.
-	output := self newText
+	runLog := self newText
 		text: Text new;
 		editable: false;
 		addStyle: 'featureText';
@@ -341,8 +355,8 @@ HeraRunner >> record: aResultItem [
 { #category : 'actions' }
 HeraRunner >> report: aText [
 
-	output text: (output text append: aText).
-	self scrollToEndOfOutput
+	runLog text: (runLog text append: aText).
+	self scrollToEndOfRunLog
 ]
 
 { #category : 'closing' }
@@ -499,10 +513,10 @@ HeraRunner >> resultItems [
 HeraRunner >> resultSelectionChanged [
 
 	results selection selectedItem
-		ifNil: [ output text: Text new ]
+		ifNil: [ runLog text: Text new ]
 		ifNotNil: [ :resultItem | | resultItemLog |
 			resultItemLog := resultItem logFrom: reporter text.
-			output text: (self trimLog: resultItemLog) ]
+			runLog text: (self trimLog: resultItemLog) ]
 ]
 
 { #category : 'test api' }
@@ -512,9 +526,15 @@ HeraRunner >> resultSummaryCounts [
 ]
 
 { #category : 'test api' }
-HeraRunner >> runLog [
+HeraRunner >> runLogString [
 
-	^ output text
+	^ self runLogText asString
+]
+
+{ #category : 'test api' }
+HeraRunner >> runLogText [
+
+	^ runLog text
 ]
 
 { #category : 'running' }
@@ -544,11 +564,11 @@ HeraRunner >> scrollLastResultIntoView [
 ]
 
 { #category : 'private' }
-HeraRunner >> scrollToEndOfOutput [
+HeraRunner >> scrollToEndOfRunLog [
 
 	| atEnd |
-	atEnd := output text size + 1.
-	output selectionInterval: (atEnd to: atEnd)
+	atEnd := runLog text size + 1.
+	runLog selectionInterval: (atEnd to: atEnd)
 ]
 
 { #category : 'test api' }
@@ -631,12 +651,24 @@ HeraRunner >> updateFromReporter [
 { #category : 'updating' }
 HeraRunner >> updateWindowTitle [
 
-	| title paused |
+	| title paused currentScenariTitle |
 	title := scriptRunner hasRunAllScenarios
 		ifTrue: [ 'Finished {1}/{2}' format: { scriptRunner currentScenarioIndex . scriptRunner totalScenarioCount } ]
 		ifFalse: [
-			paused := scriptRunner isPaused ifTrue: [ ' - Paused' ] ifFalse: [ isStepping ifTrue: [ ' - Stepping' ] ifFalse: [ '' ] ].
-			'Running {1}/{2}{3}' format: { scriptRunner currentScenarioIndex . scriptRunner totalScenarioCount . paused } ].
+			paused := scriptRunner isPaused ifTrue: [ ' – Paused' ] ifFalse: [ isStepping ifTrue: [ ' – Stepping' ] ifFalse: [ '' ] ].
+			currentScenariTitle := scriptRunner currentScenarioTitle.
+			currentScenariTitle
+				ifNil: [
+					'Running {1}/{2}{3}' format: {
+						scriptRunner currentScenarioIndex .
+						scriptRunner totalScenarioCount .
+						paused } ]
+				ifNotNil: [
+					'Running {1}/{2}{3} – {4}' format: {
+						scriptRunner currentScenarioIndex .
+						scriptRunner totalScenarioCount .
+						paused .
+						currentScenariTitle } ] ].
 	self withWindowDo: [ :window | window title: title ]
 ]
 

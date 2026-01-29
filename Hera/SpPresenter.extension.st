@@ -7,3 +7,11 @@ SpPresenter >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
 	^ absentBlock value
 ]
+
+{ #category : '*Hera' }
+SpPresenter >> heraPresenterAt: aPresenterName ifPresent: presentBlock [
+
+	| presenter |
+	presenter := self heraPresenterAt: aPresenterName ifAbsent: [ ^ nil ].
+	^ presentBlock value: presenter
+]

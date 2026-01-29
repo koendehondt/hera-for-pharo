@@ -17,27 +17,38 @@ HeraSelfAcceptanceTest class >> isForTestingHera [
 { #category : 'private' }
 HeraSelfAcceptanceTest >> featureBrowser [
 
-	^ self presenterAt: #featureBrowser
-]
-
-{ #category : 'private' }
-HeraSelfAcceptanceTest >> featureRunner [
-
-	^ self presenterAt: #featureRunner
+	^ self stateAt: #featureBrowser
 ]
 
 { #category : 'private' }
 HeraSelfAcceptanceTest >> openFeatureBrowser: aFeatureBrowser [
 
-	^ self openPresenter: aFeatureBrowser as: #featureBrowser
+	self openPresenter: aFeatureBrowser.
+	self stateAt: #featureBrowser put: aFeatureBrowser
 ]
 
 { #category : 'steps' }
-HeraSelfAcceptanceTest >> stepIOpenTheFeatureBrowser [
+HeraSelfAcceptanceTest >> stepIOpenTheFeatureBrowserOn: aDataTable [
 
-	<heraStepDefinition: #(When 'I open the Feature Browser')>
+	<heraStepDefinition: #(When 'I open the Feature Browser on:')>
 
-	| browser |
-	browser := HeraApplication new newFeatureBrowserOnScope: browsingScope.
+	| browser classNames scope |
+	classNames := aDataTable asArray collect: [ :each | Smalltalk globals classNamed: each ].
+	scope := HeraScope new addClasses: classNames.
+	browser := HeraApplication new newFeatureBrowserOnScope: scope.
 	self openFeatureBrowser: browser
+]
+
+{ #category : 'steps' }
+HeraSelfAcceptanceTest >> stepISeeTheOutputOfTheTestRunUptoTheFailingStep [
+
+	<heraStepDefinition: #(Then 'I see the run log upto the failing step')>
+
+	self assertStringContentsOf: 'Run log' equals: 'Running 1 feature.
+
+
+Feature: With error
+
+	Scenario: Running this scenario in debug mode opens the debugger
+		When an error occurs'
 ]

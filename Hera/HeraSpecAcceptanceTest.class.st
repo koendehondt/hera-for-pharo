@@ -1,10 +1,23 @@
+"
+I am the root class of acceptance test classes that describe the behavior of Spec application.
+
+I keep a collection `openPresenters`, which are the top-level presenters that have been opened in a window.
+Presenters are added to the `openPresenters` with #openPrester:as: and #openPresenterAs:with:. Both methods take a first argument that identifies the top-level presenter. The identifier can be passed to helper methods to interact with the presenter or its subpresenters.
+
+I also keep track of the `activePresenter`, which is the top-level presenter that is the target of all UI interaction with the helper methods I provide. The `activePresenter` is set by #openPrester:as: and #openPresenterAs:with:, which means that opening a presenter makes it the active presenter. The `activePresenter` is also set by #detectPresenterInWindowTitled:, which is used to find a presenter of a window with a given title, so that switching to another presenter and interacting with it is possible.
+
+My instances do not know which nested presenters are used by a top-level presenter. Therefore, the top-level presenters have to implement the method #heraPresenterAt:ifAbsent: (typically classified in the ""hera"" protocol). That method takes the name of a nested presenter and answers the presenter. The name of the nested presenter can be any string. Often, it is the same as the label of a presenter, e.g. 'First name' for a text field with a label 'First name', but often it is also the logical name. For instance, in the HeraExampleFamilyTreePresenter, 'Family tree' is the name that refers to the tree presenter with the family members. The UI does not display a label, but the tree presenter in intended to hold the family tree. Hence the name.
+
+Top-level presenters have subpresenters, but those subpresenters have subpresenters too. The top-level presenter's #heraPresenterAt:ifAbsent: method is responsible to return any nested subpresenter for a given name. If the name does not refer to an immediate subpresenter, the method should ask its subpresenters to answer a presenter for the given name. So the classes of nested subpresenters at any level also have to implement the method #heraPresenterAt:ifAbsent:.
+
+Due to the responsibility of #heraPresenterAt:ifAbsent: to look for any arbitrarily nested presenters with the given name, encapsulation is ensured. It is not necessary to use paths of presenter names to refer to any nested presenter. Using paths would be brittle. They would show up all over the place in acceptance tests so that refactoring of nested presenters could break acceptance tests easily.
+"
 Class {
 	#name : 'HeraSpecAcceptanceTest',
 	#superclass : 'HeraAcceptanceTest',
 	#instVars : [
-		'openPresenters',
-		'widgetMapping',
-		'activePresenter'
+		'targetWindow',
+		'registeredWindows'
 	],
 	#category : 'Hera-Core',
 	#package : 'Hera',
@@ -12,15 +25,23 @@ Class {
 }
 
 { #category : 'helpers - window management' }
-HeraSpecAcceptanceTest >> activePresenter [
+HeraSpecAcceptanceTest >> activateWindow: aWindow [
+	"Activate (bring to front) the given window.
+	Register the window as the target window."
 
-	^ activePresenter ifNil: [ self error: 'There is no active window.' ]
+	(registeredWindows includes: aWindow)
+		ifFalse: [ self error: 'The window cannot be activated because its opening has not been described before.' ].
+	aWindow activate.
+	targetWindow := aWindow.
+	^ targetWindow
 ]
 
 { #category : 'helpers - window management' }
-HeraSpecAcceptanceTest >> activeWindowLabel [
+HeraSpecAcceptanceTest >> activateWindowTitled: aWindowTitle [
+	"Activate (bring to front) the window with the given title.
+	Register the window as the target window."
 
-	^ self activePresenter window window label
+	^ self activateWindow: (self windowTitled: aWindowTitle)
 ]
 
 { #category : 'hooks' }
@@ -30,13 +51,71 @@ HeraSpecAcceptanceTest >> afterScenario [
 	self closeWindows
 ]
 
-{ #category : 'helpers - presenters' }
-HeraSpecAcceptanceTest >> check: aTogglePresenterPathArray [
+{ #category : 'asserting' }
+HeraSpecAcceptanceTest >> assertDisabled: aPresenterName [
 
-	| presenter |
-	presenter := self presenterAtPath: aTogglePresenterPathArray.
-	self assert: presenter isEnabled description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is not enabled.' ] .
-	presenter click
+	self expect: (self isDisabled: aPresenterName) description: [ '"{1}" is enabled.' format: { aPresenterName } ]
+]
+
+{ #category : 'asserting' }
+HeraSpecAcceptanceTest >> assertEmptyContents: aFieldPresenterName [
+
+	self assert: (self stringContentsOf: aFieldPresenterName) isEmpty description: [ 'The field is not empty.' ]
+]
+
+{ #category : 'asserting' }
+HeraSpecAcceptanceTest >> assertEmptyTree: aTreePresenterName [
+
+	| tree |
+	tree := self treePresenterAt: aTreePresenterName.
+	self assert: tree roots isEmpty description: [ 'The tree is not empty.' ]
+]
+
+{ #category : 'asserting' }
+HeraSpecAcceptanceTest >> assertEnabled: aPresenterName [
+
+	self expect: (self isEnabled: aPresenterName) description: [ '"{1}" is disabled.' format: { aPresenterName } ]
+]
+
+{ #category : 'asserting' }
+HeraSpecAcceptanceTest >> assertItems: expectedDataTreeItems inTree: aTreePresenterName [
+
+	| tree actualDataTreeItems |
+	tree := self presenterAt: aTreePresenterName.
+	actualDataTreeItems := self collectTreeItemsIn: tree.
+	self assert: actualDataTreeItems size = expectedDataTreeItems size description: [ 'The tree has {1}, while the data tree describes {2}.' format: { 'item' heraPluralizeFor: actualDataTreeItems size . 'item' heraPluralizeFor: expectedDataTreeItems size } ].
+	1 to: expectedDataTreeItems size do: [ :index | | actualDataTreeItem expectedDataTreeItem |
+		actualDataTreeItem := actualDataTreeItems at: index.
+		expectedDataTreeItem := expectedDataTreeItems at: index.
+		self assert: actualDataTreeItem level = expectedDataTreeItem level description: [ 'The level of item {1} is "{2}", not "{3}".' format: { index . actualDataTreeItem level . expectedDataTreeItem level } ].
+		self assert: actualDataTreeItem text = expectedDataTreeItem text description: [ 'The text of item {1} is "{2}", not "{3}".' format: { index . actualDataTreeItem text . expectedDataTreeItem text } ] ]
+]
+
+{ #category : 'asserting' }
+HeraSpecAcceptanceTest >> assertStringContentsOf: aFieldPresenterName equals: expectedString [
+
+	self expect: (self stringContentsOf: aFieldPresenterName) toEqual: expectedString
+]
+
+{ #category : 'helpers - fields' }
+HeraSpecAcceptanceTest >> assertText: expectedString inFieldNamed: aFieldPresenterName [
+
+	| actualString |
+	actualString := self stringContentsOf: aFieldPresenterName.
+	self
+		assert: actualString = expectedString
+		description: [ 'The value of the field is "{1}".' format: { actualString } ]
+]
+
+{ #category : 'helpers - checkable presenters' }
+HeraSpecAcceptanceTest >> check: aCheckboxPresenterName [
+
+	| checkbox |
+	checkbox := self checkboxPresenterAt: aCheckboxPresenterName.
+	self
+		errorIf: checkbox isEnabled not
+		description: [ 'The checkbox "{1}" is disabled.' format: { aCheckboxPresenterName } ] .
+	checkbox click
 ]
 
 { #category : 'helpers - finding presenters' }
@@ -45,37 +124,28 @@ HeraSpecAcceptanceTest >> checkboxPresenterAt: aCheckboxPresenterName [
 	^ self presenterAt: aCheckboxPresenterName type: 'checkbox'
 ]
 
+{ #category : 'initialization' }
+HeraSpecAcceptanceTest >> clearRegisteredWindows [
+
+	registeredWindows := IdentitySet new
+]
+
 { #category : 'helpers - presenters' }
-HeraSpecAcceptanceTest >> click: aPresenterPathArray [
+HeraSpecAcceptanceTest >> click: aPresenterName [
 
 	| presenter |
-	presenter := self presenterAtPath: aPresenterPathArray.
-	self assert: presenter isEnabled description: [ 'The presenter at ' , aPresenterPathArray printString , ' is not enabled.' ] .
+	presenter := self presenterAt: aPresenterName.
+	self
+		assert: presenter isEnabled
+		description: [ 'The presenter "{1}" is disabled.' format: { aPresenterName } ] .
 	presenter click
-]
-
-{ #category : 'helpers - window management' }
-HeraSpecAcceptanceTest >> closePresenterAt: aNameSymbol [
-
-	(self presenterAt: aNameSymbol) window close.
-	openPresenters removeKey: aNameSymbol
-]
-
-{ #category : 'helpers - window management' }
-HeraSpecAcceptanceTest >> closePresenterInWindowTitled: aWindowTitle [
-
-	| window |
-	window := self windowTitled: aWindowTitle.
-	activePresenter := window model presenter.
-	activePresenter window close.
-	^ openPresenters removeKey: aWindowTitle
 ]
 
 { #category : 'helpers - window management' }
 HeraSpecAcceptanceTest >> closeWindows [
 
-	openPresenters do: [ :each | each window close ].
-	openPresenters := Dictionary new
+	registeredWindows do: [ :each | each close ].
+	self clearRegisteredWindows
 ]
 
 { #category : 'helpers - trees' }
@@ -100,25 +170,35 @@ HeraSpecAcceptanceTest >> collectTreeItemsIn: aTreePresenter [
 	^ items
 ]
 
-{ #category : 'helpers - window management' }
-HeraSpecAcceptanceTest >> detectPresenterInTopWindowAs: aNameSymbol [
+{ #category : 'helpers - fields' }
+HeraSpecAcceptanceTest >> enter: aString in: aFieldPresenterName [
 
-	^ openPresenters at: aNameSymbol put: SystemWindow topWindow model presenter
-]
-
-{ #category : 'helpers - window management' }
-HeraSpecAcceptanceTest >> detectPresenterInWindowTitled: aWindowTitle [
-
-	| window |
-	window := self windowTitled: aWindowTitle.
-	activePresenter := window model presenter.
-	^ openPresenters at: aWindowTitle put: activePresenter
+	(self presenterAt: aFieldPresenterName) text: aString
 ]
 
 { #category : 'helpers - finding presenters' }
 HeraSpecAcceptanceTest >> fieldPresenterAt: aFieldPresenterName [
 
 	^ self presenterAt: aFieldPresenterName type: 'field'
+]
+
+{ #category : 'helpers - menus' }
+HeraSpecAcceptanceTest >> findMenuItemForPath: aMenuItemPath inMenuBar: aMenubar [
+
+	| pathItemLabels currentItems item |
+	pathItemLabels := ' >> ' split: aMenuItemPath.
+	currentItems := aMenubar menuBarItems.
+	pathItemLabels do: [ :pathItemLabel |
+		item := currentItems detect: [ :subItem | subItem label = pathItemLabel ] ifNone: [ self error: ('The menu item "{1}" is not present.' format: { pathItemLabel }) ].
+		item enabled ifFalse: [ self error: ('The menu item "{1}" is disabled.' format: { pathItemLabel }) ].
+		currentItems := item subMenu ifNotNil: [ :subMenu | subMenu items ] ].
+	^item
+]
+
+{ #category : 'helpers - menus' }
+HeraSpecAcceptanceTest >> findPharoMenuItemForPath: aMenuItemPath [
+
+	^ self findMenuItemForPath: aMenuItemPath inMenuBar: self currentWorld menubar
 ]
 
 { #category : 'helpers - trees' }
@@ -140,20 +220,50 @@ HeraSpecAcceptanceTest >> findTreePathFor: aTreeItemPath inTreeNamed: aTreePrese
 	aBlock value: treePresenter value: currentPath
 ]
 
+{ #category : 'helpers - drop lists' }
+HeraSpecAcceptanceTest >> indexOf: scope inDropListPresenter: dropListPresenter [
+
+	| index |
+	index := dropListPresenter getList detectIndex: [ :each | each model name = scope ] ifNone: [ 0 ].
+	self assert: index > 0 description: 'Search mode not found: ' , scope.
+	^ index
+]
+
 { #category : 'initialization' }
 HeraSpecAcceptanceTest >> initialize [
 
 	super initialize.
-	openPresenters := Dictionary new.
-	self initializeWidgetMapping
+	self clearRegisteredWindows
 ]
 
-{ #category : 'initialization' }
-HeraSpecAcceptanceTest >> initializeWidgetMapping [
-	"Define the mapping from exteral names used in scripts to the presenters in the UI.
-	 Override to add associations to the Dictionary."
+{ #category : 'helpers - checkable presenters' }
+HeraSpecAcceptanceTest >> isChecked: aCheckboxPresenterName [
 
-	widgetMapping := Dictionary new
+	^ (self checkboxPresenterAt: aCheckboxPresenterName) state
+]
+
+{ #category : 'helpers - presenters' }
+HeraSpecAcceptanceTest >> isDisabled: aPresenterName [
+
+	^ (self presenterAt: aPresenterName) isEnabled not
+]
+
+{ #category : 'helpers - presenters' }
+HeraSpecAcceptanceTest >> isEnabled: aPresenterName [
+
+	^ (self presenterAt: aPresenterName) isEnabled
+]
+
+{ #category : 'helpers - checkable presenters' }
+HeraSpecAcceptanceTest >> isUnchecked: aCheckboxPresenterName [
+
+	^ (self checkboxPresenterAt: aCheckboxPresenterName) state not
+]
+
+{ #category : 'helpers - lists' }
+HeraSpecAcceptanceTest >> itemsIn: aListPresenterName [
+
+	^ (self listPresenterAt: aListPresenterName) items
 ]
 
 { #category : 'helpers - simulating events' }
@@ -179,52 +289,47 @@ HeraSpecAcceptanceTest >> keyDownEventFromChar: aCharacter alt: useAlt ctrl: use
 	^ event
 ]
 
-{ #category : 'helpers - lists' }
+{ #category : 'helpers - finding presenters' }
 HeraSpecAcceptanceTest >> listPresenterAt: aListPresenterName [
 
 	^ self presenterAt: aListPresenterName type: 'list'
 ]
 
-{ #category : 'helpers - window management' }
-HeraSpecAcceptanceTest >> openPresenter: aPresenter as: aNameSymbol [
+{ #category : 'helpers - state' }
+HeraSpecAcceptanceTest >> objectIdentifiedBy: anIdentifier [
 
-	aPresenter open.
-	activePresenter := aPresenter.
-	^ openPresenters at: aNameSymbol put: aPresenter
+	^ self stateAt: anIdentifier ifAbsent: [ self error: ('"{1}" has not been identified before' format: anIdentifier) ]
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> openPresenter: aPresenter [
+
+	^ self registerWindow: aPresenter open window
 ]
 
 { #category : 'helpers - window management' }
 HeraSpecAcceptanceTest >> openPresenterAs: aNameSymbol with: aBlock [
 
-	^ openPresenters at: aNameSymbol put: aBlock value
+	^ self openPresenter: aBlock value
 ]
 
-{ #category : 'helpers - presenters' }
-HeraSpecAcceptanceTest >> presenterAt: aNameSymbol [
+{ #category : 'helpers - finding presenters' }
+HeraSpecAcceptanceTest >> presenterAt: aPresenterName [
+	"Assume that the given name refers to a subpresenter at any level in the active presenter.
+	 Answer the subpresenter or signal an error if it cannot be found."
 
-	^ openPresenters at: aNameSymbol ifAbsent: [ self error: ('Presenter with name "{1}" not found.' format: { aNameSymbol }) ]
+	^ self targetPresenter
+		heraPresenterAt: aPresenterName
+		ifAbsent: [ self error: ('Presenter with name "{1}" not found.' format: { aPresenterName }) ]
 ]
 
 { #category : 'helpers - finding presenters' }
 HeraSpecAcceptanceTest >> presenterAt: aFieldPresenterName type: aTypeString [
 
-	^ self activePresenter
+	self flag: 'aTypeString is not checked'.
+	^ self targetPresenter
 		heraPresenterAt: aFieldPresenterName
-		ifAbsent: [ self error: ('The "{1}" {2} is not present in the "{3}" window. Maybe there is a typo in the name, or the name is not mapped to a presenter.' format: { aFieldPresenterName . aTypeString . self activeWindowLabel }) ]
-]
-
-{ #category : 'helpers - presenters' }
-HeraSpecAcceptanceTest >> presenterAtPath: aPresenterPathArray [
-
-	^ aPresenterPathArray allButFirst
-		inject: (self presenterAt: aPresenterPathArray first)
-		into: [ :accu :each | accu perform: each ]
-]
-
-{ #category : 'helpers - presenters' }
-HeraSpecAcceptanceTest >> presenterAtPath: aPresenterPathArray do: aBlock [
-
-	aBlock value: (self presenterAtPath: aPresenterPathArray)
+		ifAbsent: [ self error: ('The "{1}" {2} is not present in the "{3}" window. Maybe there is a typo in the name, or the name is not mapped to a presenter.' format: { aFieldPresenterName . aTypeString . self targetWindowLabel }) ]
 ]
 
 { #category : 'helpers - finding presenters' }
@@ -233,12 +338,75 @@ HeraSpecAcceptanceTest >> radioButtonPresenterAt: aRadioButtonPresenterName [
 	^ self presenterAt: aRadioButtonPresenterName type: 'radio button'
 ]
 
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> registerWindow: aWindow [
+
+	(registeredWindows includes: aWindow) ifTrue: [ self error: 'The opening of this window has been described before.' ].
+	registeredWindows add: aWindow.
+	targetWindow := aWindow.
+	^ targetWindow
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> registerWindowTitled: aWindowTitle [
+
+	^ self registerWindow: (self windowTitled: aWindowTitle)
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> registeredWindowTitled: aWindowTitle ifNone: noneBlock [
+
+	^ registeredWindows detect: [ :window | window title = aWindowTitle ] ifNone: noneBlock
+]
+
+{ #category : 'helpers - drop lists' }
+HeraSpecAcceptanceTest >> select: anItemString inDropList: aDropListPresenterName [
+
+	| dropList index |
+	dropList := self presenterAt: aDropListPresenterName.
+	index := self indexOf: anItemString inDropListPresenter: dropList.
+	dropList selectIndex: index
+]
+
+{ #category : 'helpers - trees' }
+HeraSpecAcceptanceTest >> select: aTreeItemPath inTree: aTreePresenterName [
+
+	self
+		findTreePathFor: aTreeItemPath
+		inTreeNamed: aTreePresenterName
+		andDo: [ :treePresenter :treePath | treePresenter selectPath: treePath scrollToSelection: true ]
+]
+
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepAWindowOpensWithTitle: aWindowTitle [
+
+	<heraStepDefinition: #(Then match 'the {string} window opens')>
+
+	self windowOpensWithTitle: aWindowTitle
+]
+
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepAWindowOpensWithTitle: aWindowTitle identifiedBy: anIdentifier [
+
+	<heraStepDefinition: #(Then match 'the {string} window opens, identified by {string}')>
+	
+	self stateAt: anIdentifier put: (self windowOpensWithTitle: aWindowTitle)
+]
+
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepIActivateTheWindowIdentifiedBy: anIdentifier [
+
+	<heraStepDefinition: #(When match 'I activate the window identified by {string}')>
+
+	self activateWindow: (self objectIdentifiedBy: anIdentifier)
+]
+
 { #category : 'steps - windows' }
 HeraSpecAcceptanceTest >> stepIActivateTheWindowTitled: aWindowTitle [	
 
 	<heraStepDefinition: #(When match 'I activate the {string} window')>
 
-	self detectPresenterInWindowTitled: aWindowTitle
+	self activateWindowTitled: aWindowTitle
 ]
 
 { #category : 'steps - checkboxes' }
@@ -246,17 +414,23 @@ HeraSpecAcceptanceTest >> stepICheckTheCheckboxNamed: aCheckboxPresenterName [
 
 	<heraStepDefinition: #(When match 'I check the {string} checkbox')>
 
-	| checkbox |
-	checkbox := self checkboxPresenterAt: aCheckboxPresenterName.
-	checkbox state: true
+	self check: aCheckboxPresenterName
 ]
 
 { #category : 'steps - windows' }
-HeraSpecAcceptanceTest >> stepICloseTheWindowTitled: aWindowTitle [
+HeraSpecAcceptanceTest >> stepIClickTheCloseBoxOfTheWindowIdentifiedBy: anIdentifier [
 
-	<heraStepDefinition: #(When match 'I close the {string} window')>
+	<heraStepDefinition: #(When match 'I click the close box of the window identified by {string}')>
 
-	self closePresenterInWindowTitled: aWindowTitle
+	(self objectIdentifiedBy: anIdentifier) closeBoxHit
+]
+
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepIClickTheCloseBoxOfTheWindowTitled: aWindowTitle [
+
+	<heraStepDefinition: #(When match 'I click the close box of the {string} window')>
+
+	(self windowTitled: aWindowTitle) closeBoxHit
 ]
 
 { #category : 'steps - trees' }
@@ -271,15 +445,6 @@ HeraSpecAcceptanceTest >> stepICollapse: aTreeItemPath inTreeNamed: aTreePresent
 		inTreeNamed: aTreePresenterName
 		andDo: [ :treePresenter :treePath |
 			treePresenter collapsePath: treePath ]
-]
-
-{ #category : 'steps - windows' }
-HeraSpecAcceptanceTest >> stepIDoNotSeeTheWindowTitled: aWindowTitle [
-
-	<heraStepDefinition: #(Then match 'I do not see the {string} window')>
-
-	self windowTitled: aWindowTitle ifNone: [ ^ self ].
-	self signalFailure: 'The window is visible.'
 ]
 
 { #category : 'steps - trees' }
@@ -321,9 +486,15 @@ HeraSpecAcceptanceTest >> stepIFillIn: aString inTheFieldNamed: aFieldPresenterN
 
 	<heraStepDefinition: #(When match 'I fill in {string} in the {string} field')>
 
-	| field |
-	field := self fieldPresenterAt: aFieldPresenterName.
-	field text: aString
+	self enter: aString in: aFieldPresenterName
+]
+
+{ #category : 'steps - buttons' }
+HeraSpecAcceptanceTest >> stepIPressTheButtonNamed: aButtonName [
+
+	<heraStepDefinition: #(When match 'I press the {string} button')>
+
+	self click: aButtonName
 ]
 
 { #category : 'steps - fields' }
@@ -331,11 +502,15 @@ HeraSpecAcceptanceTest >> stepISee: expectedString inTheFieldNamed: aFieldPresen
 
 	<heraStepDefinition: #(Then match 'I see {string} in the {string} field')>
 
-	| field |
-	field := self fieldPresenterAt: aFieldPresenterName.
-	self
-		assert: field text = expectedString
-		description: [ 'The value of the field is "{1}".' format: { field text } ]
+	self assertText: expectedString inFieldNamed: aFieldPresenterName
+]
+
+{ #category : 'steps - buttons' }
+HeraSpecAcceptanceTest >> stepISeeADisabledButtonNamed: aButtonName [
+
+	<heraStepDefinition: #(Then match 'I see a disabled {string} button')>
+
+	self assertDisabled: aButtonName
 ]
 
 { #category : 'steps - lists' }
@@ -346,6 +521,22 @@ HeraSpecAcceptanceTest >> stepISeeAnEmptyListNamed: aListPresenterName [
 	| list |
 	list := self listPresenterAt: aListPresenterName.
 	self assert: list items isEmpty description: [ 'The list has {1}.' format: { 'item' heraPluralizeFor: list listSize } ]
+]
+
+{ #category : 'steps - buttons' }
+HeraSpecAcceptanceTest >> stepISeeAnEnabledButtonNamed: aButtonName [
+
+	<heraStepDefinition: #(Then match 'I see an enabled {string} button')>
+
+	self assertEnabled: aButtonName
+]
+
+{ #category : 'steps - fields' }
+HeraSpecAcceptanceTest >> stepISeeTheFieldNamed: aFieldPresenterName hasText: expectedDocString [
+
+	<heraStepDefinition: #(Then match 'I see the following text in the {string} field:')>
+
+	self assertText: expectedDocString asString inFieldNamed: aFieldPresenterName
 ]
 
 { #category : 'steps - lists' }
@@ -372,24 +563,7 @@ HeraSpecAcceptanceTest >> stepISeeTheTreeNamed: aTreePresenterName with: aDataTr
 
 	<heraStepDefinition: #(Then match 'I see the following {string} tree:')>
 
-	| tree actualDataTreeItems expectedDataTreeItems |
-	tree := self treePresenterAt: aTreePresenterName.
-	actualDataTreeItems := self collectTreeItemsIn: tree.
-	expectedDataTreeItems := aDataTree data.
-	self assert: actualDataTreeItems size = expectedDataTreeItems size description: [ 'The tree has {1}, while the data tree describes {2}.' format: { 'item' heraPluralizeFor: actualDataTreeItems size . 'item' heraPluralizeFor: expectedDataTreeItems size } ].
-	1 to: expectedDataTreeItems size do: [ :index | | actualDataTreeItem expectedDataTreeItem |
-		actualDataTreeItem := actualDataTreeItems at: index.
-		expectedDataTreeItem := expectedDataTreeItems at: index.
-		self assert: actualDataTreeItem level = expectedDataTreeItem level description: [ 'The level of item {1} is "{2}", not "{3}".' format: { index . actualDataTreeItem level . expectedDataTreeItem level } ].
-		self assert: actualDataTreeItem text = expectedDataTreeItem text description: [ 'The text of item {1} is "{2}", not "{3}".' format: { index . actualDataTreeItem text . expectedDataTreeItem text } ] ]
-]
-
-{ #category : 'steps - windows' }
-HeraSpecAcceptanceTest >> stepISeeTheWindowTitled: aWindowTitle [
-
-	<heraStepDefinition: #(Then match 'I see the {string} window')>
-
-	self detectPresenterInWindowTitled: aWindowTitle
+	self assertItems: aDataTree data inTree: aTreePresenterName
 ]
 
 { #category : 'steps - trees' }
@@ -402,7 +576,9 @@ HeraSpecAcceptanceTest >> stepISelect: aTreeItemPath inTreeNamed: aTreePresenter
 		findTreePathFor: aTreeItemPath
 		inTreeNamed: aTreePresenterName
 		andDo: [ :treePresenter :treePath |
-			treePresenter selectPath: treePath scrollToSelection: true ]
+			treePresenter
+				unselectAll; "Because #selectpath:scrollToSelection: adds the path to the selection."
+				selectPath: treePath scrollToSelection: true ]
 ]
 
 { #category : 'steps - lists' }
@@ -456,14 +632,22 @@ HeraSpecAcceptanceTest >> stepISelectItems: itemsExpression inTheListNamed: aLis
 	self error: 'The expression for the item indexes is not recognized. Here are some examples: "1, 3, and 4", " "1 to 3".'
 ]
 
+{ #category : 'steps - menus' }
+HeraSpecAcceptanceTest >> stepISelectThePharoMenuBarItemWithPath: aMenuItemPath [
+
+	<heraStepDefinition: #(When match 'I select the {string} menu item from the Pharo menu bar')>
+
+	| menuItem |
+	menuItem := self findPharoMenuItemForPath: aMenuItemPath.
+	menuItem action value
+]
+
 { #category : 'steps - radio buttons' }
 HeraSpecAcceptanceTest >> stepISelectTheRadioButtonNamed: aRadioButtonPresenterName [
 
 	<heraStepDefinition: #(When match 'I select the {string} radio button')>
 
-	| radioButton |
-	radioButton := self radioButtonPresenterAt: aRadioButtonPresenterName.
-	radioButton state: true
+	self check: aRadioButtonPresenterName
 ]
 
 { #category : 'steps - checkboxes' }
@@ -471,9 +655,7 @@ HeraSpecAcceptanceTest >> stepIUncheckTheCheckboxNamed: aCheckboxPresenterName [
 
 	<heraStepDefinition: #(When match 'I uncheck the {string} checkbox')>
 
-	| checkbox |
-	checkbox := self checkboxPresenterAt: aCheckboxPresenterName.
-	checkbox state: false
+	self uncheck: aCheckboxPresenterName
 ]
 
 { #category : 'steps - lists' }
@@ -565,11 +747,9 @@ HeraSpecAcceptanceTest >> stepTheCheckboxIsChecked: aCheckboxPresenterName [
 
 	<heraStepDefinition: #(Then match 'the {string} checkbox is checked')>
 
-	| checkbox |
-	checkbox := self checkboxPresenterAt: aCheckboxPresenterName.
 	self
-		assert: checkbox state
-		description: [ 'The "{1}" checkbox in the "{2}" window is unchecked.' format: { aCheckboxPresenterName . self activeWindowLabel } ]
+		assert: (self isChecked: aCheckboxPresenterName)
+		description: [ 'The "{1}" checkbox in the "{2}" window is unchecked.' format: { aCheckboxPresenterName . self targetWindowLabel } ]
 ]
 
 { #category : 'steps - checkboxes' }
@@ -577,11 +757,9 @@ HeraSpecAcceptanceTest >> stepTheCheckboxIsUnchecked: aCheckboxPresenterName [
 
 	<heraStepDefinition: #(Then match 'the {string} checkbox is unchecked')>
 
-	| checkbox |
-	checkbox := self checkboxPresenterAt: aCheckboxPresenterName.
 	self
-		assert: checkbox state not
-		description: [ 'The "{1}" checkbox in the "{2}" window is checked.' format: { aCheckboxPresenterName . self activeWindowLabel } ]
+		assert: (self isUnchecked: aCheckboxPresenterName)
+		description: [ 'The "{1}" checkbox in the "{2}" window is checked.' format: { aCheckboxPresenterName . self targetWindowLabel } ]
 ]
 
 { #category : 'steps - radio buttons' }
@@ -589,11 +767,9 @@ HeraSpecAcceptanceTest >> stepTheRadioButtonIsOff: aRadioButtonPresenterName [
 
 	<heraStepDefinition: #(Then match 'the {string} radio button is off')>
 
-	| radioButton |
-	radioButton := self radioButtonPresenterAt: aRadioButtonPresenterName.
 	self
-		assert: radioButton state not
-		description: [ 'The "{1}" radio button in the "{2}" window is on.' format: { aRadioButtonPresenterName . self activeWindowLabel } ]
+		assert: (self isUnchecked: aRadioButtonPresenterName)
+		description: [ 'The "{1}" radio button in the "{2}" window is on.' format: { aRadioButtonPresenterName . self targetWindowLabel } ]
 ]
 
 { #category : 'steps - radio buttons' }
@@ -601,27 +777,112 @@ HeraSpecAcceptanceTest >> stepTheRadioButtonIsOn: aRadioButtonPresenterName [
 
 	<heraStepDefinition: #(Then match 'the {string} radio button is on')>
 
-	| radioButton |
-	radioButton := self radioButtonPresenterAt: aRadioButtonPresenterName.
 	self
-		assert: radioButton state
-		description: [ 'The "{1}" radio button in the "{2}" window is off.' format: { aRadioButtonPresenterName . self activeWindowLabel } ]
+		assert: (self isChecked: aRadioButtonPresenterName)
+		description: [ 'The "{1}" radio button in the "{2}" window is off.' format: { aRadioButtonPresenterName . self targetWindowLabel } ]
 ]
 
-{ #category : 'helpers - trees' }
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepTheTitleOfTheWindowIdentifiedBy: anIdentifier is: expectedWindowTitle [
+
+	<heraStepDefinition: #(Then match 'the title of the window identified by {string} is {string}')>
+
+	| window |
+	window := self objectIdentifiedBy: anIdentifier.
+	self
+		assert: window title = expectedWindowTitle
+		description: [ 'The title of the window identified by "{1}" is "{2}".' format: { anIdentifier . window title } ]
+]
+
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepTheTitleOfTheWindowIs: expectedWindowTitle [
+
+	<heraStepDefinition: #(Given match 'the title of the window is {string}')>
+
+	self
+		assert: self targetWindow title = expectedWindowTitle
+		description: [ 'The target window title is "{1}".' format: { targetWindow title } ]
+]
+
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepTheWindowClosesIdentifiedBy: anIdentifier [
+
+	<heraStepDefinition: #(Then match 'the window identified by {string} closes')>
+
+	self unregisterWindow: (self objectIdentifiedBy: anIdentifier)
+]
+
+{ #category : 'steps - windows' }
+HeraSpecAcceptanceTest >> stepTheWindowClosesWithTitle: aWindowTitle [
+
+	<heraStepDefinition: #(Then match 'the {string} window closes')>
+
+	self unregisterWindowTitled: aWindowTitle
+]
+
+{ #category : 'helpers - fields' }
+HeraSpecAcceptanceTest >> stringContentsOf: aFieldPresenterName [
+
+	^ (self presenterAt: aFieldPresenterName) text asString
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> targetPresenter [
+
+	^ self targetWindow model presenter
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> targetWindow [
+
+	^ targetWindow ifNil: [ self error: 'The target window has not been set.' ]
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> targetWindowLabel [
+
+	^ self targetWindow label
+]
+
+{ #category : 'helpers - finding presenters' }
 HeraSpecAcceptanceTest >> treePresenterAt: aTreePresenterName [
 
 	^ self presenterAt: aTreePresenterName type: 'tree'
 ]
 
-{ #category : 'helpers - presenters' }
-HeraSpecAcceptanceTest >> uncheck: aTogglePresenterPathArray [
+{ #category : 'helpers - checkable presenters' }
+HeraSpecAcceptanceTest >> uncheck: aCheckboxPresenterName [
 
-	| presenter |
-	presenter := self presenterAtPath: aTogglePresenterPathArray.
-	self assert: presenter isEnabled description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is not enabled.' ] .
-	self assert: presenter state description: [ 'The presenter at ' , aTogglePresenterPathArray printString , ' is already unchecked.' ] .
-	presenter click
+	| checkbox |
+	checkbox := self checkboxPresenterAt: aCheckboxPresenterName.
+	self
+		errorIf: checkbox isEnabled not
+		description: [ 'The checkbox at {1} is not enabled.' format: { aCheckboxPresenterName } ] .
+	checkbox click
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> unregisterWindow: aWindow [
+
+	(registeredWindows includes: aWindow) ifFalse: [ self error: 'The opening of this window has not been described before.' ].
+	self windowTitled: aWindow title ifFound: [ self signalFailure: 'The window is still open.' ].
+	targetWindow = aWindow ifTrue: [ targetWindow := nil ].
+	registeredWindows remove: aWindow
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> unregisterWindowTitled: aWindowTitle [
+
+	| window |
+	window := self registeredWindowTitled: aWindowTitle ifNone: [ self error: 'The opening of this window has not been described before.' ].
+	self unregisterWindow: window
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> windowOpensWithTitle: aWindowTitle [
+
+	self windowTitled: aWindowTitle ifNone: [ self signalFailure: 'The window is not open.' ].
+	^ self registerWindowTitled: aWindowTitle
 ]
 
 { #category : 'helpers - window management' }
@@ -630,6 +891,18 @@ HeraSpecAcceptanceTest >> windowTitled: aWindowTitle [
 	^ self
 		windowTitled: aWindowTitle
 		ifNone: [ self error: ('There is no window with title "{1}".' format: { aWindowTitle }) ]
+]
+
+{ #category : 'helpers - window management' }
+HeraSpecAcceptanceTest >> windowTitled: aWindowTitle ifFound: foundBlock [
+
+	| windows |
+	windows := SystemWindow windowsIn: self currentWorld satisfying: [ :systemWindow | systemWindow label = aWindowTitle ].
+	windows ifEmpty: [ ^ nil ].
+	self
+		errorIf: windows size > 1
+		description: [ 'There is more than one window with title "{1}".' format: { aWindowTitle } ].
+	foundBlock value: windows first
 ]
 
 { #category : 'helpers - window management' }

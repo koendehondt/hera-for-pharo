@@ -42,9 +42,23 @@ HeraFeatureBrowser class >> featureBrowserOnAllMenuItemOn: aBuilder [
 	(aBuilder item: #Hera)
 		parent: #Testing;
 		order: 100;
-		label: self windowTitle , ' on all';
+		label: self windowTitle , ' on All';
 		icon: self windowIcon;
-		action: [ HeraApplication new openFeatureBrowserOnAll ];
+		action: [ HeraApplication new openFeatureBrowserOnAll ]
+]
+
+{ #category : 'world menu' }
+HeraFeatureBrowser class >> featureBrowserOnDocumentationMenuItemOn: aBuilder [
+	<worldMenu>
+	
+	"See ToolShortcutsCategory>>#openHeraFeatureBrowserOnAll for the registration of the shortcut."
+
+	(aBuilder item: #Hera)
+		parent: #Testing;
+		order: 101;
+		label: 'Hera Documentation & Examples';
+		icon: self windowIcon;
+		action: [ HeraApplication new openDocumentation ];
 		withSeparatorAfter
 ]
 
@@ -99,24 +113,6 @@ HeraFeatureBrowser >> browseReferences: aStepAstNode [
 	self flag: 'It is impossible to find references of a step with parameters.'.
 	stepMethodItem := HeraStepMethodItem new stepMethod: (self methodFor: aStepAstNode in: nil).
 	Hera browseReferencesTo: stepMethodItem inScope: scope
-]
-
-{ #category : 'test api' }
-HeraFeatureBrowser >> clickDebugButton [
-
-	featureSelector clickDebugButton
-]
-
-{ #category : 'test api' }
-HeraFeatureBrowser >> clickRunButton [
-
-	featureSelector clickRunButton
-]
-
-{ #category : 'test api' }
-HeraFeatureBrowser >> clickStepByStepButton [
-
-	featureSelector clickStepByStepButton
 ]
 
 { #category : 'initialization' }
@@ -182,10 +178,17 @@ HeraFeatureBrowser >> featureSelectionChanged [
 	scriptEditor model: self selectedMethodItem
 ]
 
-{ #category : 'test api' }
-HeraFeatureBrowser >> hasNoFeatures [
+{ #category : 'hera - accessing presenters' }
+HeraFeatureBrowser >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
-	^ featureSelector hasNoFeatures
+	| mapping |
+	mapping := Dictionary new
+		add: 'Feature selector' -> featureSelector;
+		yourself.
+	mapping at: aPresenterName ifPresent: [ :presenter | ^ presenter ].
+	featureSelector heraPresenterAt: aPresenterName ifPresent: [ :presenter | ^ presenter ].
+	scriptEditor heraPresenterAt: aPresenterName ifPresent: [ :presenter | ^ presenter ].
+	^ stepEditor heraPresenterAt: aPresenterName ifAbsent: absentBlock
 ]
 
 { #category : 'initialization' }
@@ -228,6 +231,12 @@ HeraFeatureBrowser >> isBrowseStepsButtonEnabled [
 HeraFeatureBrowser >> methodFor: aStepAstNode in: aScenarioOutlineAstNode [
 
 	^ self selectedMethodItem acceptanceTest methodFor: aStepAstNode in: aScenarioOutlineAstNode
+]
+
+{ #category : 'test api' }
+HeraFeatureBrowser >> runAllFeatures [
+
+	^ featureSelector runAllFeatures
 ]
 
 { #category : 'private' }

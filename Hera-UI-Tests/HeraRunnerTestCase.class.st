@@ -66,7 +66,7 @@ HeraRunnerTestCase >> tearDown [
 HeraRunnerTestCase >> testDebug [
 
 	self should: [ subject debugScope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope ] raise: Error.
-	self assert: subject currentWindowTitle equals: 'Running 1/2'
+	self assert: subject currentWindowTitle equals: 'Running 1/2 – Successful sign-in'
 ]
 
 { #category : 'tests - progress in window label' }
@@ -77,7 +77,7 @@ HeraRunnerTestCase >> testDebugFiltered [
 			debugScope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope
 			filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in')
 	] raise: Error.
-	self assert: subject currentWindowTitle equals: 'Running 1/1'
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Unsuccessful sign-in'
 ]
 
 { #category : 'tests' }
@@ -144,7 +144,7 @@ HeraRunnerTestCase >> testRerunAndDebugFeature [
 		do: [ uncaughtError := true ].
 	self assert: self openedRunnerWindows size equals: 1.
 	"Due to the open debugger, the runner's window shows 'Running', not 'Finished'."
-	self assert: self topMostRunner currentWindowTitle equals: 'Running 1/1'
+	self assert: self topMostRunner currentWindowTitle equals: 'Running 1/1 – Running this scenario in debug mode opens the debugger'
 ]
 
 { #category : 'tests - rerunning' }
@@ -158,13 +158,13 @@ HeraRunnerTestCase >> testRerunAndStepAll [
 	subject rerunAndStep.
 	self assert: self openedRunnerWindows size equals: 1.
 	runner := self topMostRunner.
-	self assert: runner currentWindowTitle equals: 'Running 0/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 0/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 1/1 – Stepping – Running this scenario in debug mode opens the debugger'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 1/1 – Stepping – Running this scenario in debug mode opens the debugger'.
 	runner stepOver.
 	self assert: runner currentWindowTitle equals: 'Finished 1/1'
 ]
@@ -180,13 +180,13 @@ HeraRunnerTestCase >> testRerunAndStepFeature [
 	subject rerunAndStep.
 	self assert: self openedRunnerWindows size equals: 1.
 	runner := self topMostRunner.
-	self assert: runner currentWindowTitle equals: 'Running 0/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 0/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 1/1 – Stepping – Running this scenario in debug mode opens the debugger'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 1/1 – Stepping – Running this scenario in debug mode opens the debugger'.
 	runner stepOver.
 	self assert: runner currentWindowTitle equals: 'Finished 1/1'
 ]
@@ -203,11 +203,11 @@ HeraRunnerTestCase >> testRerunAndStepScenario [
 	self assert: self openedRunnerWindows size equals: 1.
 	runner := self topMostRunner.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 0/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 1/1 – Stepping – Running this scenario in debug mode opens the debugger'.
 	runner stepOver.
-	self assert: runner currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: runner currentWindowTitle equals: 'Running 1/1 – Stepping – Running this scenario in debug mode opens the debugger'.
 	runner stepOver.
 	self assert: runner currentWindowTitle equals: 'Finished 1/1'
 ]
@@ -274,12 +274,12 @@ Feature\: Signing in
 Total\: 2 scenarios. Passed\: 2. Failed\: 0. Error\: 0. Duration\: (1 second|\d+ seconds)\.
 '.
 	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
-	self assert: subject runLog matches: expectedRunLogRegex.
+	self assert: subject runLogString matches: expectedRunLogRegex.
 	subject restart.
 	self deny: subject hasRunSteps.
 	self deny: subject isRunningScenario.
 	subject continue.
-	self assert: subject runLog matches: expectedRunLogRegex
+	self assert: subject runLogString matches: expectedRunLogRegex
 ]
 
 { #category : 'tests - rerunning' }
@@ -292,7 +292,7 @@ HeraRunnerTestCase >> testRestartFiltered [
 	self assert: self openedRunnerWindows size equals: 0.
 	subject restart.
 	self assert: self openedRunnerWindows size equals: 0.
-	self assert: subject currentWindowTitle equals: 'Running 0/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	subject continue.
 	self assert: self openedRunnerWindows size equals: 0.
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'
@@ -326,12 +326,12 @@ Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 	subject
 		runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope
 		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').	
-	self assert: subject runLog equals: expectedRunLog.
+	self assert: subject runLogString equals: expectedRunLog.
 	subject restart.
 	self deny: subject hasRunSteps.
 	self deny: subject isRunningScenario.
 	subject continue.
-	self assert: subject runLog equals: expectedRunLog
+	self assert: subject runLogString equals: expectedRunLog
 ]
 
 { #category : 'tests - rerunning' }
@@ -342,7 +342,7 @@ HeraRunnerTestCase >> testRestartUnfiltered [
 	self assert: self openedRunnerWindows size equals: 0.
 	subject restart.
 	self assert: self openedRunnerWindows size equals: 0.
-	self assert: subject currentWindowTitle equals: 'Running 0/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 0/2 – Stepping'.
 	subject continue.
 	self assert: self openedRunnerWindows size equals: 0.
 	self assert: subject currentWindowTitle equals: 'Finished 2/2'
@@ -359,13 +359,13 @@ HeraRunnerTestCase >> testResultsWhenSteppingThroughScenario [
 		HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature .
 		HeraAcceptanceTestWithFailureForTesting selector: #signingInFeature }).
 
-	self assertWindowTitle: 'Running 0/4 - Stepping'.
+	self assertWindowTitle: 'Running 0/4 – Stepping'.
 	self assertResultSummary: {0 . 0 . 0 . 0}.
 	self assert: subject resultItemDescriptions equals: {}.
-	self assert: subject runLog asString equals: ''.
+	self assert: subject runLogString equals: ''.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 0/4 - Stepping'.
+	self assertWindowTitle: 'Running 0/4 – Stepping'.
 	self assertResultSummary: {0 . 0 . 0 . 0}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -383,10 +383,10 @@ Feature: Signing in
 	Signing in is required to have access to the application.
 
 	Signing in requires credentials: an email address and a password.'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 1/4 - Stepping'.
+	self assertWindowTitle: 'Running 1/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {0 . 0 . 0 . 0}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -412,10 +412,10 @@ Feature: Signing in
 
 		Access is allowed when the credentials are recognized.
 '.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 1/4 - Stepping'.
+	self assertWindowTitle: 'Running 1/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {0 . 0 . 0 . 0}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -442,10 +442,10 @@ Feature: Signing in
 		Access is allowed when the credentials are recognized.
 
 		Given I have credentials to sign in'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 1/4 - Stepping'.
+	self assertWindowTitle: 'Running 1/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {0 . 0 . 0 . 0}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -473,10 +473,10 @@ Feature: Signing in
 
 		Given I have credentials to sign in
 		When I enter my credentials'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 1/4 - Stepping'.
+	self assertWindowTitle: 'Running 1/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {1 . 0 . 0 . 1}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -506,10 +506,10 @@ Feature: Signing in
 		When I enter my credentials
 		And I press the button to sign in
 			ERROR Button not found'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 1/4 - Stepping'.
+	self assertWindowTitle: 'Running 1/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {1 . 0 . 0 . 1}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -519,10 +519,10 @@ Feature: Signing in
 		nil .
 		nil .
 		#errorResult }.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 2/4 - Stepping'.
+	self assertWindowTitle: 'Running 2/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {1 . 0 . 0 . 1}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -556,10 +556,10 @@ Feature: Signing in
 			ERROR Button not found
 
 	Scenario: Unsuccessful sign-in'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 2/4 - Stepping'.
+	self assertWindowTitle: 'Running 2/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {1 . 0 . 0 . 1}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -586,7 +586,7 @@ Feature: Signing in
 		Given I have credentials to sign in'.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 2/4 - Stepping'.
+	self assertWindowTitle: 'Running 2/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {1 . 0 . 0 . 1}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -622,10 +622,10 @@ Feature: Signing in
 	Scenario: Unsuccessful sign-in
 		Given I have credentials to sign in
 		When I enter the wrong credentials'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 2/4 - Stepping'.
+	self assertWindowTitle: 'Running 2/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -663,10 +663,10 @@ Feature: Signing in
 		When I enter the wrong credentials
 		And I press the button to sign in
 			ERROR Button not found'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 2/4 - Stepping'.
+	self assertWindowTitle: 'Running 2/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -678,10 +678,10 @@ Feature: Signing in
 		nil .
 		#errorResult .
 		#errorResult }.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 2/4 - Stepping'.
+	self assertWindowTitle: 'Running 2/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -693,10 +693,10 @@ Feature: Signing in
 		nil .
 		#errorResult .
 		#errorResult }.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 2/4 - Stepping'.
+	self assertWindowTitle: 'Running 2/4 – Stepping'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -745,10 +745,10 @@ Feature: Signing in
 	Signing in is required to have access to the application.
 
 	Signing in requires credentials: an email address and a password.'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 3/4 - Stepping'.
+	self assertWindowTitle: 'Running 3/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -805,10 +805,10 @@ Feature: Signing in
 
 		Access is allowed when the credentials are recognized.
 '.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 3/4 - Stepping'.
+	self assertWindowTitle: 'Running 3/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -866,10 +866,10 @@ Feature: Signing in
 		Access is allowed when the credentials are recognized.
 
 		Given I have credentials to sign in'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 3/4 - Stepping'.
+	self assertWindowTitle: 'Running 3/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -928,10 +928,10 @@ Feature: Signing in
 
 		Given I have credentials to sign in
 		When I enter my credentials'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 3/4 - Stepping'.
+	self assertWindowTitle: 'Running 3/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -991,10 +991,10 @@ Feature: Signing in
 		Given I have credentials to sign in
 		When I enter my credentials
 		And I press the button to sign in'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 3/4 - Stepping'.
+	self assertWindowTitle: 'Running 3/4 – Stepping – Successful sign-in'.
 	self assertResultSummary: {2 . 0 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -1055,10 +1055,10 @@ Feature: Signing in
 		When I enter my credentials
 		And I press the button to sign in
 		Then I see the home page'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 4/4 - Stepping'.
+	self assertWindowTitle: 'Running 4/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {3 . 1 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -1123,10 +1123,10 @@ Feature: Signing in
 		Then I see the home page
 
 	Scenario: Unsuccessful sign-in'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 4/4 - Stepping'.
+	self assertWindowTitle: 'Running 4/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {3 . 1 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -1192,10 +1192,10 @@ Feature: Signing in
 
 	Scenario: Unsuccessful sign-in
 		Given I have credentials to sign in'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 4/4 - Stepping'.
+	self assertWindowTitle: 'Running 4/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {3 . 1 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -1262,10 +1262,10 @@ Feature: Signing in
 	Scenario: Unsuccessful sign-in
 		Given I have credentials to sign in
 		When I enter the wrong credentials'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 4/4 - Stepping'.
+	self assertWindowTitle: 'Running 4/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {3 . 1 . 0 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -1333,10 +1333,10 @@ Feature: Signing in
 		Given I have credentials to sign in
 		When I enter the wrong credentials
 		And I press the button to sign in'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 4/4 - Stepping'.
+	self assertWindowTitle: 'Running 4/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {4 . 1 . 1 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -1406,10 +1406,10 @@ Feature: Signing in
 		And I press the button to sign in
 		Then I am still on the sign-in page
 			FAILED The current page is not the sign-in page.'.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
-	self assertWindowTitle: 'Running 4/4 - Stepping'.
+	self assertWindowTitle: 'Running 4/4 – Stepping – Unsuccessful sign-in'.
 	self assertResultSummary: {4 . 1 . 1 . 2}.
 	self assert: subject resultItemDescriptions equals: {
 		'2 features' .
@@ -1427,7 +1427,7 @@ Feature: Signing in
 		nil .
 		#passedResult .
 		#failedResult }.
-	self assert: subject runLog asString equals: expectedOutput.
+	self assert: subject runLogString equals: expectedOutput.
 
 	subject stepOver.
 	self assertWindowTitle: 'Finished 4/4'.
@@ -1504,7 +1504,7 @@ Feature\: Signing in
 
 Total\: 4 scenarios. Passed\: 1. Failed\: 1. Error\: 2. Duration\: (1 second|\d+ seconds)\.
 '.
-	self assert: subject runLog asString matches: expectedOutputRegex
+	self assert: subject runLogString matches: expectedOutputRegex
 ]
 
 { #category : 'tests - progress in window label' }
@@ -1573,11 +1573,11 @@ HeraRunnerTestCase >> testRunUntilFinishedAndRestart [
 	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	self assert: subject currentWindowTitle equals: 'Finished 2/2'.
 	subject restart.
-	self assert: subject currentWindowTitle equals: 'Running 0/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 0/2 – Stepping'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 0/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 0/2 – Stepping'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/2 – Stepping – Successful sign-in'.
 	subject continue.
 	self assert: subject currentWindowTitle equals: 'Finished 2/2'
 ]
@@ -1586,7 +1586,7 @@ HeraRunnerTestCase >> testRunUntilFinishedAndRestart [
 HeraRunnerTestCase >> testRunUntilPausedAndContinue [
 
 	subject runScope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Paused'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Paused – Successful sign-in'.
 	subject continue.
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'
 ]
@@ -1595,9 +1595,9 @@ HeraRunnerTestCase >> testRunUntilPausedAndContinue [
 HeraRunnerTestCase >> testRunUntilPausedAndThenStepOver [
 
 	subject runScope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Paused'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Paused – Successful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Stepping – Successful sign-in'.
 	subject continue.
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'
 ]
@@ -1606,7 +1606,7 @@ HeraRunnerTestCase >> testRunUntilPausedAndThenStepOver [
 HeraRunnerTestCase >> testRunUntilPausedAndThenStepOverScenario [
 
 	subject runScope: (HeraAcceptanceTestExamplesForTesting selector: #featureWithPauseStep) asRunnerScope.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Paused'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Paused – Successful sign-in'.
 	subject continue.
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'
 ]
@@ -1616,19 +1616,19 @@ HeraRunnerTestCase >> testStepFilteredUntilFinished [
 
 	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 0/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/1 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'
 ]
@@ -1645,29 +1645,29 @@ HeraRunnerTestCase >> testStepUntilFinished [
 
 	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 0/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 0/2 – Stepping'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/2 – Stepping – Successful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/2 – Stepping – Successful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/2 – Stepping – Successful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/2 – Stepping – Successful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 1/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 1/2 – Stepping – Successful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 2/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 2/2 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 2/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 2/2 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 2/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 2/2 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 2/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 2/2 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 2/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 2/2 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
-	self assert: subject currentWindowTitle equals: 'Running 2/2 - Stepping'.
+	self assert: subject currentWindowTitle equals: 'Running 2/2 – Stepping – Unsuccessful sign-in'.
 	subject stepOver.
 	self assert: subject currentWindowTitle equals: 'Finished 2/2'
 ]

@@ -32,6 +32,14 @@ HeraToolbar >> defaultLayout [
 		yourself
 ]
 
+{ #category : 'hera - accessing presenters' }
+HeraToolbar >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
+
+	^ self layout children
+		detect: [ :button | button help = aPresenterName ]
+		ifNone: absentBlock
+]
+
 { #category : 'initialization' }
 HeraToolbar >> initializePresenters [
 

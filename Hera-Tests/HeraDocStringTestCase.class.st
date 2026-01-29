@@ -36,6 +36,21 @@ HeraDocStringTestCase >> testAsStepArgument [
 ]
 
 { #category : 'tests' }
+HeraDocStringTestCase >> testAsString [
+
+	self assert: subject asString equals: '<users>
+	<user>
+		<name>John</name>
+		<email>john@testing.org</email>
+	</user>
+	<user>
+		<name>Jane</name>
+		<email>jane@testing.org</email>
+	</user>
+</users>'
+]
+
+{ #category : 'tests' }
 HeraDocStringTestCase >> testHasParameters [
 
 	subject lines: #().

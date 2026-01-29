@@ -40,6 +40,14 @@ HeraApplication >> newFeatureBrowserOnScope: aScope [
 ]
 
 { #category : 'running' }
+HeraApplication >> openDocumentation [
+
+	| documentationBrowser |
+	documentationBrowser := self openFeatureBrowserOnScope: (HeraScope new addClass: HeraSpecExamplesAcceptanceTest).
+	documentationBrowser windowTitle: 'Documentation & Examples'
+]
+
+{ #category : 'running' }
 HeraApplication >> openFeatureBrowser [
 
 	^ self openFeatureBrowserOnScope: HeraScope default

@@ -147,24 +147,6 @@ HeraFeatureSelector >> browseSteps [
 		open
 ]
 
-{ #category : 'test api' }
-HeraFeatureSelector >> clickDebugButton [
-
-	debugSelectedFeaturesButton performAction
-]
-
-{ #category : 'test api' }
-HeraFeatureSelector >> clickRunButton [
-
-	runSelectedFeaturesButton performAction
-]
-
-{ #category : 'test api' }
-HeraFeatureSelector >> clickStepByStepButton [
-
-	stepSelectedFeaturesButton performAction
-]
-
 { #category : 'initialization' }
 HeraFeatureSelector >> connectPresenters [
 
@@ -239,12 +221,6 @@ HeraFeatureSelector >> globalToolbar [
 		yourself
 ]
 
-{ #category : 'test api' }
-HeraFeatureSelector >> hasNoFeatures [
-
-	^ classesAndFeatures roots isEmpty
-]
-
 { #category : 'private' }
 HeraFeatureSelector >> hasSelectedFeature [
 
@@ -261,6 +237,26 @@ HeraFeatureSelector >> hasSelection [
 HeraFeatureSelector >> hasSingleSelection [
 
 	^ classesAndFeatures selectedItems size = 1
+]
+
+{ #category : 'hera - accessing presenters' }
+HeraFeatureSelector >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
+
+	| mapping |
+	mapping := Dictionary new
+		add: 'Features' -> classesAndFeatures;
+		add: addAcceptanceTestClassButton help -> addAcceptanceTestClassButton;
+		add: addFeatureButton help -> addFeatureButton;
+		add: browseStepsButton help -> browseStepsButton;
+		add: browseButton help -> browseButton;
+		add: runSelectedFeaturesButton help -> runSelectedFeaturesButton;
+		add: stepSelectedFeaturesButton help -> stepSelectedFeaturesButton;
+		add: debugSelectedFeaturesButton help -> debugSelectedFeaturesButton;
+		add: runAllFeaturesButton help -> runAllFeaturesButton;
+		add: saveFeaturesButton help -> saveFeaturesButton;
+		add: documentationButton help -> documentationButton;
+		yourself.
+	^ mapping at: aPresenterName ifAbsent: absentBlock
 ]
 
 { #category : 'initialization' }
@@ -388,9 +384,7 @@ HeraFeatureSelector >> isStepSelectedFeaturesButtonEnabled [
 { #category : 'actions' }
 HeraFeatureSelector >> openDocumentation [
 
-	| documentationBrowser |
-	documentationBrowser := self application openFeatureBrowserOnScope: (HeraScope new addClass: HeraSpecExamplesAcceptanceTest).
-	documentationBrowser windowTitle: 'Documentation & examples'
+	self application openDocumentation
 ]
 
 { #category : 'actions' }
@@ -415,9 +409,10 @@ HeraFeatureSelector >> removeSelectionInClassesAndFeatures [
 { #category : 'actions' }
 HeraFeatureSelector >> runAllFeatures [
 
-	(self instantiate: HeraRunner)
+	^ (self instantiate: HeraRunner)
 		open;
-		runScope: self scope asRunnerScope
+		runScope: self scope asRunnerScope;
+		yourself
 ]
 
 { #category : 'actions' }

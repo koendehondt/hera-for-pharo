@@ -1,11 +1,13 @@
 Class {
 	#name : 'HeraExamplePerson',
 	#superclass : 'Object',
+	#traits : 'TObservable',
+	#classTraits : 'TObservable classTrait',
 	#instVars : [
-		'name',
-		'children',
-		'isDisabled',
-		'sex'
+		'#name => ObservableSlot',
+		'#children => ObservableSlot',
+		'#isDisabled => ObservableSlot',
+		'#sex => ObservableSlot'
 	],
 	#category : 'Hera-Documentation-Example domain',
 	#package : 'Hera-Documentation',
@@ -46,6 +48,7 @@ HeraExamplePerson >> children [
 HeraExamplePerson >> initialize [
 
 	super initialize.
+	self class initializeSlots: self.
 	name := 'Unknown'.
 	isDisabled := false.
 	children := OrderedCollection new

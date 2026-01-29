@@ -185,6 +185,18 @@ HeraScriptEditor >> hasChanged [
 	^ originalScript ~= self text asString
 ]
 
+{ #category : 'hera - accessing presenters' }
+HeraScriptEditor >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
+
+	| mapping |
+	mapping := Dictionary new
+		add: 'Script' -> script;
+		add: 'Save' -> saveButton;
+		add: 'Cancel' -> cancelButton;
+		yourself.
+	^ mapping at: aPresenterName ifAbsent: absentBlock
+]
+
 { #category : 'api' }
 HeraScriptEditor >> highlight: aStepMethodItem [
  
