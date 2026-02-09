@@ -797,7 +797,7 @@ HeraSpecAcceptanceTest >> stepTheTitleOfTheWindowIdentifiedBy: anIdentifier is: 
 { #category : 'steps - windows' }
 HeraSpecAcceptanceTest >> stepTheTitleOfTheWindowIs: expectedWindowTitle [
 
-	<heraStepDefinition: #(Given match 'the title of the window is {string}')>
+	<heraStepDefinition: #(Then match 'the title of the window is {string}')>
 
 	self
 		assert: self targetWindow title = expectedWindowTitle
