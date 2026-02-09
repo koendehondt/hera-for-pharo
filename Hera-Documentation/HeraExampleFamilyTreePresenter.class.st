@@ -57,11 +57,10 @@ HeraExampleFamilyTreePresenter >> focusPerson: aPerson [
 { #category : 'hera - accessing presenters' }
 HeraExampleFamilyTreePresenter >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
-	^ self layout children second heraPresenterAt: aPresenterName ifAbsent: [ | mapping |
-		mapping := Dictionary new
-			add: 'Family' -> familyTree;
-			yourself.
-		mapping at: aPresenterName ifAbsent: absentBlock ]
+	| currentDetails |
+	aPresenterName = 'Family' ifTrue: [ ^ familyTree ].
+	currentDetails := self layout children second.
+	^ currentDetails heraPresenterAt: aPresenterName ifAbsent: absentBlock
 ]
 
 { #category : 'initialization' }

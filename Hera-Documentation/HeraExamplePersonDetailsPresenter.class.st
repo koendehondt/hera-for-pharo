@@ -53,10 +53,10 @@ HeraExamplePersonDetailsPresenter >> heraPresenterAt: aWidgetName ifAbsent: abse
 	mapping := Dictionary new
 		add: 'Name' -> nameField;
 		add: 'Children' -> childrenList;
-		add: 'Disabled' -> disabledCheckbox;
-		add: 'Male' -> maleRadio;
-		add: 'Female' -> femaleRadio;
-		add: 'Other' -> otherRadio;
+		add: disabledCheckbox label -> disabledCheckbox;
+		add: maleRadio label -> maleRadio;
+		add: femaleRadio label -> femaleRadio;
+		add: otherRadio label -> otherRadio;
 		yourself.
 	^ mapping at: aWidgetName ifAbsent: absentBlock
 ]
