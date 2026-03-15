@@ -185,7 +185,7 @@ HeraScriptEditor >> hasChanged [
 	^ originalScript ~= self text asString
 ]
 
-{ #category : 'hera - accessing presenters' }
+{ #category : 'hera - api' }
 HeraScriptEditor >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
 	| mapping |

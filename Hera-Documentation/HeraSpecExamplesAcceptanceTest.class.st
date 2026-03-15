@@ -1,9 +1,11 @@
 Class {
 	#name : 'HeraSpecExamplesAcceptanceTest',
 	#superclass : 'HeraSpecAcceptanceTest',
-	#category : 'Hera-Documentation-Example features',
+	#traits : 'FamilyTreeStepsTrait',
+	#classTraits : 'FamilyTreeStepsTrait classTrait',
+	#category : 'Hera-Documentation-Examples',
 	#package : 'Hera-Documentation',
-	#tag : 'Example features'
+	#tag : 'Examples'
 }
 
 { #category : 'accessing' }
@@ -12,12 +14,45 @@ HeraSpecExamplesAcceptanceTest class >> nameInBrowser [
 	^ 'Spec documentation and examples'
 ]
 
-{ #category : 'helpers' }
-HeraSpecExamplesAcceptanceTest >> familyMemberNamed: aFamilyMemberName [
+{ #category : 'features' }
+HeraSpecExamplesAcceptanceTest >> featureButtons [
 
-	^ (self stateAt: #familyMembers)
-		detect: [ :each | each name = aFamilyMemberName ]
-		ifNone: [ self error: ('Family member "{1}" is unknown.' format: { aFamilyMemberName }) ]
+	<heraFeature: 'Buttons'>
+
+	^ (self feature: 'Buttons')
+		scenarios: {
+			(self scenario: 'Enablement state and pressing')
+				when: 'I start a new family tree';
+				then: 'the "Family tree" window opens';
+				then: 'the "Add" button is enabled';
+				and: 'the "Remove" button is disabled';
+				when: 'I press the "Add" button';
+				then: 'the title of the window is "Family tree of Unknown"';
+				and: 'I see the following "Family" tree:' with: (self dataTree: {
+					'Unknown' -> { } });
+				and: '"Unknown" is selected in the "Family" tree';
+				and: 'the "Add" button is enabled';
+				and: 'the "Remove" button is enabled';
+				when: 'I press the "Remove" button';
+				then: 'the title of the window is "Family tree"';
+				and: 'the "Family" tree is empty' .
+			(self scenario: 'Pressing a button')
+				given: 'a family tree:' with: (self dataTree: {
+					'John' -> {
+						'Charles' -> { } .
+						'Jane' -> {
+							'William' -> { } } .
+						'Mary' -> { } } });
+				when: 'I start the Family Tree application on "John"';
+				then: 'the "Family tree of John" window opens';
+				when: 'I select "John" in the "Family" tree';
+				and: 'I press the "Add" button';
+				then: 'I see the following "Family" tree:' with: (self dataTree: {
+					'John' -> {
+						'Charles' -> { } .
+						'Jane' -> { } .
+						'Mary' -> { } .
+						'Unknown' -> { } } }) }
 ]
 
 { #category : 'features' }
@@ -50,10 +85,10 @@ HeraSpecExamplesAcceptanceTest >> featureFields [
 		background: (self background
 			given: 'a family tree:' with: (self dataTree: {
 				'John' -> {
+					'Charles' -> { } .
 					'Jane' -> {
 						'William' -> { } } .
-					'Mary' -> { } .
-					'Charles' -> { } } }));
+					'Mary' -> { } } }));
 		scenarios: {
 			(self scenario: 'Reading')
 				when: 'I start the Family Tree application on "John"';
@@ -77,73 +112,73 @@ HeraSpecExamplesAcceptanceTest >> featureLists [
 		background: (self background
 			given: 'a family tree:' with: (self dataTree: {
 				'John' -> {
+					'Charles' -> { } .
 					'Jane' -> {
 						'William' -> { } } .
-					'Mary' -> { } .
-					'Charles' -> { } } }));
+					'Mary' -> { } } }));
 		scenarios: {
 			(self scenario: 'Empty list')
 				when: 'I start the Family Tree application on "Charles"';
 				then: 'the "Family tree of Charles" window opens';
 				when: 'I select "Charles" in the "Family" tree';
-				then: 'I see an empty "Children" list' .
+				then: 'the "Children" list is empty' .
 			(self scenario: 'Non-empty list')
 				when: 'I start the Family Tree application on "John"';
 				then: 'the "Family tree of John" window opens';
 				when: 'I select "John" in the "Family" tree';
 				then: 'I see exactly the following items in the "Children" list:' with: (self dataTable: {
+					{ 'Charles' } .
 					{ 'Jane' } .
-					{ 'Mary' } .
-					{ 'Charles' } }) .
+					{ 'Mary' } }) .
 			(self scenario: 'Single selection based on an index')
 				when: 'I start the Family Tree application on "John"';
 				then: 'the "Family tree of John" window opens';
 				when: 'I select "John" in the "Family" tree';
 				then: 'I see exactly the following items in the "Children" list:' with: (self dataTable: {
+					{ 'Charles' } .
 					{ 'Jane' } .
-					{ 'Mary' } .
-					{ 'Charles' } });
+					{ 'Mary' } });
 				when: 'I select item 2 in the "Children" list';
 				then: 'I see the following selected items in the "Children" list:' with: (self dataTable: {
-					{ 'Mary' } });
+					{ 'Jane' } });
 				when: 'I select item 1 in the "Children" list';
 				then: 'I see the following selected items in the "Children" list:' with: (self dataTable: {
-					{ 'Jane' } });
+					{ 'Charles' } });
 				when: 'I select item 3 in the "Children" list';
 				then: 'I see the following selected items in the "Children" list:' with: (self dataTable: {
-					{ 'Charles' } }) .
+					{ 'Mary' } }) .
 			(self scenario: 'Multiple selection based on an index range')
 				when: 'I start the Family Tree application on "John"';
 				then: 'the "Family tree of John" window opens';
 				when: 'I select "John" in the "Family" tree';
 				then: 'I see exactly the following items in the "Children" list:' with: (self dataTable: {
+					{ 'Charles' } .
 					{ 'Jane' } .
-					{ 'Mary' } .
-					{ 'Charles' } });
-				when: 'I select items 1 to 2 in the "Children" list';
+					{ 'Mary' } });
+				when: 'I select items 2 to 3 in the "Children" list';
 				then: 'I see the following selected items in the "Children" list:' with: (self dataTable: {
 					{ 'Jane' } .
 					{ 'Mary' } });
 				when: 'I select items 2 to 2 in the "Children" list';
 				then: 'I see the following selected items in the "Children" list:' with: (self dataTable: {
-					{ 'Mary' } }) .
+					{ 'Jane' } }) .
 			(self scenario: 'Multiple selection based on indexes')
 				when: 'I start the Family Tree application on "John"';
 				then: 'the "Family tree of John" window opens';
 				when: 'I select "John" in the "Family" tree';
 				then: 'I see exactly the following items in the "Children" list:' with: (self dataTable: {
+					{ 'Charles' } .
 					{ 'Jane' } .
-					{ 'Mary' } .
-					{ 'Charles' } });
+					{ 'Mary' } });
 				when: 'I select items 1 and 3 in the "Children" list';
 				then: 'I see the following selected items in the "Children" list:' with: (self dataTable: {
-					{ 'Jane' } .
-					{ 'Charles' } });
+					{ 'Charles' } .
+					{ 'Mary' } });
 				when: 'I select items 1, 2 and 3 in the "Children" list';
 				then: 'I see the following selected items in the "Children" list:' with: (self dataTable: {
+					{ 'Charles' } .
 					{ 'Jane' } .
-					{ 'Mary' } .
-					{ 'Charles' } }) }
+					{ 'Mary' } }) }
 ]
 
 { #category : 'features' }
@@ -285,7 +320,30 @@ HeraSpecExamplesAcceptanceTest >> featureTrees [
 				and: 'I double click "John >> Jane" in the "Family" tree';
 				then: 'the "Family tree of Jane" window opens';
 				then: 'I see the following "Family" tree:' with: (self dataTree: {
-					'Jane' -> { } }) }
+					'Jane' -> { } }) .
+			(self scenario: 'Adding items')
+				when: 'I start the Family Tree application on "John"';
+				then: 'the "Family tree of John" window opens';
+				when: 'I expand "John" in the "Family" tree';
+				when: 'I expand "John >> Jane" in the "Family" tree';
+				when: 'I select "John >> Jane" in the "Family" tree';
+				and: 'I press the "Add" button';
+				then: 'I see the following "Family" tree:' with: (self dataTree: {
+					'John' -> {
+						'Jane' -> {
+							'Unknown' -> { } .
+							'William' -> { } } .
+						'Mary' -> { } } }) .
+			(self scenario: 'Removing items')
+				when: 'I start the Family Tree application on "John"';
+				then: 'the "Family tree of John" window opens';
+				when: 'I expand "John" in the "Family" tree';
+				when: 'I expand "John >> Jane" in the "Family" tree';
+				when: 'I select "John >> Jane" in the "Family" tree';
+				and: 'I press the "Remove" button';
+				then: 'I see the following "Family" tree:' with: (self dataTree: {
+					'John' -> {
+						'Mary' -> { } } }) }
 ]
 
 { #category : 'features' }
@@ -297,10 +355,10 @@ HeraSpecExamplesAcceptanceTest >> featureWindows [
 		background: (self background
 			given: 'a family tree:' with: (self dataTree: {
 				'John' -> {
+					'Charles' -> { } .
 					'Jane' -> {
 						'William' -> { } } .
-					'Mary' -> { } .
-					'Charles' -> { } } }));
+					'Mary' -> { } } }));
 		scenarios: {
 			(self scenario: 'Title of target window')
 				when: 'I start the Family Tree application on "John"';
@@ -321,9 +379,9 @@ HeraSpecExamplesAcceptanceTest >> featureWindows [
 				when: 'I expand "John" in the "Family" tree';
 				then: 'I see the following "Family" tree:' with: (self dataTree: {
 					'John' -> {
+						'Charles' -> { } .
 						'Jane' -> { } .
-						'Mary' -> { } .
-						'Charles' -> { } } });
+						'Mary' -> { } } });
 				and: 'I double click "John >> Jane" in the "Family" tree';
 				then: 'the "Family tree of Jane" window opens';
 				and: 'I see the following "Family" tree:' with: (self dataTree: {
@@ -336,17 +394,17 @@ HeraSpecExamplesAcceptanceTest >> featureWindows [
 				when: 'I expand "John" in the "Family" tree';
 				then: 'I see the following "Family" tree:' with: (self dataTree: {
 					'John' -> {
+						'Charles' -> { } .
 						'Jane' -> { } .
-						'Mary' -> { } .
-						'Charles' -> { } } });
+						'Mary' -> { } } });
 				when: 'I double click "John >> Jane" in the "Family" tree';
 				then: 'the "Family tree of Jane" window opens';
 				when: 'I activate the "Family tree of John" window';
 				then: 'I see the following "Family" tree:' with: (self dataTree: {
 					'John' -> {
+						'Charles' -> { } .
 						'Jane' -> { } .
-						'Mary' -> { } .
-						'Charles' -> { } } }) .
+						'Mary' -> { } } }) .
 			(self scenario: 'Activating based on identification')
 				when: 'I start the Family Tree application on "John"';
 				then: 'the "Family tree of John" window opens, identified by "The Smith family"';
@@ -355,17 +413,17 @@ HeraSpecExamplesAcceptanceTest >> featureWindows [
 				when: 'I expand "John" in the "Family" tree';
 				then: 'I see the following "Family" tree:' with: (self dataTree: {
 					'John' -> {
+						'Charles' -> { } .
 						'Jane' -> { } .
-						'Mary' -> { } .
-						'Charles' -> { } } });
+						'Mary' -> { } } });
 				when: 'I double click "John >> Jane" in the "Family" tree';
 				then: 'the "Family tree of Jane" window opens';
 				when: 'I activate the window identified by "The Smith family"';
 				then: 'I see the following "Family" tree:' with: (self dataTree: {
 					'John' -> {
+						'Charles' -> { } .
 						'Jane' -> { } .
-						'Mary' -> { } .
-						'Charles' -> { } } }) .
+						'Mary' -> { } } }) .
 			(self scenario: 'Closing based on title')
 				when: 'I start the Family Tree application on "John"';
 				then: 'the "Family tree of John" window opens';
@@ -376,39 +434,4 @@ HeraSpecExamplesAcceptanceTest >> featureWindows [
 				then: 'the "Family tree of John" window opens, identified by "The Smith family"';
 				when: 'I click the close box of the window identified by "The Smith family"';
 				then: 'the window identified by "The Smith family" closes' }
-]
-
-{ #category : 'steps' }
-HeraSpecExamplesAcceptanceTest >> stepAFamilyTree: aDataTree [
-	"Assumption: single root."
-
-	<heraStepDefinition: #(Given 'a family tree:')>
-
-	| currentLevel family root familyMembers |
-	currentLevel := 0.
-	familyMembers := self stateAt: #familyMembers put: Dictionary new.
-	family := Stack new.
-	aDataTree data do: [ :dataTreeItem | | person |
-		person := HeraExamplePerson new name: dataTreeItem text.
-		familyMembers at: person name put: person.
-		currentLevel = 0
-			ifTrue: [ root := family push: person ]
-			ifFalse: [
-				[currentLevel >= dataTreeItem level ]
-					whileTrue: [
-						family pop.
-						currentLevel := currentLevel - 1 ].
-				family top addChild: person.
-				family push: person ].
-		currentLevel := dataTreeItem level ]
-]
-
-{ #category : 'steps' }
-HeraSpecExamplesAcceptanceTest >> stepIStartTheFamilyTreeApplicationOn: aFamilyMemberName [
-
-	<heraStepDefinition: #(When match 'I start the Family Tree application on {string}')>
-
-	HeraExampleFamilyTreePresenter new
-		focusPerson: (self familyMemberNamed: aFamilyMemberName);
-		open
 ]

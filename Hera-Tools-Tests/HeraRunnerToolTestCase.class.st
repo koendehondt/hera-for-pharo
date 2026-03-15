@@ -42,7 +42,10 @@ Feature\: Basic browsing
 		When I select the "Browse >> Hera Documentation & Examples" menu item from the Pharo menu bar
 		Then the "Documentation & Examples" window opens
 		Then I see the following "Features" tree\:
+			>  Spec Application Example\: Family Tree
+			>>   Managing a family tree
 			>  Spec documentation and examples
+			>>   Buttons
 			>>   Checkboxes
 			>>   Fields
 			>>   Lists
@@ -79,10 +82,10 @@ Feature\: Basic browsing
 				Background\:
 					Given a family tree\:
 						>   John
+						>>    Charles
 						>>    Jane
 						>>>     William
 						>>    Mary
-						>>    Charles
 			
 				Scenario\: Reading
 					When I start the Family Tree application on "John"
@@ -109,10 +112,10 @@ Feature\: Running features
 		When I select "Examples for testing >> With single step scenario" in the "Features" tree
 		And I press the "Step selected features" button
 		Then the "Running 0/1 – Stepping" window opens
-		And I see an enabled "Continue" button
-		And I see a disabled "Step until end of scenario" button
-		And I see an enabled "Step" button
-		And I see an enabled "Restart" button
+		And the "Continue" button is enabled
+		And the "Step until end of scenario" button is disabled
+		And the "Step" button is enabled
+		And the "Restart" button is enabled
 
 	Scenario\: Running a passing feature from the Feature Browser
 		When I select the "Browse >> Hera Feature Browser on All" menu item from the Pharo menu bar
@@ -121,10 +124,10 @@ Feature\: Running features
 		And I press the "Run selected features" button
 		Then the "Finished 1/1" window opens
 		And I see the full run log of the passed test
-		And I see a disabled "Continue" button
-		And I see a disabled "Step until end of scenario" button
-		And I see a disabled "Step" button
-		And I see an enabled "Restart" button
+		And the "Continue" button is disabled
+		And the "Step until end of scenario" button is disabled
+		And the "Step" button is disabled
+		And the "Restart" button is enabled
 
 	Scenario\: Running a feature with an error from the Feature Browser
 		When I select the "Browse >> Hera Feature Browser on All" menu item from the Pharo menu bar
@@ -133,10 +136,10 @@ Feature\: Running features
 		And I press the "Run selected features" button
 		Then the "Finished 1/1" window opens
 		Then I see the full run log of the errored test
-		And I see a disabled "Continue" button
-		And I see a disabled "Step until end of scenario" button
-		And I see a disabled "Step" button
-		And I see an enabled "Restart" button
+		And the "Continue" button is disabled
+		And the "Step until end of scenario" button is disabled
+		And the "Step" button is disabled
+		And the "Restart" button is enabled
 
 	Scenario\: Debugging a feature from the Feature Browser
 
@@ -152,10 +155,10 @@ Feature\: Running features
 		Then an unhandled exception is raised
 		And the "Running 1/1 – Running this scenario in debug mode opens the debugger" window opens
 		And I see the run log upto the failing step
-		And I see an enabled "Continue" button
-		And I see a disabled "Step until end of scenario" button
-		And I see an enabled "Step" button
-		And I see an enabled "Restart" button
+		And the "Continue" button is enabled
+		And the "Step until end of scenario" button is disabled
+		And the "Step" button is enabled
+		And the "Restart" button is enabled
 
 	Scenario\: Stepping a feature from the Feature Browser
 		When I select the "Browse >> Hera Feature Browser on All" menu item from the Pharo menu bar
@@ -172,10 +175,10 @@ Feature\: Running features
 		Then I see the executed steps
 		When I press the "Continue" button
 		Then I see the full run log of the test
-		And I see a disabled "Continue" button
-		And I see a disabled "Step until end of scenario" button
-		And I see a disabled "Step" button
-		And I see an enabled "Restart" button
+		And the "Continue" button is disabled
+		And the "Step until end of scenario" button is disabled
+		And the "Step" button is disabled
+		And the "Restart" button is enabled
 
 
 Feature\: Running single scenarios

@@ -41,6 +41,7 @@ HeraScopeTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 		HeraAcceptanceTestWithHooksForTesting .
 		HeraAcceptanceTestWithLintIssuesForTesting .
 		HeraAcceptanceTestWithPassForTesting .
+		HeraAcceptanceTestWithSingleFeatureForTesting .
 		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
 		HeraAcceptanceTestWithStepArgumentsForTesting .
 		HeraAcceptanceTestWithTraitForTesting
@@ -62,9 +63,11 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 		HeraAcceptanceTestWithHooksForTesting .
 		HeraAcceptanceTestWithLintIssuesForTesting .
 		HeraAcceptanceTestWithPassForTesting .
+		HeraAcceptanceTestWithSingleFeatureForTesting .
 		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
 		HeraAcceptanceTestWithStepArgumentsForTesting .
 		HeraAcceptanceTestWithTraitForTesting .
+		HeraExampleSpecApplicationAcceptanceTest .
 		HeraFeatureBrowserAcceptanceTest .
 		HeraRunnerAcceptanceTest .
 		HeraSelfAcceptanceTest . 
@@ -131,6 +134,15 @@ HeraScopeTestCase >> testDefault [
 ]
 
 { #category : 'tests' }
+HeraScopeTestCase >> testDocumentation [
+
+	subject := self describedClass documentation.
+	self assert: subject allForBrowsing equals: {
+		HeraExampleSpecApplicationAcceptanceTest .
+		HeraSpecExamplesAcceptanceTest }
+]
+
+{ #category : 'tests' }
 HeraScopeTestCase >> testExcludeClass [
 
 	subject := self describedClass all.
@@ -177,4 +189,30 @@ HeraScopeTestCase >> testNew [
 
 	subject := self describedClass new.
 	self assert: subject allForBrowsing isEmpty
+]
+
+{ #category : 'tests' }
+HeraScopeTestCase >> testTests [
+
+	subject := self describedClass tests.
+	self assert: subject allForBrowsing equals: {
+		HeraAcceptanceTestExamplesForTesting.
+		HeraAcceptanceTestForTesting .
+		HeraAcceptanceTestWithErrorForTesting .
+		HeraAcceptanceTestWithErrorInAfterScenarioHookForTesting .
+		HeraAcceptanceTestWithErrorInBeforeScenarioHookForTesting .
+		HeraAcceptanceTestWithFailureForTesting .
+		HeraAcceptanceTestWithHelperForTesting .
+		HeraAcceptanceTestWithHooksForTesting .
+		HeraAcceptanceTestWithLintIssuesForTesting .
+		HeraAcceptanceTestWithPassForTesting .
+		HeraAcceptanceTestWithSingleFeatureForTesting .
+		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
+		HeraAcceptanceTestWithStepArgumentsForTesting .
+		HeraAcceptanceTestWithTraitForTesting .
+		HeraFeatureBrowserAcceptanceTest .
+		HeraRunnerAcceptanceTest .
+		HeraSelfAcceptanceTest .
+		HeraWebAcceptanceTestExample .
+		PharoFinderAcceptanceTest }
 ]

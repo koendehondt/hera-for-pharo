@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'message'
 	],
-	#category : 'Hera-Documentation-Example Spec Application',
+	#category : 'Hera-Documentation-Family Tree - Application',
 	#package : 'Hera-Documentation',
-	#tag : 'Example Spec Application'
+	#tag : 'Family Tree - Application'
 }
 
 { #category : 'layout' }

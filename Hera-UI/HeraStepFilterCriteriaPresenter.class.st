@@ -89,6 +89,12 @@ HeraStepFilterCriteriaPresenter >> modelChanged [
 	onlyDeprecatedStepsCheckBox state: criteria onlyDeprecatedSteps
 ]
 
+{ #category : 'initialization' }
+HeraStepFilterCriteriaPresenter >> setupAfterOpening [
+
+	queryField takeKeyboardFocus
+]
+
 { #category : 'accessing' }
 HeraStepFilterCriteriaPresenter >> stepFilterCriteria [
 

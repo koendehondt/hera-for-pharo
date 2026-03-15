@@ -32,7 +32,7 @@ HeraToolbar >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'hera - accessing presenters' }
+{ #category : 'hera - api' }
 HeraToolbar >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
 	^ self layout children

@@ -178,7 +178,7 @@ HeraFeatureBrowser >> featureSelectionChanged [
 	scriptEditor model: self selectedMethodItem
 ]
 
-{ #category : 'hera - accessing presenters' }
+{ #category : 'hera - api' }
 HeraFeatureBrowser >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
 	| mapping |

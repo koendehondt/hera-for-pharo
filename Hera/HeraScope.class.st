@@ -18,14 +18,29 @@ HeraScope class >> all [
 { #category : 'instance creation' }
 HeraScope class >> default [
 
+	^ self all
+		removeClass: HeraSpecAcceptanceTest;
+		removeClass: HeraWebAcceptanceTest;
+		removeScope: self tests;
+		removeScope: self documentation
+]
+
+{ #category : 'instance creation' }
+HeraScope class >> documentation [
+
+	^ self new
+		addClasses: {
+			HeraSpecExamplesAcceptanceTest .
+			HeraExampleSpecApplicationAcceptanceTest }
+]
+
+{ #category : 'instance creation' }
+HeraScope class >> tests [
+
 	| testingClasses |
 	testingClasses := HeraAcceptanceTest allSubclasses select: [ :each |
 		each isForTestingHera or: [ each isForTestingPharo or: [ each isHeraExample ]] ].
-	^ self all
-		removeClasses: testingClasses;
-		removeClass: HeraSpecAcceptanceTest;
-		removeClass: HeraWebAcceptanceTest;
-		removeClass: HeraSpecExamplesAcceptanceTest 
+	^ self new addClasses: testingClasses
 ]
 
 { #category : 'accessing' }
@@ -115,6 +130,12 @@ HeraScope >> removeClasses: classes [
 HeraScope >> removeHierarchy: aClass [
 
 	self removeClasses: aClass allSubclasses
+]
+
+{ #category : 'accessing' }
+HeraScope >> removeScope: aScope [
+
+	self removeClasses: aScope acceptanceTestClasses
 ]
 
 { #category : 'accessing' }

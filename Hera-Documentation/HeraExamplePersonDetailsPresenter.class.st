@@ -1,6 +1,6 @@
 Class {
 	#name : 'HeraExamplePersonDetailsPresenter',
-	#superclass : 'SpPresenterWithModel',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'childrenList',
 		'nameField',
@@ -11,7 +11,8 @@ Class {
 		'maleRadio',
 		'otherRadio',
 		'nameChangedBlock',
-		'suppressUpdates'
+		'suppressUpdates',
+		'person'
 	],
 	#category : 'Hera-Documentation-Family Tree - Application',
 	#package : 'Hera-Documentation',
@@ -21,11 +22,15 @@ Class {
 { #category : 'initialization' }
 HeraExamplePersonDetailsPresenter >> connectPresenters [
 
-	nameField whenTextChangedDo: [ :name | self person ifNotNil: [ self person name: name ] ].
-	disabledCheckbox whenChangedDo: [ :isDisabled | self person isDisabled: isDisabled ].
-	femaleRadio whenChangedDo: [ :isFemale | isFemale ifTrue: [ self person beFemale ] ].
-	maleRadio whenChangedDo: [ :isMale | isMale ifTrue: [ self person beMale ] ].
-	otherRadio whenChangedDo: [ :isOther | isOther ifTrue: [ self person beOther ] ]
+	suppressUpdates := false.
+	nameChangedBlock := [ :name | "Do nothing." ].
+	nameField whenTextChangedDo: [ :name |
+		person ifNotNil: [ person name: name ].
+		nameChangedBlock value: name ].
+	disabledCheckbox whenChangedDo: [ :isDisabled | person isDisabled: isDisabled ].
+	femaleRadio whenChangedDo: [ :isFemale | isFemale ifTrue: [ person beFemale ] ].
+	maleRadio whenChangedDo: [ :isMale | isMale ifTrue: [ person beMale ] ].
+	otherRadio whenChangedDo: [ :isOther | isOther ifTrue: [ person beOther ] ]
 ]
 
 { #category : 'layout' }
@@ -48,7 +53,13 @@ HeraExamplePersonDetailsPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'hera - accessing presenters' }
+{ #category : 'api - events' }
+HeraExamplePersonDetailsPresenter >> focusNameField [
+
+	nameField takeKeyboardFocus; selectAll
+]
+
+{ #category : 'hera - api' }
 HeraExamplePersonDetailsPresenter >> heraPresenterAt: aWidgetName ifAbsent: absentBlock [
 
 	| mapping |
@@ -68,7 +79,6 @@ HeraExamplePersonDetailsPresenter >> initializePresenters [
 
 	nameLabel := self newLabel label: 'Name:'; yourself.
 	nameField := self newTextInput.
-	disabledCheckbox := self newCheckBox label: 'Disabled'; yourself.
 	femaleRadio := self newRadioButton label: 'Female'; yourself.
 	maleRadio := self newRadioButton label: 'Male'; yourself.
 	otherRadio := self newRadioButton
@@ -76,33 +86,43 @@ HeraExamplePersonDetailsPresenter >> initializePresenters [
 		associatedRadioButtons: { femaleRadio . maleRadio };
 		initialStateNotSet;
 		yourself.
+	disabledCheckbox := self newCheckBox label: 'Disabled'; yourself.
 	childrenLabel := self newLabel label: 'Children:'; yourself.
 	childrenList := self newList
 		beMultipleSelection;
-		display: [ :person | person name ];
+		display: [ :child | child name ];
 		yourself
 ]
 
-{ #category : 'initialization' }
-HeraExamplePersonDetailsPresenter >> modelChanged [
+{ #category : 'accessing' }
+HeraExamplePersonDetailsPresenter >> person: aPerson [
 
-	self person
-		ifNil: [
-			nameField text: ''.
-			disabledCheckbox state: false.
-			femaleRadio initialStateNotSet.
-			childrenList items: #() ]
-		ifNotNil: [ :person |
-			nameField text: person name.
-			disabledCheckbox state: person isDisabled.
-			femaleRadio state: person isFemale.
-			maleRadio state: person isMale.
-			otherRadio state: person isOther.
-			childrenList items: person children ]
+	person := aPerson.
+	self personChanged
 ]
 
-{ #category : 'accessing' }
-HeraExamplePersonDetailsPresenter >> person [
+{ #category : 'initialization' }
+HeraExamplePersonDetailsPresenter >> personChanged [
 
-	^ self model
+	self suppressUpdatesWhile: [
+		nameField text: person name.
+		person isFemale ifTrue: [femaleRadio state: true].
+		person isMale ifTrue: [maleRadio state: true].
+		person isOther ifTrue: [otherRadio state: true].
+		disabledCheckbox state: person isDisabled.
+		childrenList items: person children ]
+]
+
+{ #category : 'private' }
+HeraExamplePersonDetailsPresenter >> suppressUpdatesWhile: aBlock [
+
+	suppressUpdates := true.
+	aBlock value.
+	suppressUpdates := false
+]
+
+{ #category : 'api - events' }
+HeraExamplePersonDetailsPresenter >> whenNameChangedDo: aBlock [
+
+	nameChangedBlock := [ :name | suppressUpdates ifFalse: [ aBlock cull: name ] ]
 ]

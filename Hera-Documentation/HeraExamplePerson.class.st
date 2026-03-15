@@ -9,9 +9,9 @@ Class {
 		'#isDisabled => ObservableSlot',
 		'#sex => ObservableSlot'
 	],
-	#category : 'Hera-Documentation-Example domain',
+	#category : 'Hera-Documentation-Family Tree - Domain',
 	#package : 'Hera-Documentation',
-	#tag : 'Example domain'
+	#tag : 'Family Tree - Domain'
 }
 
 { #category : 'accessing' }
@@ -51,7 +51,7 @@ HeraExamplePerson >> initialize [
 	self class initializeSlots: self.
 	name := 'Unknown'.
 	isDisabled := false.
-	children := OrderedCollection new
+	children := SortedCollection sortBlock: [ :someChild :anotherChild | someChild name < anotherChild name ]
 ]
 
 { #category : 'accessing' }
@@ -102,4 +102,10 @@ HeraExamplePerson >> printOn: aStream [
 	aStream
 		nextPutAll: 'Person ';
 		nextPutAll: self name
+]
+
+{ #category : 'accessing' }
+HeraExamplePerson >> removeChild: aPerson [
+
+	children remove: aPerson
 ]

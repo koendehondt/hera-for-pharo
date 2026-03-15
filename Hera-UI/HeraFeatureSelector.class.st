@@ -239,7 +239,7 @@ HeraFeatureSelector >> hasSingleSelection [
 	^ classesAndFeatures selectedItems size = 1
 ]
 
-{ #category : 'hera - accessing presenters' }
+{ #category : 'hera - api' }
 HeraFeatureSelector >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
 	| mapping |

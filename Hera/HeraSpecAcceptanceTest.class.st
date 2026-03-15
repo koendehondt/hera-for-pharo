@@ -161,12 +161,10 @@ HeraSpecAcceptanceTest >> collectTreeItemsFrom: aTreePresenter startingFrom: anI
 { #category : 'helpers - trees' }
 HeraSpecAcceptanceTest >> collectTreeItemsIn: aTreePresenter [
 
-	| items index |
+	| items |
 	items := OrderedCollection new.
-	index := 1.
-	aTreePresenter roots do: [ :root |
-		self collectTreeItemsFrom: aTreePresenter startingFrom: root path: { index } in: items.
-		index := index + items size ].
+	aTreePresenter roots withIndexDo: [ :root :rootIndex |
+		self collectTreeItemsFrom: aTreePresenter startingFrom: root path: { rootIndex } in: items].
 	^ items
 ]
 
@@ -217,7 +215,7 @@ HeraSpecAcceptanceTest >> findTreePathFor: aTreeItemPath inTreeNamed: aTreePrese
 		(pathItemLabels size > currentPath size and: [ (treePresenter isExpanded: currentPath) not ]) ifTrue: [
 			self error: ('Item {1} at level {2} is not expanded.' format: { itemLabel . index }) ].
 		items := treePresenter childrenFor: (items at: matchedItemIndex) ].
-	aBlock value: treePresenter value: currentPath
+	aBlock value: treePresenter value: currentPath asArray
 ]
 
 { #category : 'helpers - drop lists' }
@@ -393,6 +391,42 @@ HeraSpecAcceptanceTest >> stepAWindowOpensWithTitle: aWindowTitle identifiedBy: 
 	self stateAt: anIdentifier put: (self windowOpensWithTitle: aWindowTitle)
 ]
 
+{ #category : 'steps - lists' }
+HeraSpecAcceptanceTest >> stepAnEmptyListNamed: aListPresenterName [
+
+	<heraStepDefinition: #(Then match 'the {string} list is empty')>
+
+	| list |
+	list := self listPresenterAt: aListPresenterName.
+	self assert: list items isEmpty description: [ 'The list has {1}.' format: { 'item' heraPluralizeFor: list listSize } ]
+]
+
+{ #category : 'steps - trees' }
+HeraSpecAcceptanceTest >> stepAnEmptyTreeNamed: aListPresenterName [
+
+	<heraStepDefinition: #(Then match 'the {string} tree is empty')>
+
+	| tree |
+	tree := self treePresenterAt: aListPresenterName.
+	self assert: tree roots isEmpty description: [ 'The tree has {1}.' format: { 'root' heraPluralizeFor: tree roots size } ]
+]
+
+{ #category : 'steps - buttons' }
+HeraSpecAcceptanceTest >> stepDisabledButtonNamed: aButtonName [
+
+	<heraStepDefinition: #(Then match 'the {string} button is disabled')>
+
+	self assertDisabled: aButtonName
+]
+
+{ #category : 'steps - buttons' }
+HeraSpecAcceptanceTest >> stepEnabledButtonNamed: aButtonName [
+
+	<heraStepDefinition: #(Then match 'the {string} button is enabled')>
+
+	self assertEnabled: aButtonName
+]
+
 { #category : 'steps - windows' }
 HeraSpecAcceptanceTest >> stepIActivateTheWindowIdentifiedBy: anIdentifier [
 
@@ -505,32 +539,6 @@ HeraSpecAcceptanceTest >> stepISee: expectedString inTheFieldNamed: aFieldPresen
 	self assertText: expectedString inFieldNamed: aFieldPresenterName
 ]
 
-{ #category : 'steps - buttons' }
-HeraSpecAcceptanceTest >> stepISeeADisabledButtonNamed: aButtonName [
-
-	<heraStepDefinition: #(Then match 'I see a disabled {string} button')>
-
-	self assertDisabled: aButtonName
-]
-
-{ #category : 'steps - lists' }
-HeraSpecAcceptanceTest >> stepISeeAnEmptyListNamed: aListPresenterName [
-
-	<heraStepDefinition: #(Then match 'I see an empty {string} list')>
-
-	| list |
-	list := self listPresenterAt: aListPresenterName.
-	self assert: list items isEmpty description: [ 'The list has {1}.' format: { 'item' heraPluralizeFor: list listSize } ]
-]
-
-{ #category : 'steps - buttons' }
-HeraSpecAcceptanceTest >> stepISeeAnEnabledButtonNamed: aButtonName [
-
-	<heraStepDefinition: #(Then match 'I see an enabled {string} button')>
-
-	self assertEnabled: aButtonName
-]
-
 { #category : 'steps - fields' }
 HeraSpecAcceptanceTest >> stepISeeTheFieldNamed: aFieldPresenterName hasText: expectedDocString [
 
@@ -577,7 +585,7 @@ HeraSpecAcceptanceTest >> stepISelect: aTreeItemPath inTreeNamed: aTreePresenter
 		inTreeNamed: aTreePresenterName
 		andDo: [ :treePresenter :treePath |
 			treePresenter
-				unselectAll; "Because #selectpath:scrollToSelection: adds the path to the selection."
+				unselectAll; "Because #selectPath:scrollToSelection: adds the path to the selection."
 				selectPath: treePath scrollToSelection: true ]
 ]
 
@@ -774,8 +782,7 @@ HeraSpecAcceptanceTest >> stepTheRadioButtonIsOff: aRadioButtonPresenterName [
 
 { #category : 'steps - radio buttons' }
 HeraSpecAcceptanceTest >> stepTheRadioButtonIsOn: aRadioButtonPresenterName [
-
-	<heraStepDefinition: #(Then match 'the {string} radio button is on')>
+<heraStepDefinition: #(Then match 'the {string} radio button is on')>
 
 	self
 		assert: (self isChecked: aRadioButtonPresenterName)

@@ -216,7 +216,7 @@ HeraRunner >> hasRunSteps [
 	^ scriptRunner hasRunSteps
 ]
 
-{ #category : 'hera - accessing presenters' }
+{ #category : 'hera - api' }
 HeraRunner >> heraPresenterAt: aPresenterName ifAbsent: absentBlock [
 
 	| mapping |

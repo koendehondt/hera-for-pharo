@@ -43,7 +43,9 @@ HeraStepBrowser >> initializePresenters [
 HeraStepBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter whenOpenedDo: [ filteredStepsPanel setupAfterOpening ]
+	aWindowPresenter whenOpenedDo: [
+			stepFilterCriteriaPanel setupAfterOpening.
+			filteredStepsPanel setupAfterOpening ]
 ]
 
 { #category : 'accessing' }

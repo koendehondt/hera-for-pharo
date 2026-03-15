@@ -27,10 +27,10 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				when: 'I select "Examples for testing >> With single step scenario" in the "Features" tree';
 				and: 'I press the "Step selected features" button';
 				then: 'the "Running 0/1 – Stepping" window opens';
-				and: 'I see an enabled "Continue" button';
-				and: 'I see a disabled "Step until end of scenario" button';
-				and: 'I see an enabled "Step" button';
-				and: 'I see an enabled "Restart" button' .
+				and: 'the "Continue" button is enabled';
+				and: 'the "Step until end of scenario" button is disabled';
+				and: 'the "Step" button is enabled';
+				and: 'the "Restart" button is enabled' .
 			(self scenario: 'Running a passing feature from the Feature Browser')
 				when: 'I select the "Browse >> Hera Feature Browser on All" menu item from the Pharo menu bar';
 				then: 'the "Hera Feature Browser" window opens';
@@ -38,10 +38,10 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				and: 'I press the "Run selected features" button';
 				then: 'the "Finished 1/1" window opens';
 				and: 'I see the full run log of the passed test';
-				and: 'I see a disabled "Continue" button';
-				and: 'I see a disabled "Step until end of scenario" button';
-				and: 'I see a disabled "Step" button';
-				and: 'I see an enabled "Restart" button' .
+				and: 'the "Continue" button is disabled';
+				and: 'the "Step until end of scenario" button is disabled';
+				and: 'the "Step" button is disabled';
+				and: 'the "Restart" button is enabled' .
 			(self scenario: 'Running a feature with an error from the Feature Browser')
 				when: 'I select the "Browse >> Hera Feature Browser on All" menu item from the Pharo menu bar';
 				then: 'the "Hera Feature Browser" window opens';
@@ -49,10 +49,10 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				and: 'I press the "Run selected features" button';
 				then: 'the "Finished 1/1" window opens';
 				then: 'I see the full run log of the errored test';
-				and: 'I see a disabled "Continue" button';
-				and: 'I see a disabled "Step until end of scenario" button';
-				and: 'I see a disabled "Step" button';
-				and: 'I see an enabled "Restart" button' .
+				and: 'the "Continue" button is disabled';
+				and: 'the "Step until end of scenario" button is disabled';
+				and: 'the "Step" button is disabled';
+				and: 'the "Restart" button is enabled' .
 			(self scenario: 'Debugging a feature from the Feature Browser')
 				description: {
 					'This scenario uses a special step to press the debug button' .
@@ -66,10 +66,10 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				then: 'an unhandled exception is raised';
 				and: 'the "Running 1/1 – Running this scenario in debug mode opens the debugger" window opens';
 				and: 'I see the run log upto the failing step';
-				and: 'I see an enabled "Continue" button';
-				and: 'I see a disabled "Step until end of scenario" button';
-				and: 'I see an enabled "Step" button';
-				and: 'I see an enabled "Restart" button' .
+				and: 'the "Continue" button is enabled';
+				and: 'the "Step until end of scenario" button is disabled';
+				and: 'the "Step" button is enabled';
+				and: 'the "Restart" button is enabled' .
 			(self scenario: 'Stepping a feature from the Feature Browser')
 				when: 'I select the "Browse >> Hera Feature Browser on All" menu item from the Pharo menu bar';
 				then: 'the "Hera Feature Browser" window opens';
@@ -85,10 +85,10 @@ HeraRunnerAcceptanceTest >> featureRunningFeatures [
 				then: 'I see the executed steps';
 				when: 'I press the "Continue" button';
 				then: 'I see the full run log of the test';
-				and: 'I see a disabled "Continue" button';
-				and: 'I see a disabled "Step until end of scenario" button';
-				and: 'I see a disabled "Step" button';
-				and: 'I see an enabled "Restart" button' }
+				and: 'the "Continue" button is disabled';
+				and: 'the "Step until end of scenario" button is disabled';
+				and: 'the "Step" button is disabled';
+				and: 'the "Restart" button is enabled' }
 ]
 
 { #category : 'features' }

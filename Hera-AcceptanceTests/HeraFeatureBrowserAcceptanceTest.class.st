@@ -30,7 +30,10 @@ HeraFeatureBrowserAcceptanceTest >> featureBasicBrowsing [
 				when: 'I select the "Browse >> Hera Documentation & Examples" menu item from the Pharo menu bar';
 				then: 'the "Documentation & Examples" window opens';
 				then: 'I see the following "Features" tree:' with: (self dataTree: {
+					'Spec Application Example: Family Tree' -> {
+						'Managing a family tree' -> { } } .
 					'Spec documentation and examples' -> {
+						'Buttons' -> { } .
 						'Checkboxes' -> { } .
 						'Fields' -> { } .
 						'Lists' -> { } .
@@ -64,10 +67,10 @@ HeraFeatureBrowserAcceptanceTest >> featureBasicBrowsing [
 					'	Background:' .
 					'		Given a family tree:' .
 					'			>   John' .
+					'			>>    Charles' .
 					'			>>    Jane' .
 					'			>>>     William' .
 					'			>>    Mary' .
-					'			>>    Charles' .
 					'' .
 					'	Scenario: Reading' .
 					'		When I start the Family Tree application on "John"' .

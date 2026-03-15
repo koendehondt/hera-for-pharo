@@ -24,10 +24,6 @@ HeraFilteredStepsTestCase >> testFilteredStepsAreSortedCaseInsensitively [
 		equals: {
 			'Given the Finder is open' .
 			'Given the search mode is {string}' .
-			'Given the title of the window is {string}' .
-			'Then I see a disabled {string} button' .
-			'Then I see an empty {string} list' .
-			'Then I see an enabled {string} button' .
 			'Then I see exactly the following items in the {string} list:' .
 			'Then I see the following matching methods:' .
 			'Then I see the following selected items in the {string} list:' .
@@ -35,11 +31,16 @@ HeraFilteredStepsTestCase >> testFilteredStepsAreSortedCaseInsensitively [
 			'Then I see the following {string} tree:' .
 			'Then I see {string} in the {string} field' .
 			'Then the title of the window identified by {string} is {string}' .
+			'Then the title of the window is {string}' .
 			'Then the window identified by {string} closes' .
+			'Then the {string} button is disabled' .
+			'Then the {string} button is enabled' .
 			'Then the {string} checkbox is checked' .
 			'Then the {string} checkbox is unchecked' .
+			'Then the {string} list is empty' .
 			'Then the {string} radio button is off' .
 			'Then the {string} radio button is on' .
+			'Then the {string} tree is empty' .
 			'Then the {string} window closes' .
 			'Then the {string} window opens' .
 			'Then the {string} window opens, identified by {string}' .
