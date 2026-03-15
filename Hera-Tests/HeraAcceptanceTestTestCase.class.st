@@ -157,6 +157,29 @@ HeraAcceptanceTestTestCase >> testRegexStringForMatchStepDefinition [
 ]
 
 { #category : 'tests' }
+HeraAcceptanceTestTestCase >> testRunClass [
+
+	self
+		assert: HeraAcceptanceTestWithSingleFeatureForTesting run
+		equals: 'Running 1 feature.
+
+
+Feature: With pause step
+
+	Scenario: Successful sign-in
+		Given I have credentials to sign in
+		When I pause [suppressed]
+		When I debug [suppressed]
+		When I enter my credentials
+		And I press the button to sign in
+		Then I see the home page
+
+
+Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
+'
+]
+
+{ #category : 'tests' }
 HeraAcceptanceTestTestCase >> testStepDebug [
 
 	| stepMethodPragmas pragma |

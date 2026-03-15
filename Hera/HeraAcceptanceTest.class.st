@@ -52,6 +52,21 @@ HeraAcceptanceTest class >> nameInBrowser [
 	^ self name asString
 ]
 
+{ #category : 'running' }
+HeraAcceptanceTest class >> run [
+	"Run all features in the receiver and answer the run log."
+
+	| reporter scope |
+	reporter := HeraTextReporter new.
+	scope := HeraScope new addClass: self.
+	HeraScriptRunner new
+		scope: scope asRunnerScope;
+		reporter: reporter;
+		suppressPauseAndDebugSteps;
+		run.
+	^ reporter text string
+]
+
 { #category : 'instance creation' }
 HeraAcceptanceTest class >> selector: aFeatureSelectorSymbol [
 
