@@ -232,7 +232,7 @@ HeraRunnerAcceptanceTest >> stepIPressCommandR [
 	<heraStepDefinition: #(When 'I press Command-R')>
 
 	| isMacOS |
-	isMacOS := Smalltalk os isMacOS.
+	isMacOS := OSPlatform current isMacOS.
 	self featureBrowser simulateEventInScriptEditor: (self keyDownEventFromChar: $r alt: false ctrl: isMacOS not command: isMacOS shift: false)
 ]
 
