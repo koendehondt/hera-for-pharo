@@ -91,9 +91,9 @@ HeraWebAcceptanceTest >> screenshotLocation [
 ]
 
 { #category : 'steps' }
-HeraWebAcceptanceTest >> stepIEnter: aString inField: labelOrPlaceholder [
+HeraWebAcceptanceTest >> stepIFillIn: aString inTheFieldNamed: labelOrPlaceholder [
 
-	<heraStepDefinition: #(When match 'I enter {string} in the {string} field')>
+	<heraStepDefinition: #(When match 'I fill in {string} in the {string} field')>
 
 	self enter: aString inFieldIdentifiedBy: labelOrPlaceholder
 ]

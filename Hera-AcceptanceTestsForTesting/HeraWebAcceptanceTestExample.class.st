@@ -22,7 +22,7 @@ HeraWebAcceptanceTestExample >> featureDescribingWebPageBehavior [
 				description: {
 					'Inspired by https://github.com/SeasideSt/Parasol?tab=readme-ov-file#example' };
 				when: 'I open https://en.wikipedia.org/';
-				and: 'I enter "Pharo" in the "Search Wikipedia" field';
+				and: 'I fill in "Pharo" in the "Search Wikipedia" field';
 				then: 'the current URL is https://en.wikipedia.org/wiki/Pharo';
 				and: 'I see a page with main header "Pharo"' }
 ]
