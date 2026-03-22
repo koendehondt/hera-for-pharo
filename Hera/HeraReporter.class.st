@@ -19,6 +19,12 @@ HeraReporter >> reportBeforeScenarioHookError: anError [
 ]
 
 { #category : 'reporting' }
+HeraReporter >> reportEmptyFeature: aFeature [
+
+	self subclassResponsibility
+]
+
+{ #category : 'reporting' }
 HeraReporter >> reportEndOfBackground: aBackground [
 
 	self subclassResponsibility

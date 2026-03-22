@@ -19,6 +19,12 @@ HeraNoReporter >> reportBeforeScenarioHookError: anError [
 ]
 
 { #category : 'reporting' }
+HeraNoReporter >> reportEmptyFeature: aFeature [
+
+	"Do nothing."
+]
+
+{ #category : 'reporting' }
 HeraNoReporter >> reportEndOfBackground: aBackground [
 
 	"Do nothing."
