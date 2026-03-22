@@ -140,7 +140,7 @@ HeraFeatureBrowser >> currentWindowTitle [
 HeraFeatureBrowser >> debugScenario: scenarioAstNode [
 
 	| scenarioFilter |
-	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
+	scenarioFilter := HeraScenarioTitleFilter new title: scenarioAstNode title text.
 	(self instantiate: HeraRunner)
 		open;
 		debugScope: self selectedMethodItem acceptanceTest asRunnerScope filteredBy: scenarioFilter
@@ -244,7 +244,7 @@ HeraFeatureBrowser >> runScenario: scenarioAstNode [
 
 	| scenarioFilter |
 	self flag: 'We are not sure that we are running the right scenario because 2 scenarios could have the same title.'.
-	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
+	scenarioFilter := HeraScenarioTitleFilter new title: scenarioAstNode title text.
 	(self instantiate: HeraRunner)
 		open;
 		runScope: self selectedMethodItem acceptanceTest asRunnerScope filteredBy: scenarioFilter
@@ -311,7 +311,7 @@ HeraFeatureBrowser >> simulateEventInScriptEditor: event [
 HeraFeatureBrowser >> stepScenario: scenarioAstNode [
 
 	| scenarioFilter |
-	scenarioFilter := HeraScenarioFilter new title: scenarioAstNode title text.
+	scenarioFilter := HeraScenarioTitleFilter new title: scenarioAstNode title text.
 	(self instantiate: HeraRunner)
 		open;
 		stepScope: self selectedMethodItem acceptanceTest asRunnerScope filteredBy: scenarioFilter

@@ -75,7 +75,7 @@ HeraRunnerTestCase >> testDebugFiltered [
 	self should: [
 		subject
 			debugScope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope
-			filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in')
+			filteredBy: (HeraScenarioTitleFilter new title: 'Unsuccessful sign-in')
 	] raise: Error.
 	self assert: subject currentWindowTitle equals: 'Running 1/1 – Unsuccessful sign-in'
 ]
@@ -105,7 +105,7 @@ HeraRunnerTestCase >> testDebugScopeFilteredBy [
 	self assert: acceptanceTest feature scenarios size equals: 2.
 	subject
 		debugScope: acceptanceTest asRunnerScope
-		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+		filteredBy: (HeraScenarioTitleFilter new title: 'Unsuccessful sign-in').
 	self assert: subject hasRunAllScenarios.
 	self assert: subject result totalCount equals: 1.
 ]
@@ -287,7 +287,7 @@ HeraRunnerTestCase >> testRestartFiltered [
 
 	subject
 		runScope: (HeraRunnerScope with: (HeraAcceptanceTestExamplesForTesting selector: #featureWithTwoScenarios))
-		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+		filteredBy: (HeraScenarioTitleFilter new title: 'Unsuccessful sign-in').
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'.
 	self assert: self openedRunnerWindows size equals: 0.
 	subject restart.
@@ -325,7 +325,7 @@ Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 '.
 	subject
 		runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope
-		filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').	
+		filteredBy: (HeraScenarioTitleFilter new title: 'Unsuccessful sign-in').	
 	self assert: subject runLogString equals: expectedRunLog.
 	subject restart.
 	self deny: subject hasRunSteps.
@@ -1510,7 +1510,7 @@ Total\: 4 scenarios. Passed\: 1. Failed\: 1. Error\: 2. Duration\: (1 second|\d+
 { #category : 'tests - progress in window label' }
 HeraRunnerTestCase >> testRunFilteredUntilFinished [
 
-	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+	subject runScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope filteredBy: (HeraScenarioTitleFilter new title: 'Unsuccessful sign-in').
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'
 ]
 
@@ -1614,7 +1614,7 @@ HeraRunnerTestCase >> testRunUntilPausedAndThenStepOverScenario [
 { #category : 'tests - progress in window label' }
 HeraRunnerTestCase >> testStepFilteredUntilFinished [
 
-	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope filteredBy: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
+	subject stepScope: (HeraAcceptanceTestWithPassForTesting selector: #signingInFeature) asRunnerScope filteredBy: (HeraScenarioTitleFilter new title: 'Unsuccessful sign-in').
 	subject stepOver.
 	self assert: subject currentWindowTitle equals: 'Running 0/1 – Stepping'.
 	subject stepOver.

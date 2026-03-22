@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraScenarioFilterTestCase',
+	#name : 'HeraScenarioTitleFilterTestCase',
 	#superclass : 'HeraUnitTestCase',
 	#category : 'Hera-Tests-Running',
 	#package : 'Hera-Tests',
@@ -7,13 +7,13 @@ Class {
 }
 
 { #category : 'running' }
-HeraScenarioFilterTestCase >> describedClass [
+HeraScenarioTitleFilterTestCase >> describedClass [
 
-	^ HeraScenarioFilter
+	^ HeraScenarioTitleFilter
 ]
 
 { #category : 'tests' }
-HeraScenarioFilterTestCase >> testRejectsScenarioWithDifferentTitle [
+HeraScenarioTitleFilterTestCase >> testRejectsScenarioWithDifferentTitle [
 
 	| scenario |
 	subject title: 'Unsuccessful signin'.
@@ -22,13 +22,13 @@ HeraScenarioFilterTestCase >> testRejectsScenarioWithDifferentTitle [
 ]
 
 { #category : 'tests' }
-HeraScenarioFilterTestCase >> testSelectsAllFeatures [
+HeraScenarioTitleFilterTestCase >> testSelectsAllFeatures [
 
 	self assert: (subject selects: HeraFeature new)
 ]
 
 { #category : 'tests' }
-HeraScenarioFilterTestCase >> testSelectsScenarioWithExactTitle [
+HeraScenarioTitleFilterTestCase >> testSelectsScenarioWithExactTitle [
 
 	| scenario |
 	subject title: 'Unsuccessful sign-in'.

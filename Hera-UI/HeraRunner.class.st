@@ -105,7 +105,7 @@ HeraRunner >> debugScenario: aScenario [
 	| runner scenarioFilter |
 	runner := self instantiate: self class.
 	runner open.
-	scenarioFilter := HeraScenarioFilter new title: aScenario title.
+	scenarioFilter := HeraScenarioTitleFilter new title: aScenario title.
 	runner debugScope: scriptRunner scope filteredBy: scenarioFilter
 ]
 
@@ -398,7 +398,7 @@ HeraRunner >> rerunAndDebugRootResult: aRootResultaRootResult [
 HeraRunner >> rerunAndDebugScenarioResult: aScenarioResult [
 
 	| scenarioFilter |
-	scenarioFilter := HeraScenarioFilter new title: aScenarioResult scenarioTitle.
+	scenarioFilter := HeraScenarioTitleFilter new title: aScenarioResult scenarioTitle.
 	self newRunner
 		open;
 		debugScope: aScenarioResult acceptanceTest copyForRunning asRunnerScope filteredBy: scenarioFilter
@@ -430,7 +430,7 @@ HeraRunner >> rerunAndStepRootResult: aRootResultaRootResult [
 HeraRunner >> rerunAndStepScenarioResult: aScenarioResult [
 
 	| scenarioFilter |
-	scenarioFilter := HeraScenarioFilter new title: aScenarioResult scenarioTitle.
+	scenarioFilter := HeraScenarioTitleFilter new title: aScenarioResult scenarioTitle.
 	self newRunner
 		open;
 		stepScope: aScenarioResult acceptanceTest copyForRunning asRunnerScope filteredBy: scenarioFilter
@@ -456,7 +456,7 @@ HeraRunner >> rerunRootResult: aRootResult [
 HeraRunner >> rerunScenarioResult: aScenarioResult [
 
 	| scenarioFilter |
-	scenarioFilter := HeraScenarioFilter new title: aScenarioResult scenarioTitle.
+	scenarioFilter := HeraScenarioTitleFilter new title: aScenarioResult scenarioTitle.
 	self newRunner
 		open;
 		runScope: aScenarioResult acceptanceTest copyForRunning asRunnerScope filteredBy: scenarioFilter
