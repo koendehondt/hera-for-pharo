@@ -44,7 +44,8 @@ HeraScopeTestCase >> testAllForBrowsingWithAcceptanceTestsForTesting [
 		HeraAcceptanceTestWithSingleFeatureForTesting .
 		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
 		HeraAcceptanceTestWithStepArgumentsForTesting .
-		HeraAcceptanceTestWithTraitForTesting
+		HeraAcceptanceTestWithTraitForTesting .
+		HeraAcceptanceTestWithTwoFeaturesForTesting
 	 }
 ]
 
@@ -67,6 +68,7 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
 		HeraAcceptanceTestWithStepArgumentsForTesting .
 		HeraAcceptanceTestWithTraitForTesting .
+		HeraAcceptanceTestWithTwoFeaturesForTesting .
 		HeraExampleSpecApplicationAcceptanceTest .
 		HeraFeatureBrowserAcceptanceTest .
 		HeraRunnerAcceptanceTest .
@@ -210,6 +212,7 @@ HeraScopeTestCase >> testTests [
 		HeraAcceptanceTestWithSingleQuotedStepArgumentsForTesting .
 		HeraAcceptanceTestWithStepArgumentsForTesting .
 		HeraAcceptanceTestWithTraitForTesting .
+		HeraAcceptanceTestWithTwoFeaturesForTesting .
 		HeraFeatureBrowserAcceptanceTest .
 		HeraRunnerAcceptanceTest .
 		HeraSelfAcceptanceTest .

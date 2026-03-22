@@ -6,6 +6,50 @@ Class {
 	#tag : 'Instructions'
 }
 
+{ #category : 'assertions' }
+HeraRunnableScriptTestCase >> assertInstructionsFor: scenario in: acceptanceTest [
+
+	| scenarioSteps |
+	scenarioSteps := scenario steps.
+	self assert: scenarioSteps size equals: 2.
+	self assert: subject instructions equals: {
+		(HeraStartFeaturesInstruction for: 1) .
+		(HeraStartFeatureInstruction for: acceptanceTest) .
+		(HeraStartScenarioInstruction for: scenario) .
+		HeraBeforeScenarioHookInstruction new .
+		(HeraRunStepInstruction for: scenarioSteps first) .
+		(HeraRunStepInstruction for: scenarioSteps second) .
+		HeraAfterScenarioHookInstruction new .
+		HeraEndScenarioInstruction new .
+		HeraEndFeatureInstruction new .
+		HeraEndFeaturesInstruction new .
+		HeraResultSummaryInstruction new } asOrderedCollection
+]
+
+{ #category : 'assertions' }
+HeraRunnableScriptTestCase >> assertInstructionsForAll: scenarios in: acceptanceTest [
+
+	| expectedInstructions |
+	expectedInstructions := OrderedCollection new.
+	expectedInstructions
+		add: (HeraStartFeaturesInstruction for: 1);
+		add: (HeraStartFeatureInstruction for: acceptanceTest).
+	scenarios do: [ :each | | steps |
+		steps := each steps.
+		expectedInstructions
+			add: (HeraStartScenarioInstruction for: each);
+			add: HeraBeforeScenarioHookInstruction new;
+			add: (HeraRunStepInstruction for: steps first);
+			add: (HeraRunStepInstruction for: steps second);
+			add: HeraAfterScenarioHookInstruction new;
+			add: HeraEndScenarioInstruction new ].
+	expectedInstructions
+		add: HeraEndFeatureInstruction new;
+		add: HeraEndFeaturesInstruction new;
+		add: HeraResultSummaryInstruction new.
+	self assert: subject instructions equals: expectedInstructions
+]
+
 { #category : 'running' }
 HeraRunnableScriptTestCase >> describedClass [
 
@@ -244,33 +288,31 @@ HeraRunnableScriptTestCase >> testInstructionsWithDataTable [
 		HeraResultSummaryInstruction new } asOrderedCollection
 ]
 
-{ #category : 'tests' }
-HeraRunnableScriptTestCase >> testInstructionsWithFilter [
+{ #category : 'tests - filtering' }
+HeraRunnableScriptTestCase >> testInstructionsWithFilterForOneScenarioInOneFeature [
 
-	| acceptanceTest scenarios secondScenario feature secondScenarioSteps |
-	acceptanceTest := HeraAcceptanceTestExamplesForTesting selector: #featureWithTwoScenarios.
+	| acceptanceTest scenarios feature |
+	acceptanceTest := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureOne.
 	feature := acceptanceTest feature.
 	scenarios := feature scenarios.
 	self assert: scenarios size equals: 2.
 	subject acceptanceTests: { acceptanceTest }.
-	subject filter: (HeraScenarioFilter new title: 'Unsuccessful sign-in').
-	secondScenario := scenarios second.
-	secondScenarioSteps := secondScenario steps.
-	self assert: subject instructions equals: {
-		(HeraStartFeaturesInstruction for: 1) .
-		(HeraStartFeatureInstruction for: acceptanceTest) .
-		(HeraStartScenarioInstruction for: secondScenario) .
-		HeraBeforeScenarioHookInstruction new .
-		(HeraRunStepInstruction for: secondScenarioSteps first) .
-		(HeraRunStepInstruction for: secondScenarioSteps second) .
-		(HeraRunStepInstruction for: secondScenarioSteps third) .
-		(HeraRunStepInstruction for: secondScenarioSteps fourth) .
-		(HeraRunStepInstruction for: secondScenarioSteps fifth) .
-		HeraAfterScenarioHookInstruction new .
-		HeraEndScenarioInstruction new .
-		HeraEndFeatureInstruction new .
-		HeraEndFeaturesInstruction new .
-		HeraResultSummaryInstruction new } asOrderedCollection
+	subject filter: (HeraScenarioTitleFilter new title: '1B').
+	self assertInstructionsFor: scenarios second in: acceptanceTest
+]
+
+{ #category : 'tests - filtering' }
+HeraRunnableScriptTestCase >> testInstructionsWithFilterForOneScenarioInTwoFeatures [
+
+	| acceptanceTest1 acceptanceTest2 scenarios feature |
+	acceptanceTest1 := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureOne.
+	acceptanceTest2 := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureTwo.
+	feature := acceptanceTest1 feature.
+	scenarios := feature scenarios.
+	self assert: scenarios size equals: 2.
+	subject acceptanceTests: { acceptanceTest1 . acceptanceTest2 }.
+	subject filter: (HeraScenarioTitleFilter new title: '1B').
+	self assertInstructionsFor: scenarios second in: acceptanceTest1
 ]
 
 { #category : 'tests' }
@@ -363,4 +405,98 @@ HeraRunnableScriptTestCase >> testInstructionsWithStarSteps [
 		HeraEndFeatureInstruction new .
 		HeraEndFeaturesInstruction new .
 		HeraResultSummaryInstruction new } asOrderedCollection
+]
+
+{ #category : 'tests - filtering' }
+HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForFeature [
+
+	| acceptanceTest scenarios feature |
+	acceptanceTest := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureOne.
+	feature := acceptanceTest feature.
+	scenarios := feature scenarios.
+	self assert: scenarios size equals: 2.
+	subject acceptanceTests: { acceptanceTest }.
+	subject filter: (HeraTagFilter for: #tag_feature_one).
+	self assertInstructionsForAll: scenarios in: acceptanceTest
+]
+
+{ #category : 'tests - filtering' }
+HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForFeatureWithRule [
+
+	| acceptanceTest scenarios feature ruleScenarios firstScenario secondScenario expectedInstructions rules |
+	acceptanceTest := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureTwo.
+	feature := acceptanceTest feature.
+	scenarios := feature scenarios.
+	rules := feature rules.
+	ruleScenarios := rules first scenarios.
+	self assert: scenarios size equals: 2.
+	self assert: ruleScenarios size equals: 2.
+	subject acceptanceTests: { acceptanceTest }.
+	subject filter: (HeraTagFilter for: #tag_feature_two).
+	firstScenario := scenarios first.
+	secondScenario := scenarios second.
+	expectedInstructions := OrderedCollection new.
+	expectedInstructions
+		add: (HeraStartFeaturesInstruction for: 1);
+		add: (HeraStartFeatureInstruction for: acceptanceTest);
+		add: (HeraStartScenarioInstruction for: firstScenario);
+		add: HeraBeforeScenarioHookInstruction new;
+		add: (HeraRunStepInstruction for: firstScenario steps first);
+		add: (HeraRunStepInstruction for: firstScenario steps second);
+		add: HeraAfterScenarioHookInstruction new;
+		add: HeraEndScenarioInstruction new;
+		add: (HeraStartScenarioInstruction for: secondScenario);
+		add: HeraBeforeScenarioHookInstruction new;
+		add: (HeraRunStepInstruction for: secondScenario steps first);
+		add: (HeraRunStepInstruction for: secondScenario steps second);
+		add: HeraAfterScenarioHookInstruction new;
+		add: HeraEndScenarioInstruction new.
+	firstScenario := rules first scenarios first.
+	secondScenario := rules first scenarios second.
+	expectedInstructions
+		add: (HeraStartRuleInstruction for: rules first);	
+		add: (HeraStartScenarioInstruction for: firstScenario);
+		add: HeraBeforeScenarioHookInstruction new;
+		add: (HeraRunStepInstruction for: firstScenario steps first);
+		add: (HeraRunStepInstruction for: firstScenario steps second);
+		add: HeraAfterScenarioHookInstruction new;
+		add: HeraEndScenarioInstruction new;
+		add: (HeraStartScenarioInstruction for: secondScenario);
+		add: HeraBeforeScenarioHookInstruction new;
+		add: (HeraRunStepInstruction for: secondScenario steps first);
+		add: (HeraRunStepInstruction for: secondScenario steps second);
+		add: HeraAfterScenarioHookInstruction new;
+		add: HeraEndScenarioInstruction new;
+		add: HeraEndRuleInstruction new;
+		add: HeraEndFeatureInstruction new;
+		add: HeraEndFeaturesInstruction new;
+		add: HeraResultSummaryInstruction new.
+	self assert: subject instructions equals: expectedInstructions
+]
+
+{ #category : 'tests - filtering' }
+HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForOneScenarioInOneFeature [
+
+	| acceptanceTest scenarios feature |
+	acceptanceTest := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureOne.
+	feature := acceptanceTest feature.
+	scenarios := feature scenarios.
+	self assert: scenarios size equals: 2.
+	subject acceptanceTests: { acceptanceTest }.
+	subject filter: (HeraTagFilter for: #tag_scenario_1B).
+	self assertInstructionsFor: scenarios second in: acceptanceTest
+]
+
+{ #category : 'tests - filtering' }
+HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForOneScenarioInTwoFeatures [
+
+	| acceptanceTest1 acceptanceTest2 scenarios feature |
+	acceptanceTest1 := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureOne.
+	acceptanceTest2 := HeraAcceptanceTestWithTwoFeaturesForTesting selector: #featureTwo.
+	feature := acceptanceTest1 feature.
+	scenarios := feature scenarios.
+	self assert: scenarios size equals: 2.
+	subject acceptanceTests: { acceptanceTest1 . acceptanceTest2 }.
+	subject filter: (HeraTagFilter for: #tag_scenario_1B).
+	self assertInstructionsFor: scenarios second in: acceptanceTest1
 ]

@@ -88,7 +88,8 @@ HeraFeature >> rules [
 { #category : 'accessing' }
 HeraFeature >> rules: anArray [
 
-	rules := anArray
+	rules := anArray.
+	rules do: [ :each| each inheritedTags: self tags ]
 ]
 
 { #category : 'accessing' }
@@ -100,7 +101,8 @@ HeraFeature >> scenarios [
 { #category : 'accessing' }
 HeraFeature >> scenarios: anArray [
 
-	scenarios := anArray
+	scenarios := anArray.
+	scenarios do: [ :each| each inheritedTags: self tags ]
 ]
 
 { #category : 'accessing' }

@@ -20,8 +20,12 @@ HeraSpecExamplesAcceptanceTest >> featureButtons [
 	<heraFeature: 'Buttons'>
 
 	^ (self feature: 'Buttons')
+		tags: {
+			#buttons };
 		scenarios: {
 			(self scenario: 'Enablement state and pressing')
+				tags: {
+					#enablement };
 				when: 'I start a new family tree';
 				then: 'the "Family tree" window opens';
 				then: 'the "Add" button is enabled';
@@ -37,6 +41,8 @@ HeraSpecExamplesAcceptanceTest >> featureButtons [
 				then: 'the title of the window is "Family tree"';
 				and: 'the "Family" tree is empty' .
 			(self scenario: 'Pressing a button')
+				tags: {
+					#pressing };
 				given: 'a family tree:' with: (self dataTree: {
 					'John' -> {
 						'Charles' -> { } .

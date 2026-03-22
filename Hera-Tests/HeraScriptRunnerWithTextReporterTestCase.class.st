@@ -61,21 +61,11 @@ Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyFeatureErrorRunReport [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ Text fromString: 'Running 0 features.
 
 
-Feature: Empty
-	ERROR There are no scenarios.
-
-
-Total: 0 scenarios. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 38 to: 42;
-		addAttribute: (TextColor new color: Color red) from: 38 to: 42.
-	^ text
+Total: 0 scenarios. Passed: 0. Failed: 0. Error: 0. Duration: 0 seconds.
+'
 ]
 
 { #category : 'expected output' }

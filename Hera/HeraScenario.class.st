@@ -5,7 +5,8 @@ Class {
 		'title',
 		'steps',
 		'tags',
-		'description'
+		'description',
+		'inheritedTags'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -99,11 +100,24 @@ HeraScenario >> given: aString with: aStructuredArgument [
 	steps add: step
 ]
 
+{ #category : 'accessing' }
+HeraScenario >> inheritedTags [
+
+	^ inheritedTags
+]
+
+{ #category : 'accessing' }
+HeraScenario >> inheritedTags: anArrayOfSymbols [
+
+	inheritedTags := anArrayOfSymbols
+]
+
 { #category : 'initialization' }
 HeraScenario >> initialize [
 
 	super initialize.
 	tags := #().
+	inheritedTags := #().
 	description := #().
 	steps := OrderedCollection new
 ]

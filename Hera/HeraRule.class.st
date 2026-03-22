@@ -5,7 +5,8 @@ Class {
 		'scenarios',
 		'description',
 		'title',
-		'background'
+		'background',
+		'inheritedTags'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -61,10 +62,24 @@ HeraRule >> description: anArrayOfStrings [
 	description := anArrayOfStrings
 ]
 
+{ #category : 'accessing' }
+HeraRule >> inheritedTags [
+
+	^ inheritedTags
+]
+
+{ #category : 'accessing' }
+HeraRule >> inheritedTags: anArrayOfSymbols [
+
+	inheritedTags := anArrayOfSymbols.
+	scenarios do: [ :each | each inheritedTags: anArrayOfSymbols ]
+]
+
 { #category : 'initialization' }
 HeraRule >> initialize [
 
 	super initialize.
+	inheritedTags := #().
 	description := #().
 	scenarios := #()
 ]
