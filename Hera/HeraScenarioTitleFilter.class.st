@@ -1,5 +1,5 @@
 Class {
-	#name : 'HeraScenarioFilter',
+	#name : 'HeraScenarioTitleFilter',
 	#superclass : 'HeraFilter',
 	#instVars : [
 		'title'
@@ -10,14 +10,14 @@ Class {
 }
 
 { #category : 'filtering' }
-HeraScenarioFilter >> selects: aFilterable [
+HeraScenarioTitleFilter >> selects: aFilterable [
 
 	(aFilterable isMemberOf: HeraScenario) ifFalse: [ ^ true ].
 	^ aFilterable title = title
 ]
 
 { #category : 'accessing' }
-HeraScenarioFilter >> title: aString [
+HeraScenarioTitleFilter >> title: aString [
 
 	title := aString
 ]
