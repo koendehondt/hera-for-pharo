@@ -163,6 +163,12 @@ HeraScriptRunner >> filter: aFilter [
 	runnableScript filter: aFilter
 ]
 
+{ #category : 'accessing' }
+HeraScriptRunner >> filterByTag: aSymbol [
+
+	self filter: (HeraTagFilter for: aSymbol)
+]
+
 { #category : 'testing' }
 HeraScriptRunner >> hasRunAllScenarios [
 
