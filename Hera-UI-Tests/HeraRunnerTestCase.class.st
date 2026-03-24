@@ -80,6 +80,17 @@ HeraRunnerTestCase >> testDebugFiltered [
 	self assert: subject currentWindowTitle equals: 'Running 1/1 – Unsuccessful sign-in'
 ]
 
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testDebugFilteredOnTag [
+
+	self should: [
+		subject
+			debugScope: (HeraAcceptanceTestWithErrorForTesting selector: #signingInFeature) asRunnerScope
+			filteredBy: (HeraTagFilter for: '@sign_in').
+	] raise: Error.
+	self assert: subject currentWindowTitle equals: 'Running 1/1 – Successful sign-in'
+]
+
 { #category : 'tests' }
 HeraRunnerTestCase >> testDebugScenario [
 
@@ -127,6 +138,21 @@ HeraRunnerTestCase >> testRerunAll [
 	self assert: self openedRunnerWindows size equals: 1.
 	self openedRunnerWindows do: [ :each |
 		self assert: each label equals: 'Finished 1/1' ]
+]
+
+{ #category : 'tests - rerunning' }
+HeraRunnerTestCase >> testRerunAllFilteredOnTag [
+
+	subject
+		runScope: (HeraSpecExamplesAcceptanceTest selector: #featureButtons) asRunnerScope
+		filteredBy: (HeraTagFilter for: '@buttons').
+	self assert: subject currentWindowTitle equals: 'Finished 2/2'.
+	subject selectResultItemAt: 1.
+	self assert: self openedRunnerWindows size equals: 0.
+	subject rerun.
+	self assert: self openedRunnerWindows size equals: 1.
+	self openedRunnerWindows do: [ :each |
+		self assert: each label equals: 'Finished 2/2' ]
 ]
 
 { #category : 'tests - rerunning' }
@@ -1522,6 +1548,15 @@ HeraRunnerTestCase >> testRunScope [
 ]
 
 { #category : 'tests' }
+HeraRunnerTestCase >> testRunScopeFilteredOnTag [
+
+	subject
+		runScope: (HeraSpecExamplesAcceptanceTest selector: #featureButtons) asRunnerScope
+		filteredBy: (HeraTagFilter for: '@buttons').
+	self assert: subject result totalCount equals: 2
+]
+
+{ #category : 'tests' }
 HeraRunnerTestCase >> testRunScopePopulatesTheResults [
 
 	| resultItems firstItem fourthItem thirdItem secondItem |
@@ -1609,6 +1644,24 @@ HeraRunnerTestCase >> testRunUntilPausedAndThenStepOverScenario [
 	self assert: subject currentWindowTitle equals: 'Running 1/1 – Paused – Successful sign-in'.
 	subject continue.
 	self assert: subject currentWindowTitle equals: 'Finished 1/1'
+]
+
+{ #category : 'tests - progress in window label' }
+HeraRunnerTestCase >> testStepFilteredOnTagUntilFinished [
+
+	subject
+		stepScope: (HeraSpecExamplesAcceptanceTest selector: #featureButtons) asRunnerScope
+		filteredBy: (HeraTagFilter for: '@buttons').
+	subject stepOver.
+	self assert: subject currentWindowTitle equals: 'Running 0/2 – Stepping'.
+	14 timesRepeat: [
+		subject stepOver.
+		self assert: subject currentWindowTitle equals: 'Running 1/2 – Stepping – Enablement state and pressing' ].
+	7 timesRepeat: [
+		subject stepOver.
+		self assert: subject currentWindowTitle equals: 'Running 2/2 – Stepping – Pressing a button' ].
+	subject stepOver.
+	self assert: subject currentWindowTitle equals: 'Finished 2/2'
 ]
 
 { #category : 'tests - progress in window label' }

@@ -15,7 +15,8 @@ Class {
 		'saveFeaturesButton',
 		'documentationButton',
 		'browseButton',
-		'toolbar'
+		'toolbar',
+		'tags'
 	],
 	#category : 'Hera-UI-Feature Browser',
 	#package : 'Hera-UI',
@@ -162,7 +163,7 @@ HeraFeatureSelector >> debugSelectedFeatures [
 
 	(self instantiate: HeraRunner)
 		open;
-		debugScope: self runnerScopeForSelectedFeatures
+		debugScope: self runnerScopeForSelectedFeatures filteredBy: self scenarioFilter
 ]
 
 { #category : 'layout' }
@@ -208,16 +209,18 @@ HeraFeatureSelector >> globalToolbar [
 		add: stepSelectedFeaturesButton width: 40;
 		add: debugSelectedFeaturesButton width: 40;
 		add: runAllFeaturesButton width: 40;
+		add: tags;
 		yourself.
 	browseGroup := SpBoxLayout newLeftToRight
 		spacing: 10;
+		hAlignEnd;
 		add: saveFeaturesButton width: 40;
 		add: documentationButton width: 40;
 		yourself.
 	^ SpBoxLayout newLeftToRight
 		add: manageGroup width: 220;
-		add: runGroup width: 220;
-		add: browseGroup;
+		add: runGroup;
+		add: browseGroup width: 120;
 		yourself
 ]
 
@@ -301,6 +304,9 @@ HeraFeatureSelector >> initializeGlobalToolbarButtons [
 		help: 'Run all features';
 		icon: (Hera settings iconNamed: #runAll);
 		action: [ self runAllFeatures ];
+		yourself.
+	tags := self newTextInput
+		placeholder: 'Tags';
 		yourself.
 	saveFeaturesButton := self newButton
 		help: 'Save features';
@@ -411,7 +417,7 @@ HeraFeatureSelector >> runAllFeatures [
 
 	^ (self instantiate: HeraRunner)
 		open;
-		runScope: self scope asRunnerScope;
+		runScope: self scope asRunnerScope filteredBy: self scenarioFilter;
 		yourself
 ]
 
@@ -420,7 +426,7 @@ HeraFeatureSelector >> runSelectedFeatures [
 
 	(self instantiate: HeraRunner)
 		open;
-		runScope: self runnerScopeForSelectedFeatures
+		runScope: self runnerScopeForSelectedFeatures filteredBy: self scenarioFilter
 ]
 
 { #category : 'private' }
@@ -446,6 +452,14 @@ HeraFeatureSelector >> saveFeatures [
 	HeraFeatureExporter new
 		scope: self scope;
 		exportFeaturesTo: folderReference
+]
+
+{ #category : 'private' }
+HeraFeatureSelector >> scenarioFilter [
+
+	^ tags text
+		ifEmpty: [ HeraNoFilter new ]
+		ifNotEmpty: [ :tagExpression | HeraTagFilter for: tagExpression ]
 ]
 
 { #category : 'accessing' }
@@ -505,7 +519,7 @@ HeraFeatureSelector >> stepSelectedFeatures [
 
 	(self instantiate: HeraRunner)
 		open;
-		stepScope: self runnerScopeForSelectedFeatures
+		stepScope: self runnerScopeForSelectedFeatures filteredBy: self scenarioFilter
 ]
 
 { #category : 'private' }

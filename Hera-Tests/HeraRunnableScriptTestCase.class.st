@@ -416,7 +416,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForFeature [
 	scenarios := feature scenarios.
 	self assert: scenarios size equals: 2.
 	subject acceptanceTests: { acceptanceTest }.
-	subject filter: (HeraTagFilter for: #tag_feature_one).
+	subject filter: (HeraTagFilter for: '@tag_feature_one').
 	self assertInstructionsForAll: scenarios in: acceptanceTest
 ]
 
@@ -432,7 +432,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForFeatureWithRule [
 	self assert: scenarios size equals: 2.
 	self assert: ruleScenarios size equals: 2.
 	subject acceptanceTests: { acceptanceTest }.
-	subject filter: (HeraTagFilter for: #tag_feature_two).
+	subject filter: (HeraTagFilter for: '@tag_feature_two').
 	firstScenario := scenarios first.
 	secondScenario := scenarios second.
 	expectedInstructions := OrderedCollection new.
@@ -483,7 +483,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForOneScenarioInOneFe
 	scenarios := feature scenarios.
 	self assert: scenarios size equals: 2.
 	subject acceptanceTests: { acceptanceTest }.
-	subject filter: (HeraTagFilter for: #tag_scenario_1B).
+	subject filter: (HeraTagFilter for: '@tag_scenario_1B').
 	self assertInstructionsFor: scenarios second in: acceptanceTest
 ]
 
@@ -497,6 +497,6 @@ HeraRunnableScriptTestCase >> testInstructionsWithTagFilterForOneScenarioInTwoFe
 	scenarios := feature scenarios.
 	self assert: scenarios size equals: 2.
 	subject acceptanceTests: { acceptanceTest1 . acceptanceTest2 }.
-	subject filter: (HeraTagFilter for: #tag_scenario_1B).
+	subject filter: (HeraTagFilter for: '@tag_scenario_1B').
 	self assertInstructionsFor: scenarios second in: acceptanceTest1
 ]

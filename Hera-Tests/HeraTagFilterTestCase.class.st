@@ -16,7 +16,7 @@ HeraTagFilterTestCase >> describedClass [
 HeraTagFilterTestCase >> testRejectsScenarioWithoutMatchingTag [
 
 	| scenario |
-	subject tag: #smoke.
+	subject tagExpression: '@smoke'.
 	scenario := HeraScenario new tags: #(#regression).
 	self deny: (subject selects: scenario)
 ]
@@ -25,7 +25,7 @@ HeraTagFilterTestCase >> testRejectsScenarioWithoutMatchingTag [
 HeraTagFilterTestCase >> testRejectsScenarioWithoutTags [
 
 	| scenario |
-	subject tag: #smoke.
+	subject tagExpression: '@smoke'.
 	scenario := HeraScenario new tags: #().
 	self deny: (subject selects: scenario)
 ]
@@ -46,7 +46,7 @@ HeraTagFilterTestCase >> testSelectsRule [
 HeraTagFilterTestCase >> testSelectsScenarioWithMatchingTag [
 
 	| scenario |
-	subject tag: #smoke.
+	subject tagExpression: '@smoke'.
 	scenario := HeraScenario new tags: {#smoke}.
 	self assert: (subject selects: scenario)
 ]
@@ -55,7 +55,7 @@ HeraTagFilterTestCase >> testSelectsScenarioWithMatchingTag [
 HeraTagFilterTestCase >> testSelectsScenarioWithMultipleTags [
 
 	| scenario |
-	subject tag: #smoke.
+	subject tagExpression: '@smoke'.
 	scenario := HeraScenario new tags: #(#regression #smoke).
 	self assert: (subject selects: scenario)
 ]
