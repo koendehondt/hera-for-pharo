@@ -148,6 +148,11 @@ HeraScriptGenerator >> visitGivenStep: aGivenStep [
 { #category : 'visiting' }
 HeraScriptGenerator >> visitRule: aRule [
 
+	aRule tags do: [ :each |
+		stream
+			crtab: indentation;
+			nextPut: $@;
+			nextPutAll: each].
 	stream crtab: indentation.
 	self nextPutKeyword: 'Rule:'.
 	stream

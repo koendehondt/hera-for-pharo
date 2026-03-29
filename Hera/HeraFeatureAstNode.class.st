@@ -48,7 +48,7 @@ HeraFeatureAstNode >> description: aDescriptionAstNode [
 HeraFeatureAstNode >> initialize [
 
 	super initialize.
-	tags := Array new.
+	tags := #().
 	rules := OrderedCollection new.
 	scenarios := OrderedCollection new
 ]
@@ -94,9 +94,9 @@ HeraFeatureAstNode >> tags [
 ]
 
 { #category : 'accessing' }
-HeraFeatureAstNode >> tags: anArray [
+HeraFeatureAstNode >> tags: anArrayOfSymbols [
 
-	tags := anArray
+	tags := anArrayOfSymbols
 ]
 
 { #category : 'accessing' }

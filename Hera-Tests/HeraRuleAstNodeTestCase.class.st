@@ -38,3 +38,10 @@ HeraRuleAstNodeTestCase >> testIsNotEmptyWithScenarios [
 	subject scenarios: (OrderedCollection with: HeraScenarioAstNode new).
 	self deny: subject isEmpty
 ]
+
+{ #category : 'tests' }
+HeraRuleAstNodeTestCase >> testIsNotEmptyWithTags [
+
+	subject tags: { HeraTagAstNode new }.
+	self deny: subject isEmpty
+]
