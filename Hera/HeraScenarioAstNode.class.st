@@ -69,9 +69,9 @@ HeraScenarioAstNode >> tags [
 ]
 
 { #category : 'accessing' }
-HeraScenarioAstNode >> tags: anArray [
+HeraScenarioAstNode >> tags: anArrayOfTagAstNodes [
 
-	tags := anArray
+	tags := anArrayOfTagAstNodes
 ]
 
 { #category : 'accessing' }

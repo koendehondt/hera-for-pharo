@@ -6,7 +6,8 @@ Class {
 		'description',
 		'title',
 		'background',
-		'inheritedTags'
+		'inheritedTags',
+		'tags'
 	],
 	#category : 'Hera-Script elements',
 	#package : 'Hera',
@@ -17,9 +18,10 @@ Class {
 HeraRule >> = other [
 
 	^ self title = other title
+		and: [ self tags = other tags
 		and: [ self scenarios = other scenarios
 		and: [ self background = other background
-		and: [ self description = other description ] ] ]
+		and: [ self description = other description ] ] ] ]
 ]
 
 { #category : 'visiting' }
@@ -71,14 +73,20 @@ HeraRule >> inheritedTags [
 { #category : 'accessing' }
 HeraRule >> inheritedTags: anArrayOfSymbols [
 
+	| allTags |
 	inheritedTags := anArrayOfSymbols.
-	scenarios do: [ :each | each inheritedTags: anArrayOfSymbols ]
+	allTags := OrderedCollection new
+		addAll: self inheritedTags;
+		addAll: self tags;
+		asArray.
+	scenarios do: [ :each| each inheritedTags: allTags ]
 ]
 
 { #category : 'initialization' }
 HeraRule >> initialize [
 
 	super initialize.
+	tags := #().
 	inheritedTags := #().
 	description := #().
 	scenarios := #()
@@ -102,6 +110,18 @@ HeraRule >> scenarios [
 HeraRule >> scenarios: anArray [
 
 	scenarios := anArray
+]
+
+{ #category : 'accessing' }
+HeraRule >> tags [
+
+	^ tags
+]
+
+{ #category : 'accessing' }
+HeraRule >> tags: anArrayOfSymbols [
+
+	tags := anArrayOfSymbols
 ]
 
 { #category : 'accessing' }

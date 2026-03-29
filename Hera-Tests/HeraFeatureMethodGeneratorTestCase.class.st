@@ -708,6 +708,71 @@ HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfScenarioOutlineWithout
 ]
 
 { #category : 'tests' }
+HeraFeatureMethodGeneratorTestCase >> testCodeGenerationOfTags [
+	"Tags on all script elements that allow it."
+
+	| document ast |
+	document := '
+	@tag_feature_two
+Feature: Two
+
+	@tag_scenario_2A
+	Scenario: 2A
+		When I do something
+		Then I see something
+
+	@tag_scenario_2B
+	Scenario: 2B
+		When I do something
+		Then I see something
+
+	@tag_rule_R
+	Rule: R
+
+		@tag_scenario_RA
+		Scenario: RA
+			When I do something
+			Then I see something
+
+		Scenario: RB
+			When I do something
+			Then I see something'.
+	ast := self parse: document.
+	subject visit: ast.
+	self assert: subject generatedCode equals: 'feature99
+
+	<heraFeature: ''Two''>
+
+	^ (self feature: ''Two'')
+		tags: {
+			#tag_feature_two };
+		scenarios: {
+			(self scenario: ''2A'')
+				tags: {
+					#tag_scenario_2A };
+				when: ''I do something'';
+				then: ''I see something'' .
+			(self scenario: ''2B'')
+				tags: {
+					#tag_scenario_2B };
+				when: ''I do something'';
+				then: ''I see something'' };
+		rules: {
+			(self rule: ''R'')
+				tags: {
+					#tag_rule_R };
+				scenarios: {
+					(self scenario: ''RA'')
+						tags: {
+							#tag_scenario_RA };
+						when: ''I do something'';
+						then: ''I see something'' .
+					(self scenario: ''RB'')
+						when: ''I do something'';
+						then: ''I see something'' } }'
+]
+
+{ #category : 'tests' }
 HeraFeatureMethodGeneratorTestCase >> testCodeGenerationWithSingleQuotesInTitlesAndDescriptions [
 
 	| document ast |

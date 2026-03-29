@@ -367,6 +367,23 @@ HeraFeatureMethodGenerator >> visitRuleAstNode: aRuleAstNode [
 		nextPutAll: 'self rule: ';
 		print: aRuleAstNode title text.
 	aRuleAstNode isEmpty ifFalse: [ stream nextPut: $) ].
+	aRuleAstNode tags ifNotEmpty: [
+		self increaseIndentation.
+		stream
+			crtab: indentation;
+			nextPutAll: 'tags: {'.
+		self increaseIndentation.
+		stream
+			crtab: indentation.
+		aRuleAstNode tags
+			do: [ :each | each accept: self ]
+			separatedBy: [ stream space; nextPut: $.; crtab: indentation ].
+		stream
+			space;
+			nextPut: $}.
+		self decreaseIndentation.
+		(aRuleAstNode description isNotNil or: [ aRuleAstNode background isNotNil or: [ aRuleAstNode scenarios isNotEmpty ] ]) ifTrue: [ stream nextPut: $; ].
+		self decreaseIndentation ].
 	self increaseIndentation.
 	aRuleAstNode description ifNotNil: [ :description |
 		self visit: description .

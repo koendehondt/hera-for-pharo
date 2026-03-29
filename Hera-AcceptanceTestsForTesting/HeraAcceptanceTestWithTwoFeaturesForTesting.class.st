@@ -47,6 +47,8 @@ HeraAcceptanceTestWithTwoFeaturesForTesting >> featureTwo [
 				then: 'I see something' };
 		rules: {
 			(self rule: 'R')
+				tags: {
+					#tag_rule_R };
 				scenarios: {
 					(self scenario: 'RA')
 						tags: {
