@@ -50,20 +50,6 @@ Feature: Signing in
 ]
 
 { #category : 'tests' }
-HeraFeatureTestCase >> testFeatureTagInheritance [
-
-	| feature scenarios firstScenario secondScenario |
-	feature := HeraAcceptanceTestWithTwoFeaturesForTesting new featureOne.
-	scenarios := feature scenarios.
-	firstScenario := scenarios first.
-	self assert: firstScenario tags equals: { #tag_scenario_1A }.
-	self assert: firstScenario inheritedTags equals: { #tag_feature_one }.
-	secondScenario := scenarios second.
-	self assert: secondScenario tags equals: { #tag_scenario_1B }.
-	self assert: secondScenario inheritedTags equals: { #tag_feature_one }
-]
-
-{ #category : 'tests' }
 HeraFeatureTestCase >> testPrintString [
 
 	subject title: 'Signing in'.

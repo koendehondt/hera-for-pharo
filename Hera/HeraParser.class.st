@@ -5,12 +5,22 @@ Class {
 		'scanner',
 		'currentToken',
 		'previousToken',
-		'parseError'
+		'parseError',
+		'parsedTags'
 	],
 	#category : 'Hera-Parser',
 	#package : 'Hera',
 	#tag : 'Parser'
 }
+
+{ #category : 'parsing - tags' }
+HeraParser >> consumePreParsedTags [
+
+	| tags |
+	tags := parsedTags.
+	parsedTags := #().
+	^ tags
+]
 
 { #category : 'parsing' }
 HeraParser >> convertTreeItems: dataTreeItems [
@@ -66,6 +76,7 @@ HeraParser >> dataValuesFrom: aDataTableToken [
 HeraParser >> initializeParserWith: aTextOrString [
 
 	scanner := HeraScanner on: (ReadStream on: aTextOrString asString).
+	parsedTags := #().
 	currentToken := HeraEndOfLineToken new start: 1
 ]
 
@@ -232,10 +243,10 @@ HeraParser >> parseExamples [
 { #category : 'parsing' }
 HeraParser >> parseFeature [
 
-	| title featureNode tags description scenarios titleToken background featureToken rules |
+	| title featureNode description scenarios titleToken background featureToken rules featureTags |
 	[
 		self skipEmptyLines.
-		tags := self parseTags.
+		featureTags := self parseTags.
 		currentToken isFeatureToken ifFalse: [
 			self parseError: 'Feature keyword expected' from: currentToken start to: currentToken end ].
 		featureToken := currentToken.
@@ -252,14 +263,16 @@ HeraParser >> parseFeature [
 		scenarios := OrderedCollection new.
 		currentToken isEndOfFileToken ifFalse: [ description := self parseDescription ].
 		currentToken isEndOfFileToken ifFalse: [ background := self parseBackground ].
-		currentToken isEndOfFileToken ifFalse: [ scenarios := self parseScenarios ].
-		currentToken isEndOfFileToken ifFalse: [ rules := self parseRules ].
 		currentToken isEndOfFileToken ifFalse: [
-			self parseError: 'Scenario keyword expected' from: currentToken start to: currentToken end ].
+			self preParseTags.
+			scenarios := self parseScenarios.
+			rules := self parseRules ].
+		currentToken isEndOfFileToken ifFalse: [
+			self parseError: 'Scenario keyword, Scenario Outline keyword, or Rule keyword expected' from: currentToken start to: currentToken end ].
 		featureNode := HeraFeatureAstNode new.
 		featureNode
 			title: title;
-			tags: tags;
+			tags: featureTags;
 			description: description;
 			background: background;
 			scenarios: scenarios;
@@ -273,8 +286,9 @@ HeraParser >> parseFeature [
 { #category : 'parsing' }
 HeraParser >> parseRule [
 
-	| ruleNode description scenarios titleToken ruleToken title background |
+	| ruleNode description scenarios titleToken ruleToken title background tags |
 	"ruleToken has already been read."
+	tags := self consumePreParsedTags.
 	ruleToken := currentToken.
 	titleToken := self tryScanTextToken.
 	titleToken isTextToken ifFalse: [
@@ -288,9 +302,12 @@ HeraParser >> parseRule [
 	scenarios := OrderedCollection new.
 	currentToken isEndOfFileToken ifFalse: [ description := self parseDescription ].
 	currentToken isEndOfFileToken ifFalse: [ background := self parseBackground ].
-	currentToken isEndOfFileToken ifFalse: [ scenarios := self parseScenarios ].
+	currentToken isEndOfFileToken ifFalse: [
+		self preParseTags.
+		scenarios := self parseScenarios ].
 	ruleNode := HeraRuleAstNode new.
 	ruleNode
+		tags: tags;
 		title: title;
 		description: description;
 		background: background;
@@ -305,7 +322,9 @@ HeraParser >> parseRules [
 
 	| ruleNodes |
 	ruleNodes := OrderedCollection new.
-	[ currentToken isRuleToken ] whileTrue: [ ruleNodes add: self parseRule ].
+	[ currentToken isRuleToken ] whileTrue: [
+		ruleNodes add: self parseRule.
+		self preParseTagsIfConsumed ].
 	^ ruleNodes
 ]
 
@@ -313,8 +332,8 @@ HeraParser >> parseRules [
 HeraParser >> parseScenario [
 
 	| scenarioNode tags description steps titleToken scenarioToken title start end isParsingScenarioOutline |
-	"scenarioToken or scenarioOutlineToken or tagToken has already been read."
-	tags := self parseTags.
+	"scenarioToken or scenarioOutlineToken has already been read."
+	tags := self consumePreParsedTags.
 	isParsingScenarioOutline := currentToken isScenarioOutlineToken.
 	scenarioNode := currentToken isScenarioToken
 		ifTrue: [ HeraScenarioAstNode new ]
@@ -357,7 +376,8 @@ HeraParser >> parseScenarios [
 	| scenarioNodes |
 	scenarioNodes := OrderedCollection new.
 	[ currentToken isScenarioToken or: [ currentToken isScenarioOutlineToken or: [ currentToken isTagToken ] ] ] whileTrue: [
-		scenarioNodes add: self parseScenario ].
+		scenarioNodes add: self parseScenario.
+		self preParseTagsIfConsumed ].
 	^ scenarioNodes
 ]
 
@@ -412,7 +432,7 @@ HeraParser >> parseStepsRestricted: aBlock [
 	^ stepNodes
 ]
 
-{ #category : 'parsing' }
+{ #category : 'parsing - tags' }
 HeraParser >> parseTags [
 
 	| tags start |
@@ -425,6 +445,18 @@ HeraParser >> parseTags [
 		self nextToken.
 		start := scanner position ].
 	^ tags asArray
+]
+
+{ #category : 'parsing - tags' }
+HeraParser >> preParseTags [
+
+	parsedTags := self parseTags
+]
+
+{ #category : 'parsing - tags' }
+HeraParser >> preParseTagsIfConsumed [
+
+	^ parsedTags ifEmpty: [ self preParseTags ]
 ]
 
 { #category : 'parsing' }

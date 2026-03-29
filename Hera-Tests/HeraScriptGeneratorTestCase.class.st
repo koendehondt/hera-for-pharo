@@ -364,6 +364,46 @@ Feature: With * steps
 	^ text
 ]
 
+{ #category : 'private' }
+HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithTags [
+
+	| text |
+	text := Text fromString:	'@tag_feature_two
+Feature: Two
+
+	@tag_scenario_2A
+	Scenario: 2A
+		When I do something
+		Then I see something
+
+	@tag_scenario_2B
+	Scenario: 2B
+		When I do something
+		Then I see something
+
+	@tag_rule_R
+	Rule: R
+
+		@tag_scenario_RA
+		Scenario: RA
+			When I do something
+			Then I see something
+
+		Scenario: RB
+			When I do something
+			Then I see something
+
+'.
+	text
+		addAttribute: TextEmphasis bold from: 18 to: 25;
+		addAttribute: TextEmphasis bold from: 51 to: 59;
+		addAttribute: TextEmphasis bold from: 129 to: 137;
+		addAttribute: TextEmphasis bold from: 202 to: 206;
+		addAttribute: TextEmphasis bold from: 232 to: 240;
+		addAttribute: TextEmphasis bold from: 295 to: 303.
+	^ text
+]
+
 { #category : 'tests' }
 HeraScriptGeneratorTestCase >> testGeneratedScript [
 
@@ -461,4 +501,13 @@ HeraScriptGeneratorTestCase >> testGeneratedScriptWithStarSteps [
 	feature := HeraAcceptanceTestExamplesForTesting new featureWithStarSteps.
 	subject visit: feature.
 	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithStarSteps
+]
+
+{ #category : 'tests' }
+HeraScriptGeneratorTestCase >> testGeneratedScriptWithTags [
+
+	| feature |
+	feature := HeraAcceptanceTestWithTwoFeaturesForTesting new featureTwo.
+	subject visit: feature.
+	self assertText: subject generatedScript equals: self expectedGeneratedScriptWithTags
 ]

@@ -1102,6 +1102,116 @@ HeraParserTestCase >> testParseFeatureWithRules [
 ]
 
 { #category : 'tests - feature' }
+HeraParserTestCase >> testParseFeatureWithRulesWithTags [
+
+	| script ast firstScenarioNode stepNode backgroundNode givenNode firstRule secondRule secondScenarioNode tags |
+	script := '
+	Feature: User management
+		Managing users is essential to permit and revoke access to the system.
+
+		@administrators
+		@user_management
+		Rule: Only administrators are allowed to manage users
+			Users are managed by administrators, who can assign permissions to users.
+
+			Background:
+				Given I am an administrator
+
+			Scenario: Adding a user
+				When I open the user management page
+				And I add a new user
+				Then the new user can sign in
+
+			Scenario: Removing a user
+				When I open the user management page
+				And I remove a user
+				Then the removed user cannot sign in anymore
+
+		@user_management
+		@non-administrators
+		Rule: Non-administrators have no access to user management
+
+			Scenario: No access to user management
+				Given I am not an administrator
+				Then I cannot open the user management page'.
+	ast := self parseFeature: script.
+	self assert: ast class equals: HeraFeatureAstNode.
+	self assert: ast tags isEmpty.
+	self assert: ast description class equals: HeraDescriptionAstNode.
+	self assert: ast description lines equals: (OrderedCollection with: 'Managing users is essential to permit and revoke access to the system.').
+
+	self assert: ast rules size equals: 2.
+	firstRule := ast rules first.
+	self assert: firstRule class equals: HeraRuleAstNode.
+	self assert: firstRule title text equals: 'Only administrators are allowed to manage users'.
+	tags := firstRule tags.
+	self assert: tags size equals: 2.
+	self assert: tags first class equals: HeraTagAstNode.
+	self assert: tags first name equals: 'administrators'.
+	self assert: tags second class equals: HeraTagAstNode.
+	self assert: tags second name equals: 'user_management'.
+
+	backgroundNode := firstRule background.
+	self assert: backgroundNode class equals: HeraBackgroundAstNode.
+	self assert: backgroundNode steps size equals: 1.
+	givenNode := backgroundNode steps first.
+	self assert: givenNode class equals: HeraGivenAstNode.
+	self assert: givenNode description equals: 'I am an administrator'.
+
+	self assert: firstRule scenarios size equals: 2.
+	firstScenarioNode := firstRule scenarios first.
+	self assert: firstScenarioNode class equals: HeraScenarioAstNode.
+	self assert: firstScenarioNode title text equals: 'Adding a user'.
+	self assert: firstScenarioNode steps size equals: 3.
+	stepNode := firstScenarioNode steps first.
+	self assert: stepNode class equals: HeraWhenAstNode.
+	self assert: stepNode description equals: 'I open the user management page'.
+	stepNode := firstScenarioNode steps second.
+	self assert: stepNode class equals: HeraAndAstNode.
+	self assert: stepNode description equals: 'I add a new user'.
+	stepNode := firstScenarioNode steps third.
+	self assert: stepNode class equals: HeraThenAstNode.
+	self assert: stepNode description equals: 'the new user can sign in'.
+
+	secondScenarioNode := firstRule scenarios second.
+	self assert: secondScenarioNode class equals: HeraScenarioAstNode.
+	self assert: secondScenarioNode title text equals: 'Removing a user'.
+	self assert: secondScenarioNode steps size equals: 3.
+	stepNode := firstScenarioNode steps first.
+	self assert: stepNode class equals: HeraWhenAstNode.
+	self assert: stepNode description equals: 'I open the user management page'.
+	stepNode := secondScenarioNode steps second.
+	self assert: stepNode class equals: HeraAndAstNode.
+	self assert: stepNode description equals: 'I remove a user'.
+	stepNode := secondScenarioNode steps third.
+	self assert: stepNode class equals: HeraThenAstNode.
+	self assert: stepNode description equals: 'the removed user cannot sign in anymore'.
+
+	secondRule := ast rules second.
+	self assert: secondRule scenarios size equals: 1.
+	self assert: secondRule class equals: HeraRuleAstNode.
+	self assert: secondRule title text equals: 'Non-administrators have no access to user management'.
+	self assert: secondRule background isNil.
+	tags := secondRule tags.
+	self assert: tags size equals: 2.
+	self assert: tags first class equals: HeraTagAstNode.
+	self assert: tags first name equals: 'user_management'.
+	self assert: tags second class equals: HeraTagAstNode.
+	self assert: tags second name equals: 'non-administrators'.
+
+	firstScenarioNode := secondRule scenarios first.
+	self assert: firstScenarioNode class equals: HeraScenarioAstNode.
+	self assert: firstScenarioNode title text equals: 'No access to user management'.
+	self assert: firstScenarioNode steps size equals: 2.
+	stepNode := firstScenarioNode steps first.
+	self assert: stepNode class equals: HeraGivenAstNode.
+	self assert: stepNode description equals: 'I am not an administrator'.
+	stepNode := firstScenarioNode steps second.
+	self assert: stepNode class equals: HeraThenAstNode.
+	self assert: stepNode description equals: 'I cannot open the user management page'
+]
+
+{ #category : 'tests - feature' }
 HeraParserTestCase >> testParseFeatureWithStarSteps [
 
 	| script ast scenarioNode stepNode |
@@ -1150,7 +1260,7 @@ HeraParserTestCase >> testParseFeatureWithStarSteps [
 HeraParserTestCase >> testParseFeatureWithStepButNoScenario [
 
 	self
-		assertError: 'Scenario keyword expected'
+		assertError: 'Scenario keyword, Scenario Outline keyword, or Rule keyword expected'
 		start: 30
 		end: 34
 		whenParsing: '
@@ -1636,7 +1746,7 @@ HeraParserTestCase >> testParseScenarioWithoutTags [
 HeraParserTestCase >> testParseScenarioWithoutTitle [
 
 	self
-		assertError: 'Scenario keyword expected'
+		assertError: 'Scenario keyword, Scenario Outline keyword, or Rule keyword expected'
 		start: 85
 		end: 93
 		whenParsing: '
@@ -1702,7 +1812,7 @@ HeraParserTestCase >> testParseWrongFeatureKeywordAfterTag [
 HeraParserTestCase >> testParseWrongScenarioKeywordAfterTag [
 
 	self
-		assertError: 'Scenario or Scenario Outline keyword expected'
+		assertError: 'Scenario keyword, Scenario Outline keyword, or Rule keyword expected'
 		start: 43
 		end: 75
 		whenParsing: '
