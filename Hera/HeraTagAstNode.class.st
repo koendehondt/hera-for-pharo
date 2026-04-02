@@ -39,3 +39,9 @@ HeraTagAstNode >> name: aString [
 
 	name := aString
 ]
+
+{ #category : 'accessing' }
+HeraTagAstNode >> parameters [
+
+	^ (HeraParameterizedString new string: name) parameters
+]

@@ -1,9 +1,9 @@
 Class {
 	#name : 'HeraParameterizedStringTestCase',
 	#superclass : 'HeraUnitTestCase',
-	#category : 'Hera-Tests-Script elements',
+	#category : 'Hera-Tests-Core',
 	#package : 'Hera-Tests',
-	#tag : 'Script elements'
+	#tag : 'Core'
 }
 
 { #category : 'running' }
@@ -41,5 +41,20 @@ HeraParameterizedStringTestCase >> testParameters [
 	self assert: subject parameters equals: (Set with: 'number' with: 'fruit').
 
 	subject string: 'I buy <fruit> and <fruit>'.
-	self assert: subject parameters equals: (Set with: 'fruit')
+	self assert: subject parameters equals: (Set with: 'fruit').
+
+	subject string: 'I see <<tag>> in the XML'.
+	self assert: subject parameters equals: (Set with: 'tag').
+
+	subject string: 'I see < <tag> > in the XML'.
+	self assert: subject parameters equals: (Set with: 'tag').
+
+	subject string: 'I see <tag > in the XML'.
+	self assert: subject parameters isEmpty.
+
+	subject string: 'I see < tag> in the XML'.
+	self assert: subject parameters isEmpty.
+
+	subject string: 'I see <t ag> in the XML'.
+	self assert: subject parameters isEmpty
 ]

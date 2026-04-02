@@ -32,3 +32,15 @@ HeraScenarioOutlineAstNode >> isEmpty [
 
 	^super isEmpty and: [ self examples isNil ]
 ]
+
+{ #category : 'accessing' }
+HeraScenarioOutlineAstNode >> tagParameters [
+
+	^ self tags flatCollect: [ :tag | tag parameters] as: Set
+]
+
+{ #category : 'accessing' }
+HeraScenarioOutlineAstNode >> titleParameters [
+
+	^ self title parameters
+]

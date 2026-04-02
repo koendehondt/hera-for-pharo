@@ -239,7 +239,8 @@ HeraAcceptanceTestExamplesForTesting >> featureWithScenarioOutline [
 		scenarios: {
 			(self scenarioOutline: 'Counting <fruit>')
 				tags: {
-					#'counting_<fruit>' };
+					#'counting_<fruit>' .
+					#'shop_<shop_name>' };
 				description: {
 					'Adding <fruit> is easy.' };
 				given: 'I own <number> "<fruit>"';

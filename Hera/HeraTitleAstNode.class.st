@@ -16,6 +16,12 @@ HeraTitleAstNode >> accept: anAstVisitor [
 ]
 
 { #category : 'accessing' }
+HeraTitleAstNode >> parameters [
+
+	^ (HeraParameterizedString new string: text) parameters
+]
+
+{ #category : 'accessing' }
 HeraTitleAstNode >> text [
 
 	^ text

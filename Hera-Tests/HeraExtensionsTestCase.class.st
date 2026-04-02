@@ -19,6 +19,8 @@ HeraExtensionsTestCase >> testHeraParameterFormat [
 	self assert: ('I own 7 <fruit>' heraParameterFormat: (Dictionary with: 'fruit' -> 'apples')) equals: 'I own 7 apples'.
 	self assert: ('I own <number> <fruit>' heraParameterFormat: (Dictionary with: 'number' -> '5' with: 'fruit' -> 'apples')) equals: 'I own 5 apples'.
 	self assert: ('I own <count> <Fruit>' heraParameterFormat: Dictionary new) equals: 'I own <count> <Fruit>'.
+	self assert: ('I see <<tag>> in the XML file' heraParameterFormat: (Dictionary with: 'tag' -> 'series')) equals: 'I see <series> in the XML file'.
+	self assert: ('I see < <tag> > in the XML file' heraParameterFormat: (Dictionary with: 'tag' -> 'series')) equals: 'I see < series > in the XML file'
 ]
 
 { #category : 'tests - String' }

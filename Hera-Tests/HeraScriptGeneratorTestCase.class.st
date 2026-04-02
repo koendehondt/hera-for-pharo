@@ -260,6 +260,7 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutline [
 	text := Text fromString:	'Feature: With scenario outline
 
 	@counting_<fruit>
+	@shop_<shop_name>
 	Scenario Outline: Counting <fruit>
 
 		Adding <fruit> is easy.
@@ -290,8 +291,8 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutline [
 '.
 	text
 		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 53 to: 69;
-		addAttribute: TextEmphasis bold from: 518 to: 526.
+		addAttribute: TextEmphasis bold from: 72 to: 88;
+		addAttribute: TextEmphasis bold from: 537 to: 545.
 	^ text
 ]
 

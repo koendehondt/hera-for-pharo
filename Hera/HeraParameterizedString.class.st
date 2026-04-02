@@ -20,7 +20,7 @@ HeraParameterizedString >> parameters [
 	"Answer a Set with the parameters."
 
 	| matcher params |
-	matcher := RxMatcher forString: '<([^<]+)>'.
+	matcher := RxMatcher forString: '<([^<>\s]+)>'.
 	params := matcher matchesIn: string collect: [ :substring | substring copyFrom: 2 to: substring size - 1 ].
 	^ params asSet
 ]
