@@ -9,6 +9,12 @@ Class {
 	#tag : 'Runner'
 }
 
+{ #category : 'accessing' }
+HeraRunnerTestCase class >> defaultTimeLimit [
+
+	^ 2 minutes
+]
+
 { #category : 'asserting' }
 HeraRunnerTestCase >> assertResultSummary: expectedCounts [
 

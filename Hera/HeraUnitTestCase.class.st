@@ -9,6 +9,12 @@ Class {
 	#tag : 'Test support'
 }
 
+{ #category : 'accessing' }
+HeraUnitTestCase class >> defaultTimeLimit [
+
+	^ 30 seconds
+]
+
 { #category : 'asserting' }
 HeraUnitTestCase >> assert: actualObject isIdenticalTo: expectedObject [
 
@@ -58,12 +64,6 @@ HeraUnitTestCase >> assertTextRun: actualRun equals: expectedRun [
 
 	actualRun with: expectedRun do: [ :actualAttribute :expectedAttribute |
 		self assertTextAttribute: actualAttribute equals: expectedAttribute ]
-]
-
-{ #category : 'accessing' }
-HeraUnitTestCase >> defaultTimeLimit [
-
-	^ 30 seconds
 ]
 
 { #category : 'running' }
