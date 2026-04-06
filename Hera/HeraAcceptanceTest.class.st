@@ -217,6 +217,16 @@ HeraAcceptanceTest >> hash [
 	^ featureSelector hash
 ]
 
+{ #category : 'helpers' }
+HeraAcceptanceTest >> humanReadableElapsed: elapsed [
+
+	| truncated |
+	truncated := elapsed < (Duration seconds: 1)
+		ifTrue: [ elapsed truncateTo: (Duration milliSeconds: 1) ]
+		ifFalse: [ elapsed truncateTo: (Duration seconds: 1) ].
+	^ truncated humanReadablePrintString
+]
+
 { #category : 'initialization' }
 HeraAcceptanceTest >> initialize [
 
@@ -388,10 +398,40 @@ HeraAcceptanceTest >> stepDebug [
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTest >> stepIStartTheStopwatch [
+
+	<heraStepDefinition: #(When 'I start the stopwatch')>
+
+	self stateAt: #stopwatchStart put: DateAndTime now
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTest >> stepIStopTheStopwatch [
+
+	<heraStepDefinition: #(When 'I stop the stopwatch')>
+
+	self stateAt: #stopwatchEnd put: DateAndTime now
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTest >> stepNotImplemented [
 
 	<debuggerCompleteToSender>
 
 	HeraStepNotImplemented signal: 'Step not implemented.'
 	
+]
+
+{ #category : 'steps' }
+HeraAcceptanceTest >> stepTheStopwatchShowsLessThan: duration [
+
+	<heraStepDefinition: #(Then match 'the stopwatch shows less than {duration}')>
+
+	| elapsed |
+	elapsed := (self stateAt: #stopwatchEnd) - (self stateAt: #stopwatchStart).
+	self
+		assert: elapsed < duration
+		description: [ 'The stopwatch shows {1}, which is more than {2}.' format: {
+			self humanReadableElapsed: elapsed .
+			duration humanReadablePrintString } ]
 ]

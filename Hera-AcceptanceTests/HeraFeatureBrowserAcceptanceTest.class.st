@@ -30,6 +30,8 @@ HeraFeatureBrowserAcceptanceTest >> featureBasicBrowsing [
 				when: 'I select the "Browse >> Hera Documentation & Examples" menu item from the Pharo menu bar';
 				then: 'the "Documentation & Examples" window opens';
 				then: 'I see the following "Features" tree:' with: (self dataTree: {
+					'General' -> {
+						'Stopwatch' -> { } } .
 					'Spec Application Example: Family Tree' -> {
 						'Managing a family tree' -> { } } .
 					'Spec documentation and examples' -> {

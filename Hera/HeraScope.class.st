@@ -31,7 +31,8 @@ HeraScope class >> documentation [
 	^ self new
 		addClasses: {
 			HeraSpecExamplesAcceptanceTest .
-			HeraExampleSpecApplicationAcceptanceTest }
+			HeraExampleSpecApplicationAcceptanceTest .
+			HeraExamplesAcceptanceTest }
 ]
 
 { #category : 'instance creation' }

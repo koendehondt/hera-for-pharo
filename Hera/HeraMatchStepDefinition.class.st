@@ -29,6 +29,7 @@ HeraMatchStepDefinition >> argumentConversion [
 		add: 'time:24h' -> [ :argument | Time fromString: argument ];
 		add: 'time:12h' -> [ :argument | Time fromString: argument ];
 		add: 'timestamp' -> [ :argument | DateAndTime readFrom: argument readStream ];
+		add: 'duration' -> [ :argument | self durationFromString: argument ];
 		yourself
 ]
 
@@ -38,6 +39,23 @@ HeraMatchStepDefinition >> argumentTypesIn: aPatternString [
 	| matcher |
 	matcher := RxMatcher forString: '{[^{]*}'.
 	^ (matcher matchesIn: aPatternString) collect: [ :each | each copyFrom: 2 to: each size - 1 ]
+]
+
+{ #category : 'private' }
+HeraMatchStepDefinition >> durationFromString: argument [
+
+	| matcher |
+	matcher := RxMatcher forString: '(\d+) minutes? and (\d+) seconds?|(\d+) minutes?|(\d+) seconds?|(\d+) milliseconds?'.
+	(matcher matches: argument) ifFalse: [ self error: 'Cannot parse duration: ' , argument ].
+	(matcher subexpression: 2) ifNotNil: [ :milliseconds |
+		^ Duration milliSeconds: milliseconds asInteger ].
+	(matcher subexpression: 3) ifNotNil: [ :seconds |
+		^ Duration seconds: seconds asInteger ].
+	(matcher subexpression: 4) ifNotNil: [ :minutes |
+		^ Duration minutes: minutes asInteger ].
+	(matcher subexpression: 5) ifNotNil: [ :minutes |
+		^ Duration days: 0 hours: 0 minutes: minutes asInteger seconds: (matcher subexpression: 6) asInteger ].
+	self error: 'Cannot parse duration: ' , argument
 ]
 
 { #category : 'initialization' }
@@ -100,6 +118,7 @@ HeraMatchStepDefinition >> supportedArguments [
 		add: 'time:24h' -> '(\d\d:\d\d(:\d\d)?)';
 		add: 'time:12h' -> '(\d?\d:\d\d(:\d\d)?\s?(AM|PM|am|pm))';
 		add: 'timestamp' -> '(\d\d\d\d\-\d\d\-\d\dT\d\d:\d\d:\d\d(([+-]\d\d:\d\d)|Z))';
+		add: 'duration' -> '(\d+ minutes? and \d+ seconds?|\d+ minutes?|\d+ seconds?|\d+ milliseconds?)';
 		yourself
 ]
 

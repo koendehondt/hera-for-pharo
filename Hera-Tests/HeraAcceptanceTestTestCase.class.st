@@ -196,7 +196,11 @@ HeraAcceptanceTestTestCase >> testStepMethods [
 
 	| stepMethodSelectors |
 	stepMethodSelectors := self describedClass stepMethods collect: [ :each | each selector ].
-	self assert: stepMethodSelectors equals: { #stepDebug }
+	self assert: stepMethodSelectors equals: {
+		#stepDebug .
+		#stepIStopTheStopwatch .
+		#stepIStartTheStopwatch .
+		#stepTheStopwatchShowsLessThan: }
 ]
 
 { #category : 'tests - state' }

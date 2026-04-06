@@ -30,6 +30,7 @@ HeraFilteredStepsTestCase >> testFilteredStepsAreSortedCaseInsensitively [
 			'Then I see the following text in the {string} field:' .
 			'Then I see the following {string} tree:' .
 			'Then I see {string} in the {string} field' .
+			'Then the stopwatch shows less than {duration}' .
 			'Then the title of the window identified by {string} is {string}' .
 			'Then the title of the window is {string}' .
 			'Then the window identified by {string} closes' .
@@ -68,6 +69,8 @@ HeraFilteredStepsTestCase >> testFilteredStepsAreSortedCaseInsensitively [
 			'When I select the {string} menu item from the Pharo menu bar' .
 			'When I select the {string} radio button' .
 			'When I select {string} in the {string} tree' .
+			'When I start the stopwatch' .
+			'When I stop the stopwatch' .
 			'When I uncheck "Substring"' .
 			'When I uncheck the {string} checkbox' } asOrderedCollection
 ]

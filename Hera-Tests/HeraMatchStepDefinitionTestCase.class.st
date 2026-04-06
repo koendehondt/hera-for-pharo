@@ -68,6 +68,52 @@ HeraMatchStepDefinitionTestCase >> testMatchDateYmd [
 	self assert: (subject match: 'today is 2025/08/16') equals: { Date year: 2025 month: 8 day: 16 }
 ]
 
+{ #category : 'tests - duration' }
+HeraMatchStepDefinitionTestCase >> testMatchDurationMillisecond [
+
+	subject pattern: 'the operation takes less than {duration}'.
+	self assert: (subject match: 'the operation takes less than 1 millisecond') equals: { Duration milliSeconds: 1 }
+]
+
+{ #category : 'tests - duration' }
+HeraMatchStepDefinitionTestCase >> testMatchDurationMilliseconds [
+
+	subject pattern: 'the operation takes less than {duration}'.
+	self assert: (subject match: 'the operation takes less than 999 milliseconds') equals: { Duration milliSeconds: 999 }
+]
+
+{ #category : 'tests - duration' }
+HeraMatchStepDefinitionTestCase >> testMatchDurationMinuteAndSecond [
+
+	subject pattern: 'the operation takes less than {duration}'.
+	self
+		assert: (subject match: 'the operation takes less than 1 minute and 1 second')
+		equals: { Duration days: 0 hours: 0 minutes: 1 seconds: 1 }
+]
+
+{ #category : 'tests - duration' }
+HeraMatchStepDefinitionTestCase >> testMatchDurationMinutesAndSeconds [
+
+	subject pattern: 'the operation takes less than {duration}'.
+	self
+		assert: (subject match: 'the operation takes less than 2 minutes and 5 seconds')
+		equals: { Duration days: 0 hours: 0 minutes: 2 seconds: 5 }
+]
+
+{ #category : 'tests - duration' }
+HeraMatchStepDefinitionTestCase >> testMatchDurationSecond [
+
+	subject pattern: 'the operation takes less than {duration}'.
+	self assert: (subject match: 'the operation takes less than 1 second') equals: { Duration seconds: 1 }
+]
+
+{ #category : 'tests - duration' }
+HeraMatchStepDefinitionTestCase >> testMatchDurationSeconds [
+
+	subject pattern: 'the operation takes less than {duration}'.
+	self assert: (subject match: 'the operation takes less than 2 seconds') equals: { Duration seconds: 2 }
+]
+
 { #category : 'tests - string' }
 HeraMatchStepDefinitionTestCase >> testMatchEmptyString [
 

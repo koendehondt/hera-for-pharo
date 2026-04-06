@@ -70,6 +70,7 @@ HeraScopeTestCase >> testAllForBrowsingWithAllAcceptanceTests [
 		HeraAcceptanceTestWithTraitForTesting .
 		HeraAcceptanceTestWithTwoFeaturesForTesting .
 		HeraExampleSpecApplicationAcceptanceTest .
+		HeraExamplesAcceptanceTest .
 		HeraFeatureBrowserAcceptanceTest .
 		HeraRunnerAcceptanceTest .
 		HeraSelfAcceptanceTest . 
@@ -140,7 +141,8 @@ HeraScopeTestCase >> testDocumentation [
 
 	subject := self describedClass documentation.
 	self assert: subject allForBrowsing equals: {
-		HeraExampleSpecApplicationAcceptanceTest .
+		HeraExampleSpecApplicationAcceptanceTest  .
+		HeraExamplesAcceptanceTest.
 		HeraSpecExamplesAcceptanceTest }
 ]
 

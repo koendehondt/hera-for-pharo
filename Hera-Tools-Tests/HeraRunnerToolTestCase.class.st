@@ -42,6 +42,8 @@ Feature\: Basic browsing
 		When I select the "Browse >> Hera Documentation & Examples" menu item from the Pharo menu bar
 		Then the "Documentation & Examples" window opens
 		Then I see the following "Features" tree\:
+			>  General
+			>>   Stopwatch
 			>  Spec Application Example\: Family Tree
 			>>   Managing a family tree
 			>  Spec documentation and examples
