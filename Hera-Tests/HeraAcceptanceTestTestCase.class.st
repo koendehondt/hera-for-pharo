@@ -195,11 +195,11 @@ HeraAcceptanceTestTestCase >> testStepDebug [
 HeraAcceptanceTestTestCase >> testStepMethods [
 
 	| stepMethodSelectors |
-	stepMethodSelectors := self describedClass stepMethods collect: [ :each | each selector ].
-	self assert: stepMethodSelectors equals: {
+	stepMethodSelectors := self describedClass stepMethods collect: [ :each | each selector ] as: SortedCollection.
+	self assert: stepMethodSelectors asArray equals: {
 		#stepDebug .
-		#stepIStopTheStopwatch .
 		#stepIStartTheStopwatch .
+		#stepIStopTheStopwatch .
 		#stepTheStopwatchShowsLessThan: }
 ]
 
