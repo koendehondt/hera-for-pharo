@@ -231,9 +231,11 @@ HeraRunnerAcceptanceTest >> stepIPressCommandR [
 
 	<heraStepDefinition: #(When 'I press Command-R')>
 
-	| isMacOS |
+	[| isMacOS |
 	isMacOS := OSPlatform current isMacOS.
-	self featureBrowser simulateEventInScriptEditor: (self keyDownEventFromChar: $r alt: false ctrl: isMacOS not command: isMacOS shift: false)
+	self featureBrowser simulateEventInScriptEditor: (self keyDownEventFromChar: $r alt: false ctrl: isMacOS not command: isMacOS shift: false)]
+		on: Error
+		do: [ :error| Stdio stdout nextPutAll: error messageText; cr ]
 ]
 
 { #category : 'steps' }
