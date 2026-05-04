@@ -140,14 +140,6 @@ HeraLinter >> visitDataTreeStepArgumentAstNode: aDataTreeStepArgumentAstNode [
 ]
 
 { #category : 'visiting' }
-HeraLinter >> visitDocStringStepArgumentAstNode: aDocStringStepArgumentAstNode [
-
-	currentScenarioAstNode ifNil: [ ^ self ].
-	aDocStringStepArgumentAstNode hasParameters ifFalse: [ ^ self ].
-	self warn: 'Parameters are only allowed in doc strings of a scenario outline.' from: aDocStringStepArgumentAstNode start to: aDocStringStepArgumentAstNode end
-]
-
-{ #category : 'visiting' }
 HeraLinter >> visitExamplesAstNode: anExamplesAstNode [
 
 	anExamplesAstNode examplesDataTable dataTable isEmpty

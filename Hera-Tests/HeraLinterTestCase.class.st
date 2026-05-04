@@ -574,54 +574,6 @@ HeraLinterTestCase >> testStepDataTreeParametersAreNotAllowedInScenario [
 ]
 
 { #category : 'tests - parameters' }
-HeraLinterTestCase >> testStepDocStringParametersAreNotAllowedInScenario [
-
-	| noWarnings |
-	noWarnings := self lintFeature: '
-		Feature: Buying fruit
-
-			Scenario: Receiving a ticket
-				Given I receive a ticket:
-					"""
-					Total: <price>
-					"""
-				When I receive a ticket:
-					"""
-					Total: <price>
-					"""
-				Then I receive a ticket:
-					"""
-					Total: <price>
-					"""
-				And I receive a ticket:
-					"""
-					Total: <price>
-					"""
-				But I receive a ticket:
-					"""
-					Total: <price>
-					"""
-				* I receive a ticket:
-					"""
-					Total: <price>
-					"""'.
-	self deny: noWarnings.
-	self assert: subject warnings size equals: 12.
-	self assertWarning: 'Parameters are only allowed in doc strings of a scenario outline.' start: 94 end: 125.
-	self assertWarning: 'Parameters are only allowed in doc strings of a scenario outline.' start: 161 end: 192.
-	self assertWarning: 'Parameters are only allowed in doc strings of a scenario outline.' start: 228 end: 259.
-	self assertWarning: 'Parameters are only allowed in doc strings of a scenario outline.' start: 294 end: 325.
-	self assertWarning: 'Parameters are only allowed in doc strings of a scenario outline.' start: 360 end: 391.
-	self assertWarning: 'Parameters are only allowed in doc strings of a scenario outline.' start: 424 end: 455.
-	self assertWarning: 'This step has no definition.' start: 63 end: 125.
-	self assertWarning: 'This step has no definition.' start: 131 end: 192.
-	self assertWarning: 'This step has no definition.' start: 198 end: 259.
-	self assertWarning: 'This step has no definition.' start: 265 end: 325.
-	self assertWarning: 'This step has no definition.' start: 331 end: 391.
-	self assertWarning: 'This step has no definition.' start: 397 end: 455
-]
-
-{ #category : 'tests - parameters' }
 HeraLinterTestCase >> testStepParametersAreNotAllowedInScenario [
 
 	| noWarnings |
@@ -677,4 +629,22 @@ HeraLinterTestCase >> testTitleParametersAreNotAllowedInScenario [
 	self deny: noWarnings.
 	self assert: subject warnings size equals: 1.
 	self assertWarning: 'Parameters are only allowed in the title of a scenario outline.' start: 42 end: 57
+]
+
+{ #category : 'tests - parameters' }
+HeraLinterTestCase >> testXmlInDocStringOfScenarioDoesNotTriggerParameterWarnings [
+
+	| noWarnings |
+	noWarnings := self lintFeature: '
+		Feature: XML import
+
+			Scenario: Importing an XMl file
+				Given a file with the following XML:
+					"""
+					<users>
+					</users>
+					"""'.
+	self deny: noWarnings.
+	self assert: subject warnings size equals: 1.
+	self assertWarning: 'This step has no definition.' start: 64 end: 144
 ]
