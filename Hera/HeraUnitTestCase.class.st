@@ -55,8 +55,8 @@ HeraUnitTestCase >> assertText: actualText equals: expectedText [
 { #category : 'asserting' }
 HeraUnitTestCase >> assertTextAttribute: actualAttribute equals: expectedAttribute [
 
-	actualAttribute = expectedAttribute or: [
-		(actualAttribute isMemberOf: TextAction) and: [ expectedAttribute isMemberOf: TextAction ] ]
+	self assert: (actualAttribute = expectedAttribute or: [
+		(actualAttribute isMemberOf: TextAction) and: [ expectedAttribute isMemberOf: TextAction ] ])
 ]
 
 { #category : 'asserting' }

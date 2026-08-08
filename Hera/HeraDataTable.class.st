@@ -131,23 +131,10 @@ HeraDataTable >> parameters [
 { #category : 'printing' }
 HeraDataTable >> printFormattedOn: aStream indentation: aNumberOfTabs [
 
-	| columnWidths |
-	data ifEmpty: [ ^ self ].
-	columnWidths := Array new: data first size withAll: 0.
-	data do: [ :eachRow |
-		eachRow withIndexDo: [ :eachDatum :index |
-			columnWidths at: index put: ((columnWidths at: index) max: eachDatum size) ] ].
-	data withIndexDo: [ :eachRow :rowIndex |
-		rowIndex > 1 ifTrue: [ aStream cr ].
-		aStream
-			tab: aNumberOfTabs;
-			nextPut: $|.
-		eachRow withIndexDo: [ :eachDatum :columnIndex |
-			aStream
-				space;
-				nextPutAll: (eachDatum padRightTo: (columnWidths at: columnIndex));
-				space;
-				nextPut: $| ] ]
+	HeraScriptGenerator new
+		stream: aStream;
+		indentation: aNumberOfTabs;
+		nextPutDataTable: self
 ]
 
 { #category : 'printing' }

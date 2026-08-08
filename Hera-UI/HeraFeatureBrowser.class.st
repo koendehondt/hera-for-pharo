@@ -203,6 +203,10 @@ HeraFeatureBrowser >> initializePresenters [
 HeraFeatureBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
+	self class codeSupportAnnouncer weak
+		when: UIThemeChanged
+		send: #themeChanged
+		to: self.
 	aWindowPresenter whenOpenedDo: [
 		featureSelector setupAfterOpening.
 		scriptEditor setupAfterOpening.
@@ -326,6 +330,12 @@ HeraFeatureBrowser >> suggestedStepMethodSelectorFor: aStepAstNode [
 	descriptionWithoutParameters := aStepAstNode description reject: [ :char | char = $< or: [ char = $> ] ].
 	suggestion := descriptionWithoutParameters asCamelCase select: [ :char | self allowedMethodSelectorCharacter: char ].
 	^ 'step{1}{2}' format: { suggestion . colonOrNothing }
+]
+
+{ #category : 'private' }
+HeraFeatureBrowser >> themeChanged [
+
+	scriptEditor themeChanged
 ]
 
 { #category : 'private' }

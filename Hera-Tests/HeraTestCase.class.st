@@ -24,6 +24,31 @@ Hera is a Behaviour Driven Development framework for Pharo. It allows for a bett
 ]
 
 { #category : 'tests' }
+HeraTestCase >> testConvertTextToMethodBodyNamed [
+
+	| text |
+	text := Text fromString: '@featureTag
+Feature: Feature title
+
+	Scenario: Scenario title'.
+	text makeBoldFrom: 13 to: 20.
+	text makeColor: Color red from: 13 to: 20.
+	text makeBoldFrom: 38 to: 46.
+	text makeColor: Color blue from: 38 to: 46.
+	self
+		assert: (self describedClass convertTextToRepresentation: text)
+		equals: '(Text fromString: ''@featureTag
+Feature: Feature title
+
+	Scenario: Scenario title'')
+	makeBoldFrom: 13 to: 20;
+	makeColor: (Color fromHexString: ''FF0000'') from: 13 to: 20;
+	makeBoldFrom: 38 to: 46;
+	makeColor: (Color fromHexString: ''0000FF'') from: 38 to: 46;
+	yourself'
+]
+
+{ #category : 'tests' }
 HeraTestCase >> testSettings [
 
 	self assert: self describedClass settings identicalTo: HeraSettings uniqueInstance

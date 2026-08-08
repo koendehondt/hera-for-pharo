@@ -281,6 +281,7 @@ HeraRunnableScriptTestCase >> testInstructionsWithDataTable [
 		(HeraRunStepInstruction for: steps third) .
 		(HeraRunStepInstruction for: steps fourth) .
 		(HeraRunStepInstruction for: steps fifth) .
+		(HeraRunStepInstruction for: steps sixth) .
 		HeraAfterScenarioHookInstruction new .
 		HeraEndScenarioInstruction new .
 		HeraEndFeatureInstruction new .

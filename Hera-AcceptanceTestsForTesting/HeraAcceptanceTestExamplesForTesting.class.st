@@ -63,10 +63,14 @@ HeraAcceptanceTestExamplesForTesting >> featureWithDataTable [
 				but: 'I remove the following users:' with: (self dataTable: {
 					{ 'Name' . 'Email' } .
 					{ 'Jake' . 'jake@testing.org' } });
-				then: 'I see these users in the list:' with: (self dataTable: {
+				then: 'I see exactly these users in the list:' with: (self dataTable: {
 					{ 'Name' . 'Email' } .
 					{ 'John' . 'john@testing.org' } .
 					{ 'Jane' . 'jane@testing.org' } .
+					{ 'Emma' . 'emma@testing.org' } .
+					{ 'Jill' . 'jill@testing.org' } });
+				star: 'I see these users in the list:' with: (self dataTable: {
+					{ 'Name' . 'Email' } .
 					{ 'Emma' . 'emma@testing.org' } .
 					{ 'Jill' . 'jill@testing.org' } }) }
 ]
@@ -562,6 +566,21 @@ HeraAcceptanceTestExamplesForTesting >> stepISeeAnOverviewOfMyPurchasesInTheApp:
 ]
 
 { #category : 'steps' }
+HeraAcceptanceTestExamplesForTesting >> stepISeeExactlyTheseUsersInTheList: aDataTable [
+
+	<heraStepDefinition: #(Then 'I see exactly these users in the list:')>
+
+	| expectedUsers users |
+	users := self stateAt: #users.
+	expectedUsers := aDataTable asDictionaries.
+	self assert: users size equals: expectedUsers size.
+	expectedUsers withIndexDo: [ :expectedUser :index | | user |
+		user := users at: index.
+		self assert: (user at: 'Name') equals: (expectedUser at: 'Name').
+		self assert: (user at: 'Email') equals: (expectedUser at: 'Email') ]
+]
+
+{ #category : 'steps' }
 HeraAcceptanceTestExamplesForTesting >> stepISeeTheHomePage [
 	
 	<heraStepDefinition: #(Then 'I see the home page')>
@@ -575,11 +594,10 @@ HeraAcceptanceTestExamplesForTesting >> stepISeeTheseUsersInTheList: aDataTable 
 	| expectedUsers users |
 	users := self stateAt: #users.
 	expectedUsers := aDataTable asDictionaries.
-	self assert: users size equals: expectedUsers size.
-	expectedUsers withIndexDo: [ :expectedUser :index | | user |
-		user := users at: index.
-		self assert: (user at: 'Name') equals: (expectedUser at: 'Name').
-		self assert: (user at: 'Email') equals: (expectedUser at: 'Email') ]
+	expectedUsers do: [ :expectedUser | | user |
+		users
+			detect: [ :each | (each at: 'Name') = (expectedUser at: 'Name') and: [ (each at: 'Email') = (expectedUser at: 'Email') ] ]
+			ifNone: [ self signalFailure: ('User "{1}" with email "{2}" is not in the list.' format: {expectedUser at: 'Name' . expectedUser at: 'Email' }) ] ]
 ]
 
 { #category : 'steps' }

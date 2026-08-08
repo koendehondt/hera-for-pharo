@@ -248,7 +248,7 @@ HeraRunnerReporter >> textAttributesForErrorFor: aStep of: aScenario [
 		TextEmphasis bold . 
 		TextAction new actOnClickBlock: [ runner debugScenario: aScenario ] .
 		"TextColor last, otherwise the text is blue due to the TextAction."
-		TextColor new color: Color red }
+		TextColor red }
 ]
 
 { #category : 'private - reporting' }
@@ -258,5 +258,5 @@ HeraRunnerReporter >> textAttributesForFailureFor: aStep of: aScenario [
 		TextEmphasis bold .
 		TextAction new actOnClickBlock: [ runner debugScenario: aScenario ] .
 		"TextColor last, otherwise the text is blue due to the TextAction."
-		TextColor new color: Color orange }
+		TextColor color: Color orange }
 ]

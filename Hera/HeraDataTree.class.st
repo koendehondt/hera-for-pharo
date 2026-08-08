@@ -126,17 +126,11 @@ HeraDataTree >> printDataTreeNodes: arrayOfDataTreeItems formattedOn: aStream in
 
 { #category : 'printing' }
 HeraDataTree >> printFormattedOn: aStream indentation: aNumberOfTabs [
-	
-	| deepestLevel |
-	deepestLevel := self deepestLevel.
-	data withIndexDo: [ :each :index |
-		(each level = 1 and: [ index = 1]) ifFalse: [ aStream cr ].
-		aStream
-			tab: aNumberOfTabs;
-			nextPutAll: ((String new: each level withAll: $>) padRightTo: deepestLevel with: Character space);
-			space;
-			nextPutAll: (String new: (each level - 1) * 2 withAll: Character space);
-			nextPutAll: each text ]
+
+	HeraScriptGenerator new
+		stream: aStream;
+		indentation: aNumberOfTabs;
+		nextPutDataTree: self
 ]
 
 { #category : 'printing' }

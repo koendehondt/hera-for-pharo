@@ -442,6 +442,17 @@ HeraScriptEditor >> text: aText [
 	self showWarnings
 ]
 
+{ #category : 'updating' }
+HeraScriptEditor >> themeChanged [
+
+	self hasChanged ifTrue: [ ^ self ].
+	"A text presenter does not update correctly when only the attributes of the text change.
+	 See https://github.com/pharo-project/pharo/issues/19912
+	 So lets force a change:"
+	self text: ''.
+	self text: self model richScript
+]
+
 { #category : 'private' }
 HeraScriptEditor >> updateAfterScriptChange [
 

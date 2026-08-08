@@ -64,13 +64,10 @@ HeraDocString >> parameters [
 { #category : 'printing' }
 HeraDocString >> printFormattedOn: aStream indentation: aNumberOfTabs [
 
-	aStream
-		tab: aNumberOfTabs;
-		nextPutAll: '"""'.
-	lines do: [ :each | aStream crtab: aNumberOfTabs; nextPutAll: each ].
-	aStream
-		crtab: aNumberOfTabs;
-		nextPutAll: '"""'
+	HeraScriptGenerator new
+		stream: aStream;
+		indentation: aNumberOfTabs;
+		nextPutDocString: self
 ]
 
 { #category : 'printing' }

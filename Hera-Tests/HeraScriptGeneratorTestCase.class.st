@@ -15,8 +15,7 @@ HeraScriptGeneratorTestCase >> describedClass [
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScript [
 
-	| text |
-	text := Text fromString:	'@accessing_the_system
+	^ (Text fromString: '@accessing_the_system
 @signing_in
 Feature: Signing in
 
@@ -41,19 +40,35 @@ Feature: Signing in
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 416 to: 424.
-	^ text
+')
+	makeColor: (Color fromHexString: '116329') from: 1 to: 21;
+	makeColor: (Color fromHexString: '116329') from: 23 to: 33;
+	makeBoldFrom: 35 to: 42;
+	makeColor: (Color fromHexString: 'CF222E') from: 35 to: 42;
+	makeColor: (Color fromHexString: '0A3069') from: 44 to: 53;
+	makeColor: (Color fromHexString: '116329') from: 185 to: 192;
+	makeBoldFrom: 195 to: 203;
+	makeColor: (Color fromHexString: 'CF222E') from: 195 to: 203;
+	makeColor: (Color fromHexString: '0A3069') from: 205 to: 222;
+	makeColor: (Color fromHexString: 'CF222E') from: 285 to: 289;
+	makeColor: (Color fromHexString: 'CF222E') from: 323 to: 326;
+	makeColor: (Color fromHexString: 'CF222E') from: 353 to: 355;
+	makeColor: (Color fromHexString: 'CF222E') from: 389 to: 392;
+	makeBoldFrom: 416 to: 424;
+	makeColor: (Color fromHexString: 'CF222E') from: 416 to: 424;
+	makeColor: (Color fromHexString: '0A3069') from: 426 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 449 to: 453;
+	makeColor: (Color fromHexString: 'CF222E') from: 487 to: 490;
+	makeColor: (Color fromHexString: 'CF222E') from: 524 to: 526;
+	makeColor: (Color fromHexString: 'CF222E') from: 560 to: 563;
+	makeColor: (Color fromHexString: 'CF222E') from: 598 to: 600;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 
-	| text |
-	text := Text fromString:	'Feature: With background
+	^ (Text fromString: 'Feature: With background
 
 	Background:
 		Given I have a user name
@@ -71,20 +86,35 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithBackground [
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 38;
-		addAttribute: TextEmphasis bold from: 101 to: 109;
-		addAttribute: TextEmphasis bold from: 225 to: 233.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 24;
+	makeBoldFrom: 28 to: 38;
+	makeColor: (Color fromHexString: 'CF222E') from: 28 to: 38;
+	makeColor: (Color fromHexString: 'CF222E') from: 42 to: 46;
+	makeColor: (Color fromHexString: 'CF222E') from: 69 to: 71;
+	makeColor: (Color fromHexString: 'CF222E') from: 86 to: 88;
+	makeBoldFrom: 101 to: 109;
+	makeColor: (Color fromHexString: 'CF222E') from: 101 to: 109;
+	makeColor: (Color fromHexString: '0A3069') from: 111 to: 128;
+	makeColor: (Color fromHexString: 'CF222E') from: 132 to: 135;
+	makeColor: (Color fromHexString: 'CF222E') from: 162 to: 164;
+	makeColor: (Color fromHexString: 'CF222E') from: 198 to: 201;
+	makeBoldFrom: 225 to: 233;
+	makeColor: (Color fromHexString: 'CF222E') from: 225 to: 233;
+	makeColor: (Color fromHexString: '0A3069') from: 235 to: 254;
+	makeColor: (Color fromHexString: 'CF222E') from: 258 to: 261;
+	makeColor: (Color fromHexString: 'CF222E') from: 295 to: 297;
+	makeColor: (Color fromHexString: 'CF222E') from: 331 to: 334;
+	makeColor: (Color fromHexString: 'CF222E') from: 369 to: 371;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 
-	| text |
-	text := Text fromString:	'Feature: With data table
+	^ (Text fromString: 'Feature: With data table
 
 	Scenario: Listing users
 		Given the following users exist:
@@ -101,25 +131,43 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDataTable [
 		But I remove the following users:
 			| Name | Email            |
 			| Jake | jake@testing.org |
-		Then I see these users in the list:
+		Then I see exactly these users in the list:
 			| Name | Email            |
 			| John | john@testing.org |
 			| Jane | jane@testing.org |
 			| Emma | emma@testing.org |
 			| Jill | jill@testing.org |
+		* I see these users in the list:
+			| Name | Email            |
+			| Emma | emma@testing.org |
+			| Jill | jill@testing.org |
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 36.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 24;
+	makeBoldFrom: 28 to: 36;
+	makeColor: (Color fromHexString: 'CF222E') from: 28 to: 36;
+	makeColor: (Color fromHexString: '0A3069') from: 38 to: 50;
+	makeColor: (Color fromHexString: 'CF222E') from: 54 to: 58;
+	makeColor: (Color fromHexString: '8250DF') from: 87 to: 178;
+	makeColor: (Color fromHexString: 'CF222E') from: 182 to: 185;
+	makeColor: (Color fromHexString: '8250DF') from: 214 to: 305;
+	makeColor: (Color fromHexString: 'CF222E') from: 309 to: 311;
+	makeColor: (Color fromHexString: '8250DF') from: 340 to: 400;
+	makeColor: (Color fromHexString: 'CF222E') from: 404 to: 406;
+	makeColor: (Color fromHexString: '8250DF') from: 438 to: 498;
+	makeColor: (Color fromHexString: 'CF222E') from: 502 to: 505;
+	makeColor: (Color fromHexString: '8250DF') from: 546 to: 699;
+	makeColor: (Color fromHexString: 'CF222E') from: 703 to: 703;
+	makeColor: (Color fromHexString: '8250DF') from: 736 to: 827;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDescriptionInBackground [
 
-	| text |
-	text := Text fromString:	'Feature: With description in background
+	^ (Text fromString: 'Feature: With description in background
 
 	Background:
 
@@ -140,20 +188,35 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDescriptionInBackgroun
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 43 to: 53;
-		addAttribute: TextEmphasis bold from: 171 to: 179;
-		addAttribute: TextEmphasis bold from: 295 to: 303.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 39;
+	makeBoldFrom: 43 to: 53;
+	makeColor: (Color fromHexString: 'CF222E') from: 43 to: 53;
+	makeColor: (Color fromHexString: 'CF222E') from: 112 to: 116;
+	makeColor: (Color fromHexString: 'CF222E') from: 139 to: 141;
+	makeColor: (Color fromHexString: 'CF222E') from: 156 to: 158;
+	makeBoldFrom: 171 to: 179;
+	makeColor: (Color fromHexString: 'CF222E') from: 171 to: 179;
+	makeColor: (Color fromHexString: '0A3069') from: 181 to: 198;
+	makeColor: (Color fromHexString: 'CF222E') from: 202 to: 205;
+	makeColor: (Color fromHexString: 'CF222E') from: 232 to: 234;
+	makeColor: (Color fromHexString: 'CF222E') from: 268 to: 271;
+	makeBoldFrom: 295 to: 303;
+	makeColor: (Color fromHexString: 'CF222E') from: 295 to: 303;
+	makeColor: (Color fromHexString: '0A3069') from: 305 to: 324;
+	makeColor: (Color fromHexString: 'CF222E') from: 328 to: 331;
+	makeColor: (Color fromHexString: 'CF222E') from: 365 to: 367;
+	makeColor: (Color fromHexString: 'CF222E') from: 401 to: 404;
+	makeColor: (Color fromHexString: 'CF222E') from: 439 to: 441;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 
-	| text |
-	text := Text fromString:	'Feature: With doc string
+	^ (Text fromString: 'Feature: With doc string
 
 	Scenario: Listing users
 		Given the following users exist:
@@ -175,37 +238,47 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithDocString [
 			</users>
 			"""
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 28 to: 36.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 24;
+	makeBoldFrom: 28 to: 36;
+	makeColor: (Color fromHexString: 'CF222E') from: 28 to: 36;
+	makeColor: (Color fromHexString: '0A3069') from: 38 to: 50;
+	makeColor: (Color fromHexString: 'CF222E') from: 54 to: 58;
+	makeColor: (Color fromHexString: '8250DF') from: 87 to: 178;
+	makeColor: (Color fromHexString: 'CF222E') from: 182 to: 185;
+	makeColor: (Color fromHexString: 'CF222E') from: 248 to: 251;
+	makeColor: (Color fromHexString: '8250DF') from: 276 to: 477;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithEmptyDocString [
 
-	| text |
-	text := Text fromString:	'Feature: With empty doc string
+	^ (Text fromString: 'Feature: With empty doc string
 
 	Scenario: Empty doc strings are accepted
 		Given the following empty doc string:
 			"""
 			"""
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 34 to: 42.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 30;
+	makeBoldFrom: 34 to: 42;
+	makeColor: (Color fromHexString: 'CF222E') from: 34 to: 42;
+	makeColor: (Color fromHexString: '0A3069') from: 44 to: 73;
+	makeColor: (Color fromHexString: 'CF222E') from: 77 to: 81;
+	makeColor: (Color fromHexString: '8250DF') from: 115 to: 127;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithRules [
 
-	| text |
-	text := Text fromString:	'
-Feature: With rules
+	^ (Text fromString: 'Feature: With rules
 
 	Managing users is essential to permit and revoke access to the system.
 
@@ -239,25 +312,51 @@ Feature: With rules
 			Given I am not an administrator
 			Then I cannot open the user management page
 
-' allButFirst.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 96 to: 106;
-		addAttribute: TextEmphasis bold from: 175 to: 183;
-		addAttribute: TextEmphasis bold from: 296 to: 300;
-		addAttribute: TextEmphasis bold from: 430 to: 440;
-		addAttribute: TextEmphasis bold from: 476 to: 484;
-		addAttribute: TextEmphasis bold from: 600 to: 608;
-		addAttribute: TextEmphasis bold from: 739 to: 743;
-		addAttribute: TextEmphasis bold from: 801 to: 809.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 19;
+	makeBoldFrom: 96 to: 106;
+	makeColor: (Color fromHexString: 'CF222E') from: 96 to: 106;
+	makeColor: (Color fromHexString: 'CF222E') from: 110 to: 114;
+	makeBoldFrom: 175 to: 183;
+	makeColor: (Color fromHexString: 'CF222E') from: 175 to: 183;
+	makeColor: (Color fromHexString: '0A3069') from: 185 to: 241;
+	makeColor: (Color fromHexString: 'CF222E') from: 245 to: 249;
+	makeColor: (Color fromHexString: 'CF222E') from: 275 to: 278;
+	makeBoldFrom: 296 to: 300;
+	makeColor: (Color fromHexString: 'CF222E') from: 296 to: 300;
+	makeColor: (Color fromHexString: '0A3069') from: 302 to: 348;
+	makeBoldFrom: 430 to: 440;
+	makeColor: (Color fromHexString: 'CF222E') from: 430 to: 440;
+	makeColor: (Color fromHexString: 'CF222E') from: 445 to: 449;
+	makeBoldFrom: 476 to: 484;
+	makeColor: (Color fromHexString: 'CF222E') from: 476 to: 484;
+	makeColor: (Color fromHexString: '0A3069') from: 486 to: 498;
+	makeColor: (Color fromHexString: 'CF222E') from: 503 to: 506;
+	makeColor: (Color fromHexString: 'CF222E') from: 543 to: 545;
+	makeColor: (Color fromHexString: 'CF222E') from: 567 to: 570;
+	makeBoldFrom: 600 to: 608;
+	makeColor: (Color fromHexString: 'CF222E') from: 600 to: 608;
+	makeColor: (Color fromHexString: '0A3069') from: 610 to: 624;
+	makeColor: (Color fromHexString: 'CF222E') from: 629 to: 632;
+	makeColor: (Color fromHexString: 'CF222E') from: 669 to: 671;
+	makeColor: (Color fromHexString: 'CF222E') from: 692 to: 695;
+	makeBoldFrom: 739 to: 743;
+	makeColor: (Color fromHexString: 'CF222E') from: 739 to: 743;
+	makeColor: (Color fromHexString: '0A3069') from: 745 to: 796;
+	makeBoldFrom: 801 to: 809;
+	makeColor: (Color fromHexString: 'CF222E') from: 801 to: 809;
+	makeColor: (Color fromHexString: '0A3069') from: 811 to: 838;
+	makeColor: (Color fromHexString: 'CF222E') from: 843 to: 847;
+	makeColor: (Color fromHexString: 'CF222E') from: 878 to: 881;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutline [
 
-	| text |
-	text := Text fromString:	'Feature: With scenario outline
+	^ (Text fromString: 'Feature: With scenario outline
 
 	@counting_<fruit>
 	@shop_<shop_name>
@@ -288,19 +387,33 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutline [
 			| apples  | 5      | 2          | 7   | 1.5 € |
 			| oranges | 8      | 1          | 9   | 0.8 € |
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 72 to: 88;
-		addAttribute: TextEmphasis bold from: 537 to: 545.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 30;
+	makeColor: (Color fromHexString: '116329') from: 34 to: 50;
+	makeColor: (Color fromHexString: '116329') from: 53 to: 69;
+	makeBoldFrom: 72 to: 88;
+	makeColor: (Color fromHexString: 'CF222E') from: 72 to: 88;
+	makeColor: (Color fromHexString: '0A3069') from: 90 to: 105;
+	makeColor: (Color fromHexString: 'CF222E') from: 137 to: 141;
+	makeColor: (Color fromHexString: 'CF222E') from: 170 to: 173;
+	makeColor: (Color fromHexString: 'CF222E') from: 206 to: 209;
+	makeColor: (Color fromHexString: '8250DF') from: 219 to: 240;
+	makeColor: (Color fromHexString: 'CF222E') from: 244 to: 246;
+	makeColor: (Color fromHexString: '8250DF') from: 268 to: 440;
+	makeColor: (Color fromHexString: 'CF222E') from: 444 to: 446;
+	makeColor: (Color fromHexString: '8250DF') from: 494 to: 532;
+	makeBoldFrom: 537 to: 545;
+	makeColor: (Color fromHexString: 'CF222E') from: 537 to: 545;
+	makeColor: (Color fromHexString: '8250DF') from: 547 to: 698;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutlineWithEmptyExamples [
 
-	| text |
-	text := Text fromString:	'Feature: With scenario outline with empty examples
+	^ (Text fromString: 'Feature: With scenario outline with empty examples
 
 	@counting_fruit
 	Scenario Outline: Counting <fruit>
@@ -313,19 +426,26 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutlineWithEmp
 
 		Examples:
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 71 to: 87;
-		addAttribute: TextEmphasis bold from: 223 to: 231.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 50;
+	makeColor: (Color fromHexString: '116329') from: 54 to: 68;
+	makeBoldFrom: 71 to: 87;
+	makeColor: (Color fromHexString: 'CF222E') from: 71 to: 87;
+	makeColor: (Color fromHexString: '0A3069') from: 89 to: 104;
+	makeColor: (Color fromHexString: 'CF222E') from: 128 to: 132;
+	makeColor: (Color fromHexString: 'CF222E') from: 160 to: 163;
+	makeColor: (Color fromHexString: 'CF222E') from: 194 to: 197;
+	makeBoldFrom: 223 to: 231;
+	makeColor: (Color fromHexString: 'CF222E') from: 223 to: 231;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutlineWithoutExamples [
 
-	| text |
-	text := Text fromString:	'Feature: With scenario outline without examples
+	^ (Text fromString: 'Feature: With scenario outline without examples
 
 	@counting_fruit
 	Scenario Outline: Counting <fruit>
@@ -336,19 +456,24 @@ HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithScenarioOutlineWithout
 		When I buy <additional> <fruit>
 		Then I have <sum> <fruit>
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 68 to: 84.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 47;
+	makeColor: (Color fromHexString: '116329') from: 51 to: 65;
+	makeBoldFrom: 68 to: 84;
+	makeColor: (Color fromHexString: 'CF222E') from: 68 to: 84;
+	makeColor: (Color fromHexString: '0A3069') from: 86 to: 101;
+	makeColor: (Color fromHexString: 'CF222E') from: 125 to: 129;
+	makeColor: (Color fromHexString: 'CF222E') from: 157 to: 160;
+	makeColor: (Color fromHexString: 'CF222E') from: 191 to: 194;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithStarSteps [
 
-	| text |
-	text := Text fromString:	'
-Feature: With * steps
+	^ (Text fromString: 'Feature: With * steps
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
@@ -358,18 +483,26 @@ Feature: With * steps
 		* I press the sign-in button
 		Then I see the home page
 
-' allButFirst.
-	text
-		addAttribute: TextEmphasis bold from: 1 to: 8;
-		addAttribute: TextEmphasis bold from: 25 to: 33.
-	^ text
+')
+	makeBoldFrom: 1 to: 8;
+	makeColor: (Color fromHexString: 'CF222E') from: 1 to: 8;
+	makeColor: (Color fromHexString: '0A3069') from: 10 to: 21;
+	makeBoldFrom: 25 to: 33;
+	makeColor: (Color fromHexString: 'CF222E') from: 25 to: 33;
+	makeColor: (Color fromHexString: '0A3069') from: 35 to: 52;
+	makeColor: (Color fromHexString: 'CF222E') from: 56 to: 60;
+	makeColor: (Color fromHexString: 'CF222E') from: 94 to: 97;
+	makeColor: (Color fromHexString: 'CF222E') from: 125 to: 125;
+	makeColor: (Color fromHexString: 'CF222E') from: 152 to: 152;
+	makeColor: (Color fromHexString: 'CF222E') from: 178 to: 178;
+	makeColor: (Color fromHexString: 'CF222E') from: 209 to: 212;
+	yourself
 ]
 
 { #category : 'private' }
 HeraScriptGeneratorTestCase >> expectedGeneratedScriptWithTags [
 
-	| text |
-	text := Text fromString:	'@tag_feature_two
+	^ (Text fromString: '@tag_feature_two
 Feature: Two
 
 	@tag_scenario_2A
@@ -394,15 +527,46 @@ Feature: Two
 			When I do something
 			Then I see something
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 18 to: 25;
-		addAttribute: TextEmphasis bold from: 51 to: 59;
-		addAttribute: TextEmphasis bold from: 129 to: 137;
-		addAttribute: TextEmphasis bold from: 202 to: 206;
-		addAttribute: TextEmphasis bold from: 232 to: 240;
-		addAttribute: TextEmphasis bold from: 295 to: 303.
-	^ text
+')
+	makeColor: (Color fromHexString: '116329') from: 1 to: 16;
+	makeBoldFrom: 18 to: 25;
+	makeColor: (Color fromHexString: 'CF222E') from: 18 to: 25;
+	makeColor: (Color fromHexString: '0A3069') from: 27 to: 29;
+	makeColor: (Color fromHexString: '116329') from: 33 to: 48;
+	makeBoldFrom: 51 to: 59;
+	makeColor: (Color fromHexString: 'CF222E') from: 51 to: 59;
+	makeColor: (Color fromHexString: '0A3069') from: 61 to: 62;
+	makeColor: (Color fromHexString: 'CF222E') from: 66 to: 69;
+	makeColor: (Color fromHexString: 'CF222E') from: 88 to: 91;
+	makeColor: (Color fromHexString: '116329') from: 111 to: 126;
+	makeBoldFrom: 129 to: 137;
+	makeColor: (Color fromHexString: 'CF222E') from: 129 to: 137;
+	makeColor: (Color fromHexString: '0A3069') from: 139 to: 140;
+	makeColor: (Color fromHexString: 'CF222E') from: 144 to: 147;
+	makeColor: (Color fromHexString: 'CF222E') from: 166 to: 169;
+	makeColor: (Color fromHexString: '116329') from: 189 to: 199;
+	makeBoldFrom: 202 to: 206;
+	makeColor: (Color fromHexString: 'CF222E') from: 202 to: 206;
+	makeColor: (Color fromHexString: '0A3069') from: 208 to: 208;
+	makeColor: (Color fromHexString: '116329') from: 213 to: 228;
+	makeBoldFrom: 232 to: 240;
+	makeColor: (Color fromHexString: 'CF222E') from: 232 to: 240;
+	makeColor: (Color fromHexString: '0A3069') from: 242 to: 243;
+	makeColor: (Color fromHexString: 'CF222E') from: 248 to: 251;
+	makeColor: (Color fromHexString: 'CF222E') from: 271 to: 274;
+	makeBoldFrom: 295 to: 303;
+	makeColor: (Color fromHexString: 'CF222E') from: 295 to: 303;
+	makeColor: (Color fromHexString: '0A3069') from: 305 to: 306;
+	makeColor: (Color fromHexString: 'CF222E') from: 311 to: 314;
+	makeColor: (Color fromHexString: 'CF222E') from: 334 to: 337;
+	yourself
+]
+
+{ #category : 'running' }
+HeraScriptGeneratorTestCase >> initializeSubject [
+
+	super initializeSubject.
+	subject syntaxTheme: HeraSyntaxLightTheme new
 ]
 
 { #category : 'tests' }

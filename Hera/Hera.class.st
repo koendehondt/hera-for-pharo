@@ -42,6 +42,44 @@ Hera class >> browseReferencesTo: aStepMethod inScope: scope [
 			self inform: ('There are no references to "{1}".' format: { stepMethodItem fullStepDescription }) ]
 ]
 
+{ #category : 'utilities' }
+Hera class >> convertTextToRepresentation: aText [
+
+	| bold |
+	bold := TextEmphasis bold.
+	^ String streamContents: [ :stream |
+		stream
+			nextPutAll: '(Text fromString: ''';
+			nextPutAll: aText string;
+			nextPutAll: ''')'.
+		aText runs withStartStopAndValueDo: [ :start :stop :valueArray |
+			valueArray do: [ :textAttribute|
+				textAttribute = bold ifTrue: [
+					stream
+						crtab;
+						nextPutAll: 'makeBoldFrom: ';
+						print: start;
+						nextPutAll: ' to: ';
+						print: stop;
+						nextPut: $; ].
+				(textAttribute isKindOf: TextColor) ifTrue: [
+					stream
+						crtab;
+						nextPutAll: 'makeColor: ';
+						nextPutAll: '(Color fromHexString: ';
+						print: textAttribute color asHexString;
+						nextPutAll: ') from: ';
+						print: start;
+						nextPutAll: ' to: '; 
+						print: stop;
+						nextPut: $; ]
+				"Other attributes are not supported because the script generator does not use them." ]].
+		stream
+			crtab;
+			nextPutAll: 'yourself'
+		]
+]
+
 { #category : 'accessing' }
 Hera class >> settings [
 

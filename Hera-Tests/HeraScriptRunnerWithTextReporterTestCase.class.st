@@ -18,26 +18,27 @@ HeraScriptRunnerWithTextReporterTestCase >> describedClass [
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedDebugRunReport [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With debug step
 
 	Scenario: Successful sign-in
 		Given I have credentials to sign in
-		When I debug'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 49 to: 57.
-	^ text
+		When I debug')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 80 to: 84;
+	makeColor: (Color fromHexString: 'CF222E') from: 118 to: 121;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedDebugStepRunWithSuppressPauseAndDebugSteps [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With debug step
@@ -51,11 +52,17 @@ Feature: With debug step
 
 
 Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 49 to: 57.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 80 to: 84;
+	makeColor: (Color fromHexString: 'CF222E') from: 118 to: 121;
+	makeColor: (Color fromHexString: 'CF222E') from: 146 to: 149;
+	makeColor: (Color fromHexString: 'CF222E') from: 176 to: 178;
+	makeColor: (Color fromHexString: 'CF222E') from: 212 to: 215;
+	yourself
 ]
 
 { #category : 'expected output' }
@@ -71,8 +78,7 @@ Total: 0 scenarios. Passed: 0. Failed: 0. Error: 0. Duration: 0 seconds.
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedEmptyScenarioErrorRunReport [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With empty scenario
@@ -82,20 +88,20 @@ Feature: With empty scenario
 
 
 Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 53 to: 61;
-		addAttribute: TextEmphasis bold from: 84 to: 88;
-		addAttribute: (TextColor new color: Color red) from: 84 to: 88.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 53 to: 61;
+	makeColor: (Color fromHexString: 'CF222E') from: 53 to: 61;
+	makeBoldFrom: 84 to: 88;
+	makeColor: (Color fromHexString: 'FE0000') from: 84 to: 88;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorDebugReportWithTagsAndDescriptions [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 @accessing_the_system
@@ -113,18 +119,21 @@ Feature: Signing in
 
 		Given I have credentials to sign in
 		When I enter my credentials
-		And I press the button to sign in'.
-	text
-		addAttribute: TextEmphasis bold from: 56 to: 63;
-		addAttribute: TextEmphasis bold from: 216 to: 224.
-	^ text
+		And I press the button to sign in')
+	makeBoldFrom: 56 to: 63;
+	makeColor: (Color fromHexString: 'CF222E') from: 56 to: 63;
+	makeBoldFrom: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 306 to: 310;
+	makeColor: (Color fromHexString: 'CF222E') from: 344 to: 347;
+	makeColor: (Color fromHexString: 'CF222E') from: 374 to: 376;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithErrorInAfterScenarioHook [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With single step scenario for testing
@@ -135,20 +144,21 @@ Feature: With single step scenario for testing
 
 
 Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 71 to: 79;
-		addAttribute: TextEmphasis bold from: 140 to: 144;
-		addAttribute: (TextColor new color: Color red) from: 140 to: 144.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 71 to: 79;
+	makeColor: (Color fromHexString: 'CF222E') from: 71 to: 79;
+	makeColor: (Color fromHexString: 'CF222E') from: 102 to: 106;
+	makeBoldFrom: 140 to: 144;
+	makeColor: (Color fromHexString: 'FE0000') from: 140 to: 144;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithErrorInBeforeScenarioHook [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With single step scenario for testing
@@ -158,20 +168,20 @@ Feature: With single step scenario for testing
 
 
 Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 71 to: 79;
-		addAttribute: TextEmphasis bold from: 102 to: 106;
-		addAttribute: (TextColor new color: Color red) from: 102 to: 106.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 71 to: 79;
+	makeColor: (Color fromHexString: 'CF222E') from: 71 to: 79;
+	makeBoldFrom: 102 to: 106;
+	makeColor: (Color fromHexString: 'FE0000') from: 102 to: 106;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedErrorRunReportWithTagsAndDescriptions [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 @accessing_the_system
@@ -200,23 +210,30 @@ Feature: Signing in
 
 
 Total: 2 scenarios. Passed: 0. Failed: 0. Error: 2. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 56 to: 63;
-		addAttribute: TextEmphasis bold from: 216 to: 224;
-		addAttribute: TextEmphasis bold from: 411 to: 415;
-		addAttribute: (TextColor new color: Color red) from: 411 to: 415;
-		addAttribute: TextEmphasis bold from: 436 to: 444;
-		addAttribute: TextEmphasis bold from: 581 to: 585;
-		addAttribute: (TextColor new color: Color red) from: 581 to: 585.
-	^ text
+')
+	makeBoldFrom: 56 to: 63;
+	makeColor: (Color fromHexString: 'CF222E') from: 56 to: 63;
+	makeBoldFrom: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 306 to: 310;
+	makeColor: (Color fromHexString: 'CF222E') from: 344 to: 347;
+	makeColor: (Color fromHexString: 'CF222E') from: 374 to: 376;
+	makeBoldFrom: 411 to: 415;
+	makeColor: (Color fromHexString: 'FE0000') from: 411 to: 415;
+	makeBoldFrom: 436 to: 444;
+	makeColor: (Color fromHexString: 'CF222E') from: 436 to: 444;
+	makeColor: (Color fromHexString: 'CF222E') from: 469 to: 473;
+	makeColor: (Color fromHexString: 'CF222E') from: 507 to: 510;
+	makeColor: (Color fromHexString: 'CF222E') from: 544 to: 546;
+	makeBoldFrom: 581 to: 585;
+	makeColor: (Color fromHexString: 'FE0000') from: 581 to: 585;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedFailedDebugReportWithTagsAndDescriptions [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 @accessing_the_system
@@ -241,19 +258,28 @@ Feature: Signing in
 		Given I have credentials to sign in
 		When I enter the wrong credentials
 		And I press the button to sign in
-		Then I am still on the sign-in page'.
-	text
-		addAttribute: TextEmphasis bold from: 56 to: 63;
-		addAttribute: TextEmphasis bold from: 216 to: 224;
-		addAttribute: TextEmphasis bold from: 437 to: 445.
-	^ text
+		Then I am still on the sign-in page')
+	makeBoldFrom: 56 to: 63;
+	makeColor: (Color fromHexString: 'CF222E') from: 56 to: 63;
+	makeBoldFrom: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 306 to: 310;
+	makeColor: (Color fromHexString: 'CF222E') from: 344 to: 347;
+	makeColor: (Color fromHexString: 'CF222E') from: 374 to: 376;
+	makeColor: (Color fromHexString: 'CF222E') from: 410 to: 413;
+	makeBoldFrom: 437 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 437 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 470 to: 474;
+	makeColor: (Color fromHexString: 'CF222E') from: 508 to: 511;
+	makeColor: (Color fromHexString: 'CF222E') from: 545 to: 547;
+	makeColor: (Color fromHexString: 'CF222E') from: 581 to: 584;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedFailedRunReportWithTagsAndDescriptions [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 @accessing_the_system
@@ -283,21 +309,30 @@ Feature: Signing in
 
 
 Total: 2 scenarios. Passed: 1. Failed: 1. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 56 to: 63;
-		addAttribute: TextEmphasis bold from: 216 to: 224;
-		addAttribute: TextEmphasis bold from: 437 to: 445;
-		addAttribute: TextEmphasis bold from: 620 to: 625;
-		addAttribute: (TextColor new color: Color orange) from: 620 to: 625.
-	^ text
+')
+	makeBoldFrom: 56 to: 63;
+	makeColor: (Color fromHexString: 'CF222E') from: 56 to: 63;
+	makeBoldFrom: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 306 to: 310;
+	makeColor: (Color fromHexString: 'CF222E') from: 344 to: 347;
+	makeColor: (Color fromHexString: 'CF222E') from: 374 to: 376;
+	makeColor: (Color fromHexString: 'CF222E') from: 410 to: 413;
+	makeBoldFrom: 437 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 437 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 470 to: 474;
+	makeColor: (Color fromHexString: 'CF222E') from: 508 to: 511;
+	makeColor: (Color fromHexString: 'CF222E') from: 545 to: 547;
+	makeColor: (Color fromHexString: 'CF222E') from: 581 to: 584;
+	makeBoldFrom: 620 to: 625;
+	makeColor: (Color fromHexString: 'FE9900') from: 620 to: 625;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedHooksRunReport [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With hooks for testing
@@ -308,11 +343,14 @@ Feature: With hooks for testing
 
 
 Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 56 to: 64.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 56 to: 64;
+	makeColor: (Color fromHexString: 'CF222E') from: 56 to: 64;
+	makeColor: (Color fromHexString: 'CF222E') from: 95 to: 98;
+	makeColor: (Color fromHexString: 'CF222E') from: 117 to: 120;
+	yourself
 ]
 
 { #category : 'expected output' }
@@ -354,8 +392,7 @@ Feature: Signing in
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedPassedRunReportWithTagsAndDescriptions [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 @accessing_the_system
@@ -385,19 +422,29 @@ Feature: Signing in
 
 
 Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 56 to: 63;
-		addAttribute: TextEmphasis bold from: 216 to: 224;
-		addAttribute: TextEmphasis bold from: 437 to: 445.
-	^ text
+')
+	makeBoldFrom: 56 to: 63;
+	makeColor: (Color fromHexString: 'CF222E') from: 56 to: 63;
+	makeBoldFrom: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 216 to: 224;
+	makeColor: (Color fromHexString: 'CF222E') from: 306 to: 310;
+	makeColor: (Color fromHexString: 'CF222E') from: 344 to: 347;
+	makeColor: (Color fromHexString: 'CF222E') from: 374 to: 376;
+	makeColor: (Color fromHexString: 'CF222E') from: 410 to: 413;
+	makeBoldFrom: 437 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 437 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 470 to: 474;
+	makeColor: (Color fromHexString: 'CF222E') from: 508 to: 511;
+	makeColor: (Color fromHexString: 'CF222E') from: 545 to: 547;
+	makeColor: (Color fromHexString: 'CF222E') from: 581 to: 584;
+	makeColor: (Color fromHexString: 'CF222E') from: 619 to: 621;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunReportWithTagsAndDescriptions [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With pause step
@@ -411,18 +458,23 @@ Feature: With pause step
 
 
 Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 49 to: 57.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 80 to: 84;
+	makeColor: (Color fromHexString: 'CF222E') from: 118 to: 121;
+	makeColor: (Color fromHexString: 'CF222E') from: 133 to: 136;
+	makeColor: (Color fromHexString: 'CF222E') from: 163 to: 165;
+	makeColor: (Color fromHexString: 'CF222E') from: 199 to: 202;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedPausedRunWithSuppressPauseAndDebugSteps [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With pause step
@@ -436,18 +488,23 @@ Feature: With pause step
 
 
 Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 49 to: 57.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 80 to: 84;
+	makeColor: (Color fromHexString: 'CF222E') from: 118 to: 121;
+	makeColor: (Color fromHexString: 'CF222E') from: 146 to: 149;
+	makeColor: (Color fromHexString: 'CF222E') from: 176 to: 178;
+	makeColor: (Color fromHexString: 'CF222E') from: 212 to: 215;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithBackground [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With background
@@ -476,20 +533,38 @@ Feature: With background
 
 
 Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 49 to: 59;
-		addAttribute: TextEmphasis bold from: 122 to: 130;
-		addAttribute: TextEmphasis bold from: 344 to: 352.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 49 to: 59;
+	makeColor: (Color fromHexString: 'CF222E') from: 49 to: 59;
+	makeColor: (Color fromHexString: 'CF222E') from: 63 to: 67;
+	makeColor: (Color fromHexString: 'CF222E') from: 90 to: 92;
+	makeColor: (Color fromHexString: 'CF222E') from: 107 to: 109;
+	makeBoldFrom: 122 to: 130;
+	makeColor: (Color fromHexString: 'CF222E') from: 122 to: 130;
+	makeColor: (Color fromHexString: 'CF222E') from: 153 to: 157;
+	makeColor: (Color fromHexString: 'CF222E') from: 193 to: 195;
+	makeColor: (Color fromHexString: 'CF222E') from: 223 to: 225;
+	makeColor: (Color fromHexString: 'CF222E') from: 251 to: 254;
+	makeColor: (Color fromHexString: 'CF222E') from: 281 to: 283;
+	makeColor: (Color fromHexString: 'CF222E') from: 317 to: 320;
+	makeBoldFrom: 344 to: 352;
+	makeColor: (Color fromHexString: 'CF222E') from: 344 to: 352;
+	makeColor: (Color fromHexString: 'CF222E') from: 377 to: 381;
+	makeColor: (Color fromHexString: 'CF222E') from: 417 to: 419;
+	makeColor: (Color fromHexString: 'CF222E') from: 447 to: 449;
+	makeColor: (Color fromHexString: 'CF222E') from: 475 to: 478;
+	makeColor: (Color fromHexString: 'CF222E') from: 512 to: 514;
+	makeColor: (Color fromHexString: 'CF222E') from: 548 to: 551;
+	makeColor: (Color fromHexString: 'CF222E') from: 586 to: 588;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDataTable [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With data table
@@ -509,27 +584,43 @@ Feature: With data table
 		But I remove the following users:
 			| Name | Email            |
 			| Jake | jake@testing.org |
-		Then I see these users in the list:
+		Then I see exactly these users in the list:
 			| Name | Email            |
 			| John | john@testing.org |
 			| Jane | jane@testing.org |
 			| Emma | emma@testing.org |
 			| Jill | jill@testing.org |
+		* I see these users in the list:
+			| Name | Email            |
+			| Emma | emma@testing.org |
+			| Jill | jill@testing.org |
 
 
 Total: 1 scenario. Passed: 1. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 49 to: 57.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 49 to: 57;
+	makeColor: (Color fromHexString: 'CF222E') from: 75 to: 79;
+	makeColor: (Color fromHexString: '8250DF') from: 108 to: 199;
+	makeColor: (Color fromHexString: 'CF222E') from: 203 to: 206;
+	makeColor: (Color fromHexString: '8250DF') from: 235 to: 326;
+	makeColor: (Color fromHexString: 'CF222E') from: 330 to: 332;
+	makeColor: (Color fromHexString: '8250DF') from: 361 to: 421;
+	makeColor: (Color fromHexString: 'CF222E') from: 425 to: 427;
+	makeColor: (Color fromHexString: '8250DF') from: 459 to: 519;
+	makeColor: (Color fromHexString: 'CF222E') from: 523 to: 526;
+	makeColor: (Color fromHexString: '8250DF') from: 567 to: 720;
+	makeColor: (Color fromHexString: 'CF222E') from: 724 to: 724;
+	makeColor: (Color fromHexString: '8250DF') from: 757 to: 848;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithDescriptionInBackground [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With description in background
@@ -561,20 +652,38 @@ Feature: With description in background
 
 
 Total: 2 scenarios. Passed: 2. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 64 to: 74;
-		addAttribute: TextEmphasis bold from: 192 to: 200;
-		addAttribute: TextEmphasis bold from: 414 to: 422.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 64 to: 74;
+	makeColor: (Color fromHexString: 'CF222E') from: 64 to: 74;
+	makeColor: (Color fromHexString: 'CF222E') from: 133 to: 137;
+	makeColor: (Color fromHexString: 'CF222E') from: 160 to: 162;
+	makeColor: (Color fromHexString: 'CF222E') from: 177 to: 179;
+	makeBoldFrom: 192 to: 200;
+	makeColor: (Color fromHexString: 'CF222E') from: 192 to: 200;
+	makeColor: (Color fromHexString: 'CF222E') from: 223 to: 227;
+	makeColor: (Color fromHexString: 'CF222E') from: 263 to: 265;
+	makeColor: (Color fromHexString: 'CF222E') from: 293 to: 295;
+	makeColor: (Color fromHexString: 'CF222E') from: 321 to: 324;
+	makeColor: (Color fromHexString: 'CF222E') from: 351 to: 353;
+	makeColor: (Color fromHexString: 'CF222E') from: 387 to: 390;
+	makeBoldFrom: 414 to: 422;
+	makeColor: (Color fromHexString: 'CF222E') from: 414 to: 422;
+	makeColor: (Color fromHexString: 'CF222E') from: 447 to: 451;
+	makeColor: (Color fromHexString: 'CF222E') from: 487 to: 489;
+	makeColor: (Color fromHexString: 'CF222E') from: 517 to: 519;
+	makeColor: (Color fromHexString: 'CF222E') from: 545 to: 548;
+	makeColor: (Color fromHexString: 'CF222E') from: 582 to: 584;
+	makeColor: (Color fromHexString: 'CF222E') from: 618 to: 621;
+	makeColor: (Color fromHexString: 'CF222E') from: 656 to: 658;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedRunReportWithRules [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With rules
@@ -616,25 +725,47 @@ Feature: With rules
 
 
 Total: 4 scenarios. Passed: 4. Failed: 0. Error: 0. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 117 to: 127;
-		addAttribute: TextEmphasis bold from: 196 to: 204;
-		addAttribute: TextEmphasis bold from: 395 to: 399;
-		addAttribute: TextEmphasis bold from: 529 to: 539;
-		addAttribute: TextEmphasis bold from: 575 to: 583;
-		addAttribute: TextEmphasis bold from: 743 to: 751;
-		addAttribute: TextEmphasis bold from: 926 to: 930;
-		addAttribute: TextEmphasis bold from: 988 to: 996.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 117 to: 127;
+	makeColor: (Color fromHexString: 'CF222E') from: 117 to: 127;
+	makeColor: (Color fromHexString: 'CF222E') from: 131 to: 135;
+	makeBoldFrom: 196 to: 204;
+	makeColor: (Color fromHexString: 'CF222E') from: 196 to: 204;
+	makeColor: (Color fromHexString: 'CF222E') from: 266 to: 270;
+	makeColor: (Color fromHexString: 'CF222E') from: 344 to: 348;
+	makeColor: (Color fromHexString: 'CF222E') from: 374 to: 377;
+	makeBoldFrom: 395 to: 399;
+	makeColor: (Color fromHexString: 'CF222E') from: 395 to: 399;
+	makeBoldFrom: 529 to: 539;
+	makeColor: (Color fromHexString: 'CF222E') from: 529 to: 539;
+	makeColor: (Color fromHexString: 'CF222E') from: 544 to: 548;
+	makeBoldFrom: 575 to: 583;
+	makeColor: (Color fromHexString: 'CF222E') from: 575 to: 583;
+	makeColor: (Color fromHexString: 'CF222E') from: 602 to: 606;
+	makeColor: (Color fromHexString: 'CF222E') from: 646 to: 649;
+	makeColor: (Color fromHexString: 'CF222E') from: 686 to: 688;
+	makeColor: (Color fromHexString: 'CF222E') from: 710 to: 713;
+	makeBoldFrom: 743 to: 751;
+	makeColor: (Color fromHexString: 'CF222E') from: 743 to: 751;
+	makeColor: (Color fromHexString: 'CF222E') from: 772 to: 776;
+	makeColor: (Color fromHexString: 'CF222E') from: 816 to: 819;
+	makeColor: (Color fromHexString: 'CF222E') from: 856 to: 858;
+	makeColor: (Color fromHexString: 'CF222E') from: 879 to: 882;
+	makeBoldFrom: 926 to: 930;
+	makeColor: (Color fromHexString: 'CF222E') from: 926 to: 930;
+	makeBoldFrom: 988 to: 996;
+	makeColor: (Color fromHexString: 'CF222E') from: 988 to: 996;
+	makeColor: (Color fromHexString: 'CF222E') from: 1030 to: 1034;
+	makeColor: (Color fromHexString: 'CF222E') from: 1065 to: 1068;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedUndefinedStepErrorRunReport [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With undefined step
@@ -645,20 +776,21 @@ Feature: With undefined step
 
 
 Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 53 to: 61;
-		addAttribute: TextEmphasis bold from: 141 to: 145;
-		addAttribute: (TextColor new color: Color red) from: 141 to: 145.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 53 to: 61;
+	makeColor: (Color fromHexString: 'CF222E') from: 53 to: 61;
+	makeColor: (Color fromHexString: 'CF222E') from: 104 to: 108;
+	makeBoldFrom: 141 to: 145;
+	makeColor: (Color fromHexString: 'FE0000') from: 141 to: 145;
+	yourself
 ]
 
 { #category : 'expected output' }
 HeraScriptRunnerWithTextReporterTestCase >> expectedUnimplementedStepErrorRunReport [
 
-	| text |
-	text := Text fromString: 'Running 1 feature.
+	^ (Text fromString: 'Running 1 feature.
 
 
 Feature: With unimplemented step
@@ -669,13 +801,15 @@ Feature: With unimplemented step
 
 
 Total: 1 scenario. Passed: 0. Failed: 0. Error: 1. Duration: 0 seconds.
-'.
-	text
-		addAttribute: TextEmphasis bold from: 22 to: 29;
-		addAttribute: TextEmphasis bold from: 57 to: 65;
-		addAttribute: TextEmphasis bold from: 125 to: 129;
-		addAttribute: (TextColor new color: Color red) from: 125 to: 129.
-	^ text
+')
+	makeBoldFrom: 22 to: 29;
+	makeColor: (Color fromHexString: 'CF222E') from: 22 to: 29;
+	makeBoldFrom: 57 to: 65;
+	makeColor: (Color fromHexString: 'CF222E') from: 57 to: 65;
+	makeColor: (Color fromHexString: 'CF222E') from: 88 to: 92;
+	makeBoldFrom: 125 to: 129;
+	makeColor: (Color fromHexString: 'FE0000') from: 125 to: 129;
+	yourself
 ]
 
 { #category : 'running' }

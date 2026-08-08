@@ -1,6 +1,9 @@
 Class {
 	#name : 'HeraSettings',
 	#superclass : 'Object',
+	#instVars : [
+		'fixedTheme'
+	],
 	#classVars : [
 		'Icons'
 	],
@@ -103,4 +106,21 @@ HeraSettings >> iconCount [
 HeraSettings >> iconNamed: aSymbol [
 
 	^ Icons at: aSymbol ifAbsent: [ Smalltalk ui icons iconNamed: aSymbol ]
+]
+
+{ #category : 'test api' }
+HeraSettings >> syntaxLightThemeDuring: aBlock [
+
+	fixedTheme := HeraSyntaxLightTheme new.
+	aBlock ensure: [ fixedTheme := nil ]
+]
+
+{ #category : 'accessing' }
+HeraSettings >> syntaxTheme [
+	"The current syntax coloring theme, chosen to match whether the active Pharo UI theme has a light or a dark background."
+
+	fixedTheme ifNotNil: [ ^ fixedTheme ].
+	^ Smalltalk ui theme backgroundColor brightness < 0.5
+		ifTrue: [ HeraSyntaxDarkTheme new ]
+		ifFalse: [ HeraSyntaxLightTheme new ]
 ]

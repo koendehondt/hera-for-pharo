@@ -15,8 +15,7 @@ HeraFeatureTestCase >> describedClass [
 { #category : 'private' }
 HeraFeatureTestCase >> expectedGeneratedRichScript [
 
-	| text |
-	text := Text fromString:	'@accessing_the_system
+	^ (Text fromString: '@accessing_the_system
 @signing_in
 Feature: Signing in
 
@@ -41,12 +40,29 @@ Feature: Signing in
 		Then I am still on the sign-in page
 		But I see a message that the credentials are wrong
 
-'.
-	text
-		addAttribute: TextEmphasis bold from: 35 to: 42;
-		addAttribute: TextEmphasis bold from: 195 to: 203;
-		addAttribute: TextEmphasis bold from: 416 to: 424.
-	^ text
+')
+	makeColor: (Color fromHexString: '116329') from: 1 to: 21;
+	makeColor: (Color fromHexString: '116329') from: 23 to: 33;
+	makeBoldFrom: 35 to: 42;
+	makeColor: (Color fromHexString: 'CF222E') from: 35 to: 42;
+	makeColor: (Color fromHexString: '0A3069') from: 44 to: 53;
+	makeColor: (Color fromHexString: '116329') from: 185 to: 192;
+	makeBoldFrom: 195 to: 203;
+	makeColor: (Color fromHexString: 'CF222E') from: 195 to: 203;
+	makeColor: (Color fromHexString: '0A3069') from: 205 to: 222;
+	makeColor: (Color fromHexString: 'CF222E') from: 285 to: 289;
+	makeColor: (Color fromHexString: 'CF222E') from: 323 to: 326;
+	makeColor: (Color fromHexString: 'CF222E') from: 353 to: 355;
+	makeColor: (Color fromHexString: 'CF222E') from: 389 to: 392;
+	makeBoldFrom: 416 to: 424;
+	makeColor: (Color fromHexString: 'CF222E') from: 416 to: 424;
+	makeColor: (Color fromHexString: '0A3069') from: 426 to: 445;
+	makeColor: (Color fromHexString: 'CF222E') from: 449 to: 453;
+	makeColor: (Color fromHexString: 'CF222E') from: 487 to: 490;
+	makeColor: (Color fromHexString: 'CF222E') from: 524 to: 526;
+	makeColor: (Color fromHexString: 'CF222E') from: 560 to: 563;
+	makeColor: (Color fromHexString: 'CF222E') from: 598 to: 600;
+	yourself
 ]
 
 { #category : 'tests' }
@@ -61,7 +77,8 @@ HeraFeatureTestCase >> testRichScriptWithFullScenario [
 
 	| feature |
 	feature := HeraAcceptanceTestWithPassForTesting new signingInFeature.
-	self assertText: feature richScript equals: self expectedGeneratedRichScript
+	Hera settings syntaxLightThemeDuring: [
+		self assertText: feature richScript equals: self expectedGeneratedRichScript ]
 ]
 
 { #category : 'tests' }

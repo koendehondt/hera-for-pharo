@@ -136,6 +136,16 @@ HeraScenario >> star: aString [
 	steps add: (HeraStarStep new description: aString)
 ]
 
+{ #category : 'dsl' }
+HeraScenario >> star: aString with: aStructuredArgument [
+
+	| step |
+	step := HeraStarStep new
+		description: aString;
+		argument: aStructuredArgument asStepArgument.
+	steps add: step
+]
+
 { #category : 'accessing' }
 HeraScenario >> steps [
 

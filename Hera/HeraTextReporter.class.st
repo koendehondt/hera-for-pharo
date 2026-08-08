@@ -173,9 +173,7 @@ HeraTextReporter >> reportFeature: aFeature [
 { #category : 'private - reporting' }
 HeraTextReporter >> reportKeyword: aString [
 
-	stream
-		withAttribute: TextEmphasis bold
-		do: [ stream nextPutAll: aString ]
+	self scriptGenerator nextPutKeyword: aString
 ]
 
 { #category : 'reporting' }
@@ -251,9 +249,9 @@ HeraTextReporter >> reportStartOfBackground: aBackground [
 { #category : 'reporting' }
 HeraTextReporter >> reportStartOfBackgroundStep: aStep [
 
+	stream crtab: indentation.
+	self scriptGenerator nextPutStepKeyword: aStep keyword.
 	stream
-		crtab: indentation;
-		nextPutAll: aStep keyword;
 		space;
 		nextPutAll: aStep description;
 		nextPutAll: ' [Background]'.
@@ -336,8 +334,8 @@ HeraTextReporter >> reportStartOfStep: aStep [
 { #category : 'private - reporting' }
 HeraTextReporter >> reportStep: aStep [
 
+	self scriptGenerator nextPutStepKeyword: aStep keyword.
 	stream
-		nextPutAll: aStep keyword;
 		space;
 		nextPutAll: aStep description.
 	aStep argument ifNotNil: [ :stepArgument |
@@ -363,6 +361,14 @@ HeraTextReporter >> reportsTags: aBoolean [
 	reportsTags := aBoolean
 ]
 
+{ #category : 'private - reporting' }
+HeraTextReporter >> scriptGenerator [
+
+	^ HeraScriptGenerator new
+		stream: stream;
+		indentation: indentation
+]
+
 { #category : 'accessing' }
 HeraTextReporter >> text [
 
@@ -374,7 +380,7 @@ HeraTextReporter >> textAttributesForError [
 
 	^ {
 		TextEmphasis bold .
-		TextColor new color: Hera settings errorResultColor }
+		TextColor color: Hera settings errorResultColor }
 ]
 
 { #category : 'private - reporting' }
@@ -388,5 +394,5 @@ HeraTextReporter >> textAttributesForFailureFor: aStep of: aScenario [
 
 	^ {
 		TextEmphasis bold .
-		TextColor new color: Hera settings failedResultColor }
+		TextColor color: Hera settings failedResultColor }
 ]
