@@ -150,13 +150,7 @@ HeraScriptGenerator >> syntaxTheme: aSyntaxTheme [
 { #category : 'visiting' }
 HeraScriptGenerator >> visitAndStep: anAndStep [
 
-	stream crtab: indentation.
-	self nextPutStepKeyword: 'And'.
-	stream space.
-	stream nextPutAll: anAndStep description.
-	anAndStep argument ifNotNil: [ :stepArgument |
-		stream cr.
-		self visit: anAndStep argument ]
+	self visitStep: anAndStep
 ]
 
 { #category : 'visiting' }
@@ -178,13 +172,7 @@ HeraScriptGenerator >> visitBackground: aBackground [
 { #category : 'visiting' }
 HeraScriptGenerator >> visitButStep: aButStep [
 
-	stream crtab: indentation.
-	self nextPutStepKeyword: 'But'.
-	stream space.
-	stream nextPutAll: aButStep description.
-	aButStep argument ifNotNil: [ :stepArgument |
-		stream cr.
-		self visit: aButStep argument ]
+	self visitStep: aButStep
 ]
 
 { #category : 'visiting' }
@@ -242,13 +230,7 @@ HeraScriptGenerator >> visitFeature: aFeature [
 { #category : 'visiting' }
 HeraScriptGenerator >> visitGivenStep: aGivenStep [
 
-	stream crtab: indentation.
-	self nextPutStepKeyword: 'Given'.
-	stream space.
-	stream nextPutAll: aGivenStep description.
-	aGivenStep argument ifNotNil: [ :stepArgument |
-		stream cr.
-		self visit: aGivenStep argument ]
+	self visitStep: aGivenStep
 ]
 
 { #category : 'visiting' }
@@ -330,35 +312,29 @@ HeraScriptGenerator >> visitScenarioOutline: aScenarioOutline [
 { #category : 'visiting' }
 HeraScriptGenerator >> visitStarStep: aStarStep [
 
+	self visitStep: aStarStep
+]
+
+{ #category : 'private - visiting' }
+HeraScriptGenerator >> visitStep: aStep [
+
 	stream crtab: indentation.
-	self nextPutStepKeyword: '*'.
+	self nextPutStepKeyword: aStep keyword.
 	stream space.
-	stream nextPutAll: aStarStep description.
-	aStarStep argument ifNotNil: [ :stepArgument |
+	stream nextPutAll: aStep description.
+	aStep argument ifNotNil: [ :stepArgument |
 		stream cr.
-		self visit: aStarStep argument ]
+		self visit: aStep argument ]
 ]
 
 { #category : 'visiting' }
 HeraScriptGenerator >> visitThenStep: aThenStep [
 
-	stream crtab: indentation.
-	self nextPutStepKeyword: 'Then'.
-	stream space.
-	stream nextPutAll: aThenStep description.
-	aThenStep argument ifNotNil: [ :stepArgument |
-		stream cr.
-		self visit: aThenStep argument ]
+	self visitStep: aThenStep
 ]
 
 { #category : 'visiting' }
 HeraScriptGenerator >> visitWhenStep: aWhenStep [
 
-	stream crtab: indentation.
-	self nextPutStepKeyword: 'When'.
-	stream space.
-	stream nextPutAll: aWhenStep description.
-	aWhenStep argument ifNotNil: [ :stepArgument |
-		stream cr.
-		self visit: aWhenStep argument ]
+	self visitStep: aWhenStep
 ]
